@@ -490,7 +490,7 @@
         "signature": "d4f9b58a89130a6b8bf753825adb635980eafa75a7bf4891f9c1e5b7dd176ae5"
       },
       "./src/cron_jobs/retention.cron.ts": {
-        "version": "64ad60c5a02f26fc22ed1749172d607bbc5b9eda1ba5235e2172b71cd15a29e6",
+        "version": "c0637149cfbf8144647fa329134148a563bc14f55ea7d6413ffde1e9c1bf25a1",
         "signature": "36cc04941e0df0d1f2344f60b2853ce4281a74e8f850a3790728f3830039e491"
       },
       "./src/middlewares/global.middleware.ts": {
@@ -526,7 +526,7 @@
         "signature": "3d5e77e40e80d27db0288418d5ac917ecac64e18c7cca2dfeace6c2ca5927fa7"
       },
       "./src/resources/Post/post.routes.ts": {
-        "version": "c9e673b4f956585950ecfb8af03c76f6deb59e7aec7bfbdb13a3dbd6db491d8b",
+        "version": "4b5ce8bb76488a911952a7716ab4c27134f8a8d7c7fc9ada98c63b5766158803",
         "signature": "b7ab2298872e413229ebf0c184245ee0da750eecb0789d6fcc048e8fdf6732bf"
       },
       "./src/types/global.ts": {
@@ -718,8 +718,8 @@
         "signature": "4832814b60c031486a028411766545185cb9de5952f31c8b4fe8dbfb2fff617b"
       },
       "./src/resources/Post/post.lang.ts": {
-        "version": "ae323501be6e70c3a13525d17e303775ab729b6cdbf2e928ee0e6b7dd5814bf8",
-        "signature": "5f4a9361f3bb2482862527aa093d568d5dd473fb9be200d009d3e62de29748a6"
+        "version": "1b58502caeddfb9e45a453cb9cb056ab7b0a5865a9d412056a353fdf3994c9f5",
+        "signature": "57e9390fccbdf042fbed6c51c3587238458102a69e8caf693de24af50d358f5a"
       },
       "./src/resources/Task/task.lang.ts": {
         "version": "3a7c0cedb97c93b4e6f3aa1de0704f81031f923e358fdd1a39229d5d3c0b84d3",
@@ -1498,7 +1498,9 @@
         "./node_modules/@types/node/fs.d.ts",
         "./src/middlewares/auth.middleware.ts",
         "./src/utils/LanguageHelper.ts",
+        "./src/utils/PushNotificationHelper.ts",
         "./src/utils/UploadHelper.ts",
+        "./src/resources/User/user.model.ts",
         "./src/resources/Post/post.model.ts",
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
@@ -3077,15 +3079,22 @@
       "./src/utils/LanguageHelper.ts",
       "./node_modules/mixpanel/lib/mixpanel-node.d.ts",
       "./src/utils/MixpanelHelper.ts",
+      "./src/resources/User/user.model.ts",
       "./node_modules/expo-server-sdk/build/ExpoClient.d.ts",
       "./src/utils/PushNotificationHelper.ts",
+      "./src/cron_jobs/retention.cron.ts",
       "./src/middlewares/global.middleware.ts",
+      "./src/utils/MiddlewareHelper.ts",
+      "./src/middlewares/auth.middleware.ts",
       "./src/resources/Conversation/conversation.model.ts",
+      "./src/resources/Conversation/conversation.routes.ts",
       "./node_modules/file-type/index.d.ts",
+      "./src/utils/UploadHelper.ts",
       "./src/resources/Post/post.model.ts",
       "./src/types/global.ts",
       "./src/utils/RouterHelper.ts",
       "./src/resources/Task/task.model.ts",
+      "./src/resources/Task/task.routes.ts",
       "./node_modules/axios/index.d.ts",
       "./node_modules/event-target-shim/index.d.ts",
       "./node_modules/abort-controller/dist/abort-controller.d.ts",
@@ -3121,29 +3130,22 @@
       "./node_modules/@types/lodash/ts3.1/common/util.d.ts",
       "./node_modules/@types/lodash/ts3.1/index.d.ts",
       "./src/emails/generic.email.ts",
+      "./src/middlewares/user.middleware.ts",
       "./src/utils/EncryptionHelper.ts",
       "./src/resources/Log/log.model.ts",
+      "./src/resources/User/user.routes.ts",
+      "./src/utils/SocketIOHelper.ts",
+      "./src/index.ts",
       "./src/cron_jobs/main.cron.ts",
       "./src/resources/Conversation/conversation.lang.ts",
-      "./src/resources/Post/post.lang.ts",
       "./src/resources/Task/task.lang.ts",
       "./src/resources/User/user.lang.ts",
       "./src/utils/SocketIOExampleHelper.ts",
       "./node_modules/@types/normalize-package-data/index.d.ts",
       "./node_modules/@types/strip-bom/index.d.ts",
       "./node_modules/@types/strip-json-comments/index.d.ts",
-      "./src/resources/User/user.model.ts",
-      "./src/utils/SocketIOHelper.ts",
-      "./src/resources/User/user.routes.ts",
-      "./src/resources/Conversation/conversation.routes.ts",
-      "./src/utils/MiddlewareHelper.ts",
-      "./src/cron_jobs/retention.cron.ts",
-      "./src/index.ts",
-      "./src/utils/UploadHelper.ts",
       "./src/resources/Post/post.routes.ts",
-      "./src/middlewares/auth.middleware.ts",
-      "./src/resources/Task/task.routes.ts",
-      "./src/middlewares/user.middleware.ts"
+      "./src/resources/Post/post.lang.ts"
     ]
   },
   "version": "3.7.2"

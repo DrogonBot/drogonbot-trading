@@ -4,7 +4,9 @@ import fs from 'fs';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
+import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { UploadHelper } from '../../utils/UploadHelper';
+import { User } from '../User/user.model';
 import { Post } from './post.model';
 
 
@@ -185,6 +187,22 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
     // @ts-ignore
     newPost.images = imagesURI
     await newPost.save()
+
+    // send push notification to users about new post: //TODO: customize user groups who will receive this notification
+
+    const users = await User.find({})
+
+    for (const u of users) {
+      if (u.pushToken !== user.pushToken) {
+        PushNotificationHelper.sendPush([u.pushToken], {
+          sound: "default",
+          body: LanguageHelper.getLanguageString('post', 'postCreationNotification', {
+            userName: user.name // post owner's name
+          })
+          // TODO: Add parameter that redirect users that click on this notification to the recently created post
+        })
+      }
+    }
 
 
     return res.status(200).send(newPost)

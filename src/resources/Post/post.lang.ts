@@ -22,5 +22,8 @@ export const strings = {
   },
   postFileUploadError: {
     eng: 'An error occurred while trying to upload your files. Please contact the support.'
+  },
+  postCreationNotification: {
+    eng: "{{userName}} just created a new post! Check it out!"
   }
 };
