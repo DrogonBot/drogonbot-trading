@@ -12,3 +12,4 @@ dist
  
 
  src/public/images
+ src/public/images/**
