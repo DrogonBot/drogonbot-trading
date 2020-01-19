@@ -4,28 +4,34 @@ export const prodServerConfig = {
   app: {
     name: APP_NAME,
     port: 3000,
-    url: "https://yourwebsite.com/",
-    mongodbConnectionUrl: "mongodb://mongo:27017/app"
+    url: "https://empregourgente.com:3000/",
+    mongodbConnectionUrl: "mongodb://mongo-eu:27017/emprego-urgente"
   },
   email: {
     supportEmail: SUPPORT_EMAIL,
-    mailchimpAPIKey: "bad3b9754ab37c1329a284621d9bc307-us4",
-    mailchimpDefaultList: "816cff1b6d", // https://mailchimp.com/pt/help/find-audience-id/
+    mailchimpAPIKey: "c504a460b23bf5dd85c7de19c121a583-us4",
+    mailchimpDefaultList: "778a708d3d", // https://mailchimp.com/pt/help/find-audience-id/
     sendGridAPIKey:
-      "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",
+      "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",
     templatesFolder: "./src/emails/templates",
     globalTemplateVars: {
       "Product Name": APP_NAME,
-      "Sender Name": "Joao",
-      "Company Name, LLC": "App Boilerplate Inc",
-      "Company Address": "1234, Street Rd. Suite 1234"
+      "Sender Name": "Emprego Urgente",
+      "Company Name, LLC": "Emprego Urgente Inc",
+      "Company Address": "Av. Rio Branco, Vitoria ES"
+    },
+    oAuth: {
+      gmail: {
+        clientID:
+          "1053239267142-0111itnk33e9mqbpe61gig0isril9p2o.apps.googleusercontent.com",
+        clientSecret: "0kc7WazuJhNlyNZvSy4wF5Rm"
+      }
     }
   },
   tracking: {
-    mixpanelToken: "4d3748881a3b25bb07ece7cf97f22918"
+    mixpanelToken: "d87cd0f8669fbce8a13732f13bf43ff8"
   },
-
   maintenanceMode: false,
   language: "eng",
-  jwtSecret: "pez9SHY+4By+ce4PFMevcg=="
+  jwtSecret: "CfQbhtmMn5#pez9SHY+4By+ce4PFMevcg=="
 };

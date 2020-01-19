@@ -4,5 +4,5 @@ export enum EnvType {
   Staging = "Staging"
 }
 
-export const APP_NAME = "App Boilerplate";
+export const APP_NAME = "Emprego Urgente";
 export const SUPPORT_EMAIL = "joaopaulofurtado@live.com";

@@ -240,6 +240,7 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
 
       await user.save();
     } catch (error) {
+
       return res.status(400).send({
         status: "error",
         message: LanguageHelper.getLanguageString(

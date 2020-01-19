@@ -1,7 +1,7 @@
 version: "3"
 services:
-  app:
-    container_name: docker-node-mongo
+  app-eu:
+    container_name: docker-node-mongo-eu
     restart: always
     build: .
     ports:
@@ -10,17 +10,17 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
-      - "mongo"
+      - "mongo-eu"
     links:
-      - mongo
-  mongo:
-    container_name: mongo
+      - mongo-eu
+  mongo-eu:
+    container_name: mongo-eu
     image: mongo
     ports:
       - "27017:27017"
 
-  admin:
-    container_name: admin
+  admin-eu:
+    container_name: admin-eu
     build:
       context: ./admin
       dockerfile: Dockerfile
@@ -29,17 +29,17 @@ services:
     volumes:
       - ./admin:/usr/src/app
     depends_on:
-      - "mongo"
+      - "mongo-eu"
     links:
-      - mongo
+      - mongo-eu
 
-  adminmongo:
-    container_name: "adminmongo"
+  adminmongo-eu:
+    container_name: "adminmongo-eu"
     image: "mrvautin/adminmongo"
     links:
-      - "mongo"
+      - "mongo-eu"
     depends_on:
-      - "mongo"
+      - "mongo-eu"
     environment:
       - HOST=0.0.0.0
     ports:

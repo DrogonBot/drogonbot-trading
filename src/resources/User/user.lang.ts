@@ -2,6 +2,9 @@ export const strings = {
   userLogoutError: {
     eng: "Error while trying to log out."
   },
+  userFailedLoginOAuthAnotherAccountRegistered: {
+    eng: "Your already have an account with this e-mail. Please login using the form above"
+  },
   userFailedLoginOAuth: {
     eng: "Failed to login through OAuth!"
   },
