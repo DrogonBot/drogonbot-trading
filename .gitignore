@@ -1,7 +1,8 @@
 node_modules
 
-serverConfig.dev.jsonsendgrid.env
+sendgrid.env
 
+tsconfig.tsbuildinfo
 
 src/constants/serverConfig.dev.ts
 src/constants/serverConfig.prod.ts
