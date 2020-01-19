@@ -1,7 +1,7 @@
 export const strings = {
-  // taskCreationError: {
-  //   eng: 'Sorry, error while trying to create your task.'
-  // },
+  placesLoadError: {
+    eng: 'Sorry, an error occurred while trying to fetch the requested places.'
+  },
 
 
 };

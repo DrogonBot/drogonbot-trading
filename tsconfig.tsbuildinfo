@@ -542,11 +542,11 @@
         "signature": "b7ab2298872e413229ebf0c184245ee0da750eecb0789d6fcc048e8fdf6732bf"
       },
       "./src/resources/Sector/sector.model.ts": {
-        "version": "5aede3f0742cb47c9a7ea293c3842029b0757b6264ffddc42c9a8738247be9fb",
+        "version": "818ac229ad9a7941f90af61269fd35a0a8d32ddc1e4aca6ffb909cfb2f4567cb",
         "signature": "86263d76a46ad77ea656918a19751e0c355b693a3121dc1fb53ef2aa753d68d3"
       },
       "./src/resources/Sector/sector.seeder.ts": {
-        "version": "ce2b61a0184ff337c5e4df2352a495edd2ce4eb42e8e835e2bb06bb83e617473",
+        "version": "c77cf88c66f2944e9d8b979fead568c384336de80641b4656cb0cf7485995b44",
         "signature": "4074b37d04ca5b417b4fdd7c0d7aaa85677c904f763461ebd60363b3b9461c03"
       },
       "./src/types/global.ts": {
@@ -2636,6 +2636,9 @@
       "./src/resources/Conversation/conversation.model.ts": [
         "./node_modules/@types/mongoose/index.d.ts"
       ],
+      "./src/resources/Place/place.model.ts": [
+        "./node_modules/@types/mongoose/index.d.ts"
+      ],
       "./node_modules/file-type/index.d.ts": [
         "./node_modules/@types/node/stream.d.ts",
         "./node_modules/@types/node/ts3.2/index.d.ts",
@@ -2643,6 +2646,9 @@
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "./src/resources/Post/post.model.ts": [
+        "./node_modules/@types/mongoose/index.d.ts"
+      ],
+      "./src/resources/Sector/sector.model.ts": [
         "./node_modules/@types/mongoose/index.d.ts"
       ],
       "./src/resources/Task/task.model.ts": [
@@ -3013,12 +3019,6 @@
       "./node_modules/@types/strip-json-comments/index.d.ts": [
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "./src/resources/Place/place.model.ts": [
-        "./node_modules/@types/mongoose/index.d.ts"
-      ],
-      "./src/resources/Sector/sector.model.ts": [
-        "./node_modules/@types/mongoose/index.d.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -3109,6 +3109,11 @@
       "./node_modules/@types/mongodb/index.d.ts",
       "./node_modules/@types/mongoose/index.d.ts",
       "./node_modules/@types/socket.io/index.d.ts",
+      "./src/constants/server.constants.ts",
+      "./src/constants/serverConfig.dev.ts",
+      "./src/constants/serverConfig.prod.ts",
+      "./src/constants/serverConfig.stag.ts",
+      "./src/constants/env.ts",
       "./node_modules/@types/jsonwebtoken/index.d.ts",
       "./node_modules/@sendgrid/helpers/classes/attachment.d.ts",
       "./node_modules/@sendgrid/helpers/classes/email-address.d.ts",
@@ -3128,12 +3133,15 @@
       "./node_modules/@sendgrid/mail/index.d.ts",
       "./src/utils/TextHelper.ts",
       "./src/emails/TransactionalEmailManager.ts",
+      "./src/emails/account.email.ts",
       "./node_modules/mailchimp-api-v3/index.d.ts",
+      "./src/emails/MarketingEmailManager.ts",
       "./src/utils/GenericHelper.ts",
       "./src/lang/global.lang.ts",
       "./src/utils/LanguageHelper.ts",
       "./node_modules/mixpanel/lib/mixpanel-node.d.ts",
       "./src/utils/MixpanelHelper.ts",
+      "./src/resources/User/user.model.ts",
       "./node_modules/expo-server-sdk/build/ExpoClient.d.ts",
       "./src/utils/PushNotificationHelper.ts",
       "./src/cron_jobs/retention.cron.ts",
@@ -3142,6 +3150,9 @@
       "./src/middlewares/auth.middleware.ts",
       "./src/resources/Conversation/conversation.model.ts",
       "./src/resources/Conversation/conversation.routes.ts",
+      "./src/resources/Place/place.routes.ts",
+      "./src/resources/Place/place.model.ts",
+      "./src/resources/Place/place.seeder.ts",
       "./node_modules/file-type/index.d.ts",
       "./src/utils/UploadHelper.ts",
       "./src/resources/Post/post.model.ts",
@@ -3184,36 +3195,25 @@
       "./node_modules/@types/lodash/ts3.1/common/string.d.ts",
       "./node_modules/@types/lodash/ts3.1/common/util.d.ts",
       "./node_modules/@types/lodash/ts3.1/index.d.ts",
+      "./src/emails/generic.email.ts",
       "./src/middlewares/user.middleware.ts",
       "./src/utils/EncryptionHelper.ts",
       "./src/resources/Log/log.model.ts",
+      "./src/resources/User/user.routes.ts",
       "./src/utils/SocketIOHelper.ts",
+      "./src/index.ts",
       "./src/cron_jobs/main.cron.ts",
       "./src/resources/Conversation/conversation.lang.ts",
+      "./src/resources/Place/place.lang.ts",
       "./src/resources/Post/post.lang.ts",
       "./src/resources/Task/task.lang.ts",
+      "./src/resources/User/user.lang.ts",
       "./src/utils/SocketIOExampleHelper.ts",
       "./node_modules/@types/normalize-package-data/index.d.ts",
       "./node_modules/@types/strip-bom/index.d.ts",
       "./node_modules/@types/strip-json-comments/index.d.ts",
-      "./src/constants/server.constants.ts",
-      "./src/emails/generic.email.ts",
-      "./src/resources/User/user.model.ts",
-      "./src/emails/MarketingEmailManager.ts",
-      "./src/emails/account.email.ts",
-      "./src/constants/env.ts",
-      "./src/constants/serverConfig.stag.ts",
-      "./src/constants/serverConfig.prod.ts",
-      "./src/constants/serverConfig.dev.ts",
-      "./src/resources/Place/place.routes.ts",
-      "./src/index.ts",
-      "./src/resources/Place/place.model.ts",
-      "./src/resources/Place/place.seeder.ts",
       "./src/resources/Sector/sector.model.ts",
-      "./src/resources/Sector/sector.seeder.ts",
-      "./src/resources/User/user.routes.ts",
-      "./src/resources/Place/place.lang.ts",
-      "./src/resources/User/user.lang.ts"
+      "./src/resources/Sector/sector.seeder.ts"
     ]
   },
   "version": "3.7.2"
