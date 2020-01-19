@@ -1,6 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Model, model } from 'mongoose';
 
 
+export interface ISector {
+  country: string;
+  name: string;
+}
+
+export interface ISectorModel extends ISector, Document {
+
+}
 
 const sectorSchema = new mongoose.Schema({
   "country": {
@@ -13,4 +21,4 @@ const sectorSchema = new mongoose.Schema({
   }
 })
 
-export const Sector = mongoose.model('Sector', sectorSchema)
+export const Sector: Model<ISectorModel> = model<ISectorModel>('Sector', sectorSchema)

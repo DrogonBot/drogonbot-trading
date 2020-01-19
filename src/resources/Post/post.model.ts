@@ -1,11 +1,36 @@
-import mongoose from 'mongoose';
+import { ObjectId } from 'mongodb';
+import mongoose, { Document, Model, model } from 'mongoose';
 
-export enum PostCategory {
-  Default,
-  Post
+export interface IPost {
+  country: string;
+  name: string;
 }
 
-const PostSchema = new mongoose.Schema({
+export interface IPostModel extends IPost, Document {
+  // insert functions here if needed.
+}
+
+const postSchema = new mongoose.Schema({
+  ownerId: {
+    type: ObjectId,
+    required: true
+  },
+  country: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  stateUf: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  city: {
+    type: String,
+    trim: true,
+    required: true
+  },
+
   title: {
     type: String,
     required: true,
@@ -17,9 +42,29 @@ const PostSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  ownerId: {
-    type: Object,
-    required: true
+  externalUrl: {
+    type: String,
+    trim: true
+  },
+  email: {
+    type: String,
+    trim: true
+  },
+  source: {
+    type: String,
+    trim: true
+  },
+  perMonthSalary: {
+    type: String,
+    trim: true
+  },
+  perYearSalary: {
+    type: String,
+    trim: true
+  },
+  perHourSalary: {
+    type: Number,
+    trim: true,
   },
   images: [
     {
@@ -27,9 +72,9 @@ const PostSchema = new mongoose.Schema({
       default: null
     }
   ],
-  category: {
-    type: String,
-    default: PostCategory.Default
+  sector: {
+    id: ObjectId,
+    name: String
   },
   likes: {
     type: Number,
@@ -45,4 +90,9 @@ const PostSchema = new mongoose.Schema({
   timestamps: true
 })
 
-export const Post = mongoose.model('Post', PostSchema)
+export const Post: Model<IPostModel> = model<IPostModel>('Post', postSchema)
+
+
+
+
+
