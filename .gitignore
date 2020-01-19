@@ -9,7 +9,5 @@ src/constants/serverConfig.stag.ts
 src/constants/end.ts
 sendgrid.env
 dist
- 
-
- src/public/images
- src/public/images/**
+  
+src/public/images/**
