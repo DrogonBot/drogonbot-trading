@@ -17,12 +17,13 @@ export class SectorSeeder {
 
         console.log(`SEED: Populating sectors data for ${countryName}...`);
 
-        sectorsData.forEach(async ({ name }) => {
+        sectorsData.forEach(async ({ country, name }) => {
 
           console.log(`populating => ${name}`);
 
           try {
             const newSector = await new Sector({
+              country,
               name
             })
             await newSector.save()

@@ -350,23 +350,23 @@
         "signature": "17868dee2559ec6f6b6f5c996cdf22e9b17da693d8c88ee4635a3a28d8264c61"
       },
       "./src/constants/server.constants.ts": {
-        "version": "4a754dc9ecd48e8a9834e1cc2f91c2ac363e7f86668eba891b9e69a76537bed3",
-        "signature": "a32b3ce08a8dff84a3051e8e4567225a0ead0aaea87c018f684a3a1f7ef99c1f"
+        "version": "fbd0dac81cd85f9e063a0eae24cd79e7be890027d102170d376ea84089ebedd9",
+        "signature": "7f2bcde2a0a004c8c6ddc6ad3502c4bbea33805cb7cfb50f57dd6f1ddb253372"
       },
       "./src/constants/serverConfig.dev.ts": {
-        "version": "1768c1bca896cfdd6aed56a9cf757cbcd2aa924851deed3bdd8c3ca3006c2924",
+        "version": "7235b1f89bef960f5d50e318cd129c601a3e462955f56e4e7c2f5bae8164b643",
         "signature": "526a295578d503688b75da16bf62eb80142e9355c05aea132e496562d01355f2"
       },
       "./src/constants/serverConfig.prod.ts": {
-        "version": "23011da41c68527ce1507db01607da40f6189a19cdd465e2288f82e62e1988c0",
-        "signature": "c2674047a3852eff87b5f9b536c215280b953051296d1b82c61d591c2f9ad84c"
+        "version": "33b2172b94fdaa607325c549608ac628e7aebdfce61b2d714e0b1dca899e3802",
+        "signature": "175eab4418b073b6688c6dd11897b70cae19613163f98cfbc5412b94be75f1b3"
       },
       "./src/constants/serverConfig.stag.ts": {
-        "version": "4438ca061a303708fc5bc16a000359ec71845c70b15e778d0d011df7c49e251d",
-        "signature": "8648615c542e399e8cf38ef8f94ac1a2e4770f778efd504baeb81bbab37ee5a9"
+        "version": "dd21f72e14b9e1fd7ab6ace2732430f674245448236e7f0147507ffdeae93bc4",
+        "signature": "163d85e4bffa9c938881cf48ae3c8a7afc4edb9f7a7d0e8ce7ea6c531a1d83c2"
       },
       "./src/constants/env.ts": {
-        "version": "a7a42e07b568ab7832c0d2592e6b28c54fa01c37c5dda504cf739a2d9bfb78fb",
+        "version": "6f4fdbab881e69874f5182e0314e397f54e62542e72ec5d284b9fe1735032de5",
         "signature": "9b75578ff09bbb1c6f2a7e8ebe3d850b5a1017b8858a3abd2636aca7e67d34e6"
       },
       "./node_modules/@types/jsonwebtoken/index.d.ts": {
@@ -513,6 +513,18 @@
         "version": "7e1e07de3caa1d67c1798c2bd1669d7bc50ee1fa665889571afaf71bb13cc2dd",
         "signature": "7286a0dde2ab01a72f1e2136050a1394c8718fa8bac609ebf8e7a1a7cee17592"
       },
+      "./src/resources/Place/place.routes.ts": {
+        "version": "bc5b0696d8cac471796bd3188679c0e8942c0dfb16629d9c404fd6080b794a23",
+        "signature": "93f436b999a2252dad1b3380f6dc1bf83a143f5acaaa344e068de42b317ef8ec"
+      },
+      "./src/resources/Place/place.model.ts": {
+        "version": "9988a644694adf086c36367d2d5f481251920c6401f0cef46386f1aa36bfd35b",
+        "signature": "aeead5464ff38a407ffbfb49441405006dd4be760ce6eba1cadd70a9b002e5d0"
+      },
+      "./src/resources/Place/place.seeder.ts": {
+        "version": "df70b0d0223452cd52325ad4b3728b8ea1bd3280999648d4c094702530fedf28",
+        "signature": "5f1a48ce566fa2526acf7bf906a9f0eaaf2d013f22e5dcf51b0e1cdf7c9460c7"
+      },
       "./node_modules/file-type/index.d.ts": {
         "version": "c92ceabecd8c47caa23d0d14cd0d4645f69087ddccac018587fd5c36bc522b0e",
         "signature": "c92ceabecd8c47caa23d0d14cd0d4645f69087ddccac018587fd5c36bc522b0e"
@@ -528,6 +540,14 @@
       "./src/resources/Post/post.routes.ts": {
         "version": "4b5ce8bb76488a911952a7716ab4c27134f8a8d7c7fc9ada98c63b5766158803",
         "signature": "b7ab2298872e413229ebf0c184245ee0da750eecb0789d6fcc048e8fdf6732bf"
+      },
+      "./src/resources/Sector/sector.model.ts": {
+        "version": "5aede3f0742cb47c9a7ea293c3842029b0757b6264ffddc42c9a8738247be9fb",
+        "signature": "86263d76a46ad77ea656918a19751e0c355b693a3121dc1fb53ef2aa753d68d3"
+      },
+      "./src/resources/Sector/sector.seeder.ts": {
+        "version": "ce2b61a0184ff337c5e4df2352a495edd2ce4eb42e8e835e2bb06bb83e617473",
+        "signature": "4074b37d04ca5b417b4fdd7c0d7aaa85677c904f763461ebd60363b3b9461c03"
       },
       "./src/types/global.ts": {
         "version": "861400f120f7ba9eb31edda8fedba826f66756a56bb25b027c39bd5e5c3aaba5",
@@ -698,7 +718,7 @@
         "signature": "75c288f55286361fe276c788b434f01895fd9227e0ac8de0cb0792d1f950cb3d"
       },
       "./src/resources/User/user.routes.ts": {
-        "version": "b3b4784433d3327733ac5374b59cfc0e14166792daa91ad1f435ffb30ead2a0b",
+        "version": "d9a767cdcbe029963ccbdf0c139b6bed4423fae320d06b86e7812e68a5c6e9bc",
         "signature": "8c8ea754c669ad8c1fd4c1dcbfa611ebfd5497455396256ab0141e96103f835a"
       },
       "./src/utils/SocketIOHelper.ts": {
@@ -706,7 +726,7 @@
         "signature": "18379cc8e31315289920375b211ab2f328bf9b8b50d115a3e46ceb75abed2310"
       },
       "./src/index.ts": {
-        "version": "e5acc46133038305df894113d470dc682a9f477009eb9d59701f98105c609a29",
+        "version": "2d08ada14e7b522fe2bb105ec8b7f2b7a5bcb156b5103b8b843c32fa91ee9b94",
         "signature": "7b761ffa299224fc86c9572a460221132db30638b370be84fb4bf494fcb59d91"
       },
       "./src/cron_jobs/main.cron.ts": {
@@ -717,6 +737,10 @@
         "version": "3a1a956155fa781959bf20f3f896aa7aa2562de1b36debe21610ff1a343b735a",
         "signature": "4832814b60c031486a028411766545185cb9de5952f31c8b4fe8dbfb2fff617b"
       },
+      "./src/resources/Place/place.lang.ts": {
+        "version": "d86b780cc141c40f74268fd9a4329a14377df5b44f42316581645c29195a3bfe",
+        "signature": "b297441df70f4346dd6c336b77bb5b9d2ccb4d42fa2fa48c13fad6509fbc66d1"
+      },
       "./src/resources/Post/post.lang.ts": {
         "version": "1b58502caeddfb9e45a453cb9cb056ab7b0a5865a9d412056a353fdf3994c9f5",
         "signature": "57e9390fccbdf042fbed6c51c3587238458102a69e8caf693de24af50d358f5a"
@@ -726,8 +750,8 @@
         "signature": "27162da05b60e4d25abe5861deeeeb5f274beff77f2768213910025e60a54d38"
       },
       "./src/resources/User/user.lang.ts": {
-        "version": "fd74d4c96291c6e6ce102ff537639a8920087cbc438acbf2f237164568450036",
-        "signature": "db495d90cb63d5c0d37f9f05fc5367bad703aaa620008b30b642de1bf92b3718"
+        "version": "8a51ac9ab4d85f26dad6b7aa58808893c12a5f318032e035fd3efd531592d0be",
+        "signature": "c802cb4aa71a0cd00a7504d3eef4aef77e2d1bbb6daf8ca6cb16f5ee84e52a08"
       },
       "./src/utils/SocketIOExampleHelper.ts": {
         "version": "4403610ed86e9c85e614ace14bb9bd2b04ca4593ecca5a3145f3d3801ce83f26",
@@ -1475,6 +1499,21 @@
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "./src/resources/Place/place.routes.ts": [
+        "./node_modules/@types/express/index.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/resources/Place/place.model.ts": [
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/resources/Place/place.seeder.ts": [
+        "./src/resources/Place/place.model.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "./node_modules/file-type/index.d.ts": [
         "./node_modules/@types/node/stream.d.ts",
         "./node_modules/@types/node/ts3.2/index.d.ts",
@@ -1502,6 +1541,16 @@
         "./src/utils/UploadHelper.ts",
         "./src/resources/User/user.model.ts",
         "./src/resources/Post/post.model.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/resources/Sector/sector.model.ts": [
+        "./node_modules/@types/mongoose/index.d.ts",
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/resources/Sector/sector.seeder.ts": [
+        "./src/resources/Sector/sector.model.ts",
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
@@ -1939,7 +1988,10 @@
         "./src/cron_jobs/retention.cron.ts",
         "./src/middlewares/global.middleware.ts",
         "./src/resources/Conversation/conversation.routes.ts",
+        "./src/resources/Place/place.routes.ts",
+        "./src/resources/Place/place.seeder.ts",
         "./src/resources/Post/post.routes.ts",
+        "./src/resources/Sector/sector.seeder.ts",
         "./src/resources/Task/task.routes.ts",
         "./src/resources/User/user.routes.ts",
         "./src/utils/MixpanelHelper.ts",
@@ -1952,6 +2004,10 @@
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "./src/resources/Conversation/conversation.lang.ts": [
+        "./node_modules/@types/node/util.d.ts",
+        "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/resources/Place/place.lang.ts": [
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
       ],
@@ -2957,6 +3013,12 @@
       "./node_modules/@types/strip-json-comments/index.d.ts": [
         "./node_modules/@types/node/util.d.ts",
         "./node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "./src/resources/Place/place.model.ts": [
+        "./node_modules/@types/mongoose/index.d.ts"
+      ],
+      "./src/resources/Sector/sector.model.ts": [
+        "./node_modules/@types/mongoose/index.d.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -3047,11 +3109,6 @@
       "./node_modules/@types/mongodb/index.d.ts",
       "./node_modules/@types/mongoose/index.d.ts",
       "./node_modules/@types/socket.io/index.d.ts",
-      "./src/constants/server.constants.ts",
-      "./src/constants/serverConfig.dev.ts",
-      "./src/constants/serverConfig.prod.ts",
-      "./src/constants/serverConfig.stag.ts",
-      "./src/constants/env.ts",
       "./node_modules/@types/jsonwebtoken/index.d.ts",
       "./node_modules/@sendgrid/helpers/classes/attachment.d.ts",
       "./node_modules/@sendgrid/helpers/classes/email-address.d.ts",
@@ -3071,15 +3128,12 @@
       "./node_modules/@sendgrid/mail/index.d.ts",
       "./src/utils/TextHelper.ts",
       "./src/emails/TransactionalEmailManager.ts",
-      "./src/emails/account.email.ts",
       "./node_modules/mailchimp-api-v3/index.d.ts",
-      "./src/emails/MarketingEmailManager.ts",
       "./src/utils/GenericHelper.ts",
       "./src/lang/global.lang.ts",
       "./src/utils/LanguageHelper.ts",
       "./node_modules/mixpanel/lib/mixpanel-node.d.ts",
       "./src/utils/MixpanelHelper.ts",
-      "./src/resources/User/user.model.ts",
       "./node_modules/expo-server-sdk/build/ExpoClient.d.ts",
       "./src/utils/PushNotificationHelper.ts",
       "./src/cron_jobs/retention.cron.ts",
@@ -3091,6 +3145,7 @@
       "./node_modules/file-type/index.d.ts",
       "./src/utils/UploadHelper.ts",
       "./src/resources/Post/post.model.ts",
+      "./src/resources/Post/post.routes.ts",
       "./src/types/global.ts",
       "./src/utils/RouterHelper.ts",
       "./src/resources/Task/task.model.ts",
@@ -3129,23 +3184,36 @@
       "./node_modules/@types/lodash/ts3.1/common/string.d.ts",
       "./node_modules/@types/lodash/ts3.1/common/util.d.ts",
       "./node_modules/@types/lodash/ts3.1/index.d.ts",
-      "./src/emails/generic.email.ts",
       "./src/middlewares/user.middleware.ts",
       "./src/utils/EncryptionHelper.ts",
       "./src/resources/Log/log.model.ts",
-      "./src/resources/User/user.routes.ts",
       "./src/utils/SocketIOHelper.ts",
-      "./src/index.ts",
       "./src/cron_jobs/main.cron.ts",
       "./src/resources/Conversation/conversation.lang.ts",
+      "./src/resources/Post/post.lang.ts",
       "./src/resources/Task/task.lang.ts",
-      "./src/resources/User/user.lang.ts",
       "./src/utils/SocketIOExampleHelper.ts",
       "./node_modules/@types/normalize-package-data/index.d.ts",
       "./node_modules/@types/strip-bom/index.d.ts",
       "./node_modules/@types/strip-json-comments/index.d.ts",
-      "./src/resources/Post/post.routes.ts",
-      "./src/resources/Post/post.lang.ts"
+      "./src/constants/server.constants.ts",
+      "./src/emails/generic.email.ts",
+      "./src/resources/User/user.model.ts",
+      "./src/emails/MarketingEmailManager.ts",
+      "./src/emails/account.email.ts",
+      "./src/constants/env.ts",
+      "./src/constants/serverConfig.stag.ts",
+      "./src/constants/serverConfig.prod.ts",
+      "./src/constants/serverConfig.dev.ts",
+      "./src/resources/Place/place.routes.ts",
+      "./src/index.ts",
+      "./src/resources/Place/place.model.ts",
+      "./src/resources/Place/place.seeder.ts",
+      "./src/resources/Sector/sector.model.ts",
+      "./src/resources/Sector/sector.seeder.ts",
+      "./src/resources/User/user.routes.ts",
+      "./src/resources/Place/place.lang.ts",
+      "./src/resources/User/user.lang.ts"
     ]
   },
   "version": "3.7.2"
