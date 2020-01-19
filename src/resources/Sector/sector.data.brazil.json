@@ -1,0 +1,290 @@
+[
+  {
+    "name": "Administração"
+  },
+  {
+    "name": "Advocacia"
+  },
+  {
+    "name": "Agronomia"
+  },
+  {
+    "name": "Arquitetura"
+  },
+  {
+    "name": "Artes Cênicas"
+  },
+  {
+    "name": "Artes Plásticas"
+  },
+  {
+    "name": "Astronomia"
+  },
+  {
+    "name": "Biblioteconomia"
+  },
+  {
+    "name": "Ciências Aeronáuticas"
+  },
+  {
+    "name": "Ciências Atuariais"
+  },
+  {
+    "name": "Ciências Biológicas"
+  },
+  {
+    "name": "Ciências Biomédicas"
+  },
+  {
+    "name": "Ciências Contábeis"
+  },
+  {
+    "name": "Ciências Econômicas"
+  },
+  {
+    "name": "Ciências Sociais"
+  },
+  {
+    "name": "Cinema e Vídeo"
+  },
+  {
+    "name": "Comércio Exterior"
+  },
+  {
+    "name": "Comunicação"
+  },
+  {
+    "name": "TI, Tecnologia da Informação, Computação"
+  },
+  {
+    "name": "Curso Técnico"
+  },
+  {
+    "name": "Dança"
+  },
+  {
+    "name": "Decoração"
+  },
+  {
+    "name": "Desenho Industrial"
+  },
+  {
+    "name": "Design"
+  },
+  {
+    "name": "Direito"
+  },
+  {
+    "name": "Ecologia"
+  },
+  {
+    "name": "Educação Física"
+  },
+  {
+    "name": "Enfermagem"
+  },
+  {
+    "name": "Engenharia Aeronáutica"
+  },
+  {
+    "name": "Engenharia Agrícola"
+  },
+  {
+    "name": "Engenharia Alimentos"
+  },
+  {
+    "name": "Engenharia Ambiental"
+  },
+  {
+    "name": "Engenharia Civil"
+  },
+  {
+    "name": "Engenharia da Computação"
+  },
+  {
+    "name": "Engenharia de Controle e Automação"
+  },
+  {
+    "name": "Engenharia de Telecomunicações"
+  },
+  {
+    "name": "Engenharia Elétrica"
+  },
+  {
+    "name": "Engenharia Eletrônica"
+  },
+  {
+    "name": "Engenharia Florestal"
+  },
+  {
+    "name": "Engenharia Industrial"
+  },
+  {
+    "name": "Engenharia Materiais"
+  },
+  {
+    "name": "Engenharia Mecânica"
+  },
+  {
+    "name": "Engenharia Mecatrônica"
+  },
+  {
+    "name": "Engenharia Minas"
+  },
+  {
+    "name": "Engenharia Naval"
+  },
+  {
+    "name": "Engenharia Pesca"
+  },
+  {
+    "name": "Engenharia Produção"
+  },
+  {
+    "name": "Engenharia Química"
+  },
+  {
+    "name": "Engenharia Sanitária"
+  },
+  {
+    "name": "Engenharia Têxtil"
+  },
+  {
+    "name": "Estatística"
+  },
+  {
+    "name": "Farmácia"
+  },
+  {
+    "name": "Filosofia"
+  },
+  {
+    "name": "Física"
+  },
+  {
+    "name": "Fisioterapia"
+  },
+  {
+    "name": "Fonoaudiologia"
+  },
+  {
+    "name": "Fotografia"
+  },
+  {
+    "name": "Gastronomia"
+  },
+  {
+    "name": "Geofísica"
+  },
+  {
+    "name": "Geografia"
+  },
+  {
+    "name": "Geologia"
+  },
+  {
+    "name": "História"
+  },
+  {
+    "name": "Hotelaria"
+  },
+  {
+    "name": "Jornalismo"
+  },
+  {
+    "name": "Letras"
+  },
+  {
+    "name": "Lingüística"
+  },
+  {
+    "name": "Logística"
+  },
+  {
+    "name": "Marketing"
+  },
+  {
+    "name": "Matemática"
+  },
+  {
+    "name": "Medicina"
+  },
+  {
+    "name": "Medicina Veterinária"
+  },
+  {
+    "name": "Meteorologia"
+  },
+  {
+    "name": "Microbiologia e Imunologia"
+  },
+  {
+    "name": "Moda"
+  },
+  {
+    "name": "Museologia"
+  },
+  {
+    "name": "Música"
+  },
+  {
+    "name": "Nutrição"
+  },
+  {
+    "name": "Oceanografia"
+  },
+  {
+    "name": "Odontologia"
+  },
+  {
+    "name": "Outra Área de Estudo"
+  },
+  {
+    "name": "Pedagogia"
+  },
+  {
+    "name": "Psicologia"
+  },
+  {
+    "name": "Pilotagem professional de aeronaves"
+  },
+  {
+    "name": "Publicidade e Propaganda"
+  },
+  {
+    "name": "Química"
+  },
+  {
+    "name": "Radialismo e Televisão"
+  },
+  {
+    "name": "Relações Internacionais"
+  },
+  {
+    "name": "RH / Recursos Humanos"
+  },
+  {
+    "name": "Relações Públicas"
+  },
+  {
+    "name": "Secretariado"
+  },
+  {
+    "name": "Serviço Social"
+  },
+  {
+    "name": "Segurança"
+  },
+  {
+    "name": "Tradutor e Intérprete"
+  },
+  {
+    "name": "Turismo"
+  },
+  {
+    "name": "Zootecnia"
+  },
+  {
+    "name": "Vendas"
+  }
+]

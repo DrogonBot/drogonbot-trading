@@ -15,6 +15,7 @@ import { conversationRouter } from './resources/Conversation/conversation.routes
 import { placeRouter } from './resources/Place/place.routes';
 import { PlaceSeeder } from './resources/Place/place.seeder';
 import { postRouter } from './resources/Post/post.routes';
+import { SectorSeeder } from './resources/Sector/sector.seeder';
 import { taskRouter } from './resources/Task/task.routes';
 import { userRouter } from './resources/User/user.routes';
 import { MixpanelHelper } from './utils/MixpanelHelper';
@@ -128,3 +129,4 @@ SocketIOHelper.initialize(io);
 *##############################################################*/
 
 PlaceSeeder.seed();
+SectorSeeder.seed();
