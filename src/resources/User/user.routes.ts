@@ -108,7 +108,7 @@ userRouter.post("/users/login", async (req, res) => {
 
 // User => Google OAuth login
 userRouter.post("/users/login/google-oauth", async (req, res) => {
-  const { idToken, appClientId } = req.body;
+  const { idToken, appClientId, language } = req.body;
 
   // console.log("Received new info...");
   // console.log(idToken);
@@ -146,7 +146,8 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
           familyName: payload.family_name,
           avatarUrl: payload.picture,
           authType: AuthType.GoogleOAuth,
-          email: payload.email
+          email: payload.email,
+          language
         });
 
         console.log(payload);
@@ -198,7 +199,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
 });
 // User => Facebook OAuth login
 userRouter.post("/users/login/facebook-oauth", async (req, res) => {
-  const { accessToken } = req.body;
+  const { accessToken, language } = req.body;
 
   console.log("Received new info...");
   console.log(accessToken);
@@ -235,7 +236,8 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
         familyName: payload.last_name,
         avatarUrl: payload.picture.data.url,
         authType: AuthType.FacebookOAuth,
-        email: payload.email
+        email: payload.email,
+        language
       });
 
       await user.save();
@@ -374,7 +376,7 @@ userRouter.get("/users/reset-password/link", async (req, res) => {
 
 // User => Sign Up
 userRouter.post("/users", async (req, res) => {
-  const { name, email, password, passwordConfirmation } = req.body;
+  const { name, email, password, passwordConfirmation, language } = req.body;
 
   try {
     if (password !== passwordConfirmation) {
@@ -393,7 +395,8 @@ userRouter.post("/users", async (req, res) => {
     const user = new User({
       name,
       email: preparedEmail,
-      password
+      password,
+      language
     });
 
     await user.save();

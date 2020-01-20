@@ -1,9 +1,41 @@
 import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
+
+export enum PostCategory {
+  DefaultJob,
+  Internship,
+  Temporary
+}
+
+export enum PostBenefits {
+  Meal,
+  FoodTicket,
+  Transportation,
+  HealthCare
+}
+
 export interface IPost {
+  ownerId: string,
+  category: string,
+  benefits: string[],
   country: string;
-  name: string;
+  stateUf: string,
+  city: string,
+  title: string,
+  text: string,
+  externalUrl: string,
+  email: string;
+  source: string,
+  perMonthSalary: string;
+  perYearSalary: string;
+  perHourSalary: string;
+  images: string[],
+  sector: { id: string, name: string },
+  likes: number;
+  usersWhoLiked: string[],
+
+
 }
 
 export interface IPostModel extends IPost, Document {
@@ -15,6 +47,21 @@ const postSchema = new mongoose.Schema({
     type: ObjectId,
     required: true
   },
+  category: {
+    type: PostCategory,
+    required: true,
+    default: PostCategory.DefaultJob
+  },
+  benefits: [
+
+    {
+      type: String
+    }
+
+
+
+
+  ],
   country: {
     type: String,
     trim: true,

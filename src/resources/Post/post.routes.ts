@@ -121,6 +121,8 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
   const { images } = req.body
 
+  console.log(req.body.benefits);
+
 
   const sector: ISectorModel | null = await Sector.findOne({ _id: req.body.sectorId })
 
@@ -131,6 +133,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
     const newPost = new Post({
       ...req.body,
       ownerId: user._id,
+      benefits: req.body.benefits,
       sector: {
         id: req.body.sectorId,
         name: sector?.name

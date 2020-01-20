@@ -30,6 +30,7 @@ export enum UserType {
 
 export interface IUserDocument extends Document {
   name: string;
+  language: string;
   givenName: string;
   familyName: string;
   type: string;
@@ -65,6 +66,11 @@ const userSchema: Schema = new Schema(
     name: {
       type: String,
       trim: true
+    },
+    language: {
+      type: String,
+      trim: true,
+      default: "ptBr"
     },
     type: {
       type: String,

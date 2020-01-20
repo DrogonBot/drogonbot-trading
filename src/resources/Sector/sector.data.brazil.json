@@ -5,15 +5,21 @@
   },
   {
     "country": "Brazil",
-    "name": "Advocacia"
+    "name": "Atendimento ao cliente"
   },
   {
     "country": "Brazil",
+    "name": "Advocacia"
+  },
+  {
     "country": "Brazil",
     "name": "Agronomia"
   },
   {
     "country": "Brazil",
+    "name": "Alimentação & Restaurantes"
+  },
+  {
     "country": "Brazil",
     "name": "Arquitetura"
   },
@@ -32,6 +38,10 @@
   {
     "country": "Brazil",
     "name": "Biblioteconomia"
+  },
+  {
+    "country": "Brazil",
+    "name": "Beleza & Estética"
   },
   {
     "country": "Brazil",
@@ -75,7 +85,7 @@
   },
   {
     "country": "Brazil",
-    "name": "TI, Tecnologia da Informação, Computação"
+    "name": "TI, Tecnologia da Informação"
   },
   {
     "country": "Brazil",
@@ -255,6 +265,10 @@
   },
   {
     "country": "Brazil",
+    "name": "Indústria"
+  },
+  {
+    "country": "Brazil",
     "name": "Jornalismo"
   },
   {
@@ -267,7 +281,7 @@
   },
   {
     "country": "Brazil",
-    "name": "Logística"
+    "name": "Logística & Transporte"
   },
   {
     "country": "Brazil",
@@ -280,6 +294,10 @@
   {
     "country": "Brazil",
     "name": "Medicina"
+  },
+  {
+    "country": "Brazil",
+    "name": "Metalurgia"
   },
   {
     "country": "Brazil",
@@ -319,7 +337,7 @@
   },
   {
     "country": "Brazil",
-    "name": "Outra Área de Estudo"
+    "name": "Outros"
   },
   {
     "country": "Brazil",
@@ -363,6 +381,10 @@
   },
   {
     "country": "Brazil",
+    "name": "Saúde"
+  },
+  {
+    "country": "Brazil",
     "name": "Serviço Social"
   },
   {
@@ -384,5 +406,9 @@
   {
     "country": "Brazil",
     "name": "Vendas"
+  }
+  {
+    "country": "Brazil",
+    "name": "Limpeza"
   }
 ]
