@@ -53,14 +53,9 @@ const postSchema = new mongoose.Schema({
     default: PostCategory.DefaultJob
   },
   benefits: [
-
     {
       type: String
     }
-
-
-
-
   ],
   country: {
     type: String,

@@ -15,6 +15,7 @@ import { conversationRouter } from './resources/Conversation/conversation.routes
 import { placeRouter } from './resources/Place/place.routes';
 import { PlaceSeeder } from './resources/Place/place.seeder';
 import { postRouter } from './resources/Post/post.routes';
+import { resumeRouter } from './resources/Resume/resume.routes';
 import { sectorRouter } from './resources/Sector/sector.routes';
 import { SectorSeeder } from './resources/Sector/sector.seeder';
 import { taskRouter } from './resources/Task/task.routes';
@@ -101,6 +102,7 @@ app.use(conversationRouter)
 app.use(postRouter)
 app.use(placeRouter)
 app.use(sectorRouter)
+app.use(resumeRouter)
 
 server.listen(port, () => {
   // tslint:disable-next-line: no-console

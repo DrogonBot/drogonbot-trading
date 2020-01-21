@@ -5,11 +5,6 @@ import { TextHelper } from '../../utils/TextHelper';
 import { Sector } from './sector.model';
 
 
-
-/*#############################################################|
-|  >>> PROTECTED ROUTES
-*##############################################################*/
-
 // @ts-ignore
 const sectorRouter = new express.Router();
 
