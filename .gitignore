@@ -11,4 +11,4 @@ src/constants/end.ts
 sendgrid.env
 dist
   
-src/public/images/**
+src/public/files/**

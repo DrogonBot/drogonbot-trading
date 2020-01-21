@@ -2,18 +2,19 @@ import express from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
+import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { Resume } from './resume.model';
 
 // @ts-ignore
 const resumeRouter = new express.Router();
 
-resumeRouter.get("/resume/:userId", userAuthMiddleware, async (req, res) => {
+resumeRouter.get("/resume/:resumeId", userAuthMiddleware, async (req, res) => {
 
-  const { userId } = req.params
+  const { resumeId } = req.params
 
   try {
     const resume = await Resume.findOne({
-      ownerId: userId
+      _id: resumeId
     })
 
     return res.status(200).send(resume);
@@ -51,6 +52,123 @@ resumeRouter.post('/resume', userAuthMiddleware, async (req, res) => {
       details: error.message
     })
   }
+
+
+})
+
+
+
+resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (req, res) => {
+
+  console.log('starting attachment upload...');
+
+  const { user } = req;
+  const { resumeId } = req.params;
+  const { attachments } = req.body
+
+
+  // find resume and check if user is the owner
+
+  const resume = await Resume.findOne({
+    _id: resumeId
+  })
+
+  if (resume) {
+
+    // check if request user is really the owner of this resource
+
+    if (!resume.ownerId.equals(user._id)) {
+      return res.status(400).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('resume', 'resumeUserNotAuthorized')
+      })
+    }
+
+    // lets start the upload process
+
+    const options: IFileSaveOptions = {
+      maxFileSizeInMb: 15,
+      allowedFileExtensions: ['png', 'jpg', 'jpeg', 'bmp', 'pdf', 'doc', 'docx'],
+      resizeWidthHeight: {
+        width: null,
+        height: 600
+      }
+    }
+
+    const uploadResource = {
+      id: resume._id,
+      name: 'resume'
+    }
+
+
+
+
+    const uploadedFileResult: ISaveFileToFolderResult[] = await UploadHelper.uploadFile(uploadResource, 'resume', attachments, options)
+
+    console.log(uploadedFileResult);
+
+    // search for errors
+
+    const hasError = uploadedFileResult.some((result) => result.status === "error")
+
+    if (hasError) {
+      uploadedFileResult.forEach((result) => {
+
+        switch (result.errorType) {
+          case UploadOutputResult.UnallowedExtension:
+            return res.status(400).send({
+              status: 'error',
+              message: LanguageHelper.getLanguageString('resume', 'resumeFileTypeError', {
+                extension: result.extension,
+                acceptedTypes: options.allowedFileExtensions
+              })
+            })
+          case UploadOutputResult.MaxFileSize:
+            return res.status(400).send({
+              status: 'error',
+              message: LanguageHelper.getLanguageString('resume', 'resumeFileMaximumSize', {
+                size: options.maxFileSizeInMb
+              })
+            })
+        }
+      })
+
+    }
+
+    try {
+
+      resume.attachments = uploadedFileResult.map((result, index) => {
+        return { name: result.fileName, link: result.uri }
+      });
+
+      await resume.save()
+
+      return res.status(200).send(resume.attachments)
+    }
+    catch (error) {
+      return res.status(400).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('resume', 'resumeFileUploadError')
+      })
+    }
+
+
+
+
+
+  } else {
+    return res.status(400).send({
+      status: 'error',
+      message: LanguageHelper.getLanguageString('resume', 'resumeNotFound')
+    })
+  }
+
+
+
+
+
+
+
 
 
 })

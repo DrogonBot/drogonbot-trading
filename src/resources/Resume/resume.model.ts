@@ -17,9 +17,9 @@ export interface IPositionsOfInterest {
   name: String
 }
 
-export interface IResumeCertificate {
-  name: String,
-  link: String
+export interface IResumeAttachment {
+  name: String | undefined,
+  link: String | undefined
 }
 
 export interface IResumeAward {
@@ -61,7 +61,7 @@ export interface IResume {
   phone: String,
   linkedInUrl: String,
   educations: IResumeEducation[],
-  certificates: IResumeCertificate[],
+  attachments: IResumeAttachment[],
   experiences: IResumeExperience[],
   awards: IResumeAward[],
   additionalInfos: IResumeAdditionalInfo[]
@@ -114,7 +114,7 @@ const resumeSchema = new mongoose.Schema({
       detail: String
     }
   ],
-  certificates: [{
+  attachments: [{
     name: String,
     link: String
   }],
