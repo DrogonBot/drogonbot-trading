@@ -3,7 +3,7 @@ import express from 'express';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
-import { Resume } from './resume.model';
+import { IResumeAttachment, Resume } from './resume.model';
 
 // @ts-ignore
 const resumeRouter = new express.Router();
@@ -100,12 +100,9 @@ resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (re
       name: 'resume'
     }
 
-
-
-
     const uploadedFileResult: ISaveFileToFolderResult[] = await UploadHelper.uploadFile(uploadResource, 'resume', attachments, options)
 
-    console.log(uploadedFileResult);
+
 
     // search for errors
 
@@ -137,9 +134,14 @@ resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (re
 
     try {
 
-      resume.attachments = uploadedFileResult.map((result, index) => {
+      const newAttachments: IResumeAttachment[] = uploadedFileResult.map((result) => {
         return { name: result.fileName, link: result.uri }
-      });
+      })
+
+      resume.attachments = [
+        ...resume.attachments,
+        ...newAttachments
+      ]
 
       await resume.save()
 
@@ -151,10 +153,6 @@ resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (re
         message: LanguageHelper.getLanguageString('resume', 'resumeFileUploadError')
       })
     }
-
-
-
-
 
   } else {
     return res.status(400).send({
