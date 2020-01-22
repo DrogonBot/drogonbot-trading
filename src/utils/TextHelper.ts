@@ -15,6 +15,6 @@ export class TextHelper {
   }
 
   public static getFileExtension(path: string) {
-    return path.slice((path.lastIndexOf(".") - 1 >>> 0) + 2);
+    return path.slice((Math.max(0, path.lastIndexOf(".")) || Infinity) + 1);
   }
 }
