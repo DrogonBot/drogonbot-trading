@@ -141,8 +141,25 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
     await newPost.save();
 
+    // send push notification to users about new post: //TODO: customize user groups who will receive this notification
 
-    // Save images to database
+    const users = await User.find({})
+
+    for (const u of users) {
+      if (u.pushToken !== user.pushToken) {
+        PushNotificationHelper.sendPush([u.pushToken], {
+          sound: "default",
+          body: LanguageHelper.getLanguageString('post', 'postCreationNotification', {
+            userName: user.name // post owner's name
+          })
+          // TODO: Add parameter that redirect users that click on this notification to the recently created post
+        })
+      }
+    }
+
+
+    // Images file upload ========================================
+
     const options: IFileSaveOptions = {
       maxFileSizeInMb: 15,
       allowedFileExtensions: ['png', 'jpg', 'jpeg', 'bmp'],
@@ -157,75 +174,51 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
       name: 'post'
     }
 
-    const uploadedFileResult: ISaveFileToFolderResult[] = await UploadHelper.uploadFile(uploadResource, 'post', images, options)
+    const uploadedFileResult: false | ISaveFileToFolderResult[] = await UploadHelper.uploadFile(uploadResource, 'post', images, options)
 
     // search for errors
 
-    const hasError = uploadedFileResult.some((result) => result.status === "error")
+    if (uploadedFileResult) { // if something was actually uploaded!
+      const hasError = uploadedFileResult.some((result) => result.status === "error")
 
-    if (hasError) {
-      uploadedFileResult.forEach((result) => {
+      if (hasError) {
+        uploadedFileResult.forEach((result) => {
 
-        switch (result.errorType) {
-          case UploadOutputResult.UnallowedExtension:
-            return res.status(400).send({
-              status: 'error',
-              message: LanguageHelper.getLanguageString('post', 'postFileTypeError', {
-                extension: result.extension,
-                acceptedTypes: options.allowedFileExtensions
+          switch (result.errorType) {
+            case UploadOutputResult.UnallowedExtension:
+              return res.status(400).send({
+                status: 'error',
+                message: LanguageHelper.getLanguageString(null, 'globalFileTypeError', {
+                  extension: result.extension,
+                  acceptedTypes: options.allowedFileExtensions
+                })
               })
-            })
-          case UploadOutputResult.MaxFileSize:
-            return res.status(400).send({
-              status: 'error',
-              message: LanguageHelper.getLanguageString('post', 'postFileMaximumSize', {
-                size: options.maxFileSizeInMb
+            case UploadOutputResult.MaxFileSize:
+              return res.status(400).send({
+                status: 'error',
+                message: LanguageHelper.getLanguageString(null, 'globalFileMaximumSize', {
+                  size: options.maxFileSizeInMb
+                })
               })
-            })
-        }
-      })
+          }
+        })
 
-    }
-
-    try {
-
-      const newPostImages = uploadedFileResult.map((result) => result.uri)
-
-      newPost.images = newPostImages
-
-      await newPost.save()
-
-
-
-
-      // send push notification to users about new post: //TODO: customize user groups who will receive this notification
-
-      const users = await User.find({})
-
-      for (const u of users) {
-        if (u.pushToken !== user.pushToken) {
-          PushNotificationHelper.sendPush([u.pushToken], {
-            sound: "default",
-            body: LanguageHelper.getLanguageString('post', 'postCreationNotification', {
-              userName: user.name // post owner's name
-            })
-            // TODO: Add parameter that redirect users that click on this notification to the recently created post
-          })
-        }
       }
 
-
-      return res.status(200).send(newPost)
+      try {
+        // Save links on database
+        const newPostImages = uploadedFileResult.map((result) => result.uri)
+        newPost.images = newPostImages
+        await newPost.save()
+        return res.status(200).send(newPost)
+      }
+      catch (error) {
+        return res.status(400).send({
+          status: 'error',
+          message: LanguageHelper.getLanguageString(null, 'globalFileUploadError')
+        })
+      }
     }
-    catch (error) {
-      return res.status(400).send({
-        status: 'error',
-        message: LanguageHelper.getLanguageString('post', 'postFileUploadError')
-      })
-    }
-
-
-
 
   }
   catch (error) {

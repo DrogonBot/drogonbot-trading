@@ -1,9 +1,10 @@
-import fileType from 'file-type';
 import fs from 'fs';
 import randomstring from 'randomstring';
 import sharp from 'sharp';
+import { isArray } from 'util';
 
 import { publicDirectory } from '..';
+import { TextHelper } from './TextHelper';
 
 interface IResizeObj {
   width: number | null,
@@ -38,14 +39,24 @@ export interface ISaveFileToFolderResult {
 export class UploadHelper {
 
   public static uploadFile = async (resource: IUploadResource, fileSubdirectory: string, filesStreamArray: any[], options: IFileSaveOptions) => {
+
+    if (!filesStreamArray) { // if no file is provided, just return false
+      return false
+    }
+
+    if (!isArray(filesStreamArray)) {
+      filesStreamArray = [filesStreamArray]
+    }
+
+
     return Promise.all(filesStreamArray.map(async (fileStream) => {
 
       // read file and buffer
       const data = fs.readFileSync(fileStream.path);
-      const buffer = Buffer.from(data)
-      // @ts-ignore
-      const fileExtension = fileType(buffer).ext;
 
+      const buffer = Buffer.from(data)
+
+      const fileExtension = TextHelper.getFileExtension(fileStream.path)
 
       return UploadHelper.saveFileToFolder(fileSubdirectory, resource.id, fileExtension, buffer, options)
 

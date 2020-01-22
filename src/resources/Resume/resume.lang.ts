@@ -23,5 +23,8 @@ export const strings = {
   resumeFileUploadError: {
     eng: 'An error occurred while trying to upload your files. Please contact the support.'
   },
+  resumeAttachmentNotFound: {
+    eng: 'No attachment was send for upload'
+  }
 
 };

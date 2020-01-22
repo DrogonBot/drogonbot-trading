@@ -13,4 +13,8 @@ export class TextHelper {
   public static stringPrepare(str: string) {
     return str.toLowerCase().trim();
   }
+
+  public static getFileExtension(path: string) {
+    return path.slice((path.lastIndexOf(".") - 1 >>> 0) + 2);
+  }
 }
