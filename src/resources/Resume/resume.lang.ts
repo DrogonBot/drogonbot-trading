@@ -14,15 +14,7 @@ export const strings = {
   resumeUserNotAuthorized: {
     eng: "You're not authorized to modify this resource."
   },
-  resumeFileTypeError: {
-    eng: 'Invalid file type: {{extension}}. Please, use the following types: {{acceptedTypes}}'
-  },
-  resumeFileMaximumSize: {
-    eng: 'One of your uploaded file exceeds the maximum allowed size of {{size}}'
-  },
-  resumeFileUploadError: {
-    eng: 'An error occurred while trying to upload your files. Please contact the support.'
-  },
+
   resumeAttachmentNotFound: {
     eng: 'No attachment was send for upload'
   }

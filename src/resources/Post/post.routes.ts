@@ -178,47 +178,52 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
     // search for errors
 
-    if (uploadedFileResult) { // if something was actually uploaded!
-      const hasError = uploadedFileResult.some((result) => result.status === "error")
-
-      if (hasError) {
-        uploadedFileResult.forEach((result) => {
-
-          switch (result.errorType) {
-            case UploadOutputResult.UnallowedExtension:
-              return res.status(400).send({
-                status: 'error',
-                message: LanguageHelper.getLanguageString(null, 'globalFileTypeError', {
-                  extension: result.extension,
-                  acceptedTypes: options.allowedFileExtensions
-                })
-              })
-            case UploadOutputResult.MaxFileSize:
-              return res.status(400).send({
-                status: 'error',
-                message: LanguageHelper.getLanguageString(null, 'globalFileMaximumSize', {
-                  size: options.maxFileSizeInMb
-                })
-              })
-          }
-        })
-
-      }
-
-      try {
-        // Save links on database
-        const newPostImages = uploadedFileResult.map((result) => result.uri)
-        newPost.images = newPostImages
-        await newPost.save()
-        return res.status(200).send(newPost)
-      }
-      catch (error) {
-        return res.status(400).send({
-          status: 'error',
-          message: LanguageHelper.getLanguageString(null, 'globalFileUploadError')
-        })
-      }
+    if (!uploadedFileResult) {
+      // if not files were send for upload, just send the new post without images!
+      return res.status(200).send(newPost)
     }
+
+
+    const hasError = uploadedFileResult.some((result) => result.status === "error")
+
+    if (hasError) {
+
+      for (const result of uploadedFileResult) {
+        switch (result.errorType) {
+          case UploadOutputResult.UnallowedExtension:
+            return res.status(400).send({
+              status: 'error',
+              message: LanguageHelper.getLanguageString(null, 'globalFileTypeError', {
+                extension: result.extension,
+                acceptedTypes: options.allowedFileExtensions
+              })
+            })
+          case UploadOutputResult.MaxFileSize:
+            return res.status(400).send({
+              status: 'error',
+              message: LanguageHelper.getLanguageString(null, 'globalFileMaximumSize', {
+                size: options.maxFileSizeInMb
+              })
+            })
+        }
+      }
+
+    }
+
+    try {
+      // Save links on database
+      const newPostImages = uploadedFileResult.map((result) => result.uri)
+      newPost.images = newPostImages
+      await newPost.save()
+      return res.status(200).send(newPost)
+    }
+    catch (error) {
+      return res.status(400).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString(null, 'globalFileUploadError')
+      })
+    }
+
 
   }
   catch (error) {

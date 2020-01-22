@@ -60,12 +60,9 @@ resumeRouter.post('/resume', userAuthMiddleware, async (req, res) => {
 
 resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (req, res) => {
 
-  console.log('starting attachment upload...');
-
   const { user } = req;
   const { resumeId } = req.params;
   const { attachments } = req.body
-
 
   // find resume and check if user is the owner
 
@@ -73,102 +70,109 @@ resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (re
     _id: resumeId
   })
 
-  if (resume) {
-
-    // check if request user is really the owner of this resource
-
-    if (!resume.ownerId.equals(user._id)) {
-      return res.status(400).send({
-        status: 'error',
-        message: LanguageHelper.getLanguageString('resume', 'resumeUserNotAuthorized')
-      })
-    }
-
-    // lets start the upload process
-
-    const options: IFileSaveOptions = {
-      maxFileSizeInMb: 15,
-      allowedFileExtensions: ['png', 'jpg', 'jpeg', 'bmp', 'pdf', 'doc', 'docx'],
-      resizeWidthHeight: {
-        width: null,
-        height: 600
-      }
-    }
-
-    const uploadResource = {
-      id: resume._id,
-      name: 'resume'
-    }
-
-    const uploadedFileResult: ISaveFileToFolderResult[] | false = await UploadHelper.uploadFile(uploadResource, 'resume', attachments, options)
-
-
-
-    // search for errors
-
-    if (uploadedFileResult) {
-      const hasError = uploadedFileResult.some((result) => result.status === "error")
-
-      if (hasError) {
-        uploadedFileResult.forEach((result) => {
-
-          switch (result.errorType) {
-            case UploadOutputResult.UnallowedExtension:
-              return res.status(400).send({
-                status: 'error',
-                message: LanguageHelper.getLanguageString('resume', 'resumeFileTypeError', {
-                  extension: result.extension,
-                  acceptedTypes: options.allowedFileExtensions
-                })
-              })
-            case UploadOutputResult.MaxFileSize:
-              return res.status(400).send({
-                status: 'error',
-                message: LanguageHelper.getLanguageString('resume', 'resumeFileMaximumSize', {
-                  size: options.maxFileSizeInMb
-                })
-              })
-          }
-        })
-
-      }
-
-      try {
-
-        const newAttachments: IResumeAttachment[] = uploadedFileResult.map((result) => {
-          return { name: result.fileName, link: result.uri }
-        })
-
-        resume.attachments = [
-          ...resume.attachments,
-          ...newAttachments
-        ]
-
-        await resume.save()
-
-        return res.status(200).send(resume.attachments)
-      }
-      catch (error) {
-        return res.status(400).send({
-          status: 'error',
-          message: LanguageHelper.getLanguageString('resume', 'resumeFileUploadError')
-        })
-      }
-    } else {
-      return res.status(400).send({
-        status: 'error',
-        message: LanguageHelper.getLanguageString('resume', 'resumeAttachmentNotFound')
-      })
-    }
-
-
-
-  } else {
+  // Resume not found
+  if (!resume) {
     return res.status(400).send({
       status: 'error',
       message: LanguageHelper.getLanguageString('resume', 'resumeNotFound')
     })
   }
+
+  // check if request user is really the owner of this resource
+
+  if (!resume.ownerId.equals(user._id)) {
+    return res.status(400).send({
+      status: 'error',
+      message: LanguageHelper.getLanguageString('resume', 'resumeUserNotAuthorized')
+    })
+  }
+
+  // lets start the upload process
+
+  const options: IFileSaveOptions = {
+    maxFileSizeInMb: 15,
+    allowedFileExtensions: ['png', 'jpg', 'jpeg', 'bmp', 'pdf', 'doc', 'docx'],
+    resizeWidthHeight: {
+      width: null,
+      height: 600
+    }
+  }
+
+  const uploadResource = {
+    id: resume._id,
+    name: 'resume'
+  }
+
+  const uploadedFileResult: ISaveFileToFolderResult[] | false = await UploadHelper.uploadFile(uploadResource, 'resume', attachments, options)
+
+
+
+  // search for errors
+
+  if (!uploadedFileResult) {
+    return res.status(400).send({
+      status: 'error',
+      message: LanguageHelper.getLanguageString('resume', 'resumeAttachmentNotFound')
+    })
+  }
+
+
+  const hasError = uploadedFileResult.some((result) => result.status === "error")
+
+  if (hasError) {
+
+
+    for (const result of uploadedFileResult) {
+      switch (result.errorType) {
+        case UploadOutputResult.UnallowedExtension:
+          return res.status(400).send({
+            status: 'error',
+            message: LanguageHelper.getLanguageString(null, 'globalFileTypeError', {
+              extension: result.extension,
+              acceptedTypes: options.allowedFileExtensions
+            })
+          })
+        case UploadOutputResult.MaxFileSize:
+          return res.status(400).send({
+            status: 'error',
+            message: LanguageHelper.getLanguageString(null, 'globalFileMaximumSize', {
+              size: options.maxFileSizeInMb
+            })
+          })
+      }
+    }
+
+
+
+
+  }
+
+  try {
+
+    const newAttachments: IResumeAttachment[] = uploadedFileResult.map((result) => {
+      return { name: result.fileName, link: result.uri }
+    })
+
+    resume.attachments = [
+      ...resume.attachments,
+      ...newAttachments
+    ]
+
+    await resume.save()
+
+    return res.status(200).send(resume.attachments)
+  }
+  catch (error) {
+    return res.status(400).send({
+      status: 'error',
+      message: LanguageHelper.getLanguageString('resume', 'resumeFileUploadError'),
+      details: error.message
+    })
+  }
+
+
+
+
 
 
 
