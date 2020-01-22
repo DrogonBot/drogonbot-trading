@@ -30,7 +30,7 @@ export interface IPost {
   perMonthSalary: string;
   perYearSalary: string;
   perHourSalary: string;
-  images: string[],
+  images: Array<String | undefined>,
   sector: { id: string, name: string },
   likes: number;
   usersWhoLiked: string[],

@@ -1,11 +1,9 @@
 import { Router } from 'express';
-import fileType from 'file-type';
-import fs from 'fs';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
-import { UploadHelper } from '../../utils/UploadHelper';
+import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { ISectorModel, Sector } from '../Sector/sector.model';
 import { User } from '../User/user.model';
 import { Post } from './post.model';
@@ -145,78 +143,90 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
 
     // Save images to database
-
-    const imagesURI = await Promise.all(images.map(async (imageStream) => {
-
-      const data = fs.readFileSync(imageStream.path);
-      const buffer = Buffer.from(data)
-
-      const options = {
-        maxFileSizeInMb: 15,
-        // @ts-ignore
-        fileExtension: fileType(buffer).ext,
-        allowedFileExtensions: ['png', 'jpg', 'jpeg'],
-        resizeWidthHeight: {
-          width: null,
-          height: 600
-        }
-      }
-
-
-      try {
-        const uploadOutput = await UploadHelper.saveImageToFolder('post', newPost._id, 'jpg', buffer, options)
-
-        if (uploadOutput === 'unallowedExtension') {
-          return res.status(401).send({
-            status: 'error',
-            message: LanguageHelper.getLanguageString('post', 'postFileTypeError', {
-              type: options.fileExtension
-            })
-          })
-        }
-
-        if (uploadOutput === 'maxFileSize') {
-          return res.status(401).send({
-            status: 'error',
-            message: LanguageHelper.getLanguageString('post', 'postFileMaximumSize', {
-              size: '15mb'
-            })
-          })
-        }
-        return uploadOutput
-      }
-      catch (error) {
-        console.error(error);
-        return res.status(401).send({
-          status: 'error',
-          message: LanguageHelper.getLanguageString('post', 'postFileUploadError')
-        })
-      }
-
-    }))
-
-    // @ts-ignore
-    newPost.images = imagesURI
-    await newPost.save()
-
-    // send push notification to users about new post: //TODO: customize user groups who will receive this notification
-
-    const users = await User.find({})
-
-    for (const u of users) {
-      if (u.pushToken !== user.pushToken) {
-        PushNotificationHelper.sendPush([u.pushToken], {
-          sound: "default",
-          body: LanguageHelper.getLanguageString('post', 'postCreationNotification', {
-            userName: user.name // post owner's name
-          })
-          // TODO: Add parameter that redirect users that click on this notification to the recently created post
-        })
+    const options: IFileSaveOptions = {
+      maxFileSizeInMb: 15,
+      allowedFileExtensions: ['png', 'jpg', 'jpeg', 'bmp'],
+      resizeWidthHeight: {
+        width: null,
+        height: 600
       }
     }
 
+    const uploadResource = {
+      id: newPost._id,
+      name: 'post'
+    }
 
-    return res.status(200).send(newPost)
+    const uploadedFileResult: ISaveFileToFolderResult[] = await UploadHelper.uploadFile(uploadResource, 'post', images, options)
+
+    // search for errors
+
+    const hasError = uploadedFileResult.some((result) => result.status === "error")
+
+    if (hasError) {
+      uploadedFileResult.forEach((result) => {
+
+        switch (result.errorType) {
+          case UploadOutputResult.UnallowedExtension:
+            return res.status(400).send({
+              status: 'error',
+              message: LanguageHelper.getLanguageString('post', 'postFileTypeError', {
+                extension: result.extension,
+                acceptedTypes: options.allowedFileExtensions
+              })
+            })
+          case UploadOutputResult.MaxFileSize:
+            return res.status(400).send({
+              status: 'error',
+              message: LanguageHelper.getLanguageString('post', 'postFileMaximumSize', {
+                size: options.maxFileSizeInMb
+              })
+            })
+        }
+      })
+
+    }
+
+    try {
+
+      const newPostImages = uploadedFileResult.map((result) => result.uri)
+
+      newPost.images = newPostImages
+
+      await newPost.save()
+
+
+
+
+      // send push notification to users about new post: //TODO: customize user groups who will receive this notification
+
+      const users = await User.find({})
+
+      for (const u of users) {
+        if (u.pushToken !== user.pushToken) {
+          PushNotificationHelper.sendPush([u.pushToken], {
+            sound: "default",
+            body: LanguageHelper.getLanguageString('post', 'postCreationNotification', {
+              userName: user.name // post owner's name
+            })
+            // TODO: Add parameter that redirect users that click on this notification to the recently created post
+          })
+        }
+      }
+
+
+      return res.status(200).send(newPost)
+    }
+    catch (error) {
+      return res.status(400).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('post', 'postFileUploadError')
+      })
+    }
+
+
+
+
   }
   catch (error) {
     console.error(error);
