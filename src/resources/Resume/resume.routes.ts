@@ -105,7 +105,7 @@ resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => 
 
 
     if (
-      !RouterHelper.isAllowedKey(req.body, ["positionsOfInterest", "highlights", "country", "stateUf", "city", "address", "phone", "linkedInUrl", "educations", "attachments", "experiences", "awards", "additionalInfos"])
+      !RouterHelper.isAllowedKey(req.body, ["positionsOfInterest", "highlights", "place", "address", "phone", "linkedInUrl", "educations", "attachments", "experiences", "awards", "additionalInfos", "stateCode", "cityName"])
     ) {
       return res.status(400).send({
         status: "error",
@@ -121,6 +121,29 @@ resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => 
     const keysToUpdate = Object.keys(req.body)
 
     keysToUpdate.forEach((key) => resume[key] = req.body[key])
+
+    const { stateCode, cityName } = req.body;
+
+    if (stateCode && cityName) {
+      const place = await Place.findOne({ stateCode });
+
+      if (!place) {
+        throw new SyntaxError('Invalid stateCode');
+      }
+
+      const city = place.cities.find((cityData) => cityData.cityName === cityName)
+
+      if (!city) {
+        throw new SyntaxError('City not found');
+      }
+
+      place.cities = [city]
+
+      resume.place = place;
+      await resume.save();
+    }
+
+
 
     await resume.save();
 
