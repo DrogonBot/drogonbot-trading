@@ -140,10 +140,6 @@ resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => 
   }
 
 
-  // check if user is really authorized to access this resource
-
-  if (!user._id.equals()) { }
-
 
 })
 
