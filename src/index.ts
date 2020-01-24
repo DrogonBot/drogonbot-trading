@@ -12,6 +12,7 @@ import { ENV, serverConfig } from './constants/env';
 import { RetentionCron } from './cron_jobs/retention.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
+import { CountrySeeder } from './resources/Country/Country.seed';
 import { placeRouter } from './resources/Place/place.routes';
 import { PlaceSeeder } from './resources/Place/place.seeder';
 import { postRouter } from './resources/Post/post.routes';
@@ -132,5 +133,9 @@ SocketIOHelper.initialize(io);
 |  >>> DB SEEDER
 *##############################################################*/
 
-PlaceSeeder.seed();
-SectorSeeder.seed();
+const seedDb = async () => {
+  await CountrySeeder.seed();
+  await PlaceSeeder.seed();
+  await SectorSeeder.seed();
+}
+seedDb();

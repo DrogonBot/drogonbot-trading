@@ -1,3 +1,4 @@
+import { Country } from '../Country/Country.model';
 import { Place } from './place.model';
 
 
@@ -8,24 +9,32 @@ export class PlaceSeeder {
 
   public static async seed() {
 
-    const countries = ['brazil'] // add more countries here. It will load the corresponding .json data file
+    const availableCountries = ['brazil'] // countries that we have data from...
 
-    for (const countryName of countries) {
+    for (const countryName of availableCountries) {
       // check if there're no places registered
       const placesData = require(`./place.data.${countryName}.json`)
+
+      // Places are basically state and cities collections, that refer to a particular country
       const places = await Place.find({});
 
       if (!places.length) {
 
         console.log(`SEED: Populating places data for ${countryName}...`);
 
-        placesData.forEach(async ({ country, uf, stateCode, stateName, cities }) => {
 
-          console.log(`populating => ${country}/${stateName}`);
+        for (const { country: countryName, uf, stateCode, stateName, cities } of placesData) {
 
+          console.log(`populating => ${countryName}/${stateName}`);
+
+          const country = await Country.findOne({ name: countryName })
+
+          if (!country) {
+            throw new SyntaxError('Country not found!')
+          }
           try {
-            const newPlace = await new Place({
-              country,
+            const newPlace = new Place({
+              country: { _id: country._id, code: country.code },
               uf,
               stateCode,
               stateName,
@@ -37,7 +46,10 @@ export class PlaceSeeder {
             console.log(`Error while saving ${stateName}`);
             console.error(error);
           }
-        })
+        }
+
+
+
 
 
 

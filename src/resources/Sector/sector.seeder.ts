@@ -1,6 +1,11 @@
+import { Country } from '../Country/Country.model';
 import { Sector } from './sector.model';
 
 
+interface ISectorData {
+  country: string;
+  name: string;
+}
 
 export class SectorSeeder {
 
@@ -10,29 +15,42 @@ export class SectorSeeder {
 
     for (const countryName of countries) {
       // check if there're no places registered
-      const sectorsData = require(`./sector.data.${countryName}.json`)
+      const sectorsData: ISectorData[] = require(`./sector.data.${countryName}.json`)
       const sectors = await Sector.find({});
 
       if (!sectors.length) {
 
-        console.log(`SEED: Populating sectors data for ${countryName}...`);
 
-        sectorsData.forEach(async ({ country, name }) => {
+        for (const sectorData of sectorsData) {
 
-          console.log(`populating => ${name}`);
+          console.log(`SEED: Adding sector data for => ${sectorData.name}`);
+
+          // find corresponding country model
 
           try {
-            const newSector = await new Sector({
-              country,
-              name
+            const countryModel = await Country.findOne({
+              name: sectorData.country
             })
-            await newSector.save()
+
+
+            const newSector = new Sector({
+              country: countryModel,
+              name: sectorData.name
+            })
+
+            newSector.save()
           }
           catch (error) {
-            console.log(`Error while saving ${name}`);
             console.error(error);
+
           }
-        })
+
+
+
+
+
+        }
+
 
 
 
