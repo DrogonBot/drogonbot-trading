@@ -22,7 +22,8 @@ export class PlaceSeeder {
 
         console.log(`SEED: Populating places data for ${countryName}...`);
 
-
+ 
+        // tslint:disable-next-line: no-shadowed-variable
         for (const { country: countryName, uf, stateCode, stateName, cities } of placesData) {
 
           console.log(`populating => ${countryName}/${stateName}`);
