@@ -2,6 +2,7 @@ import express from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
+import { RouterHelper } from '../../utils/RouterHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { IResumeAttachment, Resume } from './resume.model';
 
@@ -52,6 +53,78 @@ resumeRouter.post('/resume', userAuthMiddleware, async (req, res) => {
       details: error.message
     })
   }
+
+
+})
+
+resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => {
+
+  const { user } = req;
+  const { resumeId } = req.params
+
+  try {
+    const resume = await Resume.findOne({
+      _id: resumeId
+    })
+
+    if (!resume) {
+      return res.status(400).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('resume', 'resumeNotFound'),
+      })
+    }
+
+    if (!resume.ownerId.equals(user._id)) {
+
+      console.log(resume._id);
+      console.log(user._id);
+
+      return res.status(400).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('resume', 'resumeUserNotAuthorized'),
+      })
+    }
+
+
+    if (
+      !RouterHelper.isAllowedKey(req.body, ["positionsOfInterest", "highlights", "country", "stateUf", "city", "address", "phone", "linkedInUrl", "educations", "attachments", "experiences", "awards", "additionalInfos"])
+    ) {
+      return res.status(400).send({
+        status: "error",
+        message: LanguageHelper.getLanguageString(
+          "resume",
+          "resumePatchForbiddenKeys"
+        )
+      });
+    }
+
+    // if everything is allright, execute the update
+
+    const keysToUpdate = Object.keys(req.body)
+
+    keysToUpdate.forEach((key) => resume[key] = req.body[key])
+
+    await resume.save();
+
+    return res.status(200).send(resume)
+
+  }
+  catch (error) {
+    console.error(error);
+
+    return res.status(400).send({
+      status: 'error',
+      message: LanguageHelper.getLanguageString('resume', 'resumeUpdateError'),
+      details: error.message
+    })
+
+
+  }
+
+
+  // check if user is really authorized to access this resource
+
+  if (!user._id.equals()) { }
 
 
 })

@@ -8,6 +8,9 @@ export const strings = {
   resumeDeletionError: {
     eng: "Failed to delete your resume"
   },
+  resumeUpdateError: {
+    eng: 'Error while trying to update your resume'
+  },
   resumeNotFound: {
     eng: "Resume not found"
   },
@@ -17,6 +20,9 @@ export const strings = {
 
   resumeAttachmentNotFound: {
     eng: 'No attachment was send for upload'
+  },
+  resumePatchForbiddenKeys: {
+    eng: "Error: You're trying to patch some keys that are not allowed."
   }
 
 };
