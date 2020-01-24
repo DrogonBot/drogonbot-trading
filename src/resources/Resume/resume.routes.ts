@@ -4,6 +4,7 @@ import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { RouterHelper } from '../../utils/RouterHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
+import { Place } from '../Place/place.model';
 import { IResumeAttachment, Resume } from './resume.model';
 
 // @ts-ignore
@@ -32,12 +33,29 @@ resumeRouter.get("/resume/:resumeId", userAuthMiddleware, async (req, res) => {
 resumeRouter.post('/resume', userAuthMiddleware, async (req, res) => {
 
   const { user } = req;
+  const { stateCode, cityName } = req.body
 
   try {
+
+    const place = await Place.findOne({ stateCode });
+
+    if (!place) {
+      throw new SyntaxError('Invalid stateCode');
+    }
+
+    const city = place.cities.find((cityData) => cityData.cityName === cityName)
+
+    if (!city) {
+      throw new SyntaxError('City not found');
+    }
+
+    place.cities = [city]
+
     const resume = new Resume({
       ...req.body,
       ownerId: user._id,
-      certificates: []
+      certificates: [],
+      place
     })
     await resume.save()
 

@@ -2,21 +2,30 @@ import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
 
-export interface IPlace {
-  country: string;
-  name: string;
+export interface IPlaceCity {
+  ibgeCode: number,
+  cityName: string
 }
+
+export interface IPlace {
+  country: string,
+  uf: string,
+  stateCode: string,
+  stateName: string,
+  cities: IPlaceCity[]
+}
+
+
 
 export interface IPlaceModel extends IPlace, Document {
   // insert functions here if needed.
 }
 
-const placeSchema = new mongoose.Schema(
+export const placeSchema = new mongoose.Schema(
   {
     "country": {
       _id: ObjectId,
       code: String,
-
     },
     "uf": {
       type: Number,

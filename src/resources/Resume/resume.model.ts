@@ -1,6 +1,8 @@
 import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
+import { IPlace } from '../Place/place.model';
+
 
 export interface IResumeEducation {
   title: String,
@@ -50,13 +52,14 @@ export interface ILocation {
   name: String
 }
 
+
+
+
 export interface IResume {
   ownerId: ObjectId,
   positionsOfInterest: IPositionsOfInterest[],
   highlights: String,
-  country: String,
-  stateUf: String,
-  city: String,
+  place: IPlace,
   address: String,
   phone: String,
   linkedInUrl: String,
@@ -73,7 +76,10 @@ export interface IResumeModel extends IResume, Document {
 
 const resumeSchema = new mongoose.Schema({
   ownerId: ObjectId,
-
+  place: {
+    type: ObjectId,
+    ref: 'Place'
+  },
   positionsOfInterest: [
     {
       name: String
@@ -82,18 +88,7 @@ const resumeSchema = new mongoose.Schema({
   highlights: {
     type: String
   },
-  country: {
-    type: String,
-    required: true,
-  },
-  stateUf: {
-    type: String,
-    required: true
-  },
-  city: {
-    type: String,
-    required: true
-  },
+
   address: {
     type: String
   },
