@@ -1,4 +1,4 @@
-import { Country } from './Country.model';
+import { Country } from './country.model';
 
 
 
