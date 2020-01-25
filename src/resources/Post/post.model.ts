@@ -20,7 +20,7 @@ export interface IPost {
   category: string,
   benefits: string[],
   country: string;
-  stateUf: string,
+  stateCode: string,
   city: string,
   title: string,
   text: string,
@@ -62,7 +62,7 @@ const postSchema = new mongoose.Schema({
     trim: true,
     required: true
   },
-  stateUf: {
+  stateCode: {
     type: String,
     trim: true,
     required: true

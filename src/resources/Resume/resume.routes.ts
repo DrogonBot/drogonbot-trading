@@ -4,7 +4,6 @@ import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { RouterHelper } from '../../utils/RouterHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
-import { Place } from '../Place/place.model';
 import { IResumeAttachment, Resume } from './resume.model';
 
 // @ts-ignore
@@ -33,36 +32,16 @@ resumeRouter.get("/resume/:resumeId", userAuthMiddleware, async (req, res) => {
 resumeRouter.post('/resume', userAuthMiddleware, async (req, res) => {
 
   const { user } = req;
-  const { stateCode, cityName } = req.body
 
   try {
-
-    const place = await Place.findOne({ stateCode });
-
-    if (!place) {
-      throw new SyntaxError('Invalid stateCode');
-    }
-
-    const city = place.cities.find((cityData) => cityData.cityName === cityName)
-
-    if (!city) {
-      throw new SyntaxError('City not found');
-    }
-
-    place.cities = [city]
-
     const resume = new Resume({
       ...req.body,
       ownerId: user._id,
       certificates: [],
-      place
     })
     await resume.save()
 
     res.status(200).send(resume)
-
-
-
   }
   catch (error) {
     res.status(400).send({
@@ -105,7 +84,7 @@ resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => 
 
 
     if (
-      !RouterHelper.isAllowedKey(req.body, ["positionsOfInterest", "highlights", "place", "address", "phone", "linkedInUrl", "educations", "attachments", "experiences", "awards", "additionalInfos", "stateCode", "cityName"])
+      !RouterHelper.isAllowedKey(req.body, ["positionsOfInterest", "highlights", "address", "phone", "linkedInUrl", "educations", "attachments", "experiences", "awards", "additionalInfos", "stateCode", "city", "country"])
     ) {
       return res.status(400).send({
         status: "error",
@@ -121,29 +100,6 @@ resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => 
     const keysToUpdate = Object.keys(req.body)
 
     keysToUpdate.forEach((key) => resume[key] = req.body[key])
-
-    const { stateCode, cityName } = req.body;
-
-    if (stateCode && cityName) {
-      const place = await Place.findOne({ stateCode });
-
-      if (!place) {
-        throw new SyntaxError('Invalid stateCode');
-      }
-
-      const city = place.cities.find((cityData) => cityData.cityName === cityName)
-
-      if (!city) {
-        throw new SyntaxError('City not found');
-      }
-
-      place.cities = [city]
-
-      resume.place = place;
-      await resume.save();
-    }
-
-
 
     await resume.save();
 
