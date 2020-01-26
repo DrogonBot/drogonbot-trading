@@ -23,6 +23,13 @@ postRouter.get('/post', userAuthMiddleware, async (req, res) => {
     try {
       const foundPost = await Post.findOne({ _id: id })
 
+      if (!foundPost) {
+        res.status(200).send({
+          status: 'error',
+          message: LanguageHelper.getLanguageString('post', 'postNotFound')
+        })
+      }
+
       return res.status(200).send(foundPost)
 
     }
@@ -132,10 +139,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
       ...req.body,
       ownerId: user._id,
       benefits: req.body.benefits,
-      sector: {
-        id: req.body.sectorId,
-        name: sector?.name
-      },
+      sector,
       images: []
     })
 

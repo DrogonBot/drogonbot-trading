@@ -28,7 +28,7 @@ export class SectorSeeder {
           // find corresponding country model
 
           try {
-         
+
             const newSector = new Sector({
               country: sectorData.country,
               name: sectorData.name

@@ -115,8 +115,8 @@ const postSchema = new mongoose.Schema({
     }
   ],
   sector: {
-    id: ObjectId,
-    name: String
+    type: ObjectId,
+    ref: 'Sector'
   },
   likes: {
     type: Number,
