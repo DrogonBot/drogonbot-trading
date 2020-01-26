@@ -1,251 +1,397 @@
 [
   {
     "country": "Brazil",
-    "name": "Administração"
+    "name": "Administração",
+    "keywords": [
+      "Administrador",
+      "Assistente Administrativo",
+      "Gerente",
+      "Auxiliar Administrativo",
+      "Governante",
+      "Governança",
+      "Supervisor",
+      "Contratos",
+      "Analista Administrativo",
+      "Aprendiz administrativo",
+      "Estagiário na área Administrativa",
+      "Country Manager",
+      "Gerente de Relacionamento",
+      "Diretor",
+      "Auxiliar operacional",
+      "Coordenador",
+      "de empresas"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Atendimento ao cliente"
+    "name": "Atendimento ao cliente",
+    "keywords": [
+      "Recepcionista",
+      "Atendente",
+      "Caixa",
+      "Assistente de Relacionamento",
+      "Agente de Atendimento",
+      "Balconista"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Advocacia"
+    "name": "Advocacia & Direito",
+    "keywords": [
+      "Advogado",
+      "Direito"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Agronomia"
+    "name": "Agricultura",
+    "keywords": [
+      "Engenheiro Agrônomo",
+      "Agrônomo",
+      "Zootecnia",
+      "Zootecnista",
+      "Bovinos",
+      "Suinos",
+      "Agro",
+      "Pecuária"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Alimentação & Restaurantes"
+    "name": "Alimentação & Restaurantes",
+    "keywords": [
+      "Garçon",
+      "Garçonete",
+      "Chapeiro",
+      "Auxiliar de Cozinha",
+      "Cozinha",
+      "Bar",
+      "Bartender",
+      "Chef",
+      "Gastrônomo",
+      "Alimentos",
+      "Bebidas",
+      "Ajudante de Cozinha"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Arquitetura"
+    "name": "Arquitetura",
+    "keywords": [
+      "Arquiteto",
+      "Arquitetura",
+      "Projetista"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Artes Cênicas"
+    "name": "Artes Cênicas",
+    "keywords": [
+      "Ator",
+      "Modelo"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Artes Plásticas"
+    "name": "Artes Plásticas",
+    "keywords": [
+      "Artistas plásticos"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Astronomia"
+    "name": "Astronomia",
+    "keywords": [
+      "Astrônomo"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Biblioteconomia"
+    "name": "Biblioteconomia",
+    "keywords": [
+      "Bibliotecário"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Beleza & Estética"
+    "name": "Beleza & Estética",
+    "keywords": [
+      "Cabeleireiro",
+      "Manicure",
+      "Maquiador",
+      "Estética",
+      "Beleza",
+      "Esteticista",
+      "Depiladora",
+      "Laser",
+      "Consultora de Beleza",
+      "Capilar",
+      "Fotodepiladora"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Ciências Aeronáuticas"
+    "name": "Ciências Aeronáuticas",
+    "keywords": [
+      "Piloto de avião"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Ciências Atuariais"
+    "name": "Ciências Atuariais",
+    "keywords": [
+      "Atuário",
+      "Atuarial",
+      "Analista de Precificação",
+      "Pricing",
+      "Seguros",
+      "Seguridade"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Ciências Biológicas"
+    "name": "Ciências Biológicas, Oceanografia",
+    "keywords": [
+      "Biólogos",
+      "Meio ambiente",
+      "Sustentabilidade",
+      "Ambiental",
+      "Marinha",
+      "Oceanógrafo"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Ciências Biomédicas"
+    "name": "Finanças, Ciências Contábeis, Estatística e Matemática",
+    "keywords": [
+      "Estatístico",
+      "Analista de Prevenção à Fraude",
+      "Analista de Remuneração e Benefícios",
+      "Analista de Risco de Mercado",
+      "Contador",
+      "Analista de Orçamento",
+      "Analista de Risco de Mercado",
+      "Analista financeiro",
+      "Auxiliar em Processamento de Dados",
+      "Tesouraria",
+      "Folha",
+      "Pagamento",
+      "Contábil",
+      "Financeiro",
+      "Fiscal",
+      "Planejamento Financeiro",
+      "Contabilidade",
+      "Custos",
+      "CFO",
+      "Controller",
+      "Controladoria",
+      "Crédito",
+      "Risco",
+      "Fraude",
+      "Matemático"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Ciências Contábeis"
+    "name": "Ciências Econômicas",
+    "keywords": [
+      "Economista",
+      "Investidor",
+      "Investidores"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Ciências Econômicas"
+    "name": "Ciências Sociais",
+    "keywords": [
+      "Cientista social"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Ciências Sociais"
+    "name": "Cinema e Vídeo",
+    "keywords": [
+      "Editor de Vídeo",
+      "Audiovisual",
+      "Roteiro",
+      "Videomaker",
+      "Multimídia"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Cinema e Vídeo"
+    "name": "Comércio Exterior & Relações Públicas",
+    "keywords": [
+      "Trader",
+      "Analista de Comércio Exterior",
+      "Estágio em Importação",
+      "Relações Internacionais",
+      "Aduaneiro",
+      "Despachante",
+      "International",
+      "Governo"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Comércio Exterior"
+    "name": "Comunicação & Marketing",
+    "keywords": [
+      "Marketing",
+      "Copywriter",
+      "Merchandising",
+      "Analista de Comunicação",
+      "Comunicação",
+      "Demanda",
+      "Canais",
+      "Mercado",
+      "Telemarketing",
+      "Publicidade e Propaganda",
+      "Publicitário",
+      "Radialista",
+      "Apresentador"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Comunicação"
+    "name": "TI, Tecnologia da Informação",
+    "keywords": [
+      "Suporte",
+      "Programador",
+      "Desenvolvedor",
+      "TI",
+      "Mobile",
+      "Cabeamento",
+      "Eletrônica",
+      "Sistemas",
+      "Web",
+      "Help Desk",
+      "Front-end",
+      "Back-end",
+      "Devops",
+      "Redes",
+      "BI",
+      "Business Inteligence"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "TI, Tecnologia da Informação"
+    "name": "Dança",
+    "keywords": [
+      "Dançarino"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Curso Técnico"
+    "name": "Decoração",
+    "keywords": [
+      "Designer de interiores",
+      "Decorador",
+      "Interior"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Dança"
+    "name": "Desenho Industrial",
+    "keywords": [
+      "Desenhista industrial"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Decoração"
+    "name": "Design",
+    "keywords": [
+      "Arte-finalista",
+      "Designer",
+      "Desenhista",
+      "UX",
+      "Interface"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Desenho Industrial"
+    "name": "Ecologia",
+    "keywords": [
+      "Ecologista"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Design"
+    "name": "Educação Física",
+    "keywords": [
+      "Personal",
+      "Personal Trainer",
+      "Natação",
+      "Ballet",
+      "Ginasta",
+      "Pilates",
+      "Judô",
+      "Musculação",
+      "Professor de Educação Física"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Direito"
+    "name": "Engenharia",
+    "keywords": [
+      "Engenheiro Aeronáutico",
+      "Engenheiro Agrícola",
+      "Engenheiro de alimentos",
+      "Engenheiro Ambiental",
+      "Engenhario Civil",
+      "Engenheiro da Computação",
+      "Engenheiro de Controle e Automação",
+      "Engenheiro de Telecomunicações",
+      "Engenheiro Elétrico",
+      "Engenheiro Eletrônico",
+      "Engenheiro Florestal",
+      "Engenheiro Industrial",
+      "Engenheiro de Materiais",
+      "Engenheiro Mecânico",
+      "Engenheiro Mecatrônico",
+      "Engenheiro de Minas",
+      "Engenheiro Naval",
+      "Engenheiro de Pesca",
+      "Engenheiro de Produção",
+      "Engenheiro Químico",
+      "Engenheiro Sanitário",
+      "Engenheiro Têxtil"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Ecologia"
+    "name": "Farmácia",
+    "keywords": [
+      "Farmacêutico",
+      "Auxiliar de farmácia"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Educação Física"
+    "name": "Filosofia",
+    "keywords": [
+      "Filósofo"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Enfermagem"
+    "name": "Física",
+    "keywords": [
+      "Físico"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Engenharia Aeronáutica"
+    "name": "Fotografia",
+    "keywords": [
+      "Fotógrafo"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Engenharia Agrícola"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Alimentos"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Ambiental"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Civil"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia da Computação"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia de Controle e Automação"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia de Telecomunicações"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Elétrica"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Eletrônica"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Florestal"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Industrial"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Materiais"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Mecânica"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Mecatrônica"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Minas"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Naval"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Pesca"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Produção"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Química"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Sanitária"
-  },
-  {
-    "country": "Brazil",
-    "name": "Engenharia Têxtil"
-  },
-  {
-    "country": "Brazil",
-    "name": "Estatística"
-  },
-  {
-    "country": "Brazil",
-    "name": "Farmácia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Filosofia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Física"
-  },
-  {
-    "country": "Brazil",
-    "name": "Fisioterapia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Fonoaudiologia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Fotografia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Gastronomia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Geofísica"
+    "name": "Geofísica",
+    "keywords": [
+      "Geofísico"
+    ]
   },
   {
     "country": "Brazil",
@@ -253,87 +399,158 @@
   },
   {
     "country": "Brazil",
-    "name": "Geologia"
+    "name": "Geologia",
+    "keywords": [
+      "Auxiliar de Topografia",
+      "Geólogo"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "História"
+    "name": "História",
+    "keywords": [
+      "Historiador"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Hotelaria"
+    "name": "Hotelaria & Turismo",
+    "keywords": [
+      "Camareira",
+      "Auxiliar de Hotelaria",
+      "Turismo",
+      "Hospedagem",
+      "Reservas",
+      "Anfitrião",
+      "A&B"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Indústria"
+    "name": "Indústria, Offshore e Metalurgia",
+    "keywords": [
+      "Soldador",
+      "Offshore",
+      "Metalúrgico",
+      "Planta",
+      "Obras",
+      "Projetos",
+      "Produção",
+      "Qualidade",
+      "Manutenção",
+      "MIG",
+      "MAG",
+      "Montador",
+      "P&D",
+      "Mecânico",
+      "Técnico",
+      "Elétrica",
+      "Químico",
+      "do Trabalho",
+      "Segurança do trabalho"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Jornalismo"
+    "name": "Jornalismo & Produtor de Conteúdo",
+    "keywords": [
+      "Jornalista",
+      "Produtor de Conteúdo",
+      "Blog"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Letras"
+    "name": "Letras & Lingüística",
+    "keywords": [
+      "Inglês",
+      "Espanhol",
+      "Francês",
+      "Italiano",
+      "Alemão",
+      "Revisor",
+      "Tradutor",
+      "Intérprete"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Lingüística"
+    "name": "Logística & Transporte",
+    "keywords": [
+      "Motorista",
+      "Analista de Logística",
+      "Motoboy",
+      "Carga",
+      "Entregador",
+      "Analista Operacional",
+      "Analista de Operações",
+      "Operações",
+      "Manobrista",
+      "Auxiliar de Manutenção",
+      "Estoquista",
+      "Transporte",
+      "Ferroviária",
+      "Supply Chain",
+      "Suprimentos",
+      "Controle"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Logística & Transporte"
+    "name": "Veterinária",
+    "keywords": [
+      "Veterinário",
+      "Auxiliar de veterinária",
+      "Pet"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Marketing"
+    "name": "Meteorologia",
+    "keywords": [
+      "Meteorologista"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Matemática"
+    "name": "Moda & Indústria Têxtil",
+    "keywords": [
+      "Estilista",
+      "Costureira",
+      "Modelo de Prova",
+      "Costura",
+      "Modelista",
+      "Estilo",
+      "Consultor de Moda",
+      "Corte",
+      "Confecção"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Medicina"
+    "name": "Museologia",
+    "keywords": [
+      "Museólogo"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Metalurgia"
+    "name": "Música",
+    "keywords": [
+      "Músico",
+      "Piano",
+      "Violão",
+      "Cavaquinho",
+      "Cavaco"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Medicina Veterinária"
-  },
-  {
-    "country": "Brazil",
-    "name": "Meteorologia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Microbiologia e Imunologia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Moda"
-  },
-  {
-    "country": "Brazil",
-    "name": "Museologia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Música"
-  },
-  {
-    "country": "Brazil",
-    "name": "Nutrição"
-  },
-  {
-    "country": "Brazil",
-    "name": "Oceanografia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Odontologia"
+    "name": "Nutrição",
+    "keywords": [
+      "Nutricionistas",
+      "Nutrólogo"
+    ]
   },
   {
     "country": "Brazil",
@@ -341,74 +558,102 @@
   },
   {
     "country": "Brazil",
-    "name": "Pedagogia"
+    "name": "Pedagogia",
+    "keywords": [
+      "Pedagogo",
+      "Educacional",
+      "Berçário",
+      "Infantil",
+      "Recreacionista",
+      "Acadêmico",
+      "E-learning"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Psicologia"
+    "name": "RH / Recursos Humanos",
+    "keywords": [
+      "Recrutador",
+      "Head Hunter",
+      "Departamento Pessoal",
+      "Gente",
+      "Pessoas",
+      "Treinamento",
+      "Seleção"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Pilotagem professional de aeronaves"
+    "name": "Saúde",
+    "keywords": [
+      "Fisoterapeuta",
+      "Fonoaudiólogo",
+      "Enfermeiro",
+      "Técnico em Enfermagem",
+      "Socorrista",
+      "Ambulancia",
+      "Hospital",
+      "Médico",
+      "Biomedicina",
+      "Biomedico",
+      "Laboratorista",
+      "Coletor",
+      "Dentista",
+      "Psicólogo"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Publicidade e Propaganda"
+    "name": "Serviço Social",
+    "keywords": [
+      "Projetos Sociais",
+      "Assistente Social"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Química"
+    "name": "Segurança & Patrimônio",
+    "keywords": [
+      "Porteiro",
+      "Segurança",
+      "Patrimonial",
+      "Vigia",
+      "Fiscal",
+      "Acesso",
+      "Prevenção de Perdas",
+      "Portaria",
+      "Segurança",
+      "Vigilante"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Radialismo e Televisão"
+    "name": "Vendas & Comércio",
+    "keywords": [
+      "Auxiliar de Vendas",
+      "Vendedor",
+      "Supervisor de Vendas",
+      "Comercial",
+      "Varejo",
+      "Vendas",
+      "B2B",
+      "Representante"
+    ]
   },
   {
     "country": "Brazil",
-    "name": "Relações Internacionais"
-  },
-  {
-    "country": "Brazil",
-    "name": "RH / Recursos Humanos"
-  },
-  {
-    "country": "Brazil",
-    "name": "Relações Públicas"
-  },
-  {
-    "country": "Brazil",
-    "name": "Secretariado"
-  },
-  {
-    "country": "Brazil",
-    "name": "Saúde"
-  },
-  {
-    "country": "Brazil",
-    "name": "Serviço Social"
-  },
-  {
-    "country": "Brazil",
-    "name": "Segurança"
-  },
-  {
-    "country": "Brazil",
-    "name": "Tradutor e Intérprete"
-  },
-  {
-    "country": "Brazil",
-    "name": "Turismo"
-  },
-  {
-    "country": "Brazil",
-    "name": "Zootecnia"
-  },
-  {
-    "country": "Brazil",
-    "name": "Vendas"
-  },
-  {
-    "country": "Brazil",
-    "name": "Limpeza"
+    "name": "Limpeza",
+    "keywords": [
+      "Diarista",
+      "Empregada",
+      "Doméstica",
+      "Limpeza",
+      "Auxiliar de Limpeza",
+      "Auxiliar de Serviços Gerais",
+      "Faxineiro",
+      "Servente de Limpeza",
+      "Ajudante Geral",
+      "Zelador"
+    ]
   }
 ]

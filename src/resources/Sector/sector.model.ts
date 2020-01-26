@@ -18,7 +18,8 @@ const sectorSchema = new mongoose.Schema({
   "name": {
     type: String,
     required: true
-  }
+  },
+  "keywords": [{ type: String }]
 })
 
 export const Sector: Model<ISectorModel> = model<ISectorModel>('Sector', sectorSchema)

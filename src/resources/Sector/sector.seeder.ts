@@ -1,10 +1,10 @@
-import { Country } from '../Country/country.model';
 import { Sector } from './sector.model';
 
 
 interface ISectorData {
   country: string;
   name: string;
+  keywords: string[]
 }
 
 export class SectorSeeder {
@@ -31,7 +31,8 @@ export class SectorSeeder {
 
             const newSector = new Sector({
               country: sectorData.country,
-              name: sectorData.name
+              name: sectorData.name,
+              keywords: sectorData.keywords
             })
 
             newSector.save()
