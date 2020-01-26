@@ -35,7 +35,7 @@ export class PlaceSeeder {
           }
           try {
             const newPlace = new Place({
-              country: { _id: country._id, code: country.code },
+              country: country.name,
               uf,
               stateCode,
               stateName,

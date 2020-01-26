@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
 
@@ -23,10 +22,7 @@ export interface IPlaceModel extends IPlace, Document {
 
 export const placeSchema = new mongoose.Schema(
   {
-    "country": {
-      _id: ObjectId,
-      code: String,
-    },
+    "country": String,
     "uf": {
       type: Number,
       required: true

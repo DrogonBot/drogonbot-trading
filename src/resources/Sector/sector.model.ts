@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
 
@@ -13,8 +12,8 @@ export interface ISectorModel extends ISector, Document {
 
 const sectorSchema = new mongoose.Schema({
   "country": {
-    _id: ObjectId,
-    code: String,
+    type: String,
+    required: true
   },
   "name": {
     type: String,

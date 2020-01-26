@@ -28,13 +28,9 @@ export class SectorSeeder {
           // find corresponding country model
 
           try {
-            const countryModel = await Country.findOne({
-              name: sectorData.country
-            })
-
-
+         
             const newSector = new Sector({
-              country: countryModel,
+              country: sectorData.country,
               name: sectorData.name
             })
 
