@@ -24,7 +24,7 @@ postRouter.get('/post', userAuthMiddleware, async (req, res) => {
       const foundPost = await Post.findOne({ _id: id })
 
       if (!foundPost) {
-        res.status(200).send({
+        return res.status(200).send({
           status: 'error',
           message: LanguageHelper.getLanguageString('post', 'postNotFound')
         })
