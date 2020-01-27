@@ -12,5 +12,11 @@ export class GenericHelper {
 
   }
 
+  public static arrayFlatten(arr) {
+    return arr.reduce(function (flat, toFlatten) {
+      return flat.concat(Array.isArray(toFlatten) ? GenericHelper.arrayFlatten(toFlatten) : toFlatten);
+    }, []);
+  }
+
 
 }

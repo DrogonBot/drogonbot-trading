@@ -10,7 +10,7 @@
       "Governante",
       "Governança",
       "Supervisor",
-      "Contratos",
+      "Assistente de Contratos",
       "Analista Administrativo",
       "Aprendiz administrativo",
       "Estagiário na área Administrativa",
@@ -18,8 +18,7 @@
       "Gerente de Relacionamento",
       "Diretor",
       "Auxiliar operacional",
-      "Coordenador",
-      "de empresas"
+      "Coordenador"
     ]
   },
   {
@@ -64,8 +63,8 @@
       "Garçonete",
       "Chapeiro",
       "Auxiliar de Cozinha",
-      "Cozinha",
-      "Bar",
+      "Chefe de Cozinha",
+      "Ajudante de Bar",
       "Bartender",
       "Chef",
       "Gastrônomo",
@@ -79,8 +78,7 @@
     "name": "Arquitetura",
     "keywords": [
       "Arquiteto",
-      "Arquitetura",
-      "Projetista"
+      "Arquitetura"
     ]
   },
   {
@@ -143,20 +141,19 @@
       "Atuário",
       "Atuarial",
       "Analista de Precificação",
-      "Pricing",
-      "Seguros",
-      "Seguridade"
+      "Analista de Pricing",
+      "Analista de Seguros",
+      "Analista de Seguridade"
     ]
   },
   {
     "country": "Brazil",
     "name": "Ciências Biológicas, Oceanografia",
     "keywords": [
-      "Biólogos",
-      "Meio ambiente",
-      "Sustentabilidade",
-      "Ambiental",
-      "Marinha",
+      "Biólogo",
+      "Analista de Meio ambiente",
+      "Analista de Sustentabilidade",
+      "Analista Ambiental",
       "Oceanógrafo"
     ]
   },
@@ -173,21 +170,20 @@
       "Analista de Risco de Mercado",
       "Analista financeiro",
       "Auxiliar em Processamento de Dados",
-      "Tesouraria",
-      "Folha",
-      "Pagamento",
-      "Contábil",
-      "Financeiro",
-      "Fiscal",
-      "Planejamento Financeiro",
-      "Contabilidade",
-      "Custos",
+      "Assistente de Tesouraria",
+      "Assistente de Folha de Pagamento",
+      "Assistente Contábil",
+      "Assistente Financeiro",
+      "Assistente Fiscal",
+      "Assistente de Planejamento Financeiro",
+      "Assistente de Contabilidade",
+      "Assistente de Custos",
       "CFO",
       "Controller",
-      "Controladoria",
-      "Crédito",
-      "Risco",
-      "Fraude",
+      "Assistente de Controladoria",
+      "Assistente de Crédito",
+      "Analista de Risco",
+      "Analista de Prevenção a Fraude",
       "Matemático"
     ]
   },
@@ -196,8 +192,7 @@
     "name": "Ciências Econômicas",
     "keywords": [
       "Economista",
-      "Investidor",
-      "Investidores"
+      "Investidor"
     ]
   },
   {
@@ -227,9 +222,7 @@
       "Estágio em Importação",
       "Relações Internacionais",
       "Aduaneiro",
-      "Despachante",
-      "International",
-      "Governo"
+      "Despachante"
     ]
   },
   {
@@ -240,12 +233,11 @@
       "Copywriter",
       "Merchandising",
       "Analista de Comunicação",
-      "Comunicação",
-      "Demanda",
-      "Canais",
-      "Mercado",
-      "Telemarketing",
-      "Publicidade e Propaganda",
+      "Analista de Comunicação",
+      "Analista de Demanda",
+      "Analista de Canais",
+      "Analista de Mercado",
+      "Assistente de Telemarketing",
       "Publicitário",
       "Radialista",
       "Apresentador"
@@ -285,8 +277,7 @@
     "name": "Decoração",
     "keywords": [
       "Designer de interiores",
-      "Decorador",
-      "Interior"
+      "Decorador"
     ]
   },
   {
@@ -419,10 +410,25 @@
       "Camareira",
       "Auxiliar de Hotelaria",
       "Turismo",
-      "Hospedagem",
-      "Reservas",
+      "Assistente de Hospedagem",
+      "Assistente de Reservas",
       "Anfitrião",
-      "A&B"
+      "Assistente de A&B"
+    ]
+  },
+  {
+    "country": "Brazil",
+    "name": "Construção Civil",
+    "keywords": [
+      "Assistente de Obras",
+      "Gerente de Projetos",
+      "Projetista",
+      "Pedreiro",
+      "Bombeiro Hidráulico",
+      "Encanador",
+      "Eletricista",
+      "Manutentor Civil",
+      "Auxiliar de Pedreiro"
     ]
   },
   {
@@ -432,21 +438,17 @@
       "Soldador",
       "Offshore",
       "Metalúrgico",
-      "Planta",
-      "Obras",
-      "Projetos",
-      "Produção",
-      "Qualidade",
-      "Manutenção",
-      "MIG",
-      "MAG",
+      "Assistente de Produção",
+      "Inspetor de Qualidade",
+      "Assistente de Manutenção",
+      "Soldador MIG",
+      "Soldador MAG",
       "Montador",
-      "P&D",
+      "Analista de P&D",
       "Mecânico",
       "Técnico",
       "Elétrica",
       "Químico",
-      "do Trabalho",
       "Segurança do trabalho"
     ]
   },
@@ -475,8 +477,9 @@
   },
   {
     "country": "Brazil",
-    "name": "Logística & Transporte",
+    "name": "Logística, Transporte e Operações",
     "keywords": [
+      "Comprador",
       "Motorista",
       "Analista de Logística",
       "Motoboy",
@@ -491,6 +494,7 @@
       "Transporte",
       "Ferroviária",
       "Supply Chain",
+      "Coordenador de Suprimentos",
       "Suprimentos",
       "Controle"
     ]
@@ -501,7 +505,8 @@
     "keywords": [
       "Veterinário",
       "Auxiliar de veterinária",
-      "Pet"
+      "Pet",
+      "Tosador"
     ]
   },
   {
@@ -622,7 +627,6 @@
       "Acesso",
       "Prevenção de Perdas",
       "Portaria",
-      "Segurança",
       "Vigilante"
     ]
   },

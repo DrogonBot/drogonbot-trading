@@ -75,7 +75,7 @@ placeRouter.get("/places/:country", async (req, res) => {
 
     if (statesOnly) {
       const states = places.map((place) => {
-        return { name: place.stateName }
+        return { stateName: place.stateName, stateCode: place.stateCode }
       })
       return res.status(200).send(states)
     }
