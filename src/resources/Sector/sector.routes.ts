@@ -1,9 +1,8 @@
 import express from 'express';
-import stringSimilarity from 'string-similarity';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
+import { SectorHelper } from '../../utils/SectorHelper';
 import { TextHelper } from '../../utils/TextHelper';
 import { Sector } from './sector.model';
 
@@ -47,29 +46,10 @@ sectorRouter.get("/sectors/search/:keyword", userAuthMiddleware, async (req, res
 
 
       // merge all keywords from all sectors (Since it creates a string[][], we use arrayFlatten to convert it to string[])
-      const keywords = GenericHelper.arrayFlatten(sectors.map((sector) => {
-
-        // This uses a module package to calculate our words similarity, then filter it with a 20% threshold.
-
-        const bestMatchesKeywords = sector.keywords.length > 0 ? stringSimilarity.findBestMatch(keyword, sector.keywords).ratings.filter((result) => result.rating > 0.2) : []
-
-        const output = bestMatchesKeywords.map((matches) => {
-
-          matches.sectorName = sector.name;
-
-          return matches;
-
-        })
-
-        return output
-
-      }))
-      // Then, we sort it DESC
-      const sortedBestMatchesStrings = keywords.sort((x, y) => x.rating < y.rating ? 1 : -1);
+      const sectorsWithKeyword = SectorHelper.findSectorsWithKeyword(keyword, sectors);
 
 
-
-      return res.status(200).send(sortedBestMatchesStrings)
+      return res.status(200).send(sectorsWithKeyword)
 
 
 
