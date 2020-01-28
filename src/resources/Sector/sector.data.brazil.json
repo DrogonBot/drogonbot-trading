@@ -49,8 +49,6 @@
       "Agrônomo",
       "Zootecnia",
       "Zootecnista",
-      "Bovinos",
-      "Suinos",
       "Agro",
       "Pecuária"
     ]
@@ -600,7 +598,7 @@
       "Hospital",
       "Médico",
       "Biomedicina",
-      "Biomedico",
+      "Biomédico",
       "Laboratorista",
       "Coletor",
       "Dentista",
