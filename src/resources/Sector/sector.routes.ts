@@ -40,7 +40,7 @@ sectorRouter.get("/sectors/search/:keyword", userAuthMiddleware, async (req, res
 
   try {
     // find all sectors that has a keyword thats similar than the one the user has passed to us
-    const sectors = await Sector.find({ keywords: { $regex: keyword, $options: "i" } });
+    const sectors = await Sector.find({ keywords: { $regex: keyword, $options: "i" } }); // find keywords by regex, "i" = case insensitive
 
     if (sectors) {
 
@@ -50,12 +50,6 @@ sectorRouter.get("/sectors/search/:keyword", userAuthMiddleware, async (req, res
 
 
       return res.status(200).send(sectorsWithKeyword)
-
-
-
-
-
-
 
     } else {
       return res.status(200).send([])

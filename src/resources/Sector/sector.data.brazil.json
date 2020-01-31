@@ -7,6 +7,8 @@
       "Assistente Administrativo",
       "Gerente",
       "Auxiliar Administrativo",
+      "Auxiliar de escritório",
+      "Secretária",
       "Governante",
       "Governança",
       "Supervisor",
@@ -28,6 +30,7 @@
       "Recepcionista",
       "Atendente",
       "Caixa",
+      "BackOffice",
       "Assistente de Relacionamento",
       "Agente de Atendimento",
       "Balconista"
@@ -57,8 +60,10 @@
     "country": "Brazil",
     "name": "Alimentação & Restaurantes",
     "keywords": [
-      "Garçon",
-      "Garçonete",
+      "Açougueiro",
+      "Churrasqueiro",
+      "Copeiro(a)",
+      "Garçon / Garçonete",
       "Chapeiro",
       "Auxiliar de Cozinha",
       "Chefe de Cozinha",
@@ -68,7 +73,8 @@
       "Gastrônomo",
       "Alimentos",
       "Bebidas",
-      "Ajudante de Cozinha"
+      "Ajudante de Cozinha",
+      "Auxiliar de padaria"
     ]
   },
   {
@@ -228,6 +234,7 @@
     "name": "Comunicação & Marketing",
     "keywords": [
       "Marketing",
+      "Panfleteiro",
       "Copywriter",
       "Merchandising",
       "Analista de Comunicação",
@@ -252,7 +259,7 @@
       "Mobile",
       "Cabeamento",
       "Eletrônica",
-      "Sistemas",
+      "Analista de sistemas",
       "Web",
       "Help Desk",
       "Front-end",
@@ -260,7 +267,8 @@
       "Devops",
       "Redes",
       "BI",
-      "Business Inteligence"
+      "Business Inteligence",
+      "Telefonia"
     ]
   },
   {
@@ -425,6 +433,7 @@
       "Bombeiro Hidráulico",
       "Encanador",
       "Eletricista",
+      "Encarregado de obras",
       "Manutentor Civil",
       "Auxiliar de Pedreiro"
     ]
@@ -436,6 +445,7 @@
       "Soldador",
       "Offshore",
       "Metalúrgico",
+      "Operador de produção",
       "Assistente de Produção",
       "Inspetor de Qualidade",
       "Assistente de Manutenção",
@@ -447,7 +457,7 @@
       "Técnico",
       "Elétrica",
       "Químico",
-      "Segurança do trabalho"
+      "Técnico em segurança do trabalho"
     ]
   },
   {
@@ -477,9 +487,26 @@
     "country": "Brazil",
     "name": "Logística, Transporte e Operações",
     "keywords": [
+      "Auxiliar de expedição",
+      "Auxiliar de Supermercado",
+      "Ascensorista",
+      "Operacional",
+      "Conferente",
+      "Auxiliar de Armazém",
+      "Ajudante",
+      "Armador",
+      "Auxiliar de Expedição",
+      "Auxiliar logística",
+      "Auxiliar de Produção",
+      "Embalador / Empacotador",
+      "Repositor",
+      "Frentista",
       "Comprador",
       "Motorista",
+      "Motorista categoria D",
+      "Motorista categoria B",
       "Analista de Logística",
+      "Operador de empilhadeira",
       "Motoboy",
       "Carga",
       "Entregador",
@@ -549,24 +576,26 @@
   },
   {
     "country": "Brazil",
-    "name": "Nutrição",
+    "name": "Outros",
     "keywords": [
-      "Nutricionistas",
-      "Nutrólogo"
+      "Qualquer",
+      "Todas",
+      "Estágio",
+      "Jovem Aprendiz",
+      "Primeiro emprego"
     ]
-  },
-  {
-    "country": "Brazil",
-    "name": "Outros"
   },
   {
     "country": "Brazil",
     "name": "Pedagogia",
     "keywords": [
       "Pedagogo",
+      "Professor",
       "Educacional",
       "Berçário",
       "Infantil",
+      "Assistente de Creche",
+      "Merendeira",
       "Recreacionista",
       "Acadêmico",
       "E-learning"
@@ -587,18 +616,22 @@
   },
   {
     "country": "Brazil",
-    "name": "Saúde",
+    "name": "Saúde & Cuidados",
     "keywords": [
+      "Nutricionistas",
+      "Nutrólogo",
+      "Cuidador(a)",
+      "Babá",
       "Fisoterapeuta",
       "Fonoaudiólogo",
       "Enfermeiro",
       "Técnico em Enfermagem",
       "Socorrista",
-      "Ambulancia",
-      "Hospital",
       "Médico",
+      "Técnico em radiologia",
       "Biomedicina",
       "Biomédico",
+      "Auxiliar de laboratório",
       "Laboratorista",
       "Coletor",
       "Dentista",
@@ -632,6 +665,7 @@
     "country": "Brazil",
     "name": "Vendas & Comércio",
     "keywords": [
+      "Promotor de Vendas",
       "Auxiliar de Vendas",
       "Vendedor",
       "Supervisor de Vendas",
@@ -653,6 +687,7 @@
       "Auxiliar de Limpeza",
       "Auxiliar de Serviços Gerais",
       "Faxineiro",
+      "Passadeira",
       "Servente de Limpeza",
       "Ajudante Geral",
       "Zelador"
