@@ -11,7 +11,7 @@ export interface IResumeEducation {
   startingDate: Date,
   endingDate: Date,
   inProgress: Boolean,
-  detail: String
+  details: String
 }
 
 export interface IPositionsOfInterest {
@@ -25,8 +25,7 @@ export interface IResumeAttachment {
 
 export interface IResumeAward {
   title: String,
-  description: String,
-  externalLink: String
+  description: String
 }
 
 export interface IResumeAdditionalInfo {
@@ -35,11 +34,11 @@ export interface IResumeAdditionalInfo {
 }
 
 export interface IResumeExperience {
-  title: String,
+  company: String,
   position: String,
   startingDate: Date,
-  stillWorking: Boolean,
   endingDate: Date,
+  inProgress: Boolean,
   location: String,
   details: String
 }
@@ -94,7 +93,8 @@ const resumeSchema = new mongoose.Schema({
   positionsOfInterest: [
     {
       name: String
-    }
+    },
+
   ],
   highlights: {
     type: String
@@ -117,7 +117,7 @@ const resumeSchema = new mongoose.Schema({
       startingDate: Date,
       endingDate: Date,
       inProgress: Boolean,
-      detail: String
+      details: String
     }
   ],
   attachments: [{
@@ -126,11 +126,11 @@ const resumeSchema = new mongoose.Schema({
   }],
   experiences: [
     {
-      title: String,
+      company: String,
       position: String,
       startingDate: Date,
-      stillWorking: Boolean,
       endingDate: Date,
+      inProgress: Boolean,
       location: String,
       details: String
     }
@@ -138,8 +138,7 @@ const resumeSchema = new mongoose.Schema({
   awards: [
     {
       title: String,
-      description: String,
-      externalLink: String
+      description: String
     }
   ],
   additionalInfos: [
