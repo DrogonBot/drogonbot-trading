@@ -299,16 +299,18 @@ userRouter.post("/users/reset-password", async (req, res) => {
     email
   });
 
+  if (!user) {
+    return res.status(400).send({
+      status: "error",
+      message: LanguageHelper.getLanguageString('user', 'userNotFound')
+    });
+  }
+
   MixpanelHelper.mixpanel.track('USER_RESET_PASSWORD', {
     distinct_id: user._id
   })
 
-  if (!user) {
-    return res.status(400).send({
-      status: "error",
-      message: "User not found!"
-    });
-  }
+
 
   // if user is found, let's send him an email with a reset password link
 
