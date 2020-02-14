@@ -1,4 +1,4 @@
-import { APP_NAME, SUPPORT_EMAIL } from './server.constants';
+import { APP_NAME, LANGUAGE, SUPPORT_EMAIL } from './server.constants';
 
 export const prodServerConfig = {
   app: {
@@ -32,6 +32,6 @@ export const prodServerConfig = {
     mixpanelToken: "d87cd0f8669fbce8a13732f13bf43ff8"
   },
   maintenanceMode: false,
-  language: "eng",
+  language: LANGUAGE,
   jwtSecret: "CfQbhtmMn5#pez9SHY+4By+ce4PFMevcg=="
 };

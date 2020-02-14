@@ -6,7 +6,7 @@ export enum EnvironmentTypes {
 
 export enum AvailableLanguages {
   eng = "eng",
-  ptbr = "ptbr"
+  ptBr = "ptBr"
 }
 
 const ENV: string = EnvironmentTypes.Development; // set the current environment here
@@ -38,7 +38,7 @@ export const appEnv = {
   appCity: "North Vancouver",
   appCountry: "Canada",
   appEmail: "sac@empregourgente.com",
-  language: AvailableLanguages.eng,
+  language: AvailableLanguages.ptBr,
   serverUrl: defineServerUrl(), // current serverUrl
 
 };

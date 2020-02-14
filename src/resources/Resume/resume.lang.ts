@@ -1,4 +1,7 @@
 export const strings = {
+  resumesNotFoundError: {
+    eng: 'This user does not have any resume'
+  },
   resumeNotFoundError: {
     eng: 'Resume not found'
   },

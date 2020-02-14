@@ -9,6 +9,27 @@ import { IResumeAttachment, Resume } from './resume.model';
 // @ts-ignore
 const resumeRouter = new express.Router();
 
+resumeRouter.get('/resumes', userAuthMiddleware, async (req, res) => {
+
+  const { user } = req;
+
+  try {
+    const resumes = await Resume.find({ ownerId: user._id });
+
+
+    return res.status(200).send(resumes)
+
+  }
+  catch (error) {
+    res.status(400).send({
+      status: 'error',
+      message: LanguageHelper.getLanguageString('resume', 'resumesNotFoundError')
+    })
+  }
+})
+
+
+
 resumeRouter.get("/resume/:resumeId", userAuthMiddleware, async (req, res) => {
 
   const { resumeId } = req.params

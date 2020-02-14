@@ -23,9 +23,10 @@ export enum AuthType {
 }
 
 export enum UserType {
-  Default = "Default",
+  JobSeeker = "JobSeeker",
+  Company = "Company",
   Staff = "Staff",
-  Admin = "Admin"
+  Admin = "Admin",
 }
 
 export interface IUserDocument extends Document {
@@ -74,7 +75,7 @@ const userSchema: Schema = new Schema(
     },
     type: {
       type: String,
-      default: UserType.Default
+      default: UserType.JobSeeker
     },
     givenName: {
       type: String
