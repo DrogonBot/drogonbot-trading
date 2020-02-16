@@ -15,6 +15,17 @@ export enum PostBenefits {
   HealthCare
 }
 
+export enum IPostApplicationStatus {
+
+  Pending,
+  Done
+}
+
+export interface IPostApplication {
+  resumeId: string,
+  status: IPostApplicationStatus
+}
+
 export interface IPost {
   ownerId: string,
   category: string,
@@ -34,6 +45,7 @@ export interface IPost {
   sector: { id: string, name: string },
   likes: number;
   usersWhoLiked: string[],
+  applications: IPostApplication[]
 
 
 }
@@ -125,6 +137,12 @@ const postSchema = new mongoose.Schema({
   usersWhoLiked: [
     {
       type: String
+    }
+  ],
+  applications: [
+    {
+      resumeId: String,
+      status: String
     }
   ]
 

@@ -6,7 +6,7 @@ import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { ISectorModel, Sector } from '../Sector/sector.model';
 import { User } from '../User/user.model';
-import { Post } from './post.model';
+import { IPostApplication, IPostApplicationStatus, Post } from './post.model';
 
 
 // @ts-ignore
@@ -112,6 +112,61 @@ postRouter.post('/post/like', userAuthMiddleware, async (req, res) => {
 
 
 })
+
+// Apply to a job post ========================================
+
+postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
+
+  const { user } = req;
+
+  const { resumeId, postId } = req.body;
+
+
+
+  try {
+
+    const appliedToPost = await Post.findOne({ _id: postId })
+
+    if (!appliedToPost) {
+      return res.status(401).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('post', 'postNotFound')
+      })
+    }
+
+    const newApplication: IPostApplication = {
+      resumeId,
+      status: IPostApplicationStatus.Pending
+    }
+
+    appliedToPost.applications = [
+      ...appliedToPost.applications,
+      newApplication
+    ]
+
+    await appliedToPost.save()
+
+    return res.status(200).send(newApplication)
+
+
+  }
+  catch (error) {
+    console.error(error);
+
+    return res.status(401).send({
+      status: 'error',
+      message: LanguageHelper.getLanguageString('post', 'postApplicationError'),
+      details: error.message
+    })
+
+  }
+
+
+
+
+
+})
+
 
 
 

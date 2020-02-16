@@ -23,6 +23,10 @@ export const strings = {
   postCreationNotification: {
     eng: "{{userName}} just created a new post! Check it out!",
     ptBr: "{{userName}} acabou de criar uma nova postagem! Confira!"
+  },
+  postApplicationError: {
+    eng: "Error while applying to this job.",
+    ptBr: 'Ocorreu um erro ao tentar aplicar para esta vaga.'
   }
 };
 
