@@ -17,8 +17,8 @@ export enum PostBenefits {
 
 export enum IPostApplicationStatus {
 
-  Pending,
-  Done
+  Pending = 'Pending',
+  Done = 'Done'
 }
 
 export interface IPostApplication {
@@ -31,6 +31,7 @@ export interface IPost {
   category: string,
   benefits: string[],
   country: string;
+  position: string,
   stateCode: string,
   city: string,
   title: string,
@@ -42,7 +43,7 @@ export interface IPost {
   perYearSalary: string;
   perHourSalary: string;
   images: Array<String | undefined>,
-  sector: { id: string, name: string },
+  sector: string,
   likes: number;
   usersWhoLiked: string[],
   applications: IPostApplication[]
@@ -57,6 +58,10 @@ export interface IPostModel extends IPost, Document {
 const postSchema = new mongoose.Schema({
   ownerId: {
     type: ObjectId,
+    required: true
+  },
+  position: {
+    type: String,
     required: true
   },
   category: {
@@ -127,8 +132,7 @@ const postSchema = new mongoose.Schema({
     }
   ],
   sector: {
-    type: ObjectId,
-    ref: 'Sector'
+    type: String
   },
   likes: {
     type: Number,

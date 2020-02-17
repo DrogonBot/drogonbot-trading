@@ -1,103 +1,94 @@
-import { AvailableLanguages } from '../constants/server.constants';
-import { Post } from '../resources/Post/post.model';
-import { IResumeEducation, IResumeExperience, Resume } from '../resources/Resume/resume.model';
-import { User } from '../resources/User/user.model';
+import { IPost } from '../resources/Post/post.model';
+import {
+  IResume,
+  IResumeAdditionalInfo,
+  IResumeAward,
+  IResumeEducation,
+  IResumeExperience,
+} from '../resources/Resume/resume.model';
+import { IUser } from '../resources/User/user.model';
 import { DateTimeHelper } from '../utils/DateTimeHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
 export class JobsEmailManager extends TransactionalEmailManager {
 
+  private _generateEmailBody = (template: string, emailType: EmailType, resume: IResume, user: IUser, post: IPost) => {
+
+    const resumeEducations = this._generateEducations(resume.educations, emailType)
+    const resumeExperiences = this._generateExperiences(resume.experiences, emailType)
+    const resumeAwards = this._generateAwards(resume.awards, emailType)
+    const resumeAdditionalInfos = this._generateAdditionalInfos(resume.additionalInfos, emailType)
+
+    const jobName = post.position;
+
+    const customVars = {
+      jobsEmailTitle: LanguageHelper.getLanguageString('post', 'jobsEmailTitle', {
+        jobName
+      }),
+      jobsEmailDearHiringManager: LanguageHelper.getLanguageString('post', 'jobsEmailDearHiringManager'),
+      jobsEmailMyNameIs: LanguageHelper.getLanguageString('post', 'jobsEmailMyNameIs', {
+        userName: user.name,
+        jobName,
+      }),
+      jobsEmailHeresMyResume: LanguageHelper.getLanguageString('post', 'jobsEmailHeresMyResume', {
+        userEmail: user.email,
+        userPhone: resume.phone
+      }),
+      jobsEmailHighlights: LanguageHelper.getLanguageString('post', 'jobsEmailHighlights'),
+      jobsEmailLocation: LanguageHelper.getLanguageString('post', 'jobsEmailLocation'),
+      jobsEmailAddress: LanguageHelper.getLanguageString("post", 'jobsEmailAddress'),
+      jobsEmailPhone: LanguageHelper.getLanguageString("post", "jobsEmailPhone"),
+      jobsEmailEducation: LanguageHelper.getLanguageString("post", "jobsEmailEducation"),
+      jobsEmailExperiences: LanguageHelper.getLanguageString("post", "jobsEmailExperiences"),
+      jobsEmailAwards: LanguageHelper.getLanguageString("post", "jobsEmailAwards"),
+      jobsEmailAdditionalInfos: LanguageHelper.getLanguageString("post", "jobsEmailAdditionalInfos"),
+      jobName,
+      resumeHighlights: resume.highlights,
+      resumeCity: resume.city,
+      resumeStateCode: resume.stateCode,
+      resumeAddress: resume.address,
+      resumePhone: resume.phone,
+      resumeEmail: user.email,
+      userName: user.name,
+      resumeEducations,
+      resumeExperiences,
+      resumeAwards,
+      resumeAdditionalInfos
+    }
+
+    return this.loadTemplate(
+      emailType,
+      template,
+      customVars
+    );
+
+
+  }
+
+
   public sendResume = async (
-    to: string,
     from: string,
     subject: string,
     template: string,
-    resumeId: string,
-    postId: string,
-    companyLanguage: AvailableLanguages
+    resume: IResume,
+    post: IPost,
+    user: IUser
   ) => {
 
+    console.log('Sending resume...');
 
-    console.log(`Sending resume to ${to} - from ${from}`);
+
 
     try {
-      const resume = await Resume.findOne({ _id: resumeId })
 
-      if (!resume) {
-        throw new Error('Resume not found')
-      }
+      const htmlEmail = this._generateEmailBody(template, EmailType.Html, resume, user, post)
+      const textEmail = this._generateEmailBody(template, EmailType.Text, resume, user, post)
 
-      const user = await User.findOne({ _id: resume?.ownerId })
-
-      if (!user) {
-        throw new Error('User not found')
-      }
-
-      const jobPost = await Post.findOne({ _id: postId })
-
-      if (!jobPost) {
-        throw new Error('Post not found')
-      }
-
-      const resumeEducations = this.generateEducations(resume.educations)
-      const resumeExperiences = this.generateExperiences(resume.experiences)
-
-      const jobName = jobPost.title;// TODO: Switch for tag!
-
-
-      const translationStrings = {
-        jobsEmailTitle: LanguageHelper.getLanguageString('post', 'jobsEmailTitle', {
-          jobName
-        }),
-        jobsEmailDearHiringManager: LanguageHelper.getLanguageString('post', 'jobsEmailDearHiringManager'),
-        jobsEmailMyNameIs: LanguageHelper.getLanguageString('post', 'jobsEmailMyNameIs', {
-          userName: user.name,
-          jobName,
-        }),
-        jobsEmailHeresMyResume: LanguageHelper.getLanguageString('post', 'jobsEmailHeresMyResume', {
-          userEmail: user.email,
-          userPhone: resume.phone
-        }),
-        jobsEmailHighlights: LanguageHelper.getLanguageString('post', 'jobsEmailHighlights'),
-        jobsEmailLocation: LanguageHelper.getLanguageString('post', 'jobsEmailLocation'),
-        jobsEmailAddress: LanguageHelper.getLanguageString("post", 'jobsEmailAddress'),
-        jobsEmailPhone: LanguageHelper.getLanguageString("post", "jobsEmailPhone"),
-        jobsEmailEducation: LanguageHelper.getLanguageString("post", "jobsEmailEducation"),
-        jobsEmailExperiences: LanguageHelper.getLanguageString("post", "jobsEmailExperiences")
-      }
-
-
-      const customVars = {
-        ...translationStrings,
-        jobName,
-        resumeHighlights: resume.highlights,
-        resumeCity: resume.city,
-        resumeStateCode: resume.stateCode,
-        resumeAddress: resume.address,
-        resumePhone: resume.phone,
-        resumeEmail: user.email,
-        userName: user.name,
-        resumeEducations,
-        resumeExperiences
-
-      }
-
-
-      const htmlEmail = this.loadTemplate(
-        EmailType.Html,
-        template,
-        customVars
-      );
-      const textEmail = this.loadTemplate(
-        EmailType.Text,
-        template,
-        customVars
-      );
-
+      console.log(`Sending resume to ${post.email} - from ${from}`);
 
       this.sendGrid.send({
-        to,
+        to: post.email,
         from,
         subject,
         html: htmlEmail,
@@ -114,28 +105,40 @@ export class JobsEmailManager extends TransactionalEmailManager {
 
   }
 
-  public generateResumeItem(title: string, value) {
+  private _generateResumeItem(title: string, value, emailType: EmailType) {
 
     if (!value) {
       return ``;
     }
 
-    return `<tr>
-    <td
-      class="attributes_item"
-      style='word-break: break-word; font-family: "Nunito Sans", Helvetica, Arial, sans-serif; font-size: 16px; padding: 0;'
-    >
-      <span class="padding-left">
-        <strong>${title}:</strong>
-        ${value}
-      </span>
-    </td>
-  </tr>`
+    switch (emailType) {
+      case EmailType.Html:
+        return `<tr>
+        <td
+          class="attributes_item"
+          style='word-break: break-word; font-family: "Nunito Sans", Helvetica, Arial, sans-serif; font-size: 16px; padding: 0;'
+        >
+          <span class="padding-left">
+            <strong>${title}:</strong>
+            ${value}
+          </span>
+        </td>
+      </tr>`
+      case EmailType.Text:
+        return `${title}: ${value}`
+    }
+
+
+
 
 
   }
 
-  public generateExperiences(resumeExperiences: IResumeExperience[]) {
+  private _generateExperiences(resumeExperiences: IResumeExperience[], emailType: EmailType) {
+
+    if (resumeExperiences.length === 0) {
+      return LanguageHelper.getLanguageString('post', 'jobsEmailNoData')
+    }
 
     let htmlOutput = "";
 
@@ -144,14 +147,12 @@ export class JobsEmailManager extends TransactionalEmailManager {
 
 
       htmlOutput += `
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailCompany'), resumeExperience.company)}
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailPosition'), resumeExperience.position)}
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailLocation'), resumeExperience.location)}
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailStartingDate'), DateTimeHelper.convertNodeTSToDate(resumeExperience.startingDate, LanguageHelper.getLanguageString(null, 'globalDateFormat')))}
-
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailEndingDate'), endingDate)}
-
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailDetails'), resumeExperience.details)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailCompany'), resumeExperience.company, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailPosition'), resumeExperience.position, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailLocation'), resumeExperience.location, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailStartingDate'), DateTimeHelper.convertNodeTSToDate(resumeExperience.startingDate, LanguageHelper.getLanguageString(null, 'globalDateFormat')), emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailEndingDate'), endingDate, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailDetails'), resumeExperience.details, emailType)}
    `
 
       htmlOutput += `<br/>`
@@ -162,32 +163,73 @@ export class JobsEmailManager extends TransactionalEmailManager {
 
   }
 
-  public generateEducations(resumeEducations: IResumeEducation[]) {
+  private _generateEducations(resumeEducations: IResumeEducation[], emailType: EmailType) {
+
+    if (resumeEducations.length === 0) {
+      return LanguageHelper.getLanguageString('post', 'jobsEmailNoData')
+    }
 
     let htmlOutput = "";
 
     for (const resumeEducation of resumeEducations) {
 
-
       const endingDate = resumeEducation.inProgress ? LanguageHelper.getLanguageString('post', 'jobsEmailInProgress') : DateTimeHelper.convertNodeTSToDate(resumeEducation.endingDate, LanguageHelper.getLanguageString(null, 'globalDateFormat'))
 
-
-
       htmlOutput += `
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailEducationTitle'), resumeEducation.title)}
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailInstituition'), resumeEducation.institution)}
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailLocation'), resumeEducation.location)}
-      ${this.generateResumeItem(LanguageHelper.getLanguageString("post", 'jobsEmailStartingDate'), DateTimeHelper.convertNodeTSToDate(resumeEducation.startingDate, LanguageHelper.getLanguageString(null, 'globalDateFormat')))}
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailEndingDate'), endingDate)}
-      ${this.generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailDetails'), resumeEducation.details)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobEmailEducationTitleString'), resumeEducation.title, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailInstitution'), resumeEducation.institution, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailLocation'), resumeEducation.location, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString("post", 'jobsEmailStartingDate'), DateTimeHelper.convertNodeTSToDate(resumeEducation.startingDate, LanguageHelper.getLanguageString(null, 'globalDateFormat')), emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailEndingDate'), endingDate, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailDetails'), resumeEducation.details, emailType)}
   `
 
-      htmlOutput += `<br/>`
+      htmlOutput += emailType === EmailType.Html ? `<br/>` : `\n`
     }
 
     return htmlOutput
 
 
+  }
+
+  private _generateAwards(resumeAwards: IResumeAward[], emailType: EmailType) {
+    if (resumeAwards.length === 0) {
+      return LanguageHelper.getLanguageString('post', 'jobsEmailNoData')
+    }
+
+    let htmlOutput = "";
+
+    for (const resumeAward of resumeAwards) {
+
+      htmlOutput += `
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobEmailEducationTitleString'), resumeAward.title, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailDescription'), resumeAward.description, emailType)}
+  `
+      htmlOutput += emailType === EmailType.Html ? `<br/>` : `\n`
+    }
+
+    return htmlOutput
+  }
+
+  private _generateAdditionalInfos(resumeAdditionalInfos: IResumeAdditionalInfo[], emailType: EmailType) {
+
+    if (resumeAdditionalInfos.length === 0) {
+      return LanguageHelper.getLanguageString('post', 'jobsEmailNoData')
+    }
+
+    let htmlOutput = "";
+
+    for (const resumeAdditionalInfo of resumeAdditionalInfos) {
+
+      htmlOutput += `
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobEmailEducationTitleString'), resumeAdditionalInfo.title, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobEmailEducationTitleString'), resumeAdditionalInfo.title, emailType)}
+      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailDescription'), resumeAdditionalInfo.description, emailType)}
+  `
+      htmlOutput += emailType === EmailType.Html ? `<br/>` : `\n`
+    }
+
+    return htmlOutput
   }
 
 

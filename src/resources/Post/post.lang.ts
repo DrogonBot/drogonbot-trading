@@ -71,7 +71,7 @@ export const strings = {
     eng: "Professional Experience",
     ptBr: "Experiência Profissional"
   },
-  jobsEmailEducationTitle: {
+  jobEmailEducationTitleString: {
     eng: "Title",
     ptBr: "Título"
   },
@@ -91,7 +91,7 @@ export const strings = {
     eng: "Details",
     ptBr: "Detalhes"
   },
-  jobsEmailInstituition: {
+  jobsEmailInstitution: {
     eng: "Instituition",
     ptBr: "Instituição"
   },
@@ -102,7 +102,27 @@ export const strings = {
   jobsEmailPosition: {
     eng: "Position",
     ptBr: "Cargo"
+  },
+  jobsEmailDescription: {
+    eng: "Description",
+    ptBr: "Descrição"
+  },
+  jobsEmailAwards: {
+    eng: "Awards",
+    ptBr: "Prêmios"
+  },
+  jobsEmailAdditionalInfos: {
+    eng: "Additional Infos",
+    ptBr: "Informações adicionais"
+  },
+
+  jobsEmailNoData: {
+    eng: "No Data",
+    ptBr: "Sem dados"
   }
+
+
+
 
 
 };

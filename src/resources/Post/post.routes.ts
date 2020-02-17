@@ -4,7 +4,6 @@ import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
-import { ISectorModel, Sector } from '../Sector/sector.model';
 import { User } from '../User/user.model';
 import { IPostApplication, IPostApplicationStatus, Post } from './post.model';
 
@@ -185,19 +184,12 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
   const { images } = req.body
 
 
-
-
-  const sector: ISectorModel | null = await Sector.findOne({ _id: req.body.sectorId })
-
-
-
   try {
 
     const newPost = new Post({
       ...req.body,
       ownerId: user._id,
       benefits: req.body.benefits,
-      sector,
       images: []
     })
 

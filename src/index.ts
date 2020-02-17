@@ -9,8 +9,8 @@ import path from 'path';
 import socketio from 'socket.io';
 
 import { ENV, serverConfig } from './constants/env';
-import { AvailableLanguages } from './constants/server.constants';
-import { JobsEmailManager } from './emails/jobs.email';
+import { EnvType } from './constants/server.constants';
+import { JobsCron } from './cron_jobs/jobs.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
 import { countryRouter } from './resources/Country/country.routes';
@@ -62,7 +62,13 @@ MixpanelHelper.init();
 
 // MainCron.sampleCron();
 // RetentionCron.inactiveUserReminder()
-// JobsCron.submitApplications()
+
+switch (ENV) {
+  case EnvType.Production: // Let's turn on our cron job in production only!
+    JobsCron.submitApplications()
+    break;
+}
+
 
 /*#############################################################|
 |  >>> MIDDLEWARES
@@ -147,12 +153,6 @@ const seedDb = async () => {
 seedDb();
 
 
-// Test
 
-const jobsEmailManager = new JobsEmailManager();
 
-const companyLanguage = AvailableLanguages.eng
-
-jobsEmailManager.sendResume('emprego.urgente.app@gmail.com', 'jfurtado141@gmail.com', 'Test resume', 'resume', "5e409e31e141a7009c8bad9a",
-  "5e48db1359598a0236644dbc", companyLanguage)
 
