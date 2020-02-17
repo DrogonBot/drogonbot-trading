@@ -17,4 +17,9 @@ export const globalStrings = {
   globalFileUploadError: {
     eng: 'An error occurred while trying to upload your files. Please contact the support.'
   },
+
+  globalDateFormat: {
+    eng: "MM/DD/YYYY",
+    ptBr: "DD/MM/YYYY"
+  }
 };

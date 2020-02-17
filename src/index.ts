@@ -9,7 +9,8 @@ import path from 'path';
 import socketio from 'socket.io';
 
 import { ENV, serverConfig } from './constants/env';
-import { RetentionCron } from './cron_jobs/retention.cron';
+import { AvailableLanguages } from './constants/server.constants';
+import { JobsEmailManager } from './emails/jobs.email';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
 import { countryRouter } from './resources/Country/country.routes';
@@ -55,10 +56,13 @@ app.use(express.json()); // << THIS IS REQUIRED TO EXPRESS PARSING JSON DATA
 console.log('Initializing mixpanel...');
 MixpanelHelper.init();
 
+/*#############################################################|
+|  >>> CRON JOBS
+*##############################################################*/
 
-// CRON JOBS ========================================
 // MainCron.sampleCron();
-RetentionCron.inactiveUserReminder()
+// RetentionCron.inactiveUserReminder()
+// JobsCron.submitApplications()
 
 /*#############################################################|
 |  >>> MIDDLEWARES
@@ -141,3 +145,14 @@ const seedDb = async () => {
   await SectorSeeder.seed();
 }
 seedDb();
+
+
+// Test
+
+const jobsEmailManager = new JobsEmailManager();
+
+const companyLanguage = AvailableLanguages.eng
+
+jobsEmailManager.sendResume('emprego.urgente.app@gmail.com', 'jfurtado141@gmail.com', 'Test resume', 'resume', "5e409e31e141a7009c8bad9a",
+  "5e48db1359598a0236644dbc", companyLanguage)
+

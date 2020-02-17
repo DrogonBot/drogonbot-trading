@@ -2,6 +2,7 @@ import { ENV, serverConfig } from '../constants/env';
 import { EnvType } from '../constants/server.constants';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
+
 export class AccountEmailManager extends TransactionalEmailManager {
   public newAccount(
     to: string,

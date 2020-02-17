@@ -27,6 +27,83 @@ export const strings = {
   postApplicationError: {
     eng: "Error while applying to this job.",
     ptBr: 'Ocorreu um erro ao tentar aplicar para esta vaga.'
+  },
+
+  // JOBS EMAIL ========================================
+
+  jobsEmailTitle: {
+    eng: 'New Application for {{jobName}}',
+    ptBr: 'Currículo para {{jobName}}'
+  },
+  jobsEmailDearHiringManager: {
+    eng: "Dear Hiring Manager,",
+    ptBr: "Prezado recrutador,",
+  },
+  jobsEmailMyNameIs: {
+    eng: "My name is {{userName}} and I'm writing this email to thank you for taking the time to consider me for the position of {{jobName}}. I am very excited about the possibility of being a part of your organization. Utilizing my skills and abilities to benefit your company is an exciting possibility for me.",
+    ptBr: "Meu nome é {{userName}} e estou escrevendo este e-mail para agradecer seu tempo para me considerar na posição de {{jobName}}. Estou muito animado com a possibilidade de fazer parte da sua organização, visto que acredito poder utilizar minhas habilidades para beneficiar sua empresa."
+  },
+  jobsEmailHeresMyResume: {
+    eng: "Here's my resume. Please, send a message to {{userPhone}} if you have any questions.",
+    ptBr: "Aqui está o meu currículo. Por favor, envie uma mensagem para {{userPhone}} caso tenha alguma dúvida."
+  },
+  jobsEmailHighlights: {
+    eng: "Highlights",
+    ptBr: "Objetivo Profissional"
+  },
+  jobsEmailLocation: {
+    eng: "Location",
+    ptBr: "Localização"
+  },
+  jobsEmailAddress: {
+    eng: "Address",
+    ptBr: "Endereço"
+  },
+  jobsEmailPhone: {
+    eng: "Phone",
+    ptBr: "Telefone"
+  },
+  jobsEmailEducation: {
+    eng: "Education",
+    ptBr: "Formação"
+  },
+  jobsEmailExperiences: {
+    eng: "Professional Experience",
+    ptBr: "Experiência Profissional"
+  },
+  jobsEmailEducationTitle: {
+    eng: "Title",
+    ptBr: "Título"
+  },
+  jobsEmailStartingDate: {
+    eng: "Starting Date",
+    ptBr: "Data de início"
+  },
+  jobsEmailEndingDate: {
+    eng: "Ending Date",
+    ptBr: "Data de Término"
+  },
+  jobsEmailInProgress: {
+    eng: "In progress",
+    ptBr: "Em andamento"
+  },
+  jobsEmailDetails: {
+    eng: "Details",
+    ptBr: "Detalhes"
+  },
+  jobsEmailInstituition: {
+    eng: "Instituition",
+    ptBr: "Instituição"
+  },
+  jobsEmailCompany: {
+    eng: "Company",
+    ptBr: "Empresa"
+  },
+  jobsEmailPosition: {
+    eng: "Position",
+    ptBr: "Cargo"
   }
+
+
 };
 
