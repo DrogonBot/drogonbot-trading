@@ -62,7 +62,7 @@ export interface IUserModel extends Model<IUser> {
 
 // Statics ========================================
 
-const userSchema: Schema = new Schema(
+export const userSchema: Schema = new Schema(
   {
     name: {
       type: String,

@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
 
+
 export enum PostCategory {
   DefaultJob,
   Internship,
@@ -27,7 +28,7 @@ export interface IPostApplication {
 }
 
 export interface IPost {
-  ownerId: string,
+
   category: string,
   benefits: string[],
   country: string;
@@ -47,8 +48,7 @@ export interface IPost {
   likes: number;
   usersWhoLiked: string[],
   applications: IPostApplication[]
-
-
+  owner: Object
 }
 
 export interface IPostModel extends IPost, Document {
@@ -56,9 +56,14 @@ export interface IPostModel extends IPost, Document {
 }
 
 const postSchema = new mongoose.Schema({
-  ownerId: {
+
+
+  // Explanation about how nested references/population works: https://www.youtube.com/watch?v=kjKR0q8EBKE
+  // Note that on the post find route, we'll have to run a .populate('owner') to populate this field properly, otherwise just the Id will be returned!
+
+  owner: {
     type: ObjectId,
-    required: true
+    ref: 'User'
   },
   position: {
     type: String,
@@ -148,7 +153,7 @@ const postSchema = new mongoose.Schema({
       resumeId: String,
       status: String
     }
-  ]
+  ],
 
 }, {
   timestamps: true

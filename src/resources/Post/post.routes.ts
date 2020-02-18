@@ -4,6 +4,7 @@ import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
+import { Resume } from '../Resume/resume.model';
 import { User } from '../User/user.model';
 import { IPostApplication, IPostApplicationStatus, Post } from './post.model';
 
@@ -20,7 +21,7 @@ postRouter.get('/post', userAuthMiddleware, async (req, res) => {
     // if user specified an Id, its because he wants a particular post data (not all)
 
     try {
-      const foundPost = await Post.findOne({ _id: id })
+      const foundPost = await Post.findOne({ _id: id }).populate('owner')
 
       if (!foundPost) {
         return res.status(200).send({
@@ -42,7 +43,7 @@ postRouter.get('/post', userAuthMiddleware, async (req, res) => {
 
   // if no id was specified, return all posts
 
-  const post = await Post.find({})
+  const post = await Post.find({}).populate('owner')
 
   return res.status(200).send(post)
 
@@ -133,6 +134,28 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
       })
     }
 
+    // check if the resume exists
+
+    const resume = await Resume.findOne({ _id: resumeId });
+
+    if (!resume) {
+      return res.status(200).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('post', 'postResumeDoesNotExists')
+      })
+    }
+
+    // check if user already applied to this position
+
+    if (appliedToPost.applications.some((application) => application.resumeId === resumeId)) {
+      return res.status(200).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('post', 'postApplicationUserAlreadyApplied')
+      })
+    }
+
+
+
     const newApplication: IPostApplication = {
       resumeId,
       status: IPostApplicationStatus.Pending
@@ -144,9 +167,6 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
     ]
 
     await appliedToPost.save()
-
-
-
 
     return res.status(200).send(newApplication)
 
@@ -188,7 +208,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
     const newPost = new Post({
       ...req.body,
-      ownerId: user._id,
+      owner: user,
       benefits: req.body.benefits,
       images: []
     })
@@ -313,7 +333,7 @@ postRouter.delete('/post/:id', userAuthMiddleware, async (req, res) => {
   // check if this user is really the owner of this post
 
 
-  if (!post.ownerId.equals(user._id)) {
+  if (!(post.owner._id).equals(user._id)) {
     return res.status(400).send({
       status: 'error',
       message: LanguageHelper.getLanguageString('post', 'postNotOwner')

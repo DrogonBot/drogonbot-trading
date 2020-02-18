@@ -28,6 +28,15 @@ export const strings = {
     eng: "Error while applying to this job.",
     ptBr: 'Ocorreu um erro ao tentar aplicar para esta vaga.'
   },
+  postApplicationUserAlreadyApplied: {
+    eng: "You already applied for this position!",
+    ptBr: "Você já aplicou para esta vaga!"
+  },
+
+  postResumeDoesNotExists: {
+    eng: "The submitted resume is invalid. Please create and select a new one.",
+    ptBr: "O currículo enviado é inválido. Por favor, crie e selecione um novo."
+  },
 
   // JOBS EMAIL ========================================
 
