@@ -89,7 +89,7 @@ export const userSchema: Schema = new Schema(
     },
     email: {
       type: String,
-      unique: true,
+
       lowercase: true,
       trim: true
     },

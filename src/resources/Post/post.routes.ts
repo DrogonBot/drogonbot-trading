@@ -14,7 +14,29 @@ const postRouter = new Router();
 
 postRouter.get('/post', userAuthMiddleware, async (req, res) => {
 
-  const { id } = req.query;
+  const { id, keyword } = req.query;
+
+
+  if (keyword) {
+    // if a keyword is passed, the user wants us to search through our posts.
+
+    const keywordRegex = { $regex: keyword, $options: "i" }
+
+    const searchPosts = await Post.find({
+      $or: [{ position: keywordRegex }, { title: keywordRegex }]
+    }).populate('owner')
+
+    if (!searchPosts) {
+      return res.status(200).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('post', 'postNotFound')
+      })
+    }
+
+    return res.status(200).send(searchPosts)
+
+  }
+
 
   if (id) {
 
@@ -208,7 +230,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
     const newPost = new Post({
       ...req.body,
-      owner: user,
+      owner: user._id,
       benefits: req.body.benefits,
       images: []
     })
@@ -262,7 +284,11 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
     if (hasError) {
 
+
       for (const result of uploadedFileResult) {
+
+        console.log(uploadedFileResult);
+
         switch (result.errorType) {
           case UploadOutputResult.UnallowedExtension:
             return res.status(400).send({

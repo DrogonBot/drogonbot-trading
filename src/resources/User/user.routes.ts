@@ -139,6 +139,20 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
 
       let user;
 
+
+      const emailAlreadyExists = await User.findOne({ email: payload.email })
+
+      if (emailAlreadyExists) {
+        return res.status(400).send({
+          status: "error",
+          message: LanguageHelper.getLanguageString(
+            "user",
+            "userEmailAlreadyRegistered"
+          )
+        });
+      }
+
+
       try {
         user = new User({
           name: payload.name,
@@ -227,6 +241,20 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
     console.log("User not found... creating new one!");
 
     let user;
+
+
+    const emailAlreadyExists = await User.findOne({ email: payload.email })
+
+    if (emailAlreadyExists) {
+      return res.status(400).send({
+        status: "error",
+        message: LanguageHelper.getLanguageString(
+          "user",
+          "userEmailAlreadyRegistered"
+        )
+      });
+    }
+
 
     try {
       user = new User({
@@ -391,8 +419,22 @@ userRouter.post("/users", async (req, res) => {
       });
     }
 
+
     // force lowercase and trim
     const preparedEmail = TextHelper.stringPrepare(email);
+
+    const emailAlreadyExists = await User.findOne({ email: preparedEmail })
+
+    if (emailAlreadyExists) {
+      return res.status(400).send({
+        status: "error",
+        message: LanguageHelper.getLanguageString(
+          "user",
+          "userEmailAlreadyRegistered"
+        )
+      });
+    }
+
 
     const user = new User({
       name,
