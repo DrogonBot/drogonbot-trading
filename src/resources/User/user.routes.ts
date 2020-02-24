@@ -123,6 +123,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
     });
     const payload: any = ticket.getPayload();
 
+
     // const userid = payload.sub;
     // If request specified a G Suite domain:
     // const domain = payload['hd'];
@@ -132,6 +133,8 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
       email: payload.email
     });
 
+
+
     if (!foundUser) {
       // if it doesnt exist in our database, create new one.
 
@@ -140,16 +143,21 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
       let user;
 
 
-      const emailAlreadyExists = await User.findOne({ email: payload.email })
+      try {
+        const emailAlreadyExists = await User.findOne({ email: payload.email })
 
-      if (emailAlreadyExists) {
-        return res.status(400).send({
-          status: "error",
-          message: LanguageHelper.getLanguageString(
-            "user",
-            "userEmailAlreadyRegistered"
-          )
-        });
+        if (emailAlreadyExists) {
+          return res.status(400).send({
+            status: "error",
+            message: LanguageHelper.getLanguageString(
+              "user",
+              "userEmailAlreadyRegistered"
+            )
+          });
+        }
+      }
+      catch (error) {
+        console.error(error);
       }
 
 
@@ -244,16 +252,21 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
     let user;
 
 
-    const emailAlreadyExists = await User.findOne({ email: payload.email })
+    try {
+      const emailAlreadyExists = await User.findOne({ email: payload.email })
 
-    if (emailAlreadyExists) {
-      return res.status(400).send({
-        status: "error",
-        message: LanguageHelper.getLanguageString(
-          "user",
-          "userEmailAlreadyRegistered"
-        )
-      });
+      if (emailAlreadyExists) {
+        return res.status(400).send({
+          status: "error",
+          message: LanguageHelper.getLanguageString(
+            "user",
+            "userEmailAlreadyRegistered"
+          )
+        });
+      }
+    }
+    catch (error) {
+      console.error(error);
     }
 
 

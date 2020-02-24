@@ -12,8 +12,7 @@ export class JobsCron {
 
     // Send one resume every 10 minutes only (*/10 * * * *)
 
-    // cron.schedule("*/10 * * * *", async () => {
-    cron.schedule("* * * * *", async () => {
+    cron.schedule("*/10 * * * *", async () => {
 
       // find all posts with pending application status (email not submitted yet!)
       const jobPosts = await Post.find({
