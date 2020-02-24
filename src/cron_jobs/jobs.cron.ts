@@ -12,7 +12,8 @@ export class JobsCron {
 
     // Send one resume every 10 minutes only (*/10 * * * *)
 
-    cron.schedule("*/10 * * * *", async () => {
+    // cron.schedule("*/10 * * * *", async () => {
+    cron.schedule("* * * * *", async () => {
 
       // find all posts with pending application status (email not submitted yet!)
       const jobPosts = await Post.find({
@@ -55,11 +56,11 @@ export class JobsCron {
               const jobsEmailManager = new JobsEmailManager();
 
               await jobsEmailManager.sendResume(user.email, LanguageHelper.getLanguageString('post', 'jobsEmailTitle', {
-                jobName: post.position
+                jobName: application.jobRole
               }), 'resume', resume,
-                post, user)
+                post, user, application)
 
-              console.log('Email sent! Updating post application status to DONE');
+              // console.log('Email sent! Updating post application status to DONE');
 
               // update application that we just sent status to done
 

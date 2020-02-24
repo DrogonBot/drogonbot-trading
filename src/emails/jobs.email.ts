@@ -1,4 +1,4 @@
-import { IPost } from '../resources/Post/post.model';
+import { IPost, IPostApplication } from '../resources/Post/post.model';
 import {
   IResume,
   IResumeAdditionalInfo,
@@ -13,14 +13,14 @@ import { EmailType, TransactionalEmailManager } from './TransactionalEmailManage
 
 export class JobsEmailManager extends TransactionalEmailManager {
 
-  private _generateEmailBody = (template: string, emailType: EmailType, resume: IResume, user: IUser, post: IPost) => {
+  private _generateEmailBody = (template: string, emailType: EmailType, resume: IResume, user: IUser, application: IPostApplication) => {
 
     const resumeEducations = this._generateEducations(resume.educations, emailType)
     const resumeExperiences = this._generateExperiences(resume.experiences, emailType)
     const resumeAwards = this._generateAwards(resume.awards, emailType)
     const resumeAdditionalInfos = this._generateAdditionalInfos(resume.additionalInfos, emailType)
 
-    const jobName = post.position;
+    const jobName = application.jobRole
 
     const customVars = {
       jobsEmailTitle: LanguageHelper.getLanguageString('post', 'jobsEmailTitle', {
@@ -73,7 +73,8 @@ export class JobsEmailManager extends TransactionalEmailManager {
     template: string,
     resume: IResume,
     post: IPost,
-    user: IUser
+    user: IUser,
+    application: IPostApplication
   ) => {
 
     console.log('Sending resume...');
@@ -82,10 +83,13 @@ export class JobsEmailManager extends TransactionalEmailManager {
 
     try {
 
-      const htmlEmail = this._generateEmailBody(template, EmailType.Html, resume, user, post)
-      const textEmail = this._generateEmailBody(template, EmailType.Text, resume, user, post)
+      const htmlEmail = this._generateEmailBody(template, EmailType.Html, resume, user, application)
+      const textEmail = this._generateEmailBody(template, EmailType.Text, resume, user, application)
 
       console.log(`Sending resume to ${post.email} - from ${from}`);
+
+      console.log(htmlEmail);
+
 
       this.sendGrid.send({
         to: post.email,

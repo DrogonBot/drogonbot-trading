@@ -9,7 +9,7 @@ import { stagServerConfig } from './serverConfig.stag';
 
 
 let serverConfig: any;
-export const ENV: string = EnvType.Development; // Select which environment to use here
+export const ENV: string = EnvType.Production; // Select which environment to use here
 
 switch (ENV) {
   case EnvType.Development:

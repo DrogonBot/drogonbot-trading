@@ -1,8 +1,6 @@
 import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
-
-
 export enum PostCategory {
   DefaultJob,
   Internship,
@@ -17,22 +15,22 @@ export enum PostBenefits {
 }
 
 export enum IPostApplicationStatus {
-
   Pending = 'Pending',
   Done = 'Done'
 }
 
 export interface IPostApplication {
   resumeId: string,
-  status: IPostApplicationStatus
+  status: IPostApplicationStatus,
+  jobRole: string
 }
 
 export interface IPost {
-
+  sector: string,
   category: string,
   benefits: string[],
   country: string;
-  position: string,
+  jobRoles: string[],
   stateCode: string,
   city: string,
   title: string,
@@ -44,7 +42,6 @@ export interface IPost {
   perYearSalary: string;
   perHourSalary: string;
   images: Array<String | undefined>,
-  sector: string,
   likes: number;
   usersWhoLiked: string[],
   applications: IPostApplication[]
@@ -60,23 +57,25 @@ const postSchema = new mongoose.Schema({
 
   // Explanation about how nested references/population works: https://www.youtube.com/watch?v=kjKR0q8EBKE
   // Note that on the post find route, we'll have to run a .populate('owner') to populate this field properly, otherwise just the Id will be returned!
-
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  text: {
+    type: String,
+    required: true,
+    trim: true
+  },
   owner: {
     type: ObjectId,
-    ref: 'User'
-  },
-  position: {
-    type: String,
+    ref: 'User',
     required: true
   },
-  category: {
-    type: PostCategory,
-    required: true,
-    default: PostCategory.DefaultJob
-  },
-  benefits: [
+  jobRoles: [
     {
-      type: String
+      type: String,
+      required: true
     }
   ],
   country: {
@@ -94,34 +93,39 @@ const postSchema = new mongoose.Schema({
     trim: true,
     required: true
   },
-
-  title: {
+  email: {
     type: String,
-    required: true,
     trim: true,
-
+    required: true
   },
-  text: {
+  sector: {
     type: String,
-    required: true,
-    trim: true
+    required: true
   },
+  perMonthSalary: {
+    type: String,
+    trim: true,
+  },
+
+  category: {
+    type: PostCategory,
+    default: PostCategory.DefaultJob
+  },
+  benefits: [
+    {
+      type: String
+    }
+  ],
   externalUrl: {
     type: String,
     trim: true
   },
-  email: {
-    type: String,
-    trim: true
-  },
+
   source: {
     type: String,
     trim: true
   },
-  perMonthSalary: {
-    type: String,
-    trim: true
-  },
+
   perYearSalary: {
     type: String,
     trim: true
@@ -136,9 +140,7 @@ const postSchema = new mongoose.Schema({
       default: null
     }
   ],
-  sector: {
-    type: String
-  },
+
   likes: {
     type: Number,
     default: 0
@@ -150,8 +152,18 @@ const postSchema = new mongoose.Schema({
   ],
   applications: [
     {
-      resumeId: String,
-      status: String
+      resumeId: {
+        type: String,
+        required: true
+      },
+      status: {
+        type: String,
+        required: true
+      },
+      jobRole: {
+        type: String,
+        required: true
+      }
     }
   ],
 

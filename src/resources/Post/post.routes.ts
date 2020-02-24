@@ -141,7 +141,7 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
 
   const { user } = req;
 
-  const { resumeId, postId } = req.body;
+  const { resumeId, postId, jobRole } = req.body;
 
 
 
@@ -180,7 +180,8 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
 
     const newApplication: IPostApplication = {
       resumeId,
-      status: IPostApplicationStatus.Pending
+      status: IPostApplicationStatus.Pending,
+      jobRole
     }
 
     appliedToPost.applications = [
@@ -191,7 +192,6 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
     await appliedToPost.save()
 
     return res.status(200).send(newApplication)
-
 
   }
   catch (error) {
