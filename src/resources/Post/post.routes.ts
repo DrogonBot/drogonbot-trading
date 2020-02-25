@@ -230,6 +230,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
     const newPost = new Post({
       ...req.body,
+      email: req.body.email.toLowerCase(),
       owner: user._id,
       benefits: req.body.benefits,
       images: []

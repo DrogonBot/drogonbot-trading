@@ -2,16 +2,22 @@ import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
 export enum PostCategory {
-  DefaultJob,
-  Internship,
-  Temporary
+  Job = "Job",
+  Internship = "Internship",
+  Temporary = "Temporary"
+}
+
+export enum PostPositionType {
+  FullTime = "Full-time",
+  PartTime = "Part-time",
+  Custom = "Custom"
 }
 
 export enum PostBenefits {
-  Meal,
-  FoodTicket,
-  Transportation,
-  HealthCare
+  Meal = "Meal",
+  FoodTicket = "FoodTicket",
+  Transportation = "Transportation",
+  HealthCare = "HealthCare"
 }
 
 export enum IPostApplicationStatus {
@@ -28,6 +34,7 @@ export interface IPostApplication {
 export interface IPost {
   sector: string,
   category: string,
+  positionType: PostPositionType
   benefits: string[],
   country: string;
   jobRoles: string[],
@@ -38,9 +45,9 @@ export interface IPost {
   externalUrl: string,
   email: string;
   source: string,
-  perMonthSalary: string;
-  perYearSalary: string;
-  perHourSalary: string;
+  perMonthSalary: number;
+  perYearSalary: number;
+  perHourSalary: number;
   images: Array<String | undefined>,
   likes: number;
   usersWhoLiked: string[],
@@ -71,6 +78,11 @@ const postSchema = new mongoose.Schema({
     type: ObjectId,
     ref: 'User',
     required: true
+  },
+  positionType: {
+    type: PostPositionType,
+    default: PostPositionType.FullTime,
+    required: true,
   },
   jobRoles: [
     {
@@ -109,7 +121,7 @@ const postSchema = new mongoose.Schema({
 
   category: {
     type: PostCategory,
-    default: PostCategory.DefaultJob
+    default: PostCategory.Job
   },
   benefits: [
     {
