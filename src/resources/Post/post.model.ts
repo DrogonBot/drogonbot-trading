@@ -41,13 +41,13 @@ export interface IPost {
   stateCode: string,
   city: string,
   title: string,
-  text: string,
+  content: string,
   externalUrl: string,
   email: string;
   source: string,
-  perMonthSalary: number;
-  perYearSalary: number;
-  perHourSalary: number;
+  monthlySalary: number;
+  yearlySalary: number;
+  hourlySalary: number;
   images: Array<String | undefined>,
   likes: number;
   usersWhoLiked: string[],
@@ -69,9 +69,8 @@ const postSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  text: {
+  content: {
     type: String,
-    required: true,
     trim: true
   },
   owner: {
@@ -88,6 +87,10 @@ const postSchema = new mongoose.Schema({
     type: [String],
     required: true,
     validate: {
+
+      // TODO: make required work.
+      // Solution as described here: https://stackoverflow.com/questions/36860342/mongoose-make-array-required
+      // this validation only happens because of this validator function below. the required attribute above doesn't seems to work
       validator(array) {
         // validate that we have at least one element and all of them are strings
 
@@ -127,10 +130,7 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  perMonthSalary: {
-    type: String,
-    trim: true,
-  },
+
 
   category: {
     type: PostCategory,
@@ -151,11 +151,16 @@ const postSchema = new mongoose.Schema({
     trim: true
   },
 
-  perYearSalary: {
-    type: String,
+  monthlySalary: {
+    type: Number,
+    trim: true,
+  },
+
+  yearlySalary: {
+    type: Number,
     trim: true
   },
-  perHourSalary: {
+  hourlySalary: {
     type: Number,
     trim: true,
   },

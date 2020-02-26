@@ -222,7 +222,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
   const { user } = req;
 
-  const { images, email, phone } = req.body
+  const { images, email, phone, } = req.body
 
 
   if (!email && !phone) {
@@ -232,10 +232,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
     })
   }
 
-
   // Post creation ========================================
-
-
 
   try {
 
@@ -246,6 +243,8 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
       benefits: req.body.benefits,
       images: []
     })
+
+
 
     if (email) {
       newPost.email = newPost.email.toLowerCase()
