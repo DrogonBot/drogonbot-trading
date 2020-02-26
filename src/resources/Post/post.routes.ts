@@ -222,19 +222,34 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
   const { user } = req;
 
+  const { images, email, phone } = req.body
 
-  const { images } = req.body
+
+  if (!email && !phone) {
+    return res.status(400).send({
+      status: 'error',
+      message: LanguageHelper.getLanguageString('post', 'postEmailAndPhoneNotFound')
+    })
+  }
+
+
+  // Post creation ========================================
+
 
 
   try {
 
     const newPost = new Post({
       ...req.body,
-      email: req.body.email.toLowerCase(),
+
       owner: user._id,
       benefits: req.body.benefits,
       images: []
     })
+
+    if (email) {
+      newPost.email = newPost.email.toLowerCase()
+    }
 
     await newPost.save();
 

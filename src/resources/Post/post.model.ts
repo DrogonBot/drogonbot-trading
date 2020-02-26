@@ -84,12 +84,21 @@ const postSchema = new mongoose.Schema({
     default: PostPositionType.FullTime,
     required: true,
   },
-  jobRoles: [
-    {
-      type: String,
-      required: true
+  jobRoles: {
+    type: [String],
+    required: true,
+    validate: {
+      validator(array) {
+        // validate that we have at least one element and all of them are strings
+
+        if (array.length === 0) {
+          return false
+        }
+
+        return array.every((v) => typeof v === 'string');
+      }
     }
-  ],
+  },
   country: {
     type: String,
     trim: true,
@@ -105,10 +114,14 @@ const postSchema = new mongoose.Schema({
     trim: true,
     required: true
   },
+  // At least an email OR a phone should be present!
   email: {
     type: String,
     trim: true,
-    required: true
+  },
+  phone: {
+    type: String,
+    trim: true
   },
   sector: {
     type: String,

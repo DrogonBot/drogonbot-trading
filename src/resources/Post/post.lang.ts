@@ -32,6 +32,10 @@ export const strings = {
     eng: "You already applied for this position!",
     ptBr: "Você já aplicou para esta vaga!"
   },
+  postEmailAndPhoneNotFound: {
+    eng: 'At least an e-mail or a phone should be submitted.',
+    ptBr: 'Ao menos um e-mail ou telefone deve ser enviado.'
+  },
 
   postResumeDoesNotExists: {
     eng: "The submitted resume is invalid. Please create and select a new one.",
