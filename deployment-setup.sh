@@ -34,4 +34,4 @@ echo "nginx-proxy configured"
 echo "REMEMBER TO CONFIGURE YOUR SUBDOMAINS DNS!"
 
 # start containers
-docker-compose up
+docker-compose up --build
