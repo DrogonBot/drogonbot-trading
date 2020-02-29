@@ -8,6 +8,7 @@ printColor () {
   printf "${YELLOW}$1${NC}\n"
 }
 
+printColor "IMPORTANT: Make sure you have docker and docker-compose installed on Ubuntu 18.04. Check for 1-click droplets on Digital Ocean"
 printColor "Creating swap file (needed so our docker containers can run smoothly)"
 printColor "Reference: https://linuxize.com/post/create-a-linux-swap-file/"
 
@@ -44,7 +45,7 @@ sudo yarn install
 
 cd admin
 sudo yarn install
-npm run build # build react production ready files
+sudo npm run build # build react production ready files
 cd ..
 
 
