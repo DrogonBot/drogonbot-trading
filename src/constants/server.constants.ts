@@ -12,5 +12,6 @@ export enum AvailableLanguages {
 }
 
 export const APP_NAME = "Emprego Urgente";
-export const SUPPORT_EMAIL = "joaopaulofurtado@live.com";
+export const SUPPORT_EMAIL = "admin@empregourgente.com";
 export const LANGUAGE: string = AvailableLanguages.ptBr
+
