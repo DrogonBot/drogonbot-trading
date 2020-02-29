@@ -30,7 +30,7 @@ services:
       context: ./admin
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "3001:3001"
     volumes:
       - ./admin:/usr/src/app
     depends_on:

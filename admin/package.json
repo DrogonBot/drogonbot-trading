@@ -21,11 +21,10 @@
     "redux": "^4.0.4",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
-    "serve": "^11.3.0",
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "start": "npm run build && serve -s build",
+    "start": "npm install -g serve && serve -s build -l 3001",
     "dev": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
