@@ -12,7 +12,7 @@ sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
-sudo /etc/fstab >> /swapfile swap swap defaults 0 0
+echo /swapfile swap swap defaults 0 0 | sudo /etc/fstab
 
 printf "${YELLOW}Showing swap${NC} - Obs.: The commands above will fail if you already swapped your memory\n"
 sudo swapon --show
