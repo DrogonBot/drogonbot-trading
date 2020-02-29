@@ -4,8 +4,12 @@
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-printf "${YELLOW}Creating swap file (needed so our docker containers can run smoothly)${NC}\n"
-printf "${YELLOW}Reference: https://linuxize.com/post/create-a-linux-swap-file/${NC}\n"
+printColor () {
+  printf "${YELLOW}$1${NC}\n"
+}
+
+printColor "Creating swap file (needed so our docker containers can run smoothly)"
+printColor "Reference: https://linuxize.com/post/create-a-linux-swap-file/"
 
 sudo fallocate -l 1G /swapfile
 sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576
@@ -15,16 +19,16 @@ sudo swapon /swapfile
 
 sudo bash -c 'echo /swapfile swap swap defaults 0 0 >> /etc/fstab'
 
-printf "${YELLOW}Showing swap${NC} - Obs.: The commands above will fail if you already swapped your memory\n"
+printColor "Showing swap  - Obs.: The commands above will fail if you already swapped your memory"
 sudo swapon --show
-printf "${YELLOW}Setting swappiness to 80 ${NC}\n"
+printColor "Setting swappiness to 80"
 sudo sysctl vm.swappiness=80
 
-printf "${YELLOW}Adding current user to docker group (It will avoid having to type sudo on docker-compose)${NC}\n"
+printColor "Adding current user to docker group (It will avoid having to type sudo on docker-compose)"
 sudo usermod -aG docker $USER
 
 # install node, npm and yarn
-printf "${YELLOW}Installing NodeJS, npm and yarn${NC}\n"
+printColor "Installing NodeJS, npm and yarn"
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt install nodejs
 
@@ -44,8 +48,8 @@ npm run build # build react production ready files
 cd ..
 
 
-printf "${YELLOW}Configuring nginx-proxy networks${NC}\n"
-printf "${YELLOW}Reference: https://blog.ssdnodes.com/blog/host-multiple-ssl-websites-docker-nginx/${NC}\n"
+printColor "CONFIGURING NGINX PROXY-NETWORKS"
+printColor "Reference: https://blog.ssdnodes.com/blog/host-multiple-ssl-websites-docker-nginx/"
 
 # configure nginx-proxy
 cd nginx-proxy
@@ -54,8 +58,8 @@ docker-compose up -d
 cd ..
 
 
-printf "${YELLOW}nginx-proxy configured! This saved your probably some years of your precious life.${NC}\n"
-printf "${YELLOW}REMEMBER TO CONFIGURE YOUR SUBDOMAINS DNS IN YOUR VPS PROVIDER!${NC}\n"
+printColor "nginx-proxy configured! This saved your probably some years of your precious life."
+printColor "REMEMBER TO CONFIGURE YOUR SUBDOMAINS DNS IN YOUR VPS PROVIDER! Check the tutorial above for more info"
 
 # start containers
 docker-compose up --build
