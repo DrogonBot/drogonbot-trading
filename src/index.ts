@@ -26,6 +26,7 @@ import { userRouter } from './resources/User/user.routes';
 import { MixpanelHelper } from './utils/MixpanelHelper';
 import { SocketIOHelper } from './utils/SocketIOHelper';
 
+// git hooks works!
 
 mongoose.connect(serverConfig.app.mongodbConnectionUrl, {
   useNewUrlParser: true,
