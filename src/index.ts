@@ -98,7 +98,7 @@ if (serverConfig.maintenanceMode) {
 }
 
 // allows static files serving
-app.use(express.static(publicDirectory))
+app.use(express.static(publicDirectory, { dotfiles: 'allow' }))
 
 
 // app.use(middleware.checkMethods);
