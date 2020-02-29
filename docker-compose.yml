@@ -4,11 +4,8 @@ services:
     container_name: docker-node-mongo-eu
     restart: always
     build: .
-    # ports:
-    #   - "3000:3000"
-    expose:
-      - 80
-      - 443
+    ports:
+      - "3000:3000"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -56,6 +53,7 @@ services:
       VIRTUAL_HOST: admin-mongo.empregourgente.com
       LETSENCRYPT_HOST: admin-mongo.empregourgente.com
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
+      HOST: 0.0.0.0
     ports:
       - "1234:1234"
 
