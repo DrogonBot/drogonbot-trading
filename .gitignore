@@ -4,10 +4,6 @@ sendgrid.env
 
 tsconfig.tsbuildinfo
 
-src/constants/serverConfig.dev.ts
-src/constants/serverConfig.prod.ts
-src/constants/serverConfig.stag.ts
-src/constants/env.ts
 sendgrid.env
 dist
   
