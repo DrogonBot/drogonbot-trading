@@ -17,6 +17,7 @@ services:
       VIRTUAL_HOST: api.empregourgente.com
       LETSENCRYPT_HOST: api.empregourgente.com
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
+
   mongo-eu:
     container_name: mongo-eu
     image: mongo
@@ -49,7 +50,6 @@ services:
     depends_on:
       - "mongo-eu"
     environment:
-      # - HOST=0.0.0.0
       VIRTUAL_HOST: admin-mongo.empregourgente.com
       LETSENCRYPT_HOST: admin-mongo.empregourgente.com
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
