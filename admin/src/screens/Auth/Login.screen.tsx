@@ -41,7 +41,7 @@ export const LoginScreen = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in to Admin Panel
+          Sign in to Admin
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
