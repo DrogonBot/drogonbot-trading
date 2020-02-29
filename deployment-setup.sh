@@ -12,11 +12,12 @@ sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
-echo /swapfile swap swap defaults 0 0 | sudo /etc/fstab
+
+sudo bash -c 'echo /swapfile swap swap defaults 0 0 >> /etc/fstab'
 
 printf "${YELLOW}Showing swap${NC} - Obs.: The commands above will fail if you already swapped your memory\n"
 sudo swapon --show
-printf "${YELLOW}Setting swappiness to 80%${NC}\n"
+printf "${YELLOW}Setting swappiness to 80 ${NC}\n"
 sudo sysctl vm.swappiness=80
 
 printf "${YELLOW}Adding current user to docker group (It will avoid having to type sudo on docker-compose)${NC}\n"
