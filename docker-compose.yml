@@ -4,8 +4,11 @@ services:
     container_name: docker-node-mongo-eu
     restart: always
     build: .
-    ports:
-      - "3000:3000"
+    # ports:
+    #   - "3000:3000"
+    expose:
+      - 80
+      - 443
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -29,7 +32,7 @@ services:
       context: ./admin
       dockerfile: Dockerfile
     ports:
-      - "80:3001"
+      - "3001:3001"
     volumes:
       - ./admin:/usr/src/app
     depends_on:
