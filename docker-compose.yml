@@ -13,6 +13,10 @@ services:
       - "mongo-eu"
     links:
       - mongo-eu
+    environment:
+      VIRTUAL_HOST: api.empregourgente.com
+      LETSENCRYPT_HOST: api.empregourgente.com
+      LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
   mongo-eu:
     container_name: mongo-eu
     image: mongo
@@ -32,6 +36,10 @@ services:
       - "mongo-eu"
     links:
       - mongo-eu
+    environment:
+      VIRTUAL_HOST: admin.empregourgente.com
+      LETSENCRYPT_HOST: admin.empregourgente.com
+      LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
 
   adminmongo-eu:
     container_name: "adminmongo-eu"
@@ -41,6 +49,14 @@ services:
     depends_on:
       - "mongo-eu"
     environment:
-      - HOST=0.0.0.0
+      # - HOST=0.0.0.0
+      VIRTUAL_HOST: admin-mongo.empregourgente.com
+      LETSENCRYPT_HOST: admin-mongo.empregourgente.com
+      LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
     ports:
       - "1234:1234"
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
