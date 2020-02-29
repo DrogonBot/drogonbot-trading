@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Bash color output setup
-RED='\033[0;31m'
+YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-printf "${RED}Creating swap file (needed so our docker containers can run smoothly)"
-printf "${RED}Reference: https://linuxize.com/post/create-a-linux-swap-file/"
+printf "${YELLOW}Creating swap file (needed so our docker containers can run smoothly)\n"
+printf "${YELLOW}Reference: https://linuxize.com/post/create-a-linux-swap-file/\n"
 
 sudo fallocate -l 1G /swapfile
 sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576
@@ -14,16 +14,16 @@ sudo mkswap /swapfile
 sudo swapon /swapfile
 sudo /etc/fstab >> /swapfile swap swap defaults 0 0
 
-printf "${RED}Showing swap"
+printf "${YELLOW}Showing swap\n"
 sudo swapon --show
-printf "${RED}Setting swappiness to 80%"
+printf "${YELLOW}Setting swappiness to 80%\n"
 sudo sysctl vm.swappiness=80
 
-printf "${RED}Adding current user to docker group (It will avoid having to type sudo on docker-compose)"
+printf "${YELLOW}Adding current user to docker group (It will avoid having to type sudo on docker-compose)\n"
 sudo usermod -aG docker $USER
 
 # install node, npm and yarn
-printf "${RED}Installing NodeJS, npm and yarn"
+printf "${YELLOW}Installing NodeJS, npm and yarn\n"
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt install nodejs
 
@@ -43,8 +43,8 @@ npm run build # build react production ready files
 cd ..
 
 
-printf "${RED}Configuring nginx-proxy networks"
-printf "${RED}Reference: https://blog.ssdnodes.com/blog/host-multiple-ssl-websites-docker-nginx/"
+printf "${YELLOW}Configuring nginx-proxy networks\n"
+printf "${YELLOW}Reference: https://blog.ssdnodes.com/blog/host-multiple-ssl-websites-docker-nginx/\n"
 
 # configure nginx-proxy
 cd nginx-proxy
@@ -53,8 +53,8 @@ docker-compose up -d
 cd ..
 
 
-printf "${RED}nginx-proxy configured"
-printf "${RED}REMEMBER TO CONFIGURE YOUR SUBDOMAINS DNS IN YOUR VPS PROVIDER!"
+printf "${YELLOW}nginx-proxy configured! This saved your probably some years of your precious life.\n"
+printf "${YELLOW}REMEMBER TO CONFIGURE YOUR SUBDOMAINS DNS IN YOUR VPS PROVIDER!\n"
 
 # start containers
 docker-compose up --build
