@@ -4,6 +4,8 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-EXPOSE 3001
+EXPOSE 5000
+
+ENTRYPOINT ["init.sh"]
 
 CMD [ "npm", "start" ]
