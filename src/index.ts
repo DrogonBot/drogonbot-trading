@@ -130,8 +130,9 @@ app.on("error", err => {
   }
 });
 
-// Static files ========================================
-
+app.get('/', function (req, res) {
+  res.send('Welcome to our server!')
+})
 
 
 /*#############################################################|
