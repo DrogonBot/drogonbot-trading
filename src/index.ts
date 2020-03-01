@@ -74,8 +74,7 @@ switch (ENV) {
     dbCron.backupAndExport()
     break;
 }
-const dbCron = new DatabaseCron();
-dbCron.backupAndExport()
+
 
 /*#############################################################|
 |  >>> MIDDLEWARES
