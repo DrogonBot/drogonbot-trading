@@ -24,10 +24,10 @@ sudo apt install unzip
 printColor "Setting up system cron jobs"
 
 # This system cronjob main goal is only to dump mongodb into a zip file inside backups folder. Then, database.cron.ts will periodically submit it to our admin email 
-crontab -l > dbBackupCron
-echo "0 8 * * * ${PROJECT_FOLDER}/scripts/backup-mongodb.sh" >> dbBackupCron
-crontab dbBackupCron
-rm dbBackupCron
+sudo crontab -l > dbBackupCron
+echo "0 8 * * * root ${PROJECT_FOLDER}/scripts/backup-mongodb.sh" >> dbBackupCron
+sudo crontab dbBackupCron
+sudo rm dbBackupCron
 
 
 printColor "Creating swap file (needed so our docker containers can run smoothly)"
