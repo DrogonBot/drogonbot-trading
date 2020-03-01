@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"emprego-urgente.countries"}],"uuid":"94222c9852da492e967e609a5d157b42"}

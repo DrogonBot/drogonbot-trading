@@ -8,3 +8,5 @@ sendgrid.env
 dist
   
 src/public/files/**
+
+backups/**

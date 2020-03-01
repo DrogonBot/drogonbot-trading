@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"emprego-urgente.sectors"}],"uuid":"790256a7d33442e8a7ec3794001ae843"}
