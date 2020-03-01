@@ -14,3 +14,4 @@ docker cp $DB_CONTAINER:/db-dump ${PROJECT_FOLDER}/backups/db-dump
 
 zip -r ${PROJECT_FOLDER}/backups/db-dump.zip ${PROJECT_FOLDER}/backups/db-dump
 
+rm -rf ${PROJECT_FOLDER}/backups/db-dump

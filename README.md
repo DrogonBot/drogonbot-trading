@@ -67,3 +67,9 @@ docker exec -it docker-node-mongo /bin/bash
 ## Mongo Admin
 
 - Access http://localhost:1234 to manage your mongodb database
+
+# Deployment
+
+set the PROJECT_FOLDER variable on scripts/backup-mongodb.sh and ./deployment-setup.sh
+run ./deployment-setup.sh
+remember to setup the VPS DNS records to your subdomains (check deployment-setup tutorials about it)
