@@ -24,7 +24,7 @@ printColor "Setting up system cron jobs"
 #write out current crontab
 crontab -l > dbBackupCron
 #echo new cron into cron file
-echo "0 8 * * * ./${PROJECT_FOLDER}/scripts/backup-mongodb.sh" >> dbBackupCron
+echo "0 8 * * * ${PROJECT_FOLDER}/scripts/backup-mongodb.sh" >> dbBackupCron
 #install new cron file
 crontab dbBackupCron
 rm dbBackupCron
