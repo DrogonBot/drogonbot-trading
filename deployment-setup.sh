@@ -43,10 +43,14 @@ yarn -v
 # install our apps dependencies to avoid potential errors
 sudo yarn install
 
+printColor "Building admin app..."
+
 cd admin
 sudo yarn install
 sudo npm run build # build react production ready files
 cd ..
+
+ 
 
 
 printColor "CONFIGURING NGINX PROXY-NETWORKS"
