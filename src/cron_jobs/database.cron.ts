@@ -13,7 +13,7 @@ export class DatabaseCron extends TransactionalEmailManager {
     // TODO: SET CRON TO EVERY DAY ONLY
     console.log("🕒  DatabaseCron: Initializing... 🕒");
 
-    cron.schedule("0 8 * * *", async () => {
+    cron.schedule("0 9 * * *", async () => {
 
       console.log('Verifying database backup for submission...');
 
