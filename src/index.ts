@@ -10,6 +10,7 @@ import socketio from 'socket.io';
 
 import { ENV, serverConfig } from './constants/env';
 import { EnvType } from './constants/server.constants';
+import { DatabaseCron } from './cron_jobs/database.cron';
 import { JobsCron } from './cron_jobs/jobs.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
@@ -47,6 +48,8 @@ const io = socketio(server); // now we pass this server variable to our server
 const port = process.env.PORT || serverConfig.app.port;
 
 export const publicDirectory = path.join(__dirname, './public')
+export const backupsDirectory = path.join(__dirname, '../backups')
+export const scriptsPath = path.join(__dirname, '../scripts')
 
 app.use(cors())
 
@@ -67,9 +70,12 @@ MixpanelHelper.init();
 switch (ENV) {
   case EnvType.Production: // Let's turn on our cron job in production only!
     JobsCron.submitApplications()
+    const dbCron = new DatabaseCron();
+    dbCron.backupAndExport()
     break;
 }
-
+const dbCron = new DatabaseCron();
+dbCron.backupAndExport()
 
 /*#############################################################|
 |  >>> MIDDLEWARES

@@ -4,11 +4,32 @@
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+
 printColor () {
   printf "${YELLOW}$1${NC}\n"
 }
 
+# Other important constants
+PROJECT_FOLDER="/home/jonit/empregourgente-backend"
+
 printColor "IMPORTANT: Make sure you have docker and docker-compose installed on Ubuntu 18.04. Check for 1-click droplets on Digital Ocean"
+
+printColor "Installing some system necessary packages"
+
+apt-get update
+apt-get install zip unzip
+
+printColor "Setting up system cron jobs"
+
+#write out current crontab
+crontab -l > dbBackupCron
+#echo new cron into cron file
+echo "0 8 * * * ./${PROJECT_FOLDER}/scripts/backup-mongodb.sh" >> dbBackupCron
+#install new cron file
+crontab dbBackupCron
+rm dbBackupCron
+
+
 printColor "Creating swap file (needed so our docker containers can run smoothly)"
 printColor "Reference: https://linuxize.com/post/create-a-linux-swap-file/"
 
