@@ -73,3 +73,5 @@ docker exec -it docker-node-mongo /bin/bash
 set the PROJECT_FOLDER variable on scripts/backup-mongodb.sh and ./deployment-setup.sh
 run ./deployment-setup.sh
 remember to setup the VPS DNS records to your subdomains (check deployment-setup tutorials about it)
+
+remember to copy some git ignored files

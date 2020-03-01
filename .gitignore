@@ -9,4 +9,5 @@ dist
   
 src/public/files/**
 
-backups/**
+backups/db-dump/**
+backups/db-dump.zip
