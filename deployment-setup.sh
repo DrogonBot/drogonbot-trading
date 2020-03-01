@@ -16,15 +16,17 @@ printColor "IMPORTANT: Make sure you have docker and docker-compose installed on
 
 printColor "Installing some system necessary packages"
 
-apt-get update
-apt-get install zip unzip
+sudo apt-get update
+sudo apt install zip
+sudo apt install unzip
+
 
 printColor "Setting up system cron jobs"
 
 #write out current crontab
 crontab -l > dbBackupCron
 #echo new cron into cron file
-echo "0 8 * * * ${PROJECT_FOLDER}/scripts/backup-mongodb.sh" >> dbBackupCron
+echo "0 8 * * * sudo ${PROJECT_FOLDER}/scripts/backup-mongodb.sh" >> dbBackupCron
 #install new cron file
 crontab dbBackupCron
 rm dbBackupCron
