@@ -23,6 +23,7 @@ import { resumeRouter } from './resources/Resume/resume.routes';
 import { sectorRouter } from './resources/Sector/sector.routes';
 import { SectorSeeder } from './resources/Sector/sector.seeder';
 import { userRouter } from './resources/User/user.routes';
+import { ConsoleColor, ConsoleHelper } from './utils/ConsoleHelper';
 import { MixpanelHelper } from './utils/MixpanelHelper';
 import { SocketIOHelper } from './utils/SocketIOHelper';
 
@@ -122,7 +123,23 @@ app.use(countryRouter)
 
 server.listen(port, () => {
   // tslint:disable-next-line: no-console
-  console.log(`💻   ${APP_NAME} server's is running on port ${port} || Env: ${ENV} || Admin email: ${ADMIN_EMAIL} || Language: ${LANGUAGE}  💻`);
+
+  let backgroundColor;
+  let foregroundColor;
+
+  switch (ENV) {
+    case EnvType.Development:
+    case EnvType.Staging:
+      backgroundColor = ConsoleColor.BgYellow;
+      foregroundColor = ConsoleColor.FgBlack;
+      break;
+    case EnvType.Production:
+      backgroundColor = ConsoleColor.BgRed;
+      foregroundColor = ConsoleColor.FgWhite
+      break;
+  }
+
+  ConsoleHelper.coloredLog(backgroundColor, foregroundColor, `${APP_NAME} || Environment: ${ENV} || port ${port} || Admin email: ${ADMIN_EMAIL} || Language: ${LANGUAGE}`)
 });
 
 app.on("error", err => {
