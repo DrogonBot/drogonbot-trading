@@ -22,7 +22,7 @@ interface IServerConfigOAuth {
 }
 
 interface IServerConfigEmail {
-  supportEmail: string,
+
   mailchimpAPIKey: string,
   mailchimpDefaultList: string,
   sendGridAPIKey: string,

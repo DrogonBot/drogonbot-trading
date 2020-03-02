@@ -1,4 +1,3 @@
-import { SUPPORT_EMAIL } from './env';
 import { IServerConfig } from './types/env.types';
 
 export const prodServerConfig: IServerConfig = {
@@ -9,7 +8,7 @@ export const prodServerConfig: IServerConfig = {
     mongodbConnectionUrl: "mongodb://mongo-eu:27017/emprego-urgente"
   },
   email: {
-    supportEmail: SUPPORT_EMAIL,
+
     mailchimpAPIKey: "c504a460b23bf5dd85c7de19c121a583-us4",
     mailchimpDefaultList: "778a708d3d", // https://mailchimp.com/pt/help/find-audience-id/
     sendGridAPIKey:
