@@ -11,7 +11,6 @@ export enum AvailableLanguages {
 }
 
 interface IServerConfigApp {
-  name: string,
   port: number,
   url: string,
   apiUrl: string,

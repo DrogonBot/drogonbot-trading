@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { Binary } from 'mongodb';
 import { Document, Model, model, Schema } from 'mongoose';
 
-import { serverConfig, SUPPORT_EMAIL } from '../../constants/env';
+import { APP_NAME, serverConfig, SUPPORT_EMAIL } from '../../constants/env';
 import { AccountEmailManager } from '../../emails/account.email';
 import { MarketingEmailManager } from '../../emails/MarketingEmailManager';
 import { GenericHelper } from '../../utils/GenericHelper';
@@ -146,10 +146,13 @@ userSchema.methods.registerUser = async function (req?) {
 
   const splittedName = user.name.split(' ');
 
+  const firstName = splittedName[0];
+  const lastName = splittedName[splittedName.length - 1];
+
   try {
     MixpanelHelper.mixpanel.people.set(user._id, {
-      $first_name: splittedName[0],
-      $last_name: splittedName[splittedName.length - 1],
+      $first_name: firstName,
+      $last_name: lastName,
       $created: (new Date()).toISOString(),
       $email: user.email,
       type: user.type,
@@ -173,14 +176,27 @@ userSchema.methods.registerUser = async function (req?) {
 
   accountEmailManager.newAccount(
     user.email,
-    `Welcome to ${serverConfig.app.name}`,
+    LanguageHelper.getLanguageString('user', 'newAccountEmailSubject', {
+      userName: firstName,
+      appName: APP_NAME
+    }),
     "welcome",
     {
       name: TextHelper.capitalizeFirstLetter(user.name),
-      login_url: serverConfig.app.url,
-      username: user.email,
+      userName: firstName,
+      userEmail: user.email,
       support_email: SUPPORT_EMAIL,
-      action_url: serverConfig.app.url
+      action_url: serverConfig.app.url,
+      newAccountEmailFirstParagraph: LanguageHelper.getLanguageString('user', 'newAccountEmailFirstParagraph', {
+        appName: APP_NAME
+      }),
+      newAccountEmailTitle: LanguageHelper.getLanguageString('user', 'newAccountEmailTitle', {
+        firstName
+      }),
+      newAccountEmailForReference: LanguageHelper.getLanguageString('user', 'newAccountEmailForReference'),
+      newAccountEmailBottom: LanguageHelper.getLanguageString('user', 'newAccountEmailBottom', {
+        appName: APP_NAME
+      })
     }
   );
 

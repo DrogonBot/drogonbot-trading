@@ -1,4 +1,4 @@
-import { ENV, serverConfig } from '../constants/env';
+import { ADMIN_EMAIL, ENV } from '../constants/env';
 import { EnvType } from '../constants/types/env.types';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
@@ -33,7 +33,7 @@ export class AccountEmailManager extends TransactionalEmailManager {
 
         this.sendGrid.send({
           to,
-          from: serverConfig.email.supportEmail,
+          from: ADMIN_EMAIL,
           subject,
           html: htmlEmail,
           text: textEmail

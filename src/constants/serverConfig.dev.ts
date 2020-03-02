@@ -1,9 +1,9 @@
-import { APP_NAME, SUPPORT_EMAIL } from './env';
+import { SUPPORT_EMAIL } from './env';
 import { IServerConfig } from './types/env.types';
 
 export const devServerConfig: IServerConfig = {
   app: {
-    name: APP_NAME,
+
     port: 3000,
     url: "http://localhost/",
     apiUrl: "http://localhost:3000/",
@@ -17,7 +17,7 @@ export const devServerConfig: IServerConfig = {
       "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",
     templatesFolder: "./src/emails/templates",
     globalTemplateVars: {
-      "Product Name": APP_NAME,
+      "Product Name": "Emprego Urgente",
       "Sender Name": "Emprego Urgente",
       "Company Name, LLC": "Emprego Urgente Inc",
       "Company Address": "Av. Rio Branco, Vitoria ES"

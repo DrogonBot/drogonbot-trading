@@ -151,5 +151,25 @@ export const strings = {
   userTypeUnauthorized: {
     eng: 'User unauthorized to access this information.',
     ptBr: 'Usuário não autorizado a acessar essas informações.'
+  },
+  newAccountEmailSubject: {
+    eng: "Hey {{userName}}! Welcome to {{appName}}",
+    ptBr: "Ei, {{userName}}! Seja bem-vindo ao {{appName}}"
+  },
+  newAccountEmailFirstParagraph: {
+    eng: "Thank you for downloading the {{appName}} app. We are very happy to have you with our community.",
+    ptBr: "Obrigado por baixar o app do {{appName}}. Estamos muito felizes em ter você junto à nossa comunidade."
+  },
+  newAccountEmailTitle: {
+    eng: "Welcome, {{firstName}}!",
+    ptBr: "Seja bem-vindo, {{firstName}}!"
+  },
+  newAccountEmailForReference: {
+    eng: "For reference, here's your login information:",
+    ptBr: 'Para referência, aqui estão suas informações de login:'
+  },
+  newAccountEmailBottom: {
+    eng: "Thank you - {{appName}} team",
+    ptBr: "Obrigado - Equipe {{appName}}"
   }
 };
