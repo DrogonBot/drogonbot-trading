@@ -3,14 +3,13 @@ import moment from 'moment';
 import cron from 'node-cron';
 
 import { backupsDirectory } from '..';
-import { ADMIN_EMAIL } from '../constants/server.constants';
+import { ADMIN_EMAIL } from '../constants/env';
 import { TransactionalEmailManager } from '../emails/TransactionalEmailManager';
 
 export class DatabaseCron extends TransactionalEmailManager {
 
   public backupAndExport = async () => {
 
-    // TODO: SET CRON TO EVERY DAY ONLY
     console.log("🕒  DatabaseCron: Initializing... 🕒");
 
     cron.schedule("0 9 * * *", async () => {

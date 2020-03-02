@@ -8,8 +8,8 @@ import os from 'os';
 import path from 'path';
 import socketio from 'socket.io';
 
-import { ENV, serverConfig } from './constants/env';
-import { EnvType } from './constants/server.constants';
+import { ADMIN_EMAIL, APP_NAME, ENV, LANGUAGE, serverConfig } from './constants/env';
+import { EnvType } from './constants/types/env.types';
 import { DatabaseCron } from './cron_jobs/database.cron';
 import { JobsCron } from './cron_jobs/jobs.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
@@ -22,7 +22,6 @@ import { postRouter } from './resources/Post/post.routes';
 import { resumeRouter } from './resources/Resume/resume.routes';
 import { sectorRouter } from './resources/Sector/sector.routes';
 import { SectorSeeder } from './resources/Sector/sector.seeder';
-import { taskRouter } from './resources/Task/task.routes';
 import { userRouter } from './resources/User/user.routes';
 import { MixpanelHelper } from './utils/MixpanelHelper';
 import { SocketIOHelper } from './utils/SocketIOHelper';
@@ -113,7 +112,7 @@ app.use(express.static(publicDirectory, { dotfiles: 'allow' }))
 
 
 app.use(userRouter);
-app.use(taskRouter);
+
 app.use(conversationRouter)
 app.use(postRouter)
 app.use(placeRouter)
@@ -123,7 +122,7 @@ app.use(countryRouter)
 
 server.listen(port, () => {
   // tslint:disable-next-line: no-console
-  console.log(`*** Server is running on port ${port} || ${ENV} ***`);
+  console.log(`💻   ${APP_NAME} server's is running on port ${port} || Env: ${ENV} || Admin email: ${ADMIN_EMAIL} || Language: ${LANGUAGE}  💻`);
 });
 
 app.on("error", err => {

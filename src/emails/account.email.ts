@@ -1,5 +1,5 @@
 import { ENV, serverConfig } from '../constants/env';
-import { EnvType } from '../constants/server.constants';
+import { EnvType } from '../constants/types/env.types';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
 

@@ -1,10 +1,12 @@
-import { APP_NAME, LANGUAGE, SUPPORT_EMAIL } from './server.constants';
+import { APP_NAME, SUPPORT_EMAIL } from './env';
+import { IServerConfig } from './types/env.types';
 
-export const stagServerConfig = {
+export const stagServerConfig: IServerConfig = {
   app: {
     name: APP_NAME,
     port: 3000,
-    url: "https://empregourgente.com:3000/",
+    url: "https://staging.empregourgente.com/",
+    apiUrl: "http://api.staging.empregourgente.com/",
     mongodbConnectionUrl: "mongodb://mongo-eu:27017/emprego-urgente"
   },
   email: {
@@ -32,6 +34,6 @@ export const stagServerConfig = {
     mixpanelToken: "d87cd0f8669fbce8a13732f13bf43ff8"
   },
   maintenanceMode: false,
-  language: LANGUAGE,
+
   jwtSecret: "CfQbhtmMn5#pez9SHY+4By+ce4PFMevcg=="
 };

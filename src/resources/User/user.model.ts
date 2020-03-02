@@ -3,8 +3,7 @@ import jwt from 'jsonwebtoken';
 import { Binary } from 'mongodb';
 import { Document, Model, model, Schema } from 'mongoose';
 
-import { serverConfig } from '../../constants/env';
-import { SUPPORT_EMAIL } from '../../constants/server.constants';
+import { serverConfig, SUPPORT_EMAIL } from '../../constants/env';
 import { AccountEmailManager } from '../../emails/account.email';
 import { MarketingEmailManager } from '../../emails/MarketingEmailManager';
 import { GenericHelper } from '../../utils/GenericHelper';

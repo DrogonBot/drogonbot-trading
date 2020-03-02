@@ -1,15 +1,22 @@
-import { EnvType } from './server.constants';
 import { devServerConfig } from './serverConfig.dev';
 import { prodServerConfig } from './serverConfig.prod';
 import { stagServerConfig } from './serverConfig.stag';
-
-// This file is responsible which environment configuration to use
-
+import { AvailableLanguages, EnvType, IServerConfig } from './types/env.types';
 
 
+/*#############################################################|
+|  >>> SERVER CONFIGURATION DEFINITION
+*##############################################################*/
 
-let serverConfig: any;
+let serverConfig: IServerConfig;
+
+// ! SELECT WHICH SERVER ENVIRONMENT TO USE (Development, Production, Staging)
 export const ENV: string = EnvType.Development; // Select which environment to use here
+
+export const APP_NAME = "Emprego Urgente";
+export const SUPPORT_EMAIL = "admin@empregourgente.com";
+export const ADMIN_EMAIL = "admin@empregourgente.com";
+export const LANGUAGE = AvailableLanguages.ptBr
 
 switch (ENV) {
   case EnvType.Development:

@@ -441,6 +441,8 @@ userRouter.post("/users", async (req, res) => {
     const emailAlreadyExists = await User.findOne({ email: preparedEmail })
 
     if (emailAlreadyExists) {
+      console.log('Email already exists');
+
       return res.status(400).send({
         status: "error",
         message: LanguageHelper.getLanguageString(

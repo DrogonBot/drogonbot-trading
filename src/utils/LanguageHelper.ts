@@ -1,4 +1,4 @@
-import { serverConfig } from '../constants/env';
+import { LANGUAGE } from '../constants/env';
 import { globalStrings } from '../lang/global.lang';
 import { TextHelper } from '../utils/TextHelper';
 
@@ -26,8 +26,7 @@ export class LanguageHelper {
   ) => {
     if (!model) {
       // pass only the global strings
-
-      return LanguageHelper.replaceTemplateStrings(globalStrings[key][serverConfig.language], customVars)
+      return LanguageHelper.replaceTemplateStrings(globalStrings[key][LANGUAGE], customVars)
 
     }
 
@@ -45,7 +44,7 @@ export class LanguageHelper {
       ...globalStrings
     };
 
-    let string: string = languageStrings[key][serverConfig.language];
+    let string: string = languageStrings[key][LANGUAGE];
     const customVarsKeys = Object.keys(customVars);
     if (customVarsKeys) {
       for (const k of customVarsKeys) {

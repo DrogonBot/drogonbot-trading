@@ -1,5 +1,5 @@
-import { ENV } from '../constants/env';
-import { EnvType, SUPPORT_EMAIL } from '../constants/server.constants';
+import { ENV, SUPPORT_EMAIL } from '../constants/env';
+import { EnvType } from '../constants/types/env.types';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
 export class GenericEmailManager extends TransactionalEmailManager {
