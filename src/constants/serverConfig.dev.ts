@@ -6,7 +6,7 @@ export const devServerConfig: IServerConfig = {
     port: 3000,
     url: "http://localhost/",
     apiUrl: "http://localhost:3000/",
-    mongodbConnectionUrl: "mongodb://admin:empregourgente123321@database:27017/emprego-urgente?authSource=admin"
+    mongodbConnectionUrl: "mongodb://admin:123@node-database:27017/emprego-urgente?authSource=admin"
   },
   email: {
 

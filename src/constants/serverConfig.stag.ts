@@ -6,7 +6,7 @@ export const stagServerConfig: IServerConfig = {
     port: 3000,
     url: "https://staging.empregourgente.com/",
     apiUrl: "http://api.staging.empregourgente.com/",
-    mongodbConnectionUrl: "mongodb://database:27017/emprego-urgente"
+    mongodbConnectionUrl: "mongodb://admin:empregourgente123321@node-database:27017/emprego-urgente?authSource=admin"
   },
   email: {
 

@@ -4,8 +4,7 @@
 
 version: "3"
 services:
-  api:
-    container_name: docker-node-database
+  node-api:
     restart: always
     build: .
     ports:
@@ -56,8 +55,7 @@ services:
       LETSENCRYPT_HOST: admin.empregourgente.com
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
 
-  admindatabase:
-    container_name: "admindatabase"
+  admin-database:
     image: "mrvautin/adminmongo"
     links:
       - "database"
