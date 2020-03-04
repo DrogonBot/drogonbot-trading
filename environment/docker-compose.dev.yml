@@ -5,17 +5,18 @@
 version: "3"
 services:
   node-api:
+    container_name: node-api
     restart: always
     build: .
     ports:
-      - "3000:3000"
+      - "$NODE_API_PORT:$NODE_API_PORT"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
-      - "database"
+      - "node-database"
     links:
-      - database
+      - node-database
     environment:
       VIRTUAL_HOST: api.empregourgente.com
       LETSENCRYPT_HOST: api.empregourgente.com
@@ -23,11 +24,11 @@ services:
     networks:
       - db-network
 
-  database:
-    container_name: database
+  node-database:
+    container_name: node-database
     image: mongo
     ports: # these ports are commented out on production, so we don't have external connection in our db
-      - "27017:27017"
+      - "$MONGO_PORT:$MONGO_PORT"
     env_file: .env
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
@@ -37,37 +38,38 @@ services:
     networks:
       - db-network
 
-  admin:
-    container_name: admin
+  node-admin:
+    container_name: node-admin
     build:
       context: ./admin
       dockerfile: Dockerfile
     ports:
-      - "3001:3001"
+      - "$NODE_ADMIN_PORT:$NODE_ADMIN_PORT"
     volumes:
       - ./admin:/usr/src/app
     depends_on:
-      - "database"
+      - "node-database"
     links:
-      - database
+      - node-database
     environment:
       VIRTUAL_HOST: admin.empregourgente.com
       LETSENCRYPT_HOST: admin.empregourgente.com
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
 
-  admin-database:
+  node-admin-database:
+    container_name: node-admin-database
     image: "mrvautin/adminmongo"
     links:
-      - "database"
+      - "node-database"
     depends_on:
-      - "database"
+      - "node-database"
     environment:
       VIRTUAL_HOST: admin-mongo.empregourgente.com
       LETSENCRYPT_HOST: admin-mongo.empregourgente.com
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
       HOST: 0.0.0.0
     ports:
-      - "3002:3002"
+      - "$MONGO_ADMIN_PORT:$MONGO_ADMIN_PORT"
 
 networks:
   default:
