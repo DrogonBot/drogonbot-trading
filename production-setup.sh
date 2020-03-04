@@ -14,6 +14,17 @@ PROJECT_FOLDER="/home/jonit/empregourgente-backend"
 
 printColor "IMPORTANT: Make sure you have docker and docker-compose installed on Ubuntu 18.04. Check for 1-click droplets on Digital Ocean"
 
+
+printColor "Setting up firewall to open docker related ports"
+sudo ufw allow OpenSSH
+sudo ufw allow 3000
+sudo ufw allow 3001
+sudo ufw allow 1234
+sudo ufw allow 27017
+sudo ufw allow 443
+sudo ufw allow 80
+
+
 # Check sendgrid.env file
 if test -f "./sendgrid.env"; then
   printColor "Checking sendgrid.env file... OK!"   
@@ -33,7 +44,7 @@ fi
 # Setup docker-compose production file
 if test -f "./environment/docker-compose.prod.yml"; then
   printColor "Preparing docker-compose production file..."
-  cp ./environment/docker-compose.prod.yml ./docker-compose.yml
+  sudo cp ./environment/docker-compose.prod.yml ./docker-compose.yml
   
   else 
     echo "You must have a docker-compose.prod.yml template file on /environment to proceed!"
@@ -44,7 +55,7 @@ fi
 # Setup .env production file
 if test -f "./environment/prod.env"; then
   printColor "Preparing env production file..."
-  cp ./environment/prod.env ./.env
+  sudo cp ./environment/prod.env ./.env
   
   else 
     echo "You must have a prod.env template file on /environment to proceed!"

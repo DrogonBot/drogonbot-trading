@@ -11,10 +11,20 @@ printColor () {
 # Other important constants
 PROJECT_FOLDER="/home/jonit/empregourgente-backend"
 
+printColor "Setting up firewall to open docker related ports"
+sudo ufw allow OpenSSH
+sudo ufw allow 3000
+sudo ufw allow 3001
+sudo ufw allow 1234
+sudo ufw allow 27017
+sudo ufw allow 443
+sudo ufw allow 80
+
+
 # Setup docker-compose production file
 if test -f "./environment/docker-compose.dev.yml"; then
   printColor "Preparing docker-compose development file..."
-  cp ./environment/docker-compose.dev.yml ./docker-compose.yml
+  sudo cp ./environment/docker-compose.dev.yml ./docker-compose.yml
   
   else 
     echo "You must have a docker-compose.dev.yml template file on /environment to proceed!"
@@ -25,7 +35,7 @@ fi
 # Setup .env production file
 if test -f "./environment/dev.env"; then
   printColor "Preparing env production file..."
-  cp ./environment/dev.env ./.env
+  sudo cp ./environment/dev.env ./.env
   
   else 
     echo "You must have a dev.env template file on /environment to proceed!"
