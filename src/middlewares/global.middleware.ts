@@ -17,7 +17,8 @@ export class GlobalMiddleware {
   };
 
   public static maintenanceMode = (req, res, next) => {
-    return res.status(503).send({
+    console.log('Refusing connection - maintenance mode');
+    return res.status(401).send({
       status: "error",
       message: LanguageHelper.getLanguageString(null, "appMaintenanceMode")
     });

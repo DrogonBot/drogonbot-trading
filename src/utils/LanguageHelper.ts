@@ -1,8 +1,6 @@
-import { LANGUAGE } from '../constants/env';
 import { globalStrings } from '../lang/global.lang';
 import { TextHelper } from '../utils/TextHelper';
 
-// load proper language strings, accordingly to the server language settings
 
 export class LanguageHelper {
 
@@ -26,7 +24,7 @@ export class LanguageHelper {
   ) => {
     if (!model) {
       // pass only the global strings
-      return LanguageHelper.replaceTemplateStrings(globalStrings[key][LANGUAGE], customVars)
+      return LanguageHelper.replaceTemplateStrings(globalStrings[key][process.env.LANGUAGE], customVars)
 
     }
 
@@ -44,7 +42,7 @@ export class LanguageHelper {
       ...globalStrings
     };
 
-    let string: string = languageStrings[key][LANGUAGE];
+    let string: string = languageStrings[key][process.env.LANGUAGE || 0];
     const customVarsKeys = Object.keys(customVars);
     if (customVarsKeys) {
       for (const k of customVarsKeys) {

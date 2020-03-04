@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 
-import { serverConfig } from '../constants/env';
 import { User } from '../resources/User/user.model';
 
 
@@ -10,7 +9,7 @@ export class MiddlewareHelper {
 
     const token = req.header('Authorization').replace('Bearer ', ''); // remove Bearer string
 
-    const decoded: any = jwt.verify(token, serverConfig.jwtSecret);
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET || "");
 
     // find an user with the correct id (passed through the token), that has the particular token stored.
 

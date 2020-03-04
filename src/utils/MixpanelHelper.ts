@@ -1,8 +1,5 @@
 import Mixpanel from 'mixpanel';
 
-import { serverConfig } from '../constants/env';
-
-
 
 
 
@@ -12,7 +9,7 @@ export class MixpanelHelper {
   public static mixpanel;
 
   public static init() {
-    MixpanelHelper.mixpanel = Mixpanel.init(serverConfig.tracking.mixpanelToken)
+    MixpanelHelper.mixpanel = Mixpanel.init(process.env.ANALYTICS_MIXPANEL_TOKEN || "")
 
 
   }

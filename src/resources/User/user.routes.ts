@@ -8,7 +8,6 @@ import multer from 'multer';
 import randomstring from 'randomstring';
 import sharp from 'sharp';
 
-import { serverConfig } from '../../constants/env';
 import { GenericEmailManager } from '../../emails/generic.email';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
@@ -365,7 +364,7 @@ userRouter.post("/users/reset-password", async (req, res) => {
     "password-reset",
     {
       name: TextHelper.capitalizeFirstLetter(user.name),
-      action_url: `${serverConfig.app.url}/users/reset-password/link?ecem=${encryptedEmail}&p=${encryptedPassword}`,
+      action_url: `${process.env.WEB_APP_URL}/users/reset-password/link?ecem=${encryptedEmail}&p=${encryptedPassword}`,
       new_password: randomPassword
     }
   );
@@ -412,7 +411,7 @@ userRouter.get("/users/reset-password/link", async (req, res) => {
   await user.save();
 
   const data = readFileSync(
-    `${serverConfig.email.templatesFolder}/password-reset-confirmation/content.html`,
+    `${process.env.TEMPLATES_FOLDER}/password-reset-confirmation/content.html`,
     "utf-8"
   ).toString();
 

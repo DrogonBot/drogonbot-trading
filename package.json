@@ -1,10 +1,10 @@
 {
-  "name": "task-app-mongo",
+  "name": "app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
+    "start": "node --inspect=5858 --require ts-node/register --require dotenv/config ./src/index.ts",
     "mongo": "/home/jonit/mongodb/bin/mongod --dbpath=/home/jonit/mongodb-data",
     "dev": "nodemon",
     "build": "tsc -p .",
@@ -20,12 +20,14 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
+    "@types/dotenv": "^8.2.0",
     "axios": "^0.19.0",
     "bad-words": "^3.0.3",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "date-diff": "^0.2.1",
+    "dotenv": "^8.2.0",
     "expo-server-sdk": "^3.4.0",
     "express": "^4.17.1",
     "express-form-data": "^2.0.10",

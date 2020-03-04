@@ -13,7 +13,7 @@ RUN npm install
 # Copy our current root to the docker root
 COPY . .
 
-# Expose port 3000, so we can access our server. This is defined in src/constants/serverConfig.dev.ts
+# Expose port 3000, so we can access our server.  
 EXPOSE 3000
 
 # This will run our npm run dev command under package.json

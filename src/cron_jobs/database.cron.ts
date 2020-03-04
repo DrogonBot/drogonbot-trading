@@ -3,7 +3,6 @@ import moment from 'moment';
 import cron from 'node-cron';
 
 import { backupsDirectory } from '..';
-import { ADMIN_EMAIL } from '../constants/env';
 import { TransactionalEmailManager } from '../emails/TransactionalEmailManager';
 
 export class DatabaseCron extends TransactionalEmailManager {
@@ -23,8 +22,8 @@ export class DatabaseCron extends TransactionalEmailManager {
         try {
           console.log('SUBMITTING YOUR DB BACKUP!');
           this.sendGrid.send({
-            to: ADMIN_EMAIL,
-            from: ADMIN_EMAIL,
+            to: process.env.ADMIN_EMAIL,
+            from: process.env.ADMIN_EMAIL,
             subject: `Database Backup - ${moment().format()}`,
             html: 'database backup',
             text: 'database backup',

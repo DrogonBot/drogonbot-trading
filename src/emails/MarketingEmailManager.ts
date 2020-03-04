@@ -1,30 +1,29 @@
 import Mailchimp from 'mailchimp-api-v3';
 
-import { ENV, serverConfig } from '../constants/env';
 import { EnvType } from '../constants/types/env.types';
 
 export interface ILists {
-  default: string;
+  default: string | undefined;
 }
 
 export class MarketingEmailManager {
-  private _mailchimpApiKey: string;
+  private _mailchimpApiKey: string | undefined;
   private lists: ILists;
   public mailchimp: any;
   constructor() {
-    this._mailchimpApiKey = serverConfig.email.mailchimpAPIKey;
-    this.mailchimp = new Mailchimp(serverConfig.email.mailchimpAPIKey);
+    this._mailchimpApiKey = process.env.MAILCHIMP_API_KEY;
+    this.mailchimp = new Mailchimp(process.env.MAILCHIMP_API_KEY || "");
     this.lists = {
-      default: serverConfig.email.mailchimpDefaultList
+      default: process.env.MAILCHIMP_DEFAULT_LIST
     };
   }
 
   public async subscribe(
     email: string,
     callback?: () => any,
-    listId: string = this.lists.default
+    listId: string | undefined = this.lists.default
   ) {
-    switch (ENV) {
+    switch (process.env.ENV) {
       case EnvType.Staging:
       case EnvType.Development:
         console.log(

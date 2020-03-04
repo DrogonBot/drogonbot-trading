@@ -1,6 +1,6 @@
-import { ENV, SUPPORT_EMAIL } from '../constants/env';
 import { EnvType } from '../constants/types/env.types';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
+
 
 export class GenericEmailManager extends TransactionalEmailManager {
   public sendEmail(
@@ -9,7 +9,7 @@ export class GenericEmailManager extends TransactionalEmailManager {
     template: string,
     customVars: object
   ): void {
-    switch (ENV) {
+    switch (process.env.ENV) {
       case EnvType.Development:
       case EnvType.Staging:
         console.log(
@@ -38,7 +38,7 @@ export class GenericEmailManager extends TransactionalEmailManager {
 
         this.sendGrid.send({
           to,
-          from: SUPPORT_EMAIL,
+          from: process.env.SUPPORT_EMAIL,
           subject,
           html: htmlEmail,
           text: textEmail

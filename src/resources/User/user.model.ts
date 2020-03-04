@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import { Binary } from 'mongodb';
 import { Document, Model, model, Schema } from 'mongoose';
 
-import { APP_NAME, serverConfig, SUPPORT_EMAIL } from '../../constants/env';
 import { AccountEmailManager } from '../../emails/account.email';
 import { MarketingEmailManager } from '../../emails/MarketingEmailManager';
 import { GenericHelper } from '../../utils/GenericHelper';
@@ -178,24 +177,24 @@ userSchema.methods.registerUser = async function (req?) {
     user.email,
     LanguageHelper.getLanguageString('user', 'newAccountEmailSubject', {
       userName: firstName,
-      appName: APP_NAME
+      appName: process.env.APP_NAME
     }),
     "welcome",
     {
       name: TextHelper.capitalizeFirstLetter(user.name),
       userName: firstName,
       userEmail: user.email,
-      support_email: SUPPORT_EMAIL,
-      action_url: serverConfig.app.url,
+      support_email: process.env.SUPPORT_EMAIL,
+      action_url: process.env.WEB_APP_URL,
       newAccountEmailFirstParagraph: LanguageHelper.getLanguageString('user', 'newAccountEmailFirstParagraph', {
-        appName: APP_NAME
+        appName: process.env.APP_NAME
       }),
       newAccountEmailTitle: LanguageHelper.getLanguageString('user', 'newAccountEmailTitle', {
         firstName
       }),
       newAccountEmailForReference: LanguageHelper.getLanguageString('user', 'newAccountEmailForReference'),
       newAccountEmailBottom: LanguageHelper.getLanguageString('user', 'newAccountEmailBottom', {
-        appName: APP_NAME
+        appName: process.env.APP_NAME
       })
     }
   );
@@ -218,7 +217,14 @@ userSchema.methods.registerUser = async function (req?) {
 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, serverConfig.jwtSecret);
+
+  let token;
+  if (process.env.JWT_SECRET) {
+    token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
+  } else {
+    throw new Error('Error while generating auth token')
+  }
+
 
   // we can also pass an optional configuration object
   // const token = jwt.sign({ _id: user._id.toString() }, serverConfig.jwtSecret), { expiresIn: '7 days'});

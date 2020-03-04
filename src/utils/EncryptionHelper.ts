@@ -1,14 +1,12 @@
 import crypto from 'crypto';
 
-import { serverConfig } from '../constants/env';
-
 export class EncryptionHelper {
   private _algorithm: string;
   private _key: string;
 
   constructor() {
     this._algorithm = "aes256";
-    this._key = `${serverConfig.jwtSecret}`;
+    this._key = `${process.env.JWT_SECRET}`;
   }
 
   public encrypt(rawString: string) {

@@ -1,8 +1,8 @@
 import sgMail from '@sendgrid/mail';
 import { readFileSync } from 'fs';
 
-import { serverConfig } from '../constants/env';
 import { TextHelper } from '../utils/TextHelper';
+
 
 export enum EmailType {
   Html = "Html",
@@ -10,11 +10,11 @@ export enum EmailType {
 }
 
 export class TransactionalEmailManager {
-  private _apiKey: string;
+  private _apiKey: string | undefined;
   public sendGrid: any;
 
   constructor() {
-    this._apiKey = serverConfig.email.sendGridAPIKey;
+    this._apiKey = process.env.SENDGRID_API_KEY;
     this.sendGrid = sgMail;
     this.sendGrid.setApiKey(this._apiKey);
   }
@@ -29,7 +29,7 @@ export class TransactionalEmailManager {
     }
 
     const data = readFileSync(
-      `${serverConfig.email.templatesFolder}/${template}/content${extension}`,
+      `${process.env.TEMPLATES_FOLDER}/${template}/content${extension}`,
       "utf-8"
     ).toString();
 
@@ -38,7 +38,16 @@ export class TransactionalEmailManager {
 
   private replaceTemplateCustomVars(html: string, customVars: object): string {
     const keys = Object.keys(customVars);
-    const globalKeys = Object.keys(serverConfig.email.globalTemplateVars);
+
+    const globalTemplateVars = {
+      "Product Name": process.env.GLOBAL_VAR_PRODUCT_NAME,
+      "Sender Name": process.env.GLOBAL_VAR_SENDER_NAME,
+      "Company Name, LLC": process.env.GLOBAL_VAR_COMPANY_NAME_LLC,
+      "Company Address": process.env.GLOBAL_VAR_COMPANY_ADDRESS
+    }
+
+
+    const globalKeys = Object.keys(globalTemplateVars);
 
     if (keys) {
       for (const key of keys) {
@@ -49,12 +58,12 @@ export class TransactionalEmailManager {
     if (globalKeys) {
       for (const globalKey of globalKeys) {
 
-        console.log(`Replacing => [${globalKey}]: ${serverConfig.email.globalTemplateVars[globalKey]}`);
+        console.log(`Replacing => [${globalKey}]: ${globalTemplateVars[globalKey]}`);
 
         html = TextHelper.replaceAll(
           html,
           `[${globalKey}]`,
-          serverConfig.email.globalTemplateVars[globalKey]
+          globalTemplateVars[globalKey]
         );
       }
     }

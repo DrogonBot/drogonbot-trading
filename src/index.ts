@@ -8,7 +8,6 @@ import os from 'os';
 import path from 'path';
 import socketio from 'socket.io';
 
-import { ADMIN_EMAIL, APP_NAME, ENV, LANGUAGE, serverConfig } from './constants/env';
 import { EnvType } from './constants/types/env.types';
 import { DatabaseCron } from './cron_jobs/database.cron';
 import { JobsCron } from './cron_jobs/jobs.cron';
@@ -27,23 +26,23 @@ import { ConsoleColor, ConsoleHelper } from './utils/ConsoleHelper';
 import { MixpanelHelper } from './utils/MixpanelHelper';
 import { SocketIOHelper } from './utils/SocketIOHelper';
 
-mongoose.connect(serverConfig.app.mongodbConnectionUrl, {
+/*#############################################################|
+|  >>> EXPRESS - INITIALIZATION
+*##############################################################*/
+
+console.log(process.env);
+
+mongoose.connect(`mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_INITDB_DATABASE}?authSource=admin`, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false
 });
-
-/*#############################################################|
-|  >>> EXPRESS - INITIALIZATION
-*##############################################################*/
 
 // ! Tip: if nodemon hangs on "EADDRESSINUSE" error, run: "killall node"
 
 const app = express();
 const server = http.createServer(app); // socket.io requirement
 const io = socketio(server); // now we pass this server variable to our server
-
-const port = process.env.PORT || serverConfig.app.port;
 
 export const publicDirectory = path.join(__dirname, './public')
 export const backupsDirectory = path.join(__dirname, '../backups')
@@ -65,7 +64,7 @@ MixpanelHelper.init();
 // MainCron.sampleCron();
 // RetentionCron.inactiveUserReminder()
 
-switch (ENV) {
+switch (process.env.ENV) {
   case EnvType.Production: // Let's turn on our cron job in production only!
     JobsCron.submitApplications()
     const dbCron = new DatabaseCron();
@@ -97,7 +96,9 @@ app.use(formData.union());
 
 // app.use(GlobalMiddleware.enableCors);
 
-if (serverConfig.maintenanceMode) {
+console.log(process.env.MAINTENANCE_MODE);
+
+if (process.env.MAINTENANCE_MODE == "on") {
   app.use(GlobalMiddleware.maintenanceMode);
 }
 
@@ -105,7 +106,11 @@ if (serverConfig.maintenanceMode) {
 app.use(express.static(publicDirectory, { dotfiles: 'allow' }))
 
 
+
+
+
 // app.use(middleware.checkMethods);
+
 
 /*#############################################################|
 |  >>> ROUTES
@@ -121,13 +126,13 @@ app.use(sectorRouter)
 app.use(resumeRouter)
 app.use(countryRouter)
 
-server.listen(port, () => {
-  // tslint:disable-next-line: no-console
+server.listen(process.env.NODE_API_PORT, async () => {
+
 
   let backgroundColor;
   let foregroundColor;
 
-  switch (ENV) {
+  switch (process.env.ENV) {
     case EnvType.Development:
     case EnvType.Staging:
       backgroundColor = ConsoleColor.BgYellow;
@@ -139,7 +144,7 @@ server.listen(port, () => {
       break;
   }
 
-  ConsoleHelper.coloredLog(backgroundColor, foregroundColor, `${APP_NAME} || Environment: ${ENV} || port ${port} || Admin email: ${ADMIN_EMAIL} || Language: ${LANGUAGE}`)
+  ConsoleHelper.coloredLog(backgroundColor, foregroundColor, `${process.env.APP_NAME} || Environment: ${process.env.ENV} || port ${process.env.NODE_API_PORT} || Admin email: ${process.env.ADMIN_EMAIL} || Language: ${process.env.LANGUAGE}`)
 });
 
 app.on("error", err => {
