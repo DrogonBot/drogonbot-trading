@@ -98,7 +98,7 @@ app.use(formData.union());
 
 console.log(process.env.MAINTENANCE_MODE);
 
-if (process.env.MAINTENANCE_MODE == "on") {
+if (process.env.MAINTENANCE_MODE === "on") {
   app.use(GlobalMiddleware.maintenanceMode);
 }
 
