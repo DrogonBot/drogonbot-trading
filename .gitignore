@@ -8,3 +8,6 @@ backups/db-dump.zip
 src/constants/env.ts
 .env
 docker-compose.yml
+environment/prod.env
+environment/docker-compose.prod.yml
+

@@ -4,7 +4,6 @@
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-
 printColor () {
   printf "${YELLOW}$1${NC}\n"
 }
@@ -12,27 +11,28 @@ printColor () {
 # Other important constants
 PROJECT_FOLDER="/home/jonit/empregourgente-backend"
 
-printColor "IMPORTANT: Make sure you have docker and docker-compose installed on Ubuntu 18.04. Check for 1-click droplets on Digital Ocean"
+# Setup docker-compose production file
+if test -f "./environment/docker-compose.dev.yml"; then
+  printColor "Preparing docker-compose development file..."
+  cp ./environment/docker-compose.dev.yml ./docker-compose.yml
+  
+  else 
+    echo "You must have a docker-compose.dev.yml template file on /environment to proceed!"
+    exit
+  
+fi
 
-printColor "Preparing docker-compose production file..."
-cp docker-compose.prod.yml docker-compose.yml
-
-printColor "Installing some system necessary packages"
-
-sudo apt-get update
-sudo apt install zip
-sudo apt install unzip
-
-
-printColor "Setting up system cron jobs"
-
-# This system cronjob main goal is only to dump mongodb into a zip file inside backups folder. Then, database.cron.ts will periodically submit it to our admin email 
-sudo crontab -l > dbBackupCron
-echo "0 8 * * * ${PROJECT_FOLDER}/scripts/backup-mongodb.sh" >> dbBackupCron
-sudo crontab dbBackupCron
-sudo rm dbBackupCron
-
-
+# Setup .env production file
+if test -f "./environment/dev.env"; then
+  printColor "Preparing env production file..."
+  cp ./environment/dev.env ./.env
+  
+  else 
+    echo "You must have a dev.env template file on /environment to proceed!"
+    exit
+  
+fi
+ 
 printColor "Creating swap file (needed so our docker containers can run smoothly)"
 printColor "Reference: https://linuxize.com/post/create-a-linux-swap-file/"
 
@@ -73,8 +73,6 @@ cd admin
 sudo yarn install
 sudo npm run build # build react production ready files
 cd ..
-
- 
 
 
 printColor "CONFIGURING NGINX PROXY-NETWORKS"

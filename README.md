@@ -74,7 +74,7 @@ docker-compose up
 
 ## Mongo Admin
 
-- Access http://localhost:1234 to manage your mongodb database. On production its on mongo-admin.empregourgente.com
+- Access http://localhost:3002 to manage your mongodb database. On production its on mongo-admin.empregourgente.com
 
 ## Production Environment Setup
 

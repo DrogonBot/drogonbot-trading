@@ -5,7 +5,7 @@ export const prodServerConfig: IServerConfig = {
     port: 3000,
     url: "https://empregourgente.com/",
     apiUrl: "https://api.empregourgente.com",
-    mongodbConnectionUrl: "mongodb://mongo-eu:27017/emprego-urgente"
+    mongodbConnectionUrl: "mongodb://database:27017/emprego-urgente"
   },
   email: {
 

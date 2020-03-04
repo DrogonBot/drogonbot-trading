@@ -1,11 +1,11 @@
 #!/bin/bash
 
-DB_CONTAINER="mongo-eu"
+DB_CONTAINER="database"
 PROJECT_FOLDER="/home/jonit/empregourgente-backend"
 
 # Execute dump command to export db files to mongo container
  
-docker exec -it mongo-eu mongodump -o /db-dump/
+docker exec -it database mongodump -o /db-dump/
 
 
 # then we copy these files (under dump folder) to our host
