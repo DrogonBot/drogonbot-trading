@@ -14,6 +14,9 @@ PROJECT_FOLDER="/home/jonit/empregourgente-backend"
 
 printColor "IMPORTANT: Make sure you have docker and docker-compose installed on Ubuntu 18.04. Check for 1-click droplets on Digital Ocean"
 
+printColor "Preparing docker-compose production file..."
+cp docker-compose.prod.yml docker-compose.yml
+
 printColor "Installing some system necessary packages"
 
 sudo apt-get update

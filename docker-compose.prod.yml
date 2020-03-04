@@ -1,5 +1,5 @@
 ####################################################
-#*         DOCKER COMPOSE - DEVELOPMENT FILE
+#!        DOCKER COMPOSE - PRODUCTION FILE
 ####################################################
 
 version: "3"
@@ -27,8 +27,8 @@ services:
   mongo-eu:
     container_name: mongo-eu
     image: mongo
-    ports: # these ports are commented out on production, so we don't have external connection in our db
-      - "27017:27017"
+    # ports:
+    #   - "27017:27017"
     env_file: .env
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}

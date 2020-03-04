@@ -6,3 +6,4 @@ src/public/files/**
 backups/db-dump/**
 backups/db-dump.zip
 src/constants/env.ts
+.env
