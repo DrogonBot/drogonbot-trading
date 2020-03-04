@@ -23,6 +23,7 @@ services:
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
     networks:
       - db-network
+      - default
 
   node-database:
     container_name: node-database
