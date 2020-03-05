@@ -95,7 +95,7 @@ docker-compose up -d
 cd ..
 
 
-printColor "nginx-proxy configured! This saved your probably some years of your precious life."
+printColor "nginx-proxy configured! This saved probably some years of your precious life."
 printColor "*** *** REMEMBER TO CONFIGURE YOUR SUBDOMAINS DNS IN YOUR VPS PROVIDER! Check the tutorial above for more info *** ***"
 
 # start containers
