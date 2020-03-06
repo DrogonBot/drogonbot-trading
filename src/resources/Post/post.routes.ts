@@ -20,20 +20,29 @@ postRouter.get('/post', userAuthMiddleware, async (req, res) => {
   if (keyword) {
     // if a keyword is passed, the user wants us to search through our posts.
 
-    const keywordRegex = { $regex: keyword, $options: "i" }
+    try {
+      const keywordRegex = { $regex: keyword, $options: "i" }
 
-    const searchPosts = await Post.find({
-      $or: [{ position: keywordRegex }, { title: keywordRegex }]
-    }).populate('owner')
+      const searchPosts = await Post.find({
+        $or: [{ jobRoles: keywordRegex }, { title: keywordRegex }]
+      }).populate('owner')
 
-    if (!searchPosts) {
-      return res.status(200).send({
-        status: 'error',
-        message: LanguageHelper.getLanguageString('post', 'postNotFound')
-      })
+      if (!searchPosts) {
+        return res.status(200).send({
+          status: 'error',
+          message: LanguageHelper.getLanguageString('post', 'postNotFound')
+        })
+      }
+
+      return res.status(200).send(searchPosts)
+    }
+    catch (error) {
+      console.error(error);
+
+      return res.status(200).send([])
     }
 
-    return res.status(200).send(searchPosts)
+
 
   }
 
