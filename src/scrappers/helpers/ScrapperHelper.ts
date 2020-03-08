@@ -5,9 +5,11 @@ import rp from 'request-promise';
 import stringSimilarity from 'string-similarity';
 import util from 'util';
 
+import { Post } from '../../resources/Post/post.model';
 import { ISector, Sector } from '../../resources/Sector/sector.model';
+import { User } from '../../resources/User/user.model';
+import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
-import { ScrapperESOlx } from '../scrappers/ScrapperESOlx';
 
 export interface IProxyItem {
   ip: string;
@@ -15,6 +17,74 @@ export interface IProxyItem {
 }
 
 export class ScrapperHelper {
+
+  public static proxyList;
+  public static chosenProxy;
+
+
+  public static init = async (name, crawlLinksFunction, crawlPageDataFunction) => {
+
+    console.log(`🤖: Initializing ${name}`);
+
+    const proxyList = await ScrapperHelper.fetchProxyList();
+
+    ScrapperHelper.proxyList = proxyList;
+    ScrapperHelper.chosenProxy = ScrapperHelper.rotateProxy(ScrapperHelper.proxyList);
+
+
+
+    /*#############################################################|
+    |  >>> FIRST STEP: Crawl for post links
+    *##############################################################*/
+
+    const links = await ScrapperHelper.tryRequestUntilSucceeds(crawlLinksFunction)
+
+    const owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
+
+    for (const link of links) {
+
+      await GenericHelper.sleep(10000)
+
+      // check if link wasn't already scrapped!
+      const postFound = await Post.find({ externalUrl: link })
+
+      if (postFound.length >= 1) {
+        console.log(`🤖: Hmm... This post is already scrapped! Skipping...`);
+        continue
+      }
+
+
+      /*#############################################################|
+      |  >>> SECOND STEP: Crawl for INDIVIDUAL page data
+      *##############################################################*/
+
+      try {
+        console.log(`🤖: Scrapping data from ...${link}`);
+
+        const postData = await ScrapperHelper.tryRequestUntilSucceeds(crawlPageDataFunction, [link])
+
+        if (owner) {
+          const newPost = new Post({ ...postData, owner: owner._id })
+          newPost.save()
+          ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
+        } else {
+          console.log(`🤖: User with e-mail ${process.env.ADMIN_EMAIL} not found! It's necessary for saving our posts!`)
+          console.log(`🤖: Failed to scrap data from ${link}!`)
+        }
+
+      }
+      catch (error) {
+        console.log(`🤖: Failed to scrap data from ${link}!`)
+        console.log(error);
+      }
+    }
+
+    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished!`)
+
+
+  };
+
+
   public static loadLocalHtml = async (location: string) => {
     const readFile = util.promisify(fs.readFile);
     return readFile(path.join(__dirname, location), 'utf8');
@@ -91,6 +161,8 @@ export class ScrapperHelper {
 
   public static tryRequestUntilSucceeds = async (request, args?) => {
 
+    // This function is useful because it's not always that we'll get a connection on a free proxy!
+
     while (true) {
       try {
 
@@ -105,7 +177,7 @@ export class ScrapperHelper {
         console.log(`🤖: Request failed! Rotating proxy! Better luck next time!`);
         console.log(error);
 
-        ScrapperESOlx.chosenProxy = ScrapperHelper.rotateProxy(ScrapperESOlx.proxyList);
+        ScrapperHelper.chosenProxy = ScrapperHelper.rotateProxy(ScrapperHelper.proxyList);
 
         await GenericHelper.sleep(30000)
       }

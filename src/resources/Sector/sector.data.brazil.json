@@ -65,6 +65,7 @@
       "Copeiro(a)",
       "Garçon / Garçonete",
       "Chapeiro",
+      "Auxiliar de Chapeiro",
       "Auxiliar de Cozinha",
       "Chefe de Cozinha",
       "Ajudante de Bar",
@@ -128,7 +129,9 @@
       "Laser",
       "Consultora de Beleza",
       "Capilar",
-      "Fotodepiladora"
+      "Fotodepiladora",
+      "Barbeiro",
+      "Micropigmentadora"
     ]
   },
   {
@@ -503,13 +506,14 @@
       "Frentista",
       "Comprador",
       "Motorista",
+      "Ajudante de Motorista",
       "Motorista categoria D",
       "Motorista categoria B",
       "Analista de Logística",
       "Operador de empilhadeira",
       "Motoboy",
       "Instalador",
-      "Carga",
+      "Assistente de Carga e Descarga",
       "Entregador",
       "Analista Operacional",
       "Analista de Operações",

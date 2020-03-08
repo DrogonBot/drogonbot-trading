@@ -1,75 +1,10 @@
 import cheerio from 'cheerio';
 
-import { Post } from '../../resources/Post/post.model';
-import { User } from '../../resources/User/user.model';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
 
-export class ScrapperESOlx {
-
-  public static proxyList;
-  public static chosenProxy;
-
-  public static init = async () => {
-
-    console.log(`🤖: Initializing ScrapperESOlx`);
-
-    const proxyList = await ScrapperHelper.fetchProxyList();
-
-    ScrapperESOlx.proxyList = proxyList;
-    ScrapperESOlx.chosenProxy = ScrapperHelper.rotateProxy(ScrapperESOlx.proxyList);
-
-
-    // First step, try getting the target links ========================================
-
-
-
-
-    // const links = await ScrapperESOlx.crawlLinks(chosenProxy);
-    const links = await ScrapperHelper.tryRequestUntilSucceeds(ScrapperESOlx.crawlLinks)
-
-    const owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
-
-    for (const link of links) {
-      await GenericHelper.sleep(10000)
-
-      // check if link wasn't already scrapped!
-      const postFound = await Post.find({ externalUrl: link })
-
-      if (postFound.length >= 1) {
-        console.log(`🤖: Hmm... This post is already scrapped! Skipping...`);
-        continue
-      }
-
-
-      try {
-        console.log(`🤖: Scrapping data from ...${link}`);
-
-        const postData = await ScrapperHelper.tryRequestUntilSucceeds(ScrapperESOlx.crawlPageData, [link])
-
-        if (owner) {
-          const newPost = new Post({ ...postData, owner: owner._id })
-          newPost.save()
-          console.log(`🤖: New post saved into database!`);
-        } else {
-          console.log(`🤖: User with e-mail ${process.env.ADMIN_EMAIL} not found! It's necessary for saving our posts!`)
-          console.log(`🤖: Failed to scrap data from ${link}!`)
-        }
-
-      }
-      catch (error) {
-        console.log(`🤖: Failed to scrap data from ${link}!`)
-        console.log(error);
-      }
-    }
-
-
-
-
-  };
-
+export class ScrapperOLXES {
 
 
   public static crawlLinks = async (): Promise<string[]> => {
@@ -81,7 +16,7 @@ export class ScrapperESOlx {
 
     const html = await ScrapperHelper.crawlHtml(
       'https://es.olx.com.br/vagas-de-emprego',
-      ScrapperESOlx.chosenProxy
+      ScrapperHelper.chosenProxy
     );
 
     const $ = cheerio.load(html);
@@ -110,7 +45,7 @@ export class ScrapperESOlx {
     // const html = await ScrapperHelper.loadLocalHtml('../data/olx_auxiliar_servicos_gerais.html');
 
 
-    const html = await ScrapperHelper.crawlHtml(link, ScrapperESOlx.chosenProxy)
+    const html = await ScrapperHelper.crawlHtml(link, ScrapperHelper.chosenProxy)
 
 
     const $ = cheerio.load(html);
