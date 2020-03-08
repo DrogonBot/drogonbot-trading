@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
+import { ScrapperESOlx } from '../../scrappers/scrappers/ScrapperESOlx';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
@@ -11,6 +12,20 @@ import { IPostApplication, IPostApplicationStatus, Post } from './post.model';
 
 // @ts-ignore
 const postRouter = new Router();
+
+
+// TODO: remove this route. It's just for testing!
+postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
+
+
+  await ScrapperESOlx.init()
+
+  return res.status(200).send({
+    status: 'ok'
+  })
+
+
+})
 
 postRouter.get('/post', userAuthMiddleware, async (req, res) => {
 

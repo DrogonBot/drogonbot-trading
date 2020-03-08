@@ -30,8 +30,6 @@ import { SocketIOHelper } from './utils/SocketIOHelper';
 |  >>> EXPRESS - INITIALIZATION
 *##############################################################*/
 
-console.log(process.env);
-
 mongoose.connect(`mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_INITDB_DATABASE}?authSource=admin`, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -95,8 +93,6 @@ app.use(formData.union());
 
 
 // app.use(GlobalMiddleware.enableCors);
-
-console.log(process.env.MAINTENANCE_MODE);
 
 if (process.env.MAINTENANCE_MODE === "on") {
   app.use(GlobalMiddleware.maintenanceMode);
