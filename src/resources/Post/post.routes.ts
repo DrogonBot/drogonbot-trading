@@ -255,7 +255,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
 
 
-    if (email) {
+    if (email && newPost.email) {
       newPost.email = newPost.email.toLowerCase()
     }
 

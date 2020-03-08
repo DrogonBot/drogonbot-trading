@@ -17,7 +17,9 @@ export enum PostBenefits {
   Meal = "Meal",
   FoodTicket = "FoodTicket",
   Transportation = "Transportation",
-  HealthCare = "HealthCare"
+  HealthCare = "HealthCare",
+  LifeInsurance = "LifeInsurance",
+  DentalPlan = "DentalPlan"
 }
 
 export enum IPostApplicationStatus {
@@ -31,24 +33,38 @@ export interface IPostApplication {
   jobRole: string
 }
 
+export enum IPostSource {
+  Blog = "Blog",
+  Facebook = "Facebook",
+  Internal = "Internal",
+  Other = "Other"
+}
+
 export interface IPost {
   sector: string,
   category: string,
-  positionType: PostPositionType
-  benefits: string[],
-  country: string;
+  positionType?: PostPositionType
+  benefits?: string[],
   jobRoles: string[],
+  country: string;
   stateCode: string,
   city: string,
+  neighborhood?: string
   title: string,
-  content: string,
-  externalUrl: string,
-  email: string;
-  source: string,
-  monthlySalary: number;
-  yearlySalary: number;
-  hourlySalary: number;
-  images: Array<String | undefined>,
+  content?: string,
+  externalUrl?: string,
+  companyName?: string, // could be different than the owner name (eg. a HR company that's posting multiple positions for different clients)
+  email?: string;
+  phone?: string,
+  zipCode?: string,
+  source?: IPostSource,
+  schedule?: string,
+  requisites?: string,
+  experienceRequired?: boolean,
+  monthlySalary?: number;
+  yearlySalary?: number;
+  hourlySalary?: number;
+  images?: Array<String | undefined>,
   likes: number;
   usersWhoLiked: string[],
   applications: IPostApplication[]
@@ -117,6 +133,14 @@ const postSchema = new mongoose.Schema({
     trim: true,
     required: true
   },
+  neighborhood: {
+    type: String,
+    trim: true,
+  },
+  zipCode: {
+    type: String,
+    trim: true
+  },
   // At least an email OR a phone should be present!
   email: {
     type: String,
@@ -130,7 +154,21 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
+  schedule: {
+    type: String,
+    trim: true
+  },
+  requisites: {
+    type: String,
+    trim: true
+  },
+  experienceRequired: {
+    type: Boolean,
+    default: true
+  },
+  companyName: {
+    type: String,
+  },
 
   category: {
     type: PostCategory,
@@ -196,6 +234,8 @@ const postSchema = new mongoose.Schema({
       }
     }
   ],
+
+
 
 }, {
   timestamps: true
