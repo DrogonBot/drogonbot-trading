@@ -100,7 +100,7 @@ export class ScrapperHelper {
 
     try {
       if (proxyItem) {
-        console.log(`Using proxy IP ${proxyItem.ip} - PORT ${proxyItem.port}`);
+        console.log(`🤖: Using proxy IP ${proxyItem.ip} - PORT ${proxyItem.port}`);
         proxiedRequest = rp.defaults({
           proxy: `http://${proxyItem.ip}:${proxyItem.port}`,
           strictSSL: false,

@@ -67,8 +67,21 @@ switch (process.env.ENV) {
     JobsCron.submitApplications()
     const dbCron = new DatabaseCron();
     dbCron.backupAndExport()
+
+
+
+    // job crawlers
+
+    JobsCron.jobCrawlersCleaners();
+    JobsCron.initializeJobCrawlers();
+
+
+
+
     break;
 }
+
+
 
 
 /*#############################################################|

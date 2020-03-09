@@ -68,7 +68,9 @@ export interface IPost {
   likes: number;
   usersWhoLiked: string[],
   applications: IPostApplication[]
-  owner: Object
+  owner: Object,
+  createdAt: string,
+  updatedAt: string
 }
 
 export interface IPostModel extends IPost, Document {

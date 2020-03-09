@@ -1,6 +1,6 @@
+import EmailValidator from 'email-deep-validator';
+
 import { PostBenefits, PostCategory, PostPositionType } from '../../resources/Post/post.model';
-
-
 
 export class DataExtractorHelper {
 
@@ -63,7 +63,9 @@ export class DataExtractorHelper {
     }
   }
 
-  public static extractJobData(rawPost) {
+  public static extractJobData = async (rawPost) => {
+
+    console.log(`🤖: Extracting job data...`);
 
     // This function will extract as much data as we can from a raw job post. Unfortunately, it's not able to fill all of the required IPost fields, so you should do some extra checks to do so (like infering the sector and jobRoles)
 
@@ -98,12 +100,44 @@ export class DataExtractorHelper {
 
     const benefits: PostBenefits[] = DataExtractorHelper.readBenefits(hasLifeInsurance, hasMealAssistance, hasTransportAssistance, hasHealthPlan, hasDentalPlan)
 
+    // Extract and validate email
+    let email = DataExtractorHelper.tryExtractingData(rawPost, /\S+@\S+\.\S+/g)
+
+
+
+
+
+
+    if (email !== null) {
+
+      const emailValidator = new EmailValidator()
+
+      const { wellFormed, validDomain, validMailbox } = await emailValidator.verify(email);
+
+
+      console.log(`🤖: Checking if ${email} is valid...`);
+
+
+
+      if (!wellFormed || !validDomain) {
+        console.log(`🤖: ${email} is INVALID! Setting it to null to prevent future errors`);
+        email = null
+      } else {
+        console.log(`🤖: ${email} seems to be VALID!`);
+      }
+
+    }
+
+
+
+
+
     return {
       category: DataExtractorHelper.readCategory(isTemporary, isCLT, isInternship),
       positionType: isPartTime ? PostPositionType.PartTime : PostPositionType.FullTime,
       benefits,
       content: DataExtractorHelper.tryExtractingData(rawPost, /((Descrição|Descricao|Atividades|Função|Funcao)\:?\n?)\s?(.+\n){1,100}/i, /(Descrição|Descricao|Atividades):\n?\s?/i),
-      email: DataExtractorHelper.tryExtractingData(rawPost, /\S+@\S+\.\S+/g),
+      email,
       monthlySalary: salary,
       yearlySalary: salary && salary * 12,
       hourlySalary: salary && (salary * 12) / 1920,

@@ -1,9 +1,12 @@
+import moment = require('moment');
 import cron from 'node-cron';
 
 import { JobsEmailManager } from '../emails/jobs.email';
 import { IPostApplication, IPostApplicationStatus, Post } from '../resources/Post/post.model';
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
+import { ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
+import { ScrapperOLXES } from '../scrappers/scrappers/ScrapperOLXES';
 import { LanguageHelper } from '../utils/LanguageHelper';
 
 export class JobsCron {
@@ -108,5 +111,42 @@ export class JobsCron {
 
 
     });
+  }
+
+  public static jobCrawlersCleaners = async () => {
+
+    // once every month
+    cron.schedule("0 0 1 * *", async () => {
+
+
+      const posts = await Post.find({});
+
+      // loop through all posts and check with ones are older than 30 days
+      for (const post of posts) {
+
+        const a = moment(new Date())
+        const b = moment(post.createdAt)
+
+        const diff = a.diff(b, 'days')
+
+        if (diff >= 30) {
+          console.log(`🤖: Cleaning post ${post.title} - diff: ${diff}`);
+          await post.remove() // delete post!
+        }
+
+      }
+    });
+  }
+
+  public static initializeJobCrawlers = () => {
+
+
+    cron.schedule("*/10 * * * *", async () => {
+
+      // OLX => ES
+      await ScrapperHelper.init('ScrapperOLXES', ScrapperOLXES.crawlLinks, ScrapperOLXES.crawlPageData)
+    })
+
+
   }
 }
