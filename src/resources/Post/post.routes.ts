@@ -1,8 +1,6 @@
 import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
-import { ScrapperOLXES } from '../../scrappers/scrappers/ScrapperOLXES';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
@@ -15,17 +13,17 @@ import { IPostApplication, IPostApplicationStatus, Post } from './post.model';
 const postRouter = new Router();
 
 
-// TODO: remove this route. It's just for testing!
-postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
+// // TODO: remove this route. It's just for testing!
+// postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
 
-  await ScrapperHelper.init('ScrapperOLXES', ScrapperOLXES.crawlLinks, ScrapperOLXES.crawlPageData)
+//   await ScrapperHelper.init('ScrapperOLXES', ScrapperOLXES.crawlLinks, ScrapperOLXES.crawlPageData)
 
-  return res.status(200).send({
-    status: 'ok'
-  })
+//   return res.status(200).send({
+//     status: 'ok'
+//   })
 
 
-})
+// })
 
 postRouter.get('/post', userAuthMiddleware, async (req, res) => {
 
