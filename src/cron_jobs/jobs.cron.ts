@@ -5,7 +5,7 @@ import { JobsEmailManager } from '../emails/jobs.email';
 import { IPostApplication, IPostApplicationStatus, Post } from '../resources/Post/post.model';
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
-import { ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
+import { PagePattern, ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
 import { ScrapperOLXES } from '../scrappers/scrappers/ScrapperOLXES';
 import { LanguageHelper } from '../utils/LanguageHelper';
 
@@ -144,7 +144,10 @@ export class JobsCron {
     cron.schedule("*/10 * * * *", async () => {
 
       // OLX => ES
-      await ScrapperHelper.init('ScrapperOLXES', ScrapperOLXES.crawlLinks, ScrapperOLXES.crawlPageData)
+      await ScrapperHelper.init('ScrapperOLXES', {
+        crawlLinksFunction: ScrapperOLXES.crawlLinks,
+        crawlPageDataFunction: ScrapperOLXES.crawlPageData
+      }, PagePattern.ListAndInternalPosts)
     })
 
 

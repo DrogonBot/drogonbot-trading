@@ -16,13 +16,27 @@ export interface IProxyItem {
   port: string;
 }
 
+export enum PagePattern {
+  ListAndInternalPosts = "ListAndInternalPost", // Example: https://es.olx.com.br/vagas-de-emprego
+  Feed = "Feed" // Example: https://www.facebook.com/oportunidadesdeempregoes/
+}
+
+export interface ICrawlerFunctions {
+  crawlLinksFunction?: () => Promise<string[]>,
+  crawlPageDataFunction?: (link: string) => any,
+  crawlFeedFunction?: (link: string) => Promise<any>
+}
+
 export class ScrapperHelper {
 
   public static proxyList;
   public static chosenProxy;
+  public static owner;
 
 
-  public static init = async (name, crawlLinksFunction, crawlPageDataFunction) => {
+  public static init = async (name, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string) => {
+
+    const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
 
     console.log(`🤖: Initializing ${name}`);
 
@@ -30,59 +44,87 @@ export class ScrapperHelper {
 
     ScrapperHelper.proxyList = proxyList;
     ScrapperHelper.chosenProxy = ScrapperHelper.rotateProxy(ScrapperHelper.proxyList);
+    ScrapperHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
 
+    switch (type) {
 
+      case PagePattern.ListAndInternalPosts:
+        const links = await ScrapperHelper.tryRequestUntilSucceeds(crawlLinksFunction)
 
-    /*#############################################################|
-    |  >>> FIRST STEP: Crawl for post links
-    *##############################################################*/
+        for (const link of links) {
+          await GenericHelper.sleep(10000)
 
-    const links = await ScrapperHelper.tryRequestUntilSucceeds(crawlLinksFunction)
+          // check if link wasn't already scrapped!
+          const postFound = await Post.find({ externalUrl: link })
 
-    const owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
+          if (postFound.length >= 1) {
+            console.log(`🤖: Hmm... This post is already scrapped! Skipping...`);
+            continue
+          }
 
-    for (const link of links) {
-
-      await GenericHelper.sleep(10000)
-
-      // check if link wasn't already scrapped!
-      const postFound = await Post.find({ externalUrl: link })
-
-      if (postFound.length >= 1) {
-        console.log(`🤖: Hmm... This post is already scrapped! Skipping...`);
-        continue
-      }
-
-
-      /*#############################################################|
-      |  >>> SECOND STEP: Crawl for INDIVIDUAL page data
-      *##############################################################*/
-
-      try {
-        console.log(`🤖: Scrapping data from ...${link}`);
-
-        const postData = await ScrapperHelper.tryRequestUntilSucceeds(crawlPageDataFunction, [link])
-
-        if (owner) {
-          const newPost = new Post({ ...postData, owner: owner._id })
-          newPost.save()
-          ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
-        } else {
-          console.log(`🤖: User with e-mail ${process.env.ADMIN_EMAIL} not found! It's necessary for saving our posts!`)
-          console.log(`🤖: Failed to scrap data from ${link}!`)
+          await ScrapperHelper.scrapPage(link, crawlPageDataFunction)
         }
+        break;
 
-      }
-      catch (error) {
-        console.log(`🤖: Failed to scrap data from ${link}!`)
-        console.log(error);
-      }
+      case PagePattern.Feed:
+
+        if (externalSource) {
+          await ScrapperHelper.scrapFeed(externalSource, crawlFeedFunction)
+        } else {
+          console.log(`🤖: Warning! You should define an external source page for scrapping on OnePageAllPosts PagePattern!`);
+        }
+        break;
     }
-
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished!`)
 
-
   };
+
+  private static scrapFeed = async (link: string, crawlFeedFunction) => {
+    console.log(`🤖: Scrapping data FEED from...${link}`);
+
+    const postsData = await ScrapperHelper.tryRequestUntilSucceeds(crawlFeedFunction, [link])
+
+    console.log(postsData);
+
+
+
+    if (ScrapperHelper.owner) {
+
+      // loop through feed posts and start saving them into db
+
+      for (const post of postsData) {
+        const newPost = new Post({ ...post, owner: ScrapperHelper.owner._id })
+        newPost.save()
+        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
+      }
+    } else {
+      console.log(`🤖: User with e-mail ${process.env.ADMIN_EMAIL} not found! It's necessary for saving our posts!`)
+      console.log(`🤖: Failed to scrap data from ${link}!`)
+    }
+
+  }
+
+  private static scrapPage = async (link: string, crawlPageDataFunction) => {
+    try {
+      console.log(`🤖: Scrapping data from ...${link}`);
+
+      const postData = await ScrapperHelper.tryRequestUntilSucceeds(crawlPageDataFunction, [link])
+
+      if (ScrapperHelper.owner) {
+        const newPost = new Post({ ...postData, owner: ScrapperHelper.owner._id })
+        newPost.save()
+        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
+      } else {
+        console.log(`🤖: User with e-mail ${process.env.ADMIN_EMAIL} not found! It's necessary for saving our posts!`)
+        console.log(`🤖: Failed to scrap data from ${link}!`)
+      }
+
+    }
+    catch (error) {
+      console.log(`🤖: Failed to scrap data from ${link}!`)
+      console.log(error);
+    }
+  }
 
 
   public static loadLocalHtml = async (location: string) => {

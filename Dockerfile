@@ -1,4 +1,5 @@
-FROM node:10
+# NodeJS + Puppeteer image 
+FROM buildkite/puppeteer 
 
 # Where our app will live in the container
 WORKDIR /usr/src/app 

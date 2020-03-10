@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
+import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
+import { ScrapperFBVagasOportunidadesES } from '../../scrappers/scrappers/ScrapperFBVagasOportunidadesES';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
@@ -13,22 +15,29 @@ import { IPostApplication, IPostApplicationStatus, Post } from './post.model';
 const postRouter = new Router();
 
 
-// // TODO: remove this route. It's just for testing!
-// postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
-
-//   await ScrapperHelper.init('ScrapperOLXES', ScrapperOLXES.crawlLinks, ScrapperOLXES.crawlPageData)
-
-//   return res.status(200).send({
-//     status: 'ok'
-//   })
+// TODO: remove this route. It's just for testing!
+postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
 
 
-// })
+  // await ScrapperHelper.init('ScrapperOLXES', ScrapperOLXES.crawlLinks, ScrapperOLXES.crawlPageData, PagePattern.ListAndInternalPosts)
+
+
+  // await PuppeteerScrapper.init('https://pt-br.facebook.com/groups/jo.darc.13/')
+  await ScrapperHelper.init('ScrapperVagasOportunidadesES', {
+    crawlFeedFunction: ScrapperFBVagasOportunidadesES.crawlPageFeed
+  }, PagePattern.Feed, 'https://pt-br.facebook.com/groups/jo.darc.13/')
+
+
+
+
+  return res.status(200).send({
+    status: 'ok'
+  })
+})
 
 postRouter.get('/post', userAuthMiddleware, async (req, res) => {
 
   const { id, keyword } = req.query;
-
 
   if (keyword) {
     // if a keyword is passed, the user wants us to search through our posts.
