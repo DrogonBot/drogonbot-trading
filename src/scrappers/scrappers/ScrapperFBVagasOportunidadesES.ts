@@ -32,7 +32,8 @@ export class ScrapperFBVagasOportunidadesES {
       const posts = Array.from(rawPosts);
 
       return posts.map((post) => {
-        return post.textContent
+        // @ts-ignore
+        return post.innerText
       })
     })
 
