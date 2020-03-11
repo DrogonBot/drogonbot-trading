@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 
+import { GenericHelper } from '../../utils/GenericHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
@@ -37,14 +38,12 @@ export class ScrapperFBVagasOportunidadesES {
       })
     })
 
-    const output = Promise.all(data.map(async (postContent) => {
+    const output = await Promise.all(data.map(async (postContent) => {
       const title = postContent ? postContent.split('\n')[0] : ""
 
       const { sector, jobRoleBestMatch } = await ScrapperHelper.findJobRolesAndSector(title, postContent)
 
-      const complementaryData = DataExtractorHelper.extractJobData(postContent)
-
-      console.log(complementaryData);
+      const complementaryData = await DataExtractorHelper.extractJobData(postContent)
 
       return {
         ...complementaryData,
@@ -60,6 +59,8 @@ export class ScrapperFBVagasOportunidadesES {
 
     }))
 
+
+    await GenericHelper.sleep(1000)
 
     await browser.close()
 
