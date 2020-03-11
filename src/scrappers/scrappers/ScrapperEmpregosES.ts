@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 
+import { IPostSource } from '../../resources/Post/post.model';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { ScrapperHelper } from '../helpers/ScrapperHelper';
@@ -8,20 +9,21 @@ import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
 
 
-export class ScrapperFBVagasOportunidadesES {
+export class ScrapperEmpregosES {
 
   public static crawlPageFeed = async (link: string) => {
 
     console.log(`🤖 Starting PUPPETEER BOT 🔥`);
+    console.log(`🤖: Using Proxy IP: ${ScrapperHelper.chosenProxy.ip} on PORT: ${ScrapperHelper.chosenProxy.port}`);
 
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox']
+      args: ['--no-sandbox', `--proxy-server=http://${ScrapperHelper.chosenProxy.ip}:${ScrapperHelper.chosenProxy.port}`],
     })
 
     const page = await browser.newPage();
 
-    await page.goto(link, { waitUntil: 'networkidle2' })
+    await page.goto(link, { waitUntil: 'load', timeout: 0 }) // Disable timeout
 
 
     const data = await page.evaluate(async () => {
@@ -49,11 +51,12 @@ export class ScrapperFBVagasOportunidadesES {
         ...complementaryData,
         title,
         content: postContent,
-        externalUrl: link,
+        source: IPostSource.Facebook,
+        sourceUrl: link,
         country: "Brazil",
         stateCode: "ES",
         city: "Vitória",
-        sector: sector.name,
+        sector,
         jobRoles: [jobRoleBestMatch],
       }
 

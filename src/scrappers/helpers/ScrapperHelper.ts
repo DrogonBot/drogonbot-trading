@@ -34,8 +34,8 @@ export interface IBestMatchAndSector {
 
 export class ScrapperHelper {
 
-  public static proxyList;
-  public static chosenProxy;
+  public static proxyList: IProxyItem[];
+  public static chosenProxy: IProxyItem;
   public static owner;
 
 
@@ -98,8 +98,15 @@ export class ScrapperHelper {
       // loop through feed posts and start saving them into db
 
       for (const post of postsData) {
+
+        if (!post.email && !post.phone && !post.externalUrl) {
+          console.log(`🤖: Skipping! No email or phone found for: ${link}!`)
+          continue
+        }
+
         const newPost = new Post({ ...post, owner: ScrapperHelper.owner._id })
         newPost.save()
+        await GenericHelper.sleep(1000)
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
       }
     } else {
@@ -221,7 +228,8 @@ export class ScrapperHelper {
 
       }
       catch (error) {
-        console.log(`🤖: Request failed! Rotating proxy! Better luck next time!`);
+
+        ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgBlack, `🤖: Request failed! Rotating proxy! Better luck next time!`)
         console.log(error);
 
         ScrapperHelper.chosenProxy = ScrapperHelper.rotateProxy(ScrapperHelper.proxyList);

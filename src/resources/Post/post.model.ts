@@ -58,6 +58,7 @@ export interface IPost {
   phone?: string,
   zipCode?: string,
   source?: IPostSource,
+  sourceUrl?: string,
   schedule?: string,
   requisites?: string,
   experienceRequired?: boolean,
@@ -187,6 +188,10 @@ const postSchema = new mongoose.Schema({
   },
 
   source: {
+    type: String,
+    trim: true
+  },
+  sourceUrl: {
     type: String,
     trim: true
   },

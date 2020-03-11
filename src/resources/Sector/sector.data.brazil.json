@@ -50,9 +50,7 @@
     "keywords": [
       "Engenheiro Agrônomo",
       "Agrônomo",
-      "Zootecnia",
       "Zootecnista",
-      "Agro",
       "Pecuária"
     ]
   },
@@ -122,8 +120,7 @@
       "Cabeleireira",
       "Manicure",
       "Maquiador",
-      "Estética",
-      "Beleza",
+      "Auxiliar de Estética",
       "Esteticista",
       "Depiladora",
       "Laser",
@@ -147,7 +144,7 @@
     "name": "Ciências Atuariais",
     "keywords": [
       "Atuário",
-      "Atuarial",
+      "Analista Atuarial",
       "Analista de Precificação",
       "Analista de Pricing",
       "Analista de Seguros",
@@ -185,7 +182,6 @@
       "Assistente de Planejamento Financeiro",
       "Assistente de Contabilidade",
       "Assistente de Custos",
-      "CFO",
       "Controller",
       "Assistente de Controladoria",
       "Assistente de Crédito",
@@ -215,7 +211,7 @@
     "keywords": [
       "Editor de Vídeo",
       "Audiovisual",
-      "Roteiro",
+      "Roteirista",
       "Videomaker",
       "Multimídia"
     ]
@@ -260,15 +256,11 @@
       "Programador",
       "Desenvolvedor",
       "Mobile",
-      "Cabeamento",
-      "Eletrônica",
       "Analista de sistemas",
-      "Web",
       "Help Desk",
       "Front-end",
       "Back-end",
       "Devops",
-      "Redes",
       "Business Inteligence",
       "Telefonia"
     ]
@@ -302,8 +294,8 @@
       "Arte-finalista",
       "Designer",
       "Desenhista",
-      "UX",
-      "Interface"
+      "UX designer",
+      "Designer de Interface"
     ]
   },
   {
@@ -317,14 +309,13 @@
     "country": "Brazil",
     "name": "Educação Física",
     "keywords": [
-      "Personal",
       "Personal Trainer",
-      "Natação",
-      "Ballet",
+      "Professor de Natação",
+      "Professor de Ballet",
       "Ginasta",
-      "Pilates",
-      "Judô",
-      "Musculação",
+      "Professor de Pilates",
+      "Professor de Judô",
+      "Professor de Musculação",
       "Professor de Educação Física"
     ]
   },
@@ -417,7 +408,7 @@
     "keywords": [
       "Camareira",
       "Auxiliar de Hotelaria",
-      "Turismo",
+      "Assistente de Turismo",
       "Assistente de Hospedagem",
       "Assistente de Reservas",
       "Anfitrião",
@@ -517,11 +508,9 @@
       "Entregador",
       "Analista Operacional",
       "Analista de Operações",
-      "Operações",
       "Manobrista",
       "Auxiliar de Manutenção",
       "Estoquista",
-      "Ferroviária",
       "Supply Chain",
       "Coordenador de Suprimentos",
       "Motorista Executivo"
@@ -667,7 +656,6 @@
       "Patrimonial",
       "Vigia",
       "Fiscal",
-      "Acesso",
       "Prevenção de Perdas",
       "Portaria",
       "Vigilante"

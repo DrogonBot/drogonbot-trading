@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
-import { ScrapperFBVagasOportunidadesES } from '../../scrappers/scrappers/ScrapperFBVagasOportunidadesES';
+import { ScrapperEmpregosES as ScrapperEmpregosES } from '../../scrappers/scrappers/ScrapperEmpregosES';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
@@ -25,9 +25,9 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
   // }, PagePattern.ListAndInternalPosts)
 
 
-  await ScrapperHelper.init('ScrapperVagasOportunidadesES', {
-    crawlFeedFunction: ScrapperFBVagasOportunidadesES.crawlPageFeed
-  }, PagePattern.Feed, 'https://pt-br.facebook.com/groups/jo.darc.13/')
+  await ScrapperHelper.init('ScrapperEmpregosES', {
+    crawlFeedFunction: ScrapperEmpregosES.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/')
 
   // const post = `Loja de grande porte localizada no shopp praia da costa contrata :
 

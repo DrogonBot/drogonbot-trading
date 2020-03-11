@@ -6,6 +6,7 @@ import { IPostApplication, IPostApplicationStatus, Post } from '../resources/Pos
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
 import { PagePattern, ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
+import { ScrapperEmpregosES } from '../scrappers/scrappers/ScrapperEmpregosES';
 import { ScrapperOLXES } from '../scrappers/scrappers/ScrapperOLXES';
 import { LanguageHelper } from '../utils/LanguageHelper';
 
@@ -148,6 +149,11 @@ export class JobsCron {
         crawlLinksFunction: ScrapperOLXES.crawlLinks,
         crawlPageDataFunction: ScrapperOLXES.crawlPageData
       }, PagePattern.ListAndInternalPosts)
+
+      // Facebook => Empregos ES
+      await ScrapperHelper.init('ScrapperEmpregosES', {
+        crawlFeedFunction: ScrapperEmpregosES.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/')
     })
 
 
