@@ -19,14 +19,33 @@ const postRouter = new Router();
 postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
 
 
-  // await ScrapperHelper.init('ScrapperOLXES', ScrapperOLXES.crawlLinks, ScrapperOLXES.crawlPageData, PagePattern.ListAndInternalPosts)
+  // await ScrapperHelper.init('ScrapperOLXES', {
+  //   crawlLinksFunction: ScrapperOLXES.crawlLinks,
+  //   crawlPageDataFunction: ScrapperOLXES.crawlPageData
+  // }, PagePattern.ListAndInternalPosts)
 
 
-  // await PuppeteerScrapper.init('https://pt-br.facebook.com/groups/jo.darc.13/')
   await ScrapperHelper.init('ScrapperVagasOportunidadesES', {
     crawlFeedFunction: ScrapperFBVagasOportunidadesES.crawlPageFeed
   }, PagePattern.Feed, 'https://pt-br.facebook.com/groups/jo.darc.13/')
 
+  // const post = `Loja de grande porte localizada no shopp praia da costa contrata :
+
+  // -estoquista
+  // -assistente de bike
+
+  // Necessário experiência na função
+
+  // Interessados enviar currículo para curriculossbb@gmail.com colocando no assunto a vaga de interesse`
+
+  // const postDescription = post
+
+
+
+  // const { sector, jobRoleBestMatch }: IBestMatchAndSector = await ScrapperHelper.findJobRolesAndSector(postDescription)
+
+  // console.log(`SECTOR => ${sector}`);
+  // console.log(`JOB ROLE => ${jobRoleBestMatch}`);
 
 
 

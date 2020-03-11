@@ -27,6 +27,11 @@ export interface ICrawlerFunctions {
   crawlFeedFunction?: (link: string) => Promise<any>
 }
 
+export interface IBestMatchAndSector {
+  jobRoleBestMatch: string,
+  sector: string
+}
+
 export class ScrapperHelper {
 
   public static proxyList;
@@ -62,14 +67,14 @@ export class ScrapperHelper {
             continue
           }
 
-          await ScrapperHelper.scrapPage(link, crawlPageDataFunction)
+          await ScrapperHelper._scrapPage(link, crawlPageDataFunction)
         }
         break;
 
       case PagePattern.Feed:
 
         if (externalSource) {
-          await ScrapperHelper.scrapFeed(externalSource, crawlFeedFunction)
+          await ScrapperHelper._scrapFeed(externalSource, crawlFeedFunction)
         } else {
           console.log(`🤖: Warning! You should define an external source page for scrapping on OnePageAllPosts PagePattern!`);
         }
@@ -79,7 +84,7 @@ export class ScrapperHelper {
 
   };
 
-  private static scrapFeed = async (link: string, crawlFeedFunction) => {
+  private static _scrapFeed = async (link: string, crawlFeedFunction) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
 
     const postsData = await ScrapperHelper.tryRequestUntilSucceeds(crawlFeedFunction, [link])
@@ -104,7 +109,7 @@ export class ScrapperHelper {
 
   }
 
-  private static scrapPage = async (link: string, crawlPageDataFunction) => {
+  private static _scrapPage = async (link: string, crawlPageDataFunction) => {
     try {
       console.log(`🤖: Scrapping data from ...${link}`);
 
@@ -228,42 +233,81 @@ export class ScrapperHelper {
 
   }
 
-  public static findJobRolesAndSector = async (title, content) => {
-    let jobRoleBestMatch: string[] = []
+  public static getTitle = (post): string => {
+    try {
+      return post.split('\n')[0]
+    }
+    catch (error) {
+      return ""
+    }
+  }
+
+  private static getSector = async (jobRole) => {
+    // now, based on the jobRoleBestMatch, lets find which sector does this position belongs too
+    try {
+      const sector = await Sector.findOne({ keywords: { "$in": [jobRole] } })
+      if (sector) {
+        return sector.name
+      }
+    }
+    catch (error) {
+      console.log(`Couldn't the sector for ${jobRole}!`);
+      return "Outros"
+    }
+
+    return "Outros"
+  }
+
+  public static findJobRolesAndSector = async (content, title?): Promise<IBestMatchAndSector> => {
+    let bestMatchOverall;
+
+    const sectorsData = await Sector.find({})
+    const sectorRolesRaw = sectorsData.map((sectorEl: ISector) => sectorEl.keywords)
+    const sectors = GenericHelper.arrayFlatten(sectorRolesRaw)
 
     try {
-      // first, try to get the position based on the title
+      // First step: Let's try a full match
 
-      const sectors = await Sector.find({})
-      const sectorRolesRaw = sectors.map((sectorEl: ISector) => sectorEl.keywords)
-      const sectorRoles = GenericHelper.arrayFlatten(sectorRolesRaw)
+      for (const role of sectors) {
 
-      const jobRolesMatchesBasedOnTitle = stringSimilarity.findBestMatch(title, sectorRoles).bestMatch
-      const jobRolesMatchesBasedOnContent = stringSimilarity.findBestMatch(content, sectorRoles).bestMatch
+        if (content.toLowerCase().includes(role.toLowerCase())) {
 
-      const jobRoleBestMatchArr = [jobRolesMatchesBasedOnTitle, jobRolesMatchesBasedOnContent]
+          console.log('ROLE MATCH');
 
-      // get the best match overall
-      jobRoleBestMatch = jobRoleBestMatchArr.sort((x, y) => x.rating > y.rating ? -1 : 1)[0].target;
+          const sectorData = await ScrapperHelper.getSector(role)
+          return {
+            jobRoleBestMatch: role,
+            sector: sectorData
+          }
+        }
+      }
+      // Second step: If a full match is not possible, let's analyze the post content
+      const uppercaseMatches = content.match(/[A-Z]+\W/g) ? content.match(/[A-Z]+\W/g).join(' ').toLowerCase() : [];
+
+      const bestTitleMatches = title ? stringSimilarity.findBestMatch(title, sectors).bestMatch : []
+      const bestContentMatches = stringSimilarity.findBestMatch(content, sectors).bestMatch
+      const bestUppercaseMatches = (uppercaseMatches.length >= 1 ? stringSimilarity.findBestMatch(uppercaseMatches, sectors).bestMatch : [])   // sometimes companies leave the position name in uppercase
+
+      const bestMatches = [bestTitleMatches, bestContentMatches, bestUppercaseMatches].sort((x, y) => x.rating > y.rating ? -1 : 1).filter((match) => {
+        if (match.target) { // we do this to avoid empty matches
+          return match
+        }
+      });
+
+      console.log(bestMatches);
+      bestMatchOverall = bestMatches[0].target
 
     }
     catch (error) {
-
       // if not found, throw an error
+      console.log(error);
       throw new Error('Position not found!')
     }
 
-    // now, based on the jobRoleBestMatch, lets find which sector does this position belongs too
-    let sector;
-    try {
-      sector = await Sector.findOne({ keywords: { "$in": [jobRoleBestMatch] } })
-    }
-    catch (error) {
-      sector = "Outros"
-    }
+    const sector = await ScrapperHelper.getSector(bestMatchOverall)
 
     return {
-      jobRoleBestMatch,
+      jobRoleBestMatch: bestMatchOverall,
       sector
     }
   }

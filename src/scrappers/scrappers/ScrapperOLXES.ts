@@ -11,9 +11,6 @@ export class ScrapperOLXES {
 
     console.log('🤖: Fetching crawling links...');
 
-
-
-
     const html = await ScrapperHelper.crawlHtml(
       'https://es.olx.com.br/vagas-de-emprego',
       ScrapperHelper.chosenProxy
@@ -74,7 +71,7 @@ export class ScrapperOLXES {
       stateCode: "ES",
       city: rawCity || "Vitória",
       neighborhood,
-      sector: sector.name,
+      sector,
       jobRoles: [jobRoleBestMatch],
 
     }

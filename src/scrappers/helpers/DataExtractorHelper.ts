@@ -4,7 +4,7 @@ import { PostBenefits, PostCategory, PostPositionType } from '../../resources/Po
 
 export class DataExtractorHelper {
 
-  public static readBenefits(hasLifeInsurance, hasMealAssistance, hasTransportAssistance, hasHealthPlan, hasDentalPlan): PostBenefits[] {
+  private static _readBenefits(hasLifeInsurance, hasMealAssistance, hasTransportAssistance, hasHealthPlan, hasDentalPlan): PostBenefits[] {
 
     let benefits: PostBenefits[] = []
 
@@ -31,7 +31,7 @@ export class DataExtractorHelper {
 
   }
 
-  public static readCategory(isTemporary, isCLT, isInternship) {
+  private static _readCategory(isTemporary, isCLT, isInternship) {
 
     if (isCLT) {
       return PostCategory.Job
@@ -48,7 +48,7 @@ export class DataExtractorHelper {
 
   }
 
-  public static tryExtractingData(rawPost, regex, replace?) {
+  private static _tryExtractingData(rawPost, regex, replace?) {
     try {
 
       if (replace) {
@@ -98,14 +98,10 @@ export class DataExtractorHelper {
     const hasDentalPlan = /(plano\s|Assistência\s)?(odonto|dent)/i.test(rawPost)
     const isExperienceRequired = /(com\s)?experi(\w+)\s?(necess\w+)?/i.test(rawPost) || /(Necessário)?\s?experi\W+/i.test(rawPost)
 
-    const benefits: PostBenefits[] = DataExtractorHelper.readBenefits(hasLifeInsurance, hasMealAssistance, hasTransportAssistance, hasHealthPlan, hasDentalPlan)
+    const benefits: PostBenefits[] = DataExtractorHelper._readBenefits(hasLifeInsurance, hasMealAssistance, hasTransportAssistance, hasHealthPlan, hasDentalPlan)
 
     // Extract and validate email
-    let email = DataExtractorHelper.tryExtractingData(rawPost, /\S+@\S+\.\S+/g)
-
-
-
-
+    let email = DataExtractorHelper._tryExtractingData(rawPost, /\S+@\S+\.\S+/g)
 
 
     if (email !== null) {
@@ -117,8 +113,6 @@ export class DataExtractorHelper {
 
       console.log(`🤖: Checking if ${email} is valid...`);
 
-
-
       if (!wellFormed || !validDomain) {
         console.log(`🤖: ${email} is INVALID! Setting it to null to prevent future errors`);
         email = null
@@ -128,25 +122,21 @@ export class DataExtractorHelper {
 
     }
 
-
-
-
-
     return {
-      category: DataExtractorHelper.readCategory(isTemporary, isCLT, isInternship),
+      category: DataExtractorHelper._readCategory(isTemporary, isCLT, isInternship),
       positionType: isPartTime ? PostPositionType.PartTime : PostPositionType.FullTime,
       benefits,
-      content: DataExtractorHelper.tryExtractingData(rawPost, /((Descrição|Descricao|Atividades|Função|Funcao)\:?\n?)\s?(.+\n){1,100}/i, /(Descrição|Descricao|Atividades):\n?\s?/i),
+      content: DataExtractorHelper._tryExtractingData(rawPost, /((Descrição|Descricao|Atividades|Função|Funcao)\:?\n?)\s?(.+\n){1,100}/i, /(Descrição|Descricao|Atividades):\n?\s?/i),
       email,
       monthlySalary: salary,
       yearlySalary: salary && salary * 12,
       hourlySalary: salary && (salary * 12) / 1920,
       experienceRequired: isExperienceRequired,
-      externalUrl: DataExtractorHelper.tryExtractingData(rawPost, /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig),
+      externalUrl: DataExtractorHelper._tryExtractingData(rawPost, /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig),
       phone,
-      requisites: DataExtractorHelper.tryExtractingData(rawPost, /(((Pre|Pré)?\-?(Requisitos|Essencial))\:?\n?)\s?(.+\n){1,100}/i, /((Pre|Pré)?\-?Requisitos|Essencial)\:?\n?\s?/i),
-      schedule: DataExtractorHelper.tryExtractingData(rawPost, /((Horario|horário)\:?\n?)\s?(.+\n){1,100}/i, /(Horario|horário):\n?\s?/i),
-      companyName: DataExtractorHelper.tryExtractingData(rawPost, /((Empresa):(\n)?)\s?.+(\n)?/ig, /(Empresa):\s?/)
+      requisites: DataExtractorHelper._tryExtractingData(rawPost, /(((Pre|Pré)?\-?(Requisitos|Essencial))\:?\n?)\s?(.+\n){1,100}/i, /((Pre|Pré)?\-?Requisitos|Essencial)\:?\n?\s?/i),
+      schedule: DataExtractorHelper._tryExtractingData(rawPost, /((Horario|horário)\:?\n?)\s?(.+\n){1,100}/i, /(Horario|horário):\n?\s?/i),
+      companyName: DataExtractorHelper._tryExtractingData(rawPost, /((Empresa):(\n)?)\s?.+(\n)?/ig, /(Empresa):\s?/)
     }
 
 
