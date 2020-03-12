@@ -80,13 +80,15 @@ export class ScrapperHelper {
         }
         break;
     }
+
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished!`)
 
+    await GenericHelper.sleep(1000 * 60 * Math.floor(Math.random() * 5))
   };
 
   private static _checkForBannedWords = (content: string) => {
 
-    const bannedWords = ['renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo']
+    const bannedWords = ['renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador']
 
     for (const word of bannedWords) {
       if (content.toLowerCase().includes(word.toLowerCase())) {

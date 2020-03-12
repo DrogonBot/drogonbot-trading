@@ -8,7 +8,6 @@ import { User } from '../resources/User/user.model';
 import { PagePattern, ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
 import { ScrapperFacebook } from '../scrappers/scrappers/ScrapperFacebook';
 import { ScrapperOLXES } from '../scrappers/scrappers/ScrapperOLXES';
-import { GenericHelper } from '../utils/GenericHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';
 
 export class JobsCron {
@@ -145,15 +144,19 @@ export class JobsCron {
 
     cron.schedule("*/2 * * * *", async () => {
 
-      // OLX => ES
-      await ScrapperHelper.init('ScrapperOLXES', {
+      /*#############################################################|
+      |  >>> ESPIRITO SANTO
+      *##############################################################*/
+
+
+      await ScrapperHelper.init('OLX => ES', {
         crawlLinksFunction: ScrapperOLXES.crawlLinks,
         crawlPageDataFunction: ScrapperOLXES.crawlPageData
       }, PagePattern.ListAndInternalPosts)
 
 
-      // Facebook => Empregos ES
-      await ScrapperHelper.init('Empregos ES', {
+
+      await ScrapperHelper.init('Facebook => Empregos ES', {
         crawlFeedFunction: ScrapperFacebook.crawlPageFeed
       }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/', {
         country: "Brazil",
@@ -161,10 +164,9 @@ export class JobsCron {
         city: "Vitória",
       })
 
-      await GenericHelper.sleep(1000 * 60 * 5)
 
-      // Facebook => Emprego Urgente ES
-      await ScrapperHelper.init('Emprego Urgente ES', {
+
+      await ScrapperHelper.init('Facebook => Emprego Urgente ES', {
         crawlFeedFunction: ScrapperFacebook.crawlPageFeed
       }, PagePattern.Feed, 'https://www.facebook.com/groups/255725088176388', {
         country: "Brazil",
@@ -172,7 +174,7 @@ export class JobsCron {
         city: "Vitória",
       })
 
-      // Facebook => Vagas e Oportunidades ES
+
       await ScrapperHelper.init('Vagas e Oportunidades ES', {
         crawlFeedFunction: ScrapperFacebook.crawlPageFeed
       }, PagePattern.Feed, 'https://www.facebook.com/groups/jo.darc.13/', {
@@ -181,8 +183,8 @@ export class JobsCron {
         city: "Vitória",
       })
 
-      // Facebook => Emprego ES
-      await ScrapperHelper.init('Emprego ES', {
+
+      await ScrapperHelper.init('Facebook => Emprego ES', {
         crawlFeedFunction: ScrapperFacebook.crawlPageFeed
       }, PagePattern.Feed, 'https://www.facebook.com/groups/470386613006396/', {
         country: "Brazil",
@@ -191,22 +193,155 @@ export class JobsCron {
       })
 
 
-      // Facebook => Empregos Vitoria ES
-      await ScrapperHelper.init('Empregos Vitoria ES', {
+
+      await ScrapperHelper.init('Facebook => Empregos Vitoria ES', {
         crawlFeedFunction: ScrapperFacebook.crawlPageFeed
       }, PagePattern.Feed, 'https://www.facebook.com/groups/462576003935602', {
         country: "Brazil",
         stateCode: "ES",
         city: "Vitória",
       })
-      // Facebook => Agencia de Emprego Nacional Empregos Guarapari
-      await ScrapperHelper.init('Empregos Guarapari', {
+
+
+      await ScrapperHelper.init('Facebook => Empregos Vila Velha', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/1002682889820586/', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vila Velha",
+      })
+
+      await ScrapperHelper.init('Facebook => Empregos Guarapari', {
         crawlFeedFunction: ScrapperFacebook.crawlPageFeed
       }, PagePattern.Feed, 'https://www.facebook.com/groups/145238849184087/', {
         country: "Brazil",
         stateCode: "ES",
         city: "Guarapari",
       })
+
+      /*#############################################################|
+      |  >>> BELO HORIZONTE
+      *##############################################################*/
+
+      await ScrapperHelper.init('Facebook => Vagas de Empregos BH', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/grupoempregosbh/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+      await ScrapperHelper.init('Facebook => Empregos BH', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/597673520276895/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+      await ScrapperHelper.init('Facebook => Empregos em Belo Horizonte', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/833818616764376/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+      await ScrapperHelper.init('Facebook => Empregos Urgentes BH', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosbhmg/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+      await ScrapperHelper.init('Facebook => Emprego BH', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/557833854267297/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+      await ScrapperHelper.init('Facebook => Melhor Emprego BH', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/718029571552489/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+
+
+      /*#############################################################|
+      |  >>> SAO PAULO
+      *##############################################################*/
+
+      await ScrapperHelper.init('Facebook => Empregos SP', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosessp/', {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "São Paulo",
+      })
+
+      await ScrapperHelper.init('Facebook => Grupo Vagas de Emprego Sao Paulo SP', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/grupovagasdeempregosaopaulo', {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "São Paulo",
+      })
+
+      await ScrapperHelper.init('Facebook => Vagas de Empregos SP', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/508765489527560/', {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "São Paulo",
+      })
+
+
+      await ScrapperHelper.init('Facebook => Vagas de Empregos SP', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/508765489527560/', {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "São Paulo",
+      })
+
+      await ScrapperHelper.init('Facebook => Empregos em Osasco', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/252483528524808/', {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "Osasco",
+      })
+
+      await ScrapperHelper.init('Facebook => Empregos Marilia - SP', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosmariliasp/', {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "Marília",
+      })
+
+      await ScrapperHelper.init('Facebook => Empregos Marilia SP', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/901278506627755/', {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "Marília",
+      })
+
+      await ScrapperHelper.init('Facebook => Ribeirao Preto', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/923149231033037/', {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "Ribeirão Preto",
+      })
+
 
 
 
