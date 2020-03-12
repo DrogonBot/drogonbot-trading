@@ -24,12 +24,16 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
   //   crawlPageDataFunction: ScrapperOLXES.crawlPageData
   // }, PagePattern.ListAndInternalPosts)
 
-
-  await ScrapperHelper.init('ScrapperEmpregosES', {
+  // Facebook => Emprego ES
+  await ScrapperHelper.init('Emprego ES', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-  }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/')
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/470386613006396/', {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Vitória",
+  })
 
-  // const post = `Confira as vagas em aberto na Morar Construtora \nCargos:\nCoordenador Obras\nCoordenador de CIV\nAnalista de Dados\nConsultor de Vendas\nAnalista de Projetos\nEncarregado de Obra\nEstagiário de Projetos\nAssistente de Diretoria\nEstágio em Segurança do Trabalho\nTécnico em Edificações\nAuxiliar de Prospecção\nAssistente de TI\nEstágio Obrigatório em Engenharia Civil \nhttps://empregoses.com.br/confira-as-vagas-em-aberto-na-morar-construtora/`
+  // const post = `Salão em Guarapari ( centro )\n\nSeleciona para entrevista\n\n-MANICURE E PEDICURE COM ESPECIALIZAÇÃO EM UNHA EM GEL\n\n( Com experiência )\n\nOs interessados devem enviar WhatsApp para\n\n27 - 99840-5290 ( Selma )`
 
   // const postDescription = post
 

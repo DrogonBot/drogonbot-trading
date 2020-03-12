@@ -8,6 +8,7 @@ import { User } from '../resources/User/user.model';
 import { PagePattern, ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
 import { ScrapperFacebook } from '../scrappers/scrappers/ScrapperFacebook';
 import { ScrapperOLXES } from '../scrappers/scrappers/ScrapperOLXES';
+import { GenericHelper } from '../utils/GenericHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';
 
 export class JobsCron {
@@ -150,10 +151,68 @@ export class JobsCron {
         crawlPageDataFunction: ScrapperOLXES.crawlPageData
       }, PagePattern.ListAndInternalPosts)
 
+
       // Facebook => Empregos ES
-      await ScrapperHelper.init('ScrapperEmpregosES', {
+      await ScrapperHelper.init('Empregos ES', {
         crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-      }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/')
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória",
+      })
+
+      await GenericHelper.sleep(1000 * 60 * 5)
+
+      // Facebook => Emprego Urgente ES
+      await ScrapperHelper.init('Emprego Urgente ES', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/255725088176388', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória",
+      })
+
+      // Facebook => Vagas e Oportunidades ES
+      await ScrapperHelper.init('Vagas e Oportunidades ES', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/jo.darc.13/', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória",
+      })
+
+      // Facebook => Emprego ES
+      await ScrapperHelper.init('Emprego ES', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/470386613006396/', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória",
+      })
+
+
+      // Facebook => Empregos Vitoria ES
+      await ScrapperHelper.init('Empregos Vitoria ES', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/462576003935602', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória",
+      })
+      // Facebook => Agencia de Emprego Nacional Empregos Guarapari
+      await ScrapperHelper.init('Empregos Guarapari', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/145238849184087/', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Guarapari",
+      })
+
+
+
+
+
+
     })
 
 

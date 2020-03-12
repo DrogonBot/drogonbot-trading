@@ -39,7 +39,7 @@ export class ScrapperHelper {
   public static owner;
 
 
-  public static init = async (name, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string) => {
+  public static init = async (name, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object) => {
 
     const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
 
@@ -74,7 +74,7 @@ export class ScrapperHelper {
       case PagePattern.Feed:
 
         if (externalSource) {
-          await ScrapperHelper._scrapFeed(externalSource, crawlFeedFunction)
+          await ScrapperHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride)
         } else {
           console.log(`🤖: Warning! You should define an external source page for scrapping on OnePageAllPosts PagePattern!`);
         }
@@ -96,10 +96,12 @@ export class ScrapperHelper {
     return false;
   }
 
-  private static _scrapFeed = async (link: string, crawlFeedFunction) => {
+  private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
 
-    const postsData: IPost[] = await ScrapperHelper.tryRequestUntilSucceeds(crawlFeedFunction, [link])
+    const args = postDataOverride ? [link, postDataOverride] : [link]
+
+    const postsData: IPost[] = await ScrapperHelper.tryRequestUntilSucceeds(crawlFeedFunction, args)
 
     if (!postsData) {
       console.log(`🤖: Failed to scrap posts data at ${link}`)
@@ -117,6 +119,11 @@ export class ScrapperHelper {
         const forbiddenWord = ScrapperHelper._checkForBannedWords(post.content)
         if (forbiddenWord) {
           console.log(`🤖: Skipping scrapping! This post contains the forbidden word ${forbiddenWord}.`)
+          continue
+        }
+
+        if (post.content.length <= 70) {
+          console.log(`🤖: Skipping because post description is too short! Maybe its not a post!`)
           continue
         }
 
@@ -304,8 +311,7 @@ export class ScrapperHelper {
       // First step: Let's try a full match
 
       for (const role of sectors) {
-
-        if (content.split('\n').join(' ').toLowerCase().includes(` ${role.toLowerCase()} `)) {
+        if (content.replace('\n', ' ').toLowerCase().includes(` ${role.toLowerCase()}`)) {
 
           console.log('ROLE MATCH');
           console.log(role);
@@ -324,11 +330,14 @@ export class ScrapperHelper {
       const bestContentMatches = stringSimilarity.findBestMatch(content, sectors).bestMatch
       const bestUppercaseMatches = (uppercaseMatches.length >= 1 ? stringSimilarity.findBestMatch(uppercaseMatches, sectors).bestMatch : [])   // sometimes companies leave the position name in uppercase
 
+
       const bestMatches = [bestTitleMatches, bestContentMatches, bestUppercaseMatches].sort((x, y) => x.rating > y.rating ? -1 : 1).filter((match) => {
         if (match.target) { // we do this to avoid empty matches
           return match
         }
       });
+
+
 
       bestMatchOverall = bestMatches[0].target
 

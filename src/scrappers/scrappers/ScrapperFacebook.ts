@@ -12,7 +12,7 @@ import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
 export class ScrapperFacebook {
 
-  public static crawlPageFeed = async (link: string) => {
+  public static crawlPageFeed = async (link: string, postDataOverride?) => {
 
     console.log(`🔥 Starting PUPPETEER BOT 🔥`);
 
@@ -63,16 +63,20 @@ export class ScrapperFacebook {
       return posts.map((post) => {
         // @ts-ignore
 
-        const textWithoutEmoji = post.innerText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '').replace('Nova vaga publicada!')
+        const textWithoutEmoji = post.innerText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '').replace('Nova vaga publicada!', '')
 
         return textWithoutEmoji
       })
     })
 
-    const output = await Promise.all(data.map(async (postContent) => {
-      const title = postContent.split('\n')[0] || postContent.splice(0, 25)
+    const output = await Promise.all(data.map(async (postContent: string) => {
+      let title = (postContent && postContent.split('\n')[0] || postContent.slice(0, 25)).replace('\n', '')
 
       const { sector, jobRoleBestMatch } = await ScrapperHelper.findJobRolesAndSector(postContent, title)
+
+      if (!title || !title.length) {
+        title = jobRoleBestMatch
+      }
 
       console.log(`Title: ${title}`);
       console.log(`SECTOR => ${sector}`);
@@ -82,13 +86,11 @@ export class ScrapperFacebook {
 
       return {
         ...complementaryData,
+        ...postDataOverride,
         title,
         content: postContent,
         source: IPostSource.Facebook,
         sourceUrl: link,
-        country: "Brazil",
-        stateCode: "ES",
-        city: "Vitória",
         sector,
         jobRoles: [jobRoleBestMatch],
       }
