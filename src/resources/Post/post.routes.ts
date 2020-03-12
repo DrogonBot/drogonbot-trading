@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
+import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
+import { ScrapperOLXES } from '../../scrappers/scrappers/ScrapperOLXES';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
@@ -14,40 +16,40 @@ const postRouter = new Router();
 
 
 // TODO: remove this route. It's just for testing!
-// postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
+postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
 
 
-//   // await ScrapperHelper.init('ScrapperOLXES', {
-//   //   crawlLinksFunction: ScrapperOLXES.crawlLinks,
-//   //   crawlPageDataFunction: ScrapperOLXES.crawlPageData
-//   // }, PagePattern.ListAndInternalPosts)
+  await ScrapperHelper.init('ScrapperOLXES', {
+    crawlLinksFunction: ScrapperOLXES.crawlLinks,
+    crawlPageDataFunction: ScrapperOLXES.crawlPageData
+  }, PagePattern.ListAndInternalPosts)
 
-//   // Facebook => Emprego ES
-//   // await ScrapperHelper.init('Emprego ES', {
-//   //   crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-//   // }, PagePattern.Feed, 'https://www.facebook.com/groups/470386613006396/', {
-//   //   country: "Brazil",
-//   //   stateCode: "ES",
-//   //   city: "Vitória",
-//   // })
+  // Facebook => Emprego ES
+  // await ScrapperHelper.init('Emprego ES', {
+  //   crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  // }, PagePattern.Feed, 'https://www.facebook.com/groups/470386613006396/', {
+  //   country: "Brazil",
+  //   stateCode: "ES",
+  //   city: "Vitória",
+  // })
 
-//   // const post = `Salão em Guarapari ( centro )\n\nSeleciona para entrevista\n\n-MANICURE E PEDICURE COM ESPECIALIZAÇÃO EM UNHA EM GEL\n\n( Com experiência )\n\nOs interessados devem enviar WhatsApp para\n\n27 - 99840-5290 ( Selma )`
+  // const post = `Salão em Guarapari ( centro )\n\nSeleciona para entrevista\n\n-MANICURE E PEDICURE COM ESPECIALIZAÇÃO EM UNHA EM GEL\n\n( Com experiência )\n\nOs interessados devem enviar WhatsApp para\n\n27 - 99840-5290 ( Selma )`
 
-//   // const postDescription = post
-
-
-
-//   // const { sector, jobRoleBestMatch }: IBestMatchAndSector = await ScrapperHelper.findJobRolesAndSector(postDescription)
-
-//   // console.log(`SECTOR => ${sector}`);
-//   // console.log(`JOB ROLE => ${jobRoleBestMatch}`);
+  // const postDescription = post
 
 
 
-//   return res.status(200).send({
-//     status: 'ok'
-//   })
-// })
+  // const { sector, jobRoleBestMatch }: IBestMatchAndSector = await ScrapperHelper.findJobRolesAndSector(postDescription)
+
+  // console.log(`SECTOR => ${sector}`);
+  // console.log(`JOB ROLE => ${jobRoleBestMatch}`);
+
+
+
+  return res.status(200).send({
+    status: 'ok'
+  })
+})
 
 postRouter.get('/post', userAuthMiddleware, async (req, res) => {
 

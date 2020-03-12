@@ -88,13 +88,14 @@ export class ScrapperHelper {
 
   private static _checkForBannedWords = (content: string) => {
 
-    const bannedWords = ['renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador']
+    // const bannedWords = ['renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador']
 
-    for (const word of bannedWords) {
-      if (content.toLowerCase().includes(word.toLowerCase())) {
-        return word
-      }
-    }
+    // for (const word of bannedWords) {
+    //   // TODO: BROKEN FUNCTION, CHECK
+    //   if (content.toLowerCase().includes(word.toLowerCase())) {
+    //     return word
+    //   }
+    // }
     return false;
   }
 
@@ -118,19 +119,19 @@ export class ScrapperHelper {
 
       for (const post of postsData) {
 
-        if (post.content) {
-          const forbiddenWord = ScrapperHelper._checkForBannedWords(post.content)
+        // if (post.content && post.content.length >= 1) {
+        //   const forbiddenWord = ScrapperHelper._checkForBannedWords(post.content)
 
-          if (forbiddenWord) {
-            console.log(`🤖: Skipping scrapping! This post contains the forbidden word ${forbiddenWord}.`)
-            continue
-          }
+        //   if (forbiddenWord) {
+        //     console.log(`🤖: Skipping scrapping! This post contains the forbidden word ${forbiddenWord}.`)
+        //     continue
+        //   }
 
-          if (post.content.length <= 70) {
-            console.log(`🤖: Skipping because post description is too short! Maybe its not a post!`)
-            continue
-          }
-        }
+        //   if (post.content.length <= 70) {
+        //     console.log(`🤖: Skipping because post description is too short! Maybe its not a post!`)
+        //     continue
+        //   }
+        // }
 
         if (!post.email && !post.phone && !post.externalUrl) {
           console.log(`🤖: Skipping! No email, phone or external url found for: ${link}!`)
