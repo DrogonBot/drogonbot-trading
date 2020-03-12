@@ -69,6 +69,8 @@
       "Chefe de Cozinha",
       "Ajudante de Bar",
       "Bartender",
+      "Cozinheiro",
+      "Cozinheira",
       "Chef",
       "Gastrônomo",
       "Ajudante de Cozinha",
@@ -232,7 +234,6 @@
     "country": "Brazil",
     "name": "Comunicação & Marketing",
     "keywords": [
-      "Marketing",
       "Panfleteiro",
       "Panfletador",
       "Copywriter",
@@ -245,7 +246,8 @@
       "Assistente de Telemarketing",
       "Publicitário",
       "Radialista",
-      "Apresentador"
+      "Apresentador",
+      "Telemarketing"
     ]
   },
   {
@@ -423,6 +425,8 @@
       "Gerente de Projetos",
       "Projetista",
       "Pedreiro",
+      "Pintor",
+      "Polidor",
       "Bombeiro Hidráulico",
       "Encanador",
       "Eletricista",
@@ -437,6 +441,8 @@
     "name": "Indústria, Offshore e Metalurgia",
     "keywords": [
       "Soldador",
+      "Caldeireiro",
+      "Técnico de segurança do trabalho",
       "Offshore",
       "Metalúrgico",
       "Operador de produção",
@@ -636,6 +642,7 @@
       "Laboratorista",
       "Coletor",
       "Dentista",
+      "Auxiliar de Saúde Bucal",
       "Psicólogo"
     ]
   },

@@ -84,6 +84,23 @@ export class ScrapperHelper {
 
   };
 
+  private static _checkForBannedWords = (content: string) => {
+
+    const bannedWords = ['renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo']
+
+    for (const word of bannedWords) {
+      if (content.toLowerCase().includes(word.toLowerCase())) {
+        return word
+      }
+    }
+
+
+    return false;
+
+
+
+  }
+
   private static _scrapFeed = async (link: string, crawlFeedFunction) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
 
@@ -93,13 +110,23 @@ export class ScrapperHelper {
 
 
 
+
     if (ScrapperHelper.owner) {
+
+
+
 
       // loop through feed posts and start saving them into db
 
       for (const post of postsData) {
 
-        if (!post.email && !post.phone && !post.externalUrl) {
+        const forbiddenWord = ScrapperHelper._checkForBannedWords(post.content)
+        if (forbiddenWord) {
+          console.log(`🤖: Skipping scrapping! This post contains the forbidden word ${forbiddenWord}.`)
+          continue
+        }
+
+        if (!post.email && !post.phone) {
           console.log(`🤖: Skipping! No email or phone found for: ${link}!`)
           continue
         }
@@ -121,6 +148,12 @@ export class ScrapperHelper {
       console.log(`🤖: Scrapping data from ...${link}`);
 
       const postData = await ScrapperHelper.tryRequestUntilSucceeds(crawlPageDataFunction, [link])
+
+      const forbiddenWord = ScrapperHelper._checkForBannedWords(postData)
+      if (forbiddenWord) {
+        console.log(`🤖: Skipping scrapping! This post contains the forbidden word ${forbiddenWord}.`)
+        return
+      }
 
       if (ScrapperHelper.owner) {
         const newPost = new Post({ ...postData, owner: ScrapperHelper.owner._id })

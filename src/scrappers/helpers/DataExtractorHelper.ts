@@ -101,7 +101,7 @@ export class DataExtractorHelper {
     const benefits: PostBenefits[] = DataExtractorHelper._readBenefits(hasLifeInsurance, hasMealAssistance, hasTransportAssistance, hasHealthPlan, hasDentalPlan)
 
     // Extract and validate email
-    let email = DataExtractorHelper._tryExtractingData(rawPost, /\S+@\S+\.\S+/g)
+    let email = DataExtractorHelper._tryExtractingData(rawPost, /\S+@\S+\.\S+/ig)
 
 
     if (email !== null) {

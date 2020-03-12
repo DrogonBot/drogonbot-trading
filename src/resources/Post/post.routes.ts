@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
+import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
+import { ScrapperEmpregosES } from '../../scrappers/scrappers/ScrapperEmpregosES';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
@@ -23,18 +25,11 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
   // }, PagePattern.ListAndInternalPosts)
 
 
-  // await ScrapperHelper.init('ScrapperEmpregosES', {
-  //   crawlFeedFunction: ScrapperEmpregosES.crawlPageFeed
-  // }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/')
+  await ScrapperHelper.init('ScrapperEmpregosES', {
+    crawlFeedFunction: ScrapperEmpregosES.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/')
 
-  // const post = `Loja de grande porte localizada no shopp praia da costa contrata :
-
-  // -estoquista
-  // -assistente de bike
-
-  // Necessário experiência na função
-
-  // Interessados enviar currículo para curriculossbb@gmail.com colocando no assunto a vaga de interesse`
+  // const post = `Procuro pintor para emassar e pintar 2 cômodos .\n1 sala e 1 quarto.\n\nDeve dá uns 30metros quadrados tudo`
 
   // const postDescription = post
 

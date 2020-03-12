@@ -13,7 +13,7 @@ export class ScrapperEmpregosES {
 
   public static crawlPageFeed = async (link: string) => {
 
-    console.log(`🤖 Starting PUPPETEER BOT 🔥`);
+    console.log(`🔥 Starting PUPPETEER BOT 🔥`);
     console.log(`🤖: Using Proxy IP: ${ScrapperHelper.chosenProxy.ip} on PORT: ${ScrapperHelper.chosenProxy.port}`);
 
     const browser = await puppeteer.launch({
@@ -23,7 +23,7 @@ export class ScrapperEmpregosES {
 
     const page = await browser.newPage();
 
-    await page.goto(link, { waitUntil: 'load', timeout: 0 }) // Disable timeout
+    await page.goto(link, { waitUntil: 'load', timeout: 60000 })
 
 
     const data = await page.evaluate(async () => {
