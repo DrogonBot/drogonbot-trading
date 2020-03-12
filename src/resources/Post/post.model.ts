@@ -51,7 +51,7 @@ export interface IPost {
   city: string,
   neighborhood?: string
   title: string,
-  content?: string,
+  content: string,
   externalUrl?: string,
   companyName?: string, // could be different than the owner name (eg. a HR company that's posting multiple positions for different clients)
   email?: string;
@@ -90,6 +90,7 @@ const postSchema = new mongoose.Schema({
   },
   content: {
     type: String,
+    required: true,
     trim: true
   },
   owner: {

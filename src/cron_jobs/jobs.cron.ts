@@ -6,7 +6,7 @@ import { IPostApplication, IPostApplicationStatus, Post } from '../resources/Pos
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
 import { PagePattern, ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
-import { ScrapperEmpregosES } from '../scrappers/scrappers/ScrapperEmpregosES';
+import { ScrapperFacebook } from '../scrappers/scrappers/ScrapperFacebook';
 import { ScrapperOLXES } from '../scrappers/scrappers/ScrapperOLXES';
 import { LanguageHelper } from '../utils/LanguageHelper';
 
@@ -142,7 +142,7 @@ export class JobsCron {
   public static initializeJobCrawlers = () => {
 
 
-    cron.schedule("*/10 * * * *", async () => {
+    cron.schedule("*/2 * * * *", async () => {
 
       // OLX => ES
       await ScrapperHelper.init('ScrapperOLXES', {
@@ -152,7 +152,7 @@ export class JobsCron {
 
       // Facebook => Empregos ES
       await ScrapperHelper.init('ScrapperEmpregosES', {
-        crawlFeedFunction: ScrapperEmpregosES.crawlPageFeed
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
       }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/')
     })
 

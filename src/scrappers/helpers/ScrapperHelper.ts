@@ -5,7 +5,7 @@ import rp from 'request-promise';
 import stringSimilarity from 'string-similarity';
 import util from 'util';
 
-import { Post } from '../../resources/Post/post.model';
+import { IPost, Post } from '../../resources/Post/post.model';
 import { ISector, Sector } from '../../resources/Sector/sector.model';
 import { User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
@@ -93,28 +93,22 @@ export class ScrapperHelper {
         return word
       }
     }
-
-
     return false;
-
-
-
   }
 
   private static _scrapFeed = async (link: string, crawlFeedFunction) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
 
-    const postsData = await ScrapperHelper.tryRequestUntilSucceeds(crawlFeedFunction, [link])
+    const postsData: IPost[] = await ScrapperHelper.tryRequestUntilSucceeds(crawlFeedFunction, [link])
+
+    if (!postsData) {
+      console.log(`🤖: Failed to scrap posts data at ${link}`)
+      return
+    }
 
     console.log(postsData);
 
-
-
-
     if (ScrapperHelper.owner) {
-
-
-
 
       // loop through feed posts and start saving them into db
 
@@ -126,8 +120,8 @@ export class ScrapperHelper {
           continue
         }
 
-        if (!post.email && !post.phone) {
-          console.log(`🤖: Skipping! No email or phone found for: ${link}!`)
+        if (!post.email && !post.phone && !post.externalUrl) {
+          console.log(`🤖: Skipping! No email, phone or external url found for: ${link}!`)
           continue
         }
 
@@ -311,9 +305,10 @@ export class ScrapperHelper {
 
       for (const role of sectors) {
 
-        if (content.toLowerCase().includes(role.toLowerCase())) {
+        if (content.split('\n').join(' ').toLowerCase().includes(` ${role.toLowerCase()} `)) {
 
           console.log('ROLE MATCH');
+          console.log(role);
 
           const sectorData = await ScrapperHelper.getSector(role)
           return {
@@ -335,7 +330,6 @@ export class ScrapperHelper {
         }
       });
 
-      console.log(bestMatches);
       bestMatchOverall = bestMatches[0].target
 
     }

@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
-import { ScrapperEmpregosES } from '../../scrappers/scrappers/ScrapperEmpregosES';
+import { ScrapperFacebook } from '../../scrappers/scrappers/ScrapperFacebook';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
@@ -26,10 +26,10 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
 
 
   await ScrapperHelper.init('ScrapperEmpregosES', {
-    crawlFeedFunction: ScrapperEmpregosES.crawlPageFeed
+    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/')
 
-  // const post = `Procuro pintor para emassar e pintar 2 cômodos .\n1 sala e 1 quarto.\n\nDeve dá uns 30metros quadrados tudo`
+  // const post = `Confira as vagas em aberto na Morar Construtora \nCargos:\nCoordenador Obras\nCoordenador de CIV\nAnalista de Dados\nConsultor de Vendas\nAnalista de Projetos\nEncarregado de Obra\nEstagiário de Projetos\nAssistente de Diretoria\nEstágio em Segurança do Trabalho\nTécnico em Edificações\nAuxiliar de Prospecção\nAssistente de TI\nEstágio Obrigatório em Engenharia Civil \nhttps://empregoses.com.br/confira-as-vagas-em-aberto-na-morar-construtora/`
 
   // const postDescription = post
 

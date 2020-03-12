@@ -73,6 +73,7 @@
       "Cozinheira",
       "Chef",
       "Gastrônomo",
+      "Padeiro",
       "Ajudante de Cozinha",
       "Auxiliar de padaria"
     ]
@@ -234,6 +235,8 @@
     "country": "Brazil",
     "name": "Comunicação & Marketing",
     "keywords": [
+      "Analista de Redes Sociais",
+      "Analista de Mídias Sociais",
       "Panfleteiro",
       "Panfletador",
       "Copywriter",
@@ -243,6 +246,7 @@
       "Analista de Demanda",
       "Analista de Canais",
       "Analista de Mercado",
+      "Atendente de Telemarketing",
       "Assistente de Telemarketing",
       "Publicitário",
       "Radialista",
@@ -421,6 +425,7 @@
     "country": "Brazil",
     "name": "Construção Civil",
     "keywords": [
+      "Coordenador Obras",
       "Assistente de Obras",
       "Gerente de Projetos",
       "Projetista",
@@ -675,6 +680,7 @@
       "Promotor de Vendas",
       "Auxiliar de Vendas",
       "Vendedor",
+      "Consultor de Vendas",
       "Supervisor de Vendas",
       "Assistente Comercial",
       "Varejo",
