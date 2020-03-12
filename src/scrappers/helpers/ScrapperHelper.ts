@@ -118,15 +118,18 @@ export class ScrapperHelper {
 
       for (const post of postsData) {
 
-        const forbiddenWord = ScrapperHelper._checkForBannedWords(post.content)
-        if (forbiddenWord) {
-          console.log(`🤖: Skipping scrapping! This post contains the forbidden word ${forbiddenWord}.`)
-          continue
-        }
+        if (post.content) {
+          const forbiddenWord = ScrapperHelper._checkForBannedWords(post.content)
 
-        if (post.content.length <= 70) {
-          console.log(`🤖: Skipping because post description is too short! Maybe its not a post!`)
-          continue
+          if (forbiddenWord) {
+            console.log(`🤖: Skipping scrapping! This post contains the forbidden word ${forbiddenWord}.`)
+            continue
+          }
+
+          if (post.content.length <= 70) {
+            console.log(`🤖: Skipping because post description is too short! Maybe its not a post!`)
+            continue
+          }
         }
 
         if (!post.email && !post.phone && !post.externalUrl) {
