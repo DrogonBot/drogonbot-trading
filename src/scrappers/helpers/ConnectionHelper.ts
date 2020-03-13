@@ -105,7 +105,7 @@ export class ConnectionHelper {
 
         ScrapperHelper.chosenProxy = ConnectionHelper.rotateProxy(ScrapperHelper.proxyList);
 
-        await GenericHelper.sleep(5000)
+        await GenericHelper.sleep(30000)
       }
     }
 
