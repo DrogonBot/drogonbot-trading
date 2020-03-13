@@ -1,3 +1,4 @@
+import { EnvType } from '../../constants/types/env.types';
 import { IPost, Post } from '../../resources/Post/post.model';
 import { User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
@@ -71,7 +72,9 @@ export class ScrapperHelper {
 
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished!`)
 
-    await GenericHelper.sleep(1000 * 60 * Math.floor(Math.random() * 5))
+    if (process.env.ENV === EnvType.Production) {
+      await GenericHelper.sleep(1000 * 60 * Math.floor(Math.random() * 5))
+    }
   };
 
 
