@@ -1,18 +1,21 @@
 import cheerio from 'cheerio';
 
+import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
+import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
 
-export class ScrapperOLXES {
+export class ScrapperOLX {
 
 
-  public static crawlLinks = async (): Promise<string[]> => {
+  public static crawlLinks = async (externalSource: string): Promise<string[]> => {
 
     console.log('🤖: Fetching crawling links...');
 
-    const html = await ScrapperHelper.crawlHtml(
-      'https://es.olx.com.br/vagas-de-emprego',
+
+    const html = await ConnectionHelper.requestHtml(
+      externalSource,
       ScrapperHelper.chosenProxy
     );
 
@@ -41,8 +44,7 @@ export class ScrapperOLXES {
 
     // const html = await ScrapperHelper.loadLocalHtml('../data/olx_auxiliar_servicos_gerais.html');
 
-
-    const html = await ScrapperHelper.crawlHtml(link, ScrapperHelper.chosenProxy)
+    const html = await ConnectionHelper.requestHtml(link, ScrapperHelper.chosenProxy)
 
 
     const $ = cheerio.load(html);
@@ -54,7 +56,7 @@ export class ScrapperOLXES {
     let rawContent = $('[class="sc-bZQynM eEEnMS"]').text()
 
 
-    const { sector, jobRoleBestMatch } = await ScrapperHelper.findJobRolesAndSector(title, rawContent)
+    const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(title, rawContent)
 
     // Remove garbage content
     rawContent = rawContent.replace('Fique atento com excessos de facilidades e desconfie de ofertas milagrosas.Cuidado com ofertas de emprego que solicitam o pagamento de uma taxa.Faça uma pesquisa sobre a empresa que está oferecendo a vaga.Fique atento com excessos de facilidades e desconfie de ofertas milagrosas.Cuidado com ofertas de emprego que solicitam o pagamento de uma taxa.', '')

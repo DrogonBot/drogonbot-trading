@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
-import { ScrapperOLXES } from '../../scrappers/scrappers/ScrapperOLXES';
+import { ScrapperOLX } from '../../scrappers/scrappers/ScrapperOLX';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
@@ -19,10 +19,10 @@ const postRouter = new Router();
 postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
 
 
-  await ScrapperHelper.init('ScrapperOLXES', {
-    crawlLinksFunction: ScrapperOLXES.crawlLinks,
-    crawlPageDataFunction: ScrapperOLXES.crawlPageData
-  }, PagePattern.ListAndInternalPosts)
+  await ScrapperHelper.init('ScrapperOLX => ES', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego")
 
   // Facebook => Emprego ES
   // await ScrapperHelper.init('Emprego ES', {

@@ -4,6 +4,7 @@ import { EnvType } from '../../constants/types/env.types';
 import { IPostSource } from '../../resources/Post/post.model';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
+import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
 
@@ -72,7 +73,7 @@ export class ScrapperFacebook {
     const output = await Promise.all(data.map(async (postContent: string) => {
       let title = (postContent && postContent.split('\n')[0] || postContent.slice(0, 25)).replace('\n', '')
 
-      const { sector, jobRoleBestMatch } = await ScrapperHelper.findJobRolesAndSector(postContent, title)
+      const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(postContent, title)
 
       if (!title || !title.length) {
         title = jobRoleBestMatch
@@ -98,9 +99,11 @@ export class ScrapperFacebook {
     }))
 
 
+    await browser.close()
+
     await GenericHelper.sleep(1000)
 
-    await browser.close()
+
 
     return output
   }

@@ -7,7 +7,7 @@ import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
 import { PagePattern, ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
 import { ScrapperFacebook } from '../scrappers/scrappers/ScrapperFacebook';
-import { ScrapperOLXES } from '../scrappers/scrappers/ScrapperOLXES';
+import { ScrapperOLX } from '../scrappers/scrappers/ScrapperOLX';
 import { LanguageHelper } from '../utils/LanguageHelper';
 
 export class JobsCron {
@@ -90,26 +90,11 @@ export class JobsCron {
 
             }
 
-
           }
-
-
-
 
         }
 
-
-
-
-
-
-
-
-
       }
-
-
-
 
     });
   }
@@ -150,9 +135,21 @@ export class JobsCron {
 
 
       await ScrapperHelper.init('OLX => ES', {
-        crawlLinksFunction: ScrapperOLXES.crawlLinks,
-        crawlPageDataFunction: ScrapperOLXES.crawlPageData
-      }, PagePattern.ListAndInternalPosts)
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego")
+
+
+      await ScrapperHelper.init('OLX => SP/CAPITAL', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego")
+
+
+      await ScrapperHelper.init('OLX => MG/BH', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego")
 
 
 
