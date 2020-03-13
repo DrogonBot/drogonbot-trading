@@ -29,6 +29,7 @@ export class PostScrapperHelper {
     })
 
     if (existentPosts.length >= 1) {
+      console.log(`🤖: Skipping because this post already exists!`)
       return true
     }
 
