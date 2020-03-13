@@ -2,6 +2,7 @@ import cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
 import rp from 'request-promise';
+import UserAgent from 'user-agents';
 import util from 'util';
 
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
@@ -26,13 +27,20 @@ export class ConnectionHelper {
     try {
       if (proxyItem) {
         console.log(`🤖: Using proxy IP ${proxyItem.ip} - PORT ${proxyItem.port}`);
+
+        const userAgent = new UserAgent().random();
+        console.log(`🤖: User agent: ${userAgent}`);
+
         proxiedRequest = rp.defaults({
           proxy: `http://${proxyItem.ip}:${proxyItem.port}`,
           strictSSL: false,
-          timeout: 15000
+          timeout: 15000,
+          headers: {
+            'User-Agent': userAgent
+          }
         });
 
-        // Check if proxy is really working
+
         // console.log('TEST RESULTS');
         // const test = await proxiedRequest('https://api.ipify.org?format=json');
         // console.log(test);
@@ -49,7 +57,7 @@ export class ConnectionHelper {
         return req;
       }
     } catch (error) {
-
+      console.log(error);
       throw new Error('PROXY CONNECTION FAILED!')
     }
 

@@ -51,6 +51,7 @@ export class ScrapperHelper {
     switch (type) {
 
       case PagePattern.ListAndInternalPosts:
+        console.log(`🤖: Scrapping external source ${externalSource}`);
         const links = await ConnectionHelper.tryRequestUntilSucceeds(crawlLinksFunction, externalSource)
 
         for (const link of links) {
