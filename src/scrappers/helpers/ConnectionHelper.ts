@@ -28,15 +28,16 @@ export class ConnectionHelper {
       if (proxyItem) {
         console.log(`🤖: Using proxy IP ${proxyItem.ip} - PORT ${proxyItem.port}`);
 
-        const userAgent = new UserAgent().random();
-        console.log(`🤖: User agent: ${userAgent}`);
+        ScrapperHelper.userAgent = new UserAgent().random();
+
+        console.log(`🤖: User agent: ${ScrapperHelper.userAgent}`);
 
         proxiedRequest = rp.defaults({
           proxy: `http://${proxyItem.ip}:${proxyItem.port}`,
           strictSSL: false,
           timeout: 15000,
           headers: {
-            'User-Agent': userAgent
+            'User-Agent': ScrapperHelper.userAgent
           }
         });
 
@@ -57,7 +58,7 @@ export class ConnectionHelper {
         return req;
       }
     } catch (error) {
-      console.log(error);
+
       throw new Error('PROXY CONNECTION FAILED!')
     }
 
@@ -66,11 +67,21 @@ export class ConnectionHelper {
   public static fetchProxyList = async () => {
     console.log('🤖: Fetching proxy list...');
 
-    const html = await ConnectionHelper.requestHtml(
-      'https://sslproxies.org/',
+    // const proxies = [
+    //   { ip: '187.73.68.14', port: '53281' },
+    //   { ip: '95.79.99.148', port: '3128' },
+    //   { ip: '178.128.209.120', port: '44344' },
+    //   { ip: '190.157.247.65', port: '53281' },
+    //   { ip: '124.41.211.196', port: '36084' },
+    //   { ip: '95.158.63.46', port: '49756' }
+    // ]
+
+    // const randomProxy = proxies[Math.floor(Math.random() * proxies.length)];
+
+
+    const html = await ConnectionHelper.requestHtml('https://sslproxies.org/',
       null,
-      false
-    );
+      false)
 
     const $ = cheerio.load(html);
 

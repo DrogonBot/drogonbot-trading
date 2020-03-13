@@ -33,6 +33,7 @@ export class ScrapperHelper {
 
   public static proxyList: IProxyItem[];
   public static chosenProxy: IProxyItem;
+  public static userAgent: string;
   public static owner;
 
 
@@ -43,16 +44,16 @@ export class ScrapperHelper {
     console.log(`🤖: Initializing ${name}`);
 
     const proxyList = await ConnectionHelper.fetchProxyList();
-
     ScrapperHelper.proxyList = proxyList;
     ScrapperHelper.chosenProxy = ConnectionHelper.rotateProxy(ScrapperHelper.proxyList);
+
     ScrapperHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
 
     switch (type) {
 
       case PagePattern.ListAndInternalPosts:
         console.log(`🤖: Scrapping external source ${externalSource}`);
-        const links = await ConnectionHelper.tryRequestUntilSucceeds(crawlLinksFunction, externalSource)
+        const links = await ConnectionHelper.tryRequestUntilSucceeds(crawlLinksFunction, [externalSource])
 
         for (const link of links) {
           await GenericHelper.sleep(10000)

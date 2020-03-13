@@ -11,7 +11,7 @@ export class ScrapperOLX {
 
   public static crawlLinks = async (externalSource: string): Promise<string[]> => {
 
-    console.log('🤖: Fetching crawling links...');
+    console.log(`🤖: Fetching crawling links for ${externalSource}`);
 
 
     const html = await ConnectionHelper.requestHtml(
