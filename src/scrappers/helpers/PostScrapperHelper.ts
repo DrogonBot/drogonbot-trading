@@ -33,10 +33,10 @@ export class PostScrapperHelper {
     }
 
 
-    if (PostScrapperHelper._checkForBannedWords(post.content)) {
-      console.log(`🤖: Skipping scrapping! This post contains a forbidden word.`)
-      return true
-    }
+    // if (PostScrapperHelper._checkForBannedWords(post.content)) {
+    //   console.log(`🤖: Skipping scrapping! This post contains a forbidden word.`)
+    //   return true
+    // }
 
 
     if (post.content && post.content.length <= 70) {

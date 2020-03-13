@@ -59,6 +59,7 @@ export class ConnectionHelper {
       }
     } catch (error) {
 
+
       throw new Error('PROXY CONNECTION FAILED!')
     }
 
