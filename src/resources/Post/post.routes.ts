@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
-import { ScrapperFacebook } from '../../scrappers/scrappers/ScrapperFacebook';
+import { ScrapperOLX } from '../../scrappers/scrappers/ScrapperOLX';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
@@ -19,10 +19,10 @@ const postRouter = new Router();
 postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
 
 
-  // await ScrapperHelper.init('ScrapperOLX => ES', {
-  //   crawlLinksFunction: ScrapperOLX.crawlLinks,
-  //   crawlPageDataFunction: ScrapperOLX.crawlPageData
-  // }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego")
+  await ScrapperHelper.init('ScrapperOLX => ES', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego")
 
 
   // Facebook => Emprego ES
@@ -34,13 +34,13 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
   //   city: "Vitória",
   // })
 
-  await ScrapperHelper.init('Facebook => Grupo Vagas de Emprego Sao Paulo SP', {
-    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-  }, PagePattern.Feed, 'https://www.facebook.com/groups/grupovagasdeempregosaopaulo', {
-    country: "Brazil",
-    stateCode: "SP",
-    city: "São Paulo",
-  })
+  // await ScrapperHelper.init('Facebook => Grupo Vagas de Emprego Sao Paulo SP', {
+  //   crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  // }, PagePattern.Feed, 'https://www.facebook.com/groups/grupovagasdeempregosaopaulo', {
+  //   country: "Brazil",
+  //   stateCode: "SP",
+  //   city: "São Paulo",
+  // })
 
   // const post = `Salão em Guarapari ( centro )\n\nSeleciona para entrevista\n\n-MANICURE E PEDICURE COM ESPECIALIZAÇÃO EM UNHA EM GEL\n\n( Com experiência )\n\nOs interessados devem enviar WhatsApp para\n\n27 - 99840-5290 ( Selma )`
 

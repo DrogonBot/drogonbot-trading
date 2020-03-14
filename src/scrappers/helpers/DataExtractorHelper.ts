@@ -101,7 +101,7 @@ export class DataExtractorHelper {
     const benefits: PostBenefits[] = DataExtractorHelper._readBenefits(hasLifeInsurance, hasMealAssistance, hasTransportAssistance, hasHealthPlan, hasDentalPlan)
 
     // Extract and validate email
-    let email = DataExtractorHelper._tryExtractingData(rawPost, /\S+@\S+\.\S+/ig)
+    let email = DataExtractorHelper._tryExtractingData(rawPost.replace('\n', ''), /\S+@\S+\.\S+/ig)
 
 
     if (email !== null) {
@@ -116,8 +116,6 @@ export class DataExtractorHelper {
       if (!wellFormed || !validDomain) {
         // console.log(`🤖: ${email} is INVALID! Setting it to null to prevent future errors`);
         email = null
-      } else {
-        // console.log(`🤖: ${email} seems to be VALID!`);
       }
 
     }
@@ -127,10 +125,10 @@ export class DataExtractorHelper {
       positionType: isPartTime ? PostPositionType.PartTime : PostPositionType.FullTime,
       benefits,
       content: DataExtractorHelper._tryExtractingData(rawPost, /((Descrição|Descricao|Atividades|Função|Funcao)\:?\n?)\s?(.+\n){1,100}/i, /(Descrição|Descricao|Atividades):\n?\s?/i),
-      email,
-      monthlySalary: salary,
-      yearlySalary: salary && salary * 12,
-      hourlySalary: salary && (salary * 12) / 1920,
+      email: email || null,
+      monthlySalary: salary || null,
+      yearlySalary: (salary && salary * 12) || null,
+      hourlySalary: (salary && (salary * 12) / 1920) || null,
       experienceRequired: isExperienceRequired,
       externalUrl: DataExtractorHelper._tryExtractingData(rawPost, /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig),
       phone,
