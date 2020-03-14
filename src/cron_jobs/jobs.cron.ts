@@ -137,19 +137,31 @@ export class JobsCron {
       await ScrapperHelper.init('OLX => ES', {
         crawlLinksFunction: ScrapperOLX.crawlLinks,
         crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego")
+      }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória",
+      })
 
 
       await ScrapperHelper.init('OLX => SP/CAPITAL', {
         crawlLinksFunction: ScrapperOLX.crawlLinks,
         crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego")
+      }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "São Paulo",
+      })
 
 
       await ScrapperHelper.init('OLX => MG/BH', {
         crawlLinksFunction: ScrapperOLX.crawlLinks,
         crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego")
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
 
 
 
