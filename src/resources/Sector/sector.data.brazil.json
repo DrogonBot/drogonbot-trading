@@ -179,6 +179,7 @@
       "Analista de Prevenção à Fraude",
       "Analista de Risco de Mercado",
       "Contador",
+      "Cobrador",
       "Analista de Orçamento",
       "Analista de Risco de Mercado",
       "Analista financeiro",
@@ -339,7 +340,7 @@
       "Engenheiro Agrícola",
       "Engenheiro de alimentos",
       "Engenheiro Ambiental",
-      "Engenhario Civil",
+      "Engenheiro Civil",
       "Engenheiro da Computação",
       "Engenheiro de Controle e Automação",
       "Engenheiro de Telecomunicações",
@@ -588,9 +589,7 @@
     "country": "Brazil",
     "name": "Outros",
     "keywords": [
-      "Qualquer",
       "Temporário",
-      "Todas",
       "Estágio",
       "Jovem Aprendiz",
       "Primeiro emprego"

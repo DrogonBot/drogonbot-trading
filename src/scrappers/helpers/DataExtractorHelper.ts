@@ -101,7 +101,7 @@ export class DataExtractorHelper {
     const benefits: PostBenefits[] = DataExtractorHelper._readBenefits(hasLifeInsurance, hasMealAssistance, hasTransportAssistance, hasHealthPlan, hasDentalPlan)
 
     // Extract and validate email
-    let email = DataExtractorHelper._tryExtractingData(rawPost.replace('\n', ''), /\S+@\S+\.\S+/ig)
+    let email = DataExtractorHelper._tryExtractingData(rawPost.replace('\n', ' '), /\S+@\S+\.\S+/ig)
 
 
     if (email !== null) {
@@ -114,7 +114,7 @@ export class DataExtractorHelper {
       // console.log(`🤖: Checking if ${email} is valid...`);
 
       if (!wellFormed || !validDomain) {
-        // console.log(`🤖: ${email} is INVALID! Setting it to null to prevent future errors`);
+        console.log(`🤖: ${email} is INVALID! (wellFormed: ${wellFormed} | validDomain: ${validDomain}) Setting it to null to prevent future errors`);
         email = null
       }
 

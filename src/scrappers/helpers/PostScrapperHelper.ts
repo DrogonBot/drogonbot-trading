@@ -10,13 +10,13 @@ export class PostScrapperHelper {
 
   private static _checkForBannedWords = (content: string) => {
 
-    const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador', 'preciso de um emprego']
+    const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador', 'preciso de um emprego', 'divulgador', 'ganhe dinheiro']
 
     const lowerContent = content.toLowerCase();
 
     for (const word of bannedWords) {
 
-      if (lowerContent.includes(word.toLowerCase())) {
+      if (lowerContent.includes(` ${word.toLowerCase()} `) || lowerContent.includes(`${word.toLowerCase()} `)) {
         console.log(`Forbidden word found: ${word}`);
         return true
       }
@@ -36,8 +36,9 @@ export class PostScrapperHelper {
     }
 
 
-    if (PostScrapperHelper._checkForBannedWords(post.content)) {
-      console.log(`🤖: ${post.title} Skipping scrapping! This post contains a forbidden word.`)
+    const bannedWord = PostScrapperHelper._checkForBannedWords(post.content)
+    if (bannedWord) {
+      console.log(`🤖: ${post.title} Skipping scrapping! This post contains a forbidden word: ${bannedWord}.`)
       return true
     }
 
@@ -126,7 +127,7 @@ export class PostScrapperHelper {
     try {
       // First step: Let's try a full match
 
-      const roleMatch = await PostScrapperHelper._tryRoleMatch(sectors, content, title ? title : null)
+      const roleMatch = await PostScrapperHelper._tryRoleMatch(sectors, content, title)
       if (roleMatch) {
         return roleMatch // if we got a match, just stop the script execution
       }
