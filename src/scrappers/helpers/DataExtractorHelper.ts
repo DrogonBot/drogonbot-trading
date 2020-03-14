@@ -65,7 +65,7 @@ export class DataExtractorHelper {
 
   public static extractJobData = async (rawPost) => {
 
-    console.log(`🤖: Extracting job data...`);
+
 
     // This function will extract as much data as we can from a raw job post. Unfortunately, it's not able to fill all of the required IPost fields, so you should do some extra checks to do so (like infering the sector and jobRoles)
 

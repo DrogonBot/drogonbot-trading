@@ -5,9 +5,7 @@ import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
-
 export class ScrapperOLX {
-
 
   public static crawlLinks = async (externalSource: string): Promise<string[]> => {
 

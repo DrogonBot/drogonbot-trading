@@ -10,12 +10,14 @@ export class PostScrapperHelper {
 
   private static _checkForBannedWords = (content: string) => {
 
-    const bannedWords = ['renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador']
+    const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador', 'preciso de um emprego']
 
     const lowerContent = content.toLowerCase();
 
     for (const word of bannedWords) {
+
       if (lowerContent.includes(word.toLowerCase())) {
+        console.log(`Forbidden word found: ${word}`);
         return true
       }
     }
@@ -34,28 +36,30 @@ export class PostScrapperHelper {
     }
 
 
-    // if (PostScrapperHelper._checkForBannedWords(post.content)) {
-    //   console.log(`🤖: Skipping scrapping! This post contains a forbidden word.`)
-    //   return true
-    // }
-
-
-    if (post.content && post.content.length <= 70) {
-      console.log(`🤖: Skipping because post description is too short! Maybe its not a post!`)
+    if (PostScrapperHelper._checkForBannedWords(post.content)) {
+      console.log(`🤖: ${post.title} Skipping scrapping! This post contains a forbidden word.`)
       return true
     }
+
+
+    // if (post.content && post.content.length <= 30) {
+    //   console.log(`🤖: Skipping because post description is too short! Maybe its not a post!`)
+    //   return true
+    // }
 
 
     if (!post.email && !post.phone && !post.externalUrl) {
       console.log(`🤖: Skipping! No email, phone or external url found for post ${post.title}`)
       return true
     }
+
+    return false
   }
 
 
   public static getTitle = (post): string => {
     try {
-      return post.split('\n')[0]
+      return post.split('\n')[0] || post.split('\n\n')[0]
     }
     catch (error) {
       return ""
@@ -90,9 +94,6 @@ export class PostScrapperHelper {
 
       for (const role of sectors) {
         if (content.replace('\n', ' ').toLowerCase().includes(` ${role.toLowerCase()}`)) {
-
-          console.log('ROLE MATCH');
-          console.log(role);
 
           const sectorData = await PostScrapperHelper.getSector(role)
           return {

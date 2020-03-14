@@ -93,7 +93,9 @@ export class ScrapperHelper {
       return
     }
 
-    console.log(postsData);
+
+
+
 
     if (ScrapperHelper.owner) {
 
@@ -103,12 +105,13 @@ export class ScrapperHelper {
 
         // check if post already exists
 
-        if (PostScrapperHelper.isPostInvalid(post)) {
+        if (await PostScrapperHelper.isPostInvalid(post)) {
           continue
         }
 
         const newPost = new Post({ ...post, owner: ScrapperHelper.owner._id })
         newPost.save()
+        console.log(`Saving post: ${post.title}`);
         await GenericHelper.sleep(1000)
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
       }
@@ -126,7 +129,7 @@ export class ScrapperHelper {
       const postData = await ConnectionHelper.tryRequestUntilSucceeds(crawlPageDataFunction, [link])
 
 
-      if (PostScrapperHelper.isPostInvalid(postData)) {
+      if (await PostScrapperHelper.isPostInvalid(postData)) {
         return false
       }
 

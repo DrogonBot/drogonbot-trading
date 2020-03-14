@@ -46,6 +46,8 @@ export class ScrapperFacebook {
     await page.goto(link, { waitUntil: 'load', timeout: 60000 })
 
 
+    // Evaluate page data ========================================
+
     const data = await page.evaluate(async () => {
 
       const moreLinks: HTMLElement[] = Array.from(document.querySelectorAll('.see_more_link'))
@@ -53,11 +55,10 @@ export class ScrapperFacebook {
       // First, click on all "See More" links, to show up hidden content to scrap
       for (const elLink of moreLinks) {
         elLink.click()
-        await new Promise(r => setTimeout(r, 2000));
+        await new Promise(r => setTimeout(r, 2000)); // 2 sec for each click
       }
-      console.log(`🤖: Evaluating the DOM...`);
 
-      const rawPosts = document.querySelectorAll('.userContentWrapper div[data-testid="post_message"]')
+      const rawPosts = document.querySelectorAll('.userContentWrapper div.userContent[data-testid="post_message"]')
 
       const posts = Array.from(rawPosts);
 
@@ -70,8 +71,10 @@ export class ScrapperFacebook {
       })
     })
 
+    // Prepare output in the proper format ========================================
+
     const output = await Promise.all(data.map(async (postContent: string) => {
-      let title = (postContent && postContent.split('\n')[0] || postContent.slice(0, 25)).replace('\n', '')
+      let title = (postContent && postContent.split('\n')[0] || postContent.split('\n\n')[0] || postContent.slice(0, 25)).replace('\n', '')
 
       const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(postContent, title)
 
@@ -79,9 +82,9 @@ export class ScrapperFacebook {
         title = jobRoleBestMatch
       }
 
-      console.log(`Title: ${title}`);
-      console.log(`SECTOR => ${sector}`);
-      console.log(`JOB ROLE => ${jobRoleBestMatch}`);
+      // console.log(`Title: ${title}`);
+      // console.log(`SECTOR => ${sector}`);
+      // console.log(`JOB ROLE => ${jobRoleBestMatch}`);
 
       const complementaryData = await DataExtractorHelper.extractJobData(postContent)
 
@@ -98,12 +101,9 @@ export class ScrapperFacebook {
 
     }))
 
-
     await browser.close()
 
     await GenericHelper.sleep(1000)
-
-
 
     return output
   }
