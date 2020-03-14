@@ -59,7 +59,7 @@ export class ScrapperHelper {
         for (const link of links) {
           await GenericHelper.sleep(10000)
 
-          await ScrapperHelper._scrapPage(link, crawlPageDataFunction)
+          await ScrapperHelper._scrapPage(link, crawlPageDataFunction, postDataOverride)
         }
         break;
 
@@ -123,11 +123,13 @@ export class ScrapperHelper {
 
   }
 
-  private static _scrapPage = async (link: string, crawlPageDataFunction) => {
+  private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?) => {
     try {
       console.log(`🤖: Scrapping data from ...${link}`);
 
-      const postData = await ConnectionHelper.tryRequestUntilSucceeds(crawlPageDataFunction, [link])
+      const args = postDataOverride ? [link, postDataOverride] : [link]
+
+      const postData = await ConnectionHelper.tryRequestUntilSucceeds(crawlPageDataFunction, args)
 
 
       if (await PostScrapperHelper.isPostInvalid(postData)) {

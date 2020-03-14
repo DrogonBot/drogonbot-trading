@@ -38,7 +38,7 @@ export class ScrapperOLX {
 
   }
 
-  public static crawlPageData = async (link: string) => {
+  public static crawlPageData = async (link: string, postDataOverride?) => {
 
     // const html = await ScrapperHelper.loadLocalHtml('../data/olx_auxiliar_servicos_gerais.html');
 
@@ -63,17 +63,14 @@ export class ScrapperOLX {
 
     return {
       ...complementaryData,
+      ...postDataOverride,
       title,
       content: rawContent,
       externalUrl: link,
       zipCode,
-      country: "Brazil",
-      stateCode: "ES",
-      city: rawCity || "Vitória",
       neighborhood,
       sector,
       jobRoles: [jobRoleBestMatch],
-
     }
 
 
