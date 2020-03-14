@@ -1,5 +1,6 @@
 import cheerio from 'cheerio';
 
+import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -51,26 +52,30 @@ export class ScrapperOLX {
     const zipCode = $('[class="h3us20-2 fMOiyI"] [data-testid="ad-properties"] div:first-child div dd').text()
     const neighborhood = $('[class="h3us20-2 fMOiyI"] [data-testid="ad-properties"] div:last-child div dd').text()
     const rawCity = $('[class="h3us20-2 fMOiyI"] [data-testid="ad-properties"] div:nth-child(2) div dd').text()
-    let rawContent = $('[class="sc-bZQynM eEEnMS"]').text()
+    let rawContent = $('meta[name="twitter:description"]').attr('content') || ""
+
+    // remove html tags
+    rawContent = GenericHelper.stripHtml(rawContent)
 
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(title, rawContent)
 
-    // Remove garbage content
-    rawContent = rawContent.replace('Fique atento com excessos de facilidades e desconfie de ofertas milagrosas.Cuidado com ofertas de emprego que solicitam o pagamento de uma taxa.Faça uma pesquisa sobre a empresa que está oferecendo a vaga.Fique atento com excessos de facilidades e desconfie de ofertas milagrosas.Cuidado com ofertas de emprego que solicitam o pagamento de uma taxa.', '')
+    rawContent = rawContent.replace(new RegExp('\n', 'g'), " ");
 
     const complementaryData = DataExtractorHelper.extractJobData(rawContent)
 
     return {
       ...complementaryData,
-      ...postDataOverride,
       title,
       content: rawContent,
       externalUrl: link,
+      country: "Brazil",
+      city: rawCity,
       zipCode,
       neighborhood,
       sector,
       jobRoles: [jobRoleBestMatch],
+      ...postDataOverride,
     }
 
 

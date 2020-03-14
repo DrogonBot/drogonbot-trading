@@ -140,7 +140,7 @@ export class JobsCron {
       }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego", {
         country: "Brazil",
         stateCode: "ES",
-        city: "Vitória",
+
       })
 
 
@@ -150,7 +150,7 @@ export class JobsCron {
       }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
         country: "Brazil",
         stateCode: "SP",
-        city: "São Paulo",
+
       })
 
 
@@ -160,7 +160,7 @@ export class JobsCron {
       }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
         country: "Brazil",
         stateCode: "MG",
-        city: "Belo Horizonte",
+
       })
 
 

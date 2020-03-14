@@ -65,7 +65,7 @@ export class DataExtractorHelper {
 
   public static extractJobData = async (rawPost) => {
 
-
+    rawPost = rawPost.replace(new RegExp('\n', 'g'), " ");
 
     // This function will extract as much data as we can from a raw job post. Unfortunately, it's not able to fill all of the required IPost fields, so you should do some extra checks to do so (like infering the sector and jobRoles)
 
@@ -79,7 +79,7 @@ export class DataExtractorHelper {
 
     let phone = null
     try {
-      phone = rawPost.match(/(\(?[1-9]{2}\)?\s?)?9[7-9]{1}[0-9]{3}(-)?\d+/g)[0] || rawPost.match(/\d+\s\d+/ig)[0]
+      phone = rawPost.match(/(\(?[1-9]{2}\)?\s?)?9[7-9]{1}[0-9]{3}(-)?\d+/g)[0] || rawPost.match(/\d+\s\d+/ig)[0] || rawPost.match(/^1\d\d(\d\d)?$|^0800 ?\d{3} ?\d{4}$|^(\(0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d\) ?|0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d[ .-]?)?(9|9[ .-])?[2-9]\d{3}[ .-]?\d{4}$/gm)[0] || rawPost.match(/^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/ig)[0]
     }
     catch (error) {
       phone = null
@@ -101,7 +101,7 @@ export class DataExtractorHelper {
     const benefits: PostBenefits[] = DataExtractorHelper._readBenefits(hasLifeInsurance, hasMealAssistance, hasTransportAssistance, hasHealthPlan, hasDentalPlan)
 
     // Extract and validate email
-    let email = DataExtractorHelper._tryExtractingData(rawPost.replace('\n', ' '), /\S+@\S+\.\S+/ig)
+    let email = DataExtractorHelper._tryExtractingData(rawPost, /\S+@\S+\.\S+/ig)
 
 
     if (email !== null) {
@@ -125,7 +125,7 @@ export class DataExtractorHelper {
       positionType: isPartTime ? PostPositionType.PartTime : PostPositionType.FullTime,
       benefits,
       content: DataExtractorHelper._tryExtractingData(rawPost, /((Descrição|Descricao|Atividades|Função|Funcao)\:?\n?)\s?(.+\n){1,100}/i, /(Descrição|Descricao|Atividades):\n?\s?/i),
-      email: email || null,
+      email,
       monthlySalary: salary || null,
       yearlySalary: (salary && salary * 12) || null,
       hourlySalary: (salary && (salary * 12) / 1920) || null,

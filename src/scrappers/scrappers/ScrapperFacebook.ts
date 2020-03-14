@@ -21,20 +21,10 @@ export class ScrapperFacebook {
     let options;
     switch (process.env.ENV) {
       case EnvType.Development:
-        console.log(`🤖: Using Proxy IP: ${ScrapperHelper.chosenProxy.ip} on PORT: ${ScrapperHelper.chosenProxy.port}`);
-        console.log(ScrapperHelper.userAgent);
+        console.log(`🤖: Loading Development config - NOT USING PROXY!`);
         options = {
-          ignoreHTTPSErrors: true,
-          userDataDir: './tmp',
           headless: true,
-          args: ['--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-infobars',
-            '--window-position=0,0',
-            '--ignore-certifcate-errors',
-            '--ignore-certifcate-errors-spki-list',
-            `--proxy-server=http://${ScrapperHelper.chosenProxy.ip}:${ScrapperHelper.chosenProxy.port}`,
-            `'--user-agent="${ScrapperHelper.userAgent}"'`]
+          args: ['--no-sandbox']
         }
         break;
       case EnvType.Production:
@@ -84,9 +74,8 @@ export class ScrapperFacebook {
       return posts.map((post) => {
         // @ts-ignore
 
-        const textWithoutEmoji = post.innerText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '').replace('Nova vaga publicada!', '')
+        return post.innerText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '').replace('Nova vaga publicada!', '')
 
-        return textWithoutEmoji
       })
     })
 
@@ -95,7 +84,7 @@ export class ScrapperFacebook {
     const output = await Promise.all(data.map(async (postContent: string) => {
       let title = (postContent && postContent.split('\n')[0] || postContent.split('\n\n')[0] || postContent.slice(0, 25)).replace('\n', '')
 
-      const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(postContent, title)
+      const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(postContent.replace(new RegExp('\n', 'g'), " "), title)
 
       if (!title || !title.length) {
         title = jobRoleBestMatch

@@ -30,18 +30,17 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
   }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
     country: "Brazil",
     stateCode: "SP",
-    city: "São Paulo",
   })
 
 
-  await ScrapperHelper.init('OLX => MG/BH', {
-    crawlLinksFunction: ScrapperOLX.crawlLinks,
-    crawlPageDataFunction: ScrapperOLX.crawlPageData
-  }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
-    country: "Brazil",
-    stateCode: "MG",
-    city: "Belo Horizonte",
-  })
+  // await ScrapperHelper.init('OLX => MG/BH', {
+  //   crawlLinksFunction: ScrapperOLX.crawlLinks,
+  //   crawlPageDataFunction: ScrapperOLX.crawlPageData
+  // }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
+  //   country: "Brazil",
+  //   stateCode: "MG",
+  //   city: "Belo Horizonte",
+  // })
 
 
   // Facebook => Emprego ES
@@ -61,18 +60,10 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
   //   city: "São Paulo",
   // })
 
-  // const post = `Salão em Guarapari ( centro )\n\nSeleciona para entrevista\n\n-MANICURE E PEDICURE COM ESPECIALIZAÇÃO EM UNHA EM GEL\n\n( Com experiência )\n\nOs interessados devem enviar WhatsApp para\n\n27 - 99840-5290 ( Selma )`
-
-  // const postDescription = post
+  // const post = `necessário experiência enviar Curriculum para rh@rpsp.com.br`
 
 
-
-  // const { sector, jobRoleBestMatch }: IBestMatchAndSector = await ScrapperHelper.findJobRolesAndSector(postDescription)
-
-  // console.log(`SECTOR => ${sector}`);
-  // console.log(`JOB ROLE => ${jobRoleBestMatch}`);
-
-
+  // console.log(await DataExtractorHelper.extractJobData(post));
 
   return res.status(200).send({
     status: 'ok'
