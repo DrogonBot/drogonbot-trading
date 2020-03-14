@@ -28,7 +28,7 @@ export class ConnectionHelper {
       if (proxyItem) {
         console.log(`🤖: Using proxy IP ${proxyItem.ip} - PORT ${proxyItem.port}`);
 
-        ScrapperHelper.userAgent = new UserAgent().random();
+        ScrapperHelper.userAgent = new UserAgent().random().data.userAgent;
 
         console.log(`🤖: User agent: ${ScrapperHelper.userAgent}`);
 
@@ -111,9 +111,11 @@ export class ConnectionHelper {
         ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgBlack, `🤖: Request failed! Rotating proxy! Better luck next time!`)
         console.log(error);
 
+        // Change proxy and user agent on every request
         ScrapperHelper.chosenProxy = ConnectionHelper.rotateProxy(ScrapperHelper.proxyList);
+        ScrapperHelper.userAgent = new UserAgent().random().data.userAgent;
 
-        await GenericHelper.sleep(30000)
+        await GenericHelper.sleep(15000)
       }
     }
 

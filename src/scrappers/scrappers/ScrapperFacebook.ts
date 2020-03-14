@@ -21,17 +21,36 @@ export class ScrapperFacebook {
     let options;
     switch (process.env.ENV) {
       case EnvType.Development:
-        console.log(`🤖: Loading Development config - NOT USING PROXY!`);
+        console.log(`🤖: Using Proxy IP: ${ScrapperHelper.chosenProxy.ip} on PORT: ${ScrapperHelper.chosenProxy.port}`);
+        console.log(ScrapperHelper.userAgent);
         options = {
+          ignoreHTTPSErrors: true,
+          userDataDir: './tmp',
           headless: true,
-          args: ['--no-sandbox']
+          args: ['--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-infobars',
+            '--window-position=0,0',
+            '--ignore-certifcate-errors',
+            '--ignore-certifcate-errors-spki-list',
+            `--proxy-server=http://${ScrapperHelper.chosenProxy.ip}:${ScrapperHelper.chosenProxy.port}`,
+            `'--user-agent="${ScrapperHelper.userAgent}"'`]
         }
         break;
       case EnvType.Production:
         console.log(`🤖: Using Proxy IP: ${ScrapperHelper.chosenProxy.ip} on PORT: ${ScrapperHelper.chosenProxy.port}`);
         options = {
+          ignoreHTTPSErrors: true,
+          userDataDir: './tmp',
           headless: true,
-          args: ['--no-sandbox', `--proxy-server=http://${ScrapperHelper.chosenProxy.ip}:${ScrapperHelper.chosenProxy.port}`]
+          args: ['--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-infobars',
+            '--window-position=0,0',
+            '--ignore-certifcate-errors',
+            '--ignore-certifcate-errors-spki-list',
+            `--proxy-server=http://${ScrapperHelper.chosenProxy.ip}:${ScrapperHelper.chosenProxy.port}`,
+            `'--user-agent="${ScrapperHelper.userAgent}"'`]
         }
         console.log(`🤖: Loading Development config`);
         break;

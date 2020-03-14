@@ -20,7 +20,9 @@
       "Gerente de Relacionamento",
       "Diretor",
       "Auxiliar operacional",
-      "Coordenador"
+      "Coordenador",
+      "Assistente de Eventos",
+      "Auxiliar de Eventos"
     ]
   },
   {
@@ -465,7 +467,6 @@
       "Analista de P&D",
       "Mecânico",
       "Mecânico Industrial",
-      "Elétrica",
       "Químico",
       "Técnico em segurança do trabalho"
     ]
@@ -501,6 +502,7 @@
       "Ascensorista",
       "Operacional",
       "Conferente",
+      "Auxiliar de Almoxarifado",
       "Auxiliar de Armazém",
       "Ajudante",
       "Armador",

@@ -24,13 +24,22 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
   //   crawlPageDataFunction: ScrapperOLX.crawlPageData
   // }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego")
 
+
   // Facebook => Emprego ES
-  await ScrapperHelper.init('Emprego ES', {
+  // await ScrapperHelper.init('Emprego ES', {
+  //   crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  // }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/', {
+  //   country: "Brazil",
+  //   stateCode: "ES",
+  //   city: "Vitória",
+  // })
+
+  await ScrapperHelper.init('Facebook => Grupo Vagas de Emprego Sao Paulo SP', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-  }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/', {
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/grupovagasdeempregosaopaulo', {
     country: "Brazil",
-    stateCode: "ES",
-    city: "Vitória",
+    stateCode: "SP",
+    city: "São Paulo",
   })
 
   // const post = `Salão em Guarapari ( centro )\n\nSeleciona para entrevista\n\n-MANICURE E PEDICURE COM ESPECIALIZAÇÃO EM UNHA EM GEL\n\n( Com experiência )\n\nOs interessados devem enviar WhatsApp para\n\n27 - 99840-5290 ( Selma )`

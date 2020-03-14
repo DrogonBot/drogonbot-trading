@@ -82,6 +82,40 @@ export class PostScrapperHelper {
     return "Outros"
   }
 
+  private static _tryRoleMatch = async (sectors, content, title?) => {
+    for (const role of sectors) {
+
+      if (title) {
+        const preparedTitle = title.replace('\n', ' ').toLowerCase()
+        const verifyTitle1 = preparedTitle.includes(` ${role.toLowerCase()}`)
+        const verifyTitle2 = preparedTitle.includes(` ${role.toLowerCase()} `)
+        if (verifyTitle1 || verifyTitle2) {
+
+          const sectorData = await PostScrapperHelper.getSector(role)
+          return {
+            jobRoleBestMatch: role,
+            sector: sectorData
+          }
+        }
+
+      }
+
+      const preparedContent = content.replace('\n', ' ').toLowerCase()
+      const verifyContent1 = preparedContent.includes(` ${role.toLowerCase()}`)
+      const verifyContent2 = preparedContent.includes(` ${role.toLowerCase()} `)
+
+      if (verifyContent1 || verifyContent2) {
+
+        const sectorData = await PostScrapperHelper.getSector(role)
+        return {
+          jobRoleBestMatch: role,
+          sector: sectorData
+        }
+      }
+    }
+    return false
+  }
+
   public static findJobRolesAndSector = async (content, title?): Promise<IBestMatchAndSector> => {
     let bestMatchOverall;
 
@@ -92,16 +126,11 @@ export class PostScrapperHelper {
     try {
       // First step: Let's try a full match
 
-      for (const role of sectors) {
-        if (content.replace('\n', ' ').toLowerCase().includes(` ${role.toLowerCase()}`)) {
-
-          const sectorData = await PostScrapperHelper.getSector(role)
-          return {
-            jobRoleBestMatch: role,
-            sector: sectorData
-          }
-        }
+      const roleMatch = await PostScrapperHelper._tryRoleMatch(sectors, content, title ? title : null)
+      if (roleMatch) {
+        return roleMatch // if we got a match, just stop the script execution
       }
+
       // Second step: If a full match is not possible, let's analyze the post content
       const uppercaseMatches = content.match(/[A-Z]+\W/g) ? content.match(/[A-Z]+\W/g).join(' ').toLowerCase() : [];
 

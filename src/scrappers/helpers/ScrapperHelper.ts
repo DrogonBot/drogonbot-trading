@@ -1,3 +1,5 @@
+import UserAgent from 'user-agents';
+
 import { EnvType } from '../../constants/types/env.types';
 import { IPost, Post } from '../../resources/Post/post.model';
 import { User } from '../../resources/User/user.model';
@@ -5,8 +7,6 @@ import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
-
-
 
 export interface IProxyItem {
   ip: string;
@@ -46,6 +46,7 @@ export class ScrapperHelper {
     const proxyList = await ConnectionHelper.fetchProxyList();
     ScrapperHelper.proxyList = proxyList;
     ScrapperHelper.chosenProxy = ConnectionHelper.rotateProxy(ScrapperHelper.proxyList);
+    ScrapperHelper.userAgent = new UserAgent().random().data.userAgent;
 
     ScrapperHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
 

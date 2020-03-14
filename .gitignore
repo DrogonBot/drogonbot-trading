@@ -10,6 +10,7 @@ src/constants/env.ts
 docker-compose.yml
 environment/prod.env
 environment/docker-compose.prod.yml
+tmp
 
 
 
