@@ -10,7 +10,9 @@ import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputRe
 import { Resume } from '../Resume/resume.model';
 import { User } from '../User/user.model';
 import { IPostApplication, IPostApplicationStatus, Post } from './post.model';
-
+import { ScrapperFacebook } from '../scrappers/scrappers/ScrapperFacebook';
+import { ScrapperOLX } from '../scrappers/scrappers/ScrapperOLX';
+import { PagePattern, ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
 // @ts-ignore
 const postRouter = new Router();
 
