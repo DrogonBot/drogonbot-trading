@@ -51,6 +51,18 @@ userRouter.get('/users/search/:keyword', async (req, res) => {
 })
 
 
+userRouter.get('/policy/ptbr', async (req,res) => {
+
+  const data = readFileSync(
+    `./src/public/pages/policy_ptbr.html`,
+    "utf-8"
+  ).toString();
+  
+    return res.status(200).send(data);
+
+})
+
+
 // Authentication ========================================
 
 // User => Logger ========================================
