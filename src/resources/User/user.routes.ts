@@ -57,7 +57,18 @@ userRouter.get('/policy/ptbr', async (req,res) => {
     `./src/public/pages/policy_ptbr.html`,
     "utf-8"
   ).toString();
-  
+
+    return res.status(200).send(data);
+
+})
+
+userRouter.get('/policy', async (req,res) => {
+
+  const data = readFileSync(
+    `./src/public/pages/policy.html`,
+    "utf-8"
+  ).toString();
+
     return res.status(200).send(data);
 
 })
