@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import _ from 'lodash';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
@@ -9,7 +10,6 @@ import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputRe
 import { Resume } from '../Resume/resume.model';
 import { User } from '../User/user.model';
 import { IPostApplication, IPostApplicationStatus, Post } from './post.model';
-
 
 // @ts-ignore
 const postRouter = new Router();
@@ -73,93 +73,47 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
 
 postRouter.get('/post', userAuthMiddleware, async (req, res) => {
 
-  const { id, keyword, stateCode, city } = req.query;
+  const { id, keyword } = req.query;
 
-  if (stateCode || city) {
+  // prepare our query
 
-    try {
-      const searchPosts = await Post.find({
-        $or: [{ stateCode }, { city }]
-      }).populate('owner')
-
-      if (!searchPosts) {
-        return res.status(200).send({
-          status: 'error',
-          message: LanguageHelper.getLanguageString('post', 'postNotFound')
-        })
-      }
-
-      return res.status(200).send(searchPosts)
-    }
-    catch (error) {
-      console.error(error);
-
-    }
-
-
+  let rawQuery = {
+    ...req.query,
+    _id: id
   }
+  delete rawQuery.id; // delete this id, since we'll use _id instead
+  delete rawQuery.keyword; // remove this key, since we'll pass a specific query below
 
   if (keyword) {
-    // if a keyword is passed, the user wants us to search through our posts.
+    const keywordRegex = { $regex: keyword, $options: "i" }
 
-    try {
-      const keywordRegex = { $regex: keyword, $options: "i" }
-
-      const searchPosts = await Post.find({
-        $or: [{ jobRoles: keywordRegex }, { title: keywordRegex }]
-      }).populate('owner')
-
-      if (!searchPosts) {
-        return res.status(200).send({
-          status: 'error',
-          message: LanguageHelper.getLanguageString('post', 'postNotFound')
-        })
-      }
-
-      return res.status(200).send(searchPosts)
+    // add our search query keyword
+    rawQuery = {
+      ...rawQuery,
+      $or: [{ jobRoles: keywordRegex }, { title: keywordRegex }]
     }
-    catch (error) {
-      console.error(error);
-
-      return res.status(200).send([])
-    }
-
-
-
   }
 
+  // lets remove any undefined fields from our rawQuery, since we may or not pass stateCode or city
+  const searchQuery = _.pickBy(rawQuery, _.identity);
 
-  if (id) {
+  try {
+    const searchPosts = await Post.find(searchQuery).populate('owner')
 
-    // if user specified an Id, its because he wants a particular post data (not all)
-
-    try {
-      const foundPost = await Post.findOne({ _id: id }).populate('owner')
-
-      if (!foundPost) {
-        return res.status(200).send({
-          status: 'error',
-          message: LanguageHelper.getLanguageString('post', 'postNotFound')
-        })
-      }
-
-      return res.status(200).send(foundPost)
-
-    }
-    catch (error) {
-      console.error(error);
-      return res.status(400).send([])
+    if (!searchPosts) {
+      return res.status(200).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('post', 'postNotFound')
+      })
     }
 
-
+    return res.status(200).send(searchPosts)
   }
+  catch (error) {
+    console.error(error);
 
-  // if no id was specified, return all posts
-
-  const post = await Post.find({}).populate('owner')
-
-  return res.status(200).send(post)
-
+    return res.status(200).send([])
+  }
 
 })
 
