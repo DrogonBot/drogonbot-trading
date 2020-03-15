@@ -41,10 +41,7 @@ export class ScrapperOLX {
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
 
-    // const html = await ScrapperHelper.loadLocalHtml('../data/olx_auxiliar_servicos_gerais.html');
-
     const html = await ConnectionHelper.requestHtml(link, ScrapperHelper.chosenProxy)
-
 
     const $ = cheerio.load(html);
 
@@ -62,9 +59,9 @@ export class ScrapperOLX {
 
     rawContent = rawContent.replace(new RegExp('\n', 'g'), " ");
 
-    const complementaryData = DataExtractorHelper.extractJobData(rawContent)
+    const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
 
-    return {
+    const jobData = {
       ...complementaryData,
       title,
       content: rawContent,
@@ -77,6 +74,9 @@ export class ScrapperOLX {
       jobRoles: [jobRoleBestMatch],
       ...postDataOverride,
     }
+
+
+    return jobData
 
 
 

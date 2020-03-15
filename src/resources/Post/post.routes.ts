@@ -33,6 +33,8 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
   })
 
 
+
+
   // await ScrapperHelper.init('OLX => MG/BH', {
   //   crawlLinksFunction: ScrapperOLX.crawlLinks,
   //   crawlPageDataFunction: ScrapperOLX.crawlPageData
@@ -63,7 +65,6 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
   // const post = `necessário experiência enviar Curriculum para rh@rpsp.com.br`
 
 
-  // console.log(await DataExtractorHelper.extractJobData(post));
 
   return res.status(200).send({
     status: 'ok'
@@ -72,7 +73,31 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
 
 postRouter.get('/post', userAuthMiddleware, async (req, res) => {
 
-  const { id, keyword } = req.query;
+  const { id, keyword, stateCode, city } = req.query;
+
+  if (stateCode || city) {
+
+    try {
+      const searchPosts = await Post.find({
+        $or: [{ stateCode }, { city }]
+      }).populate('owner')
+
+      if (!searchPosts) {
+        return res.status(200).send({
+          status: 'error',
+          message: LanguageHelper.getLanguageString('post', 'postNotFound')
+        })
+      }
+
+      return res.status(200).send(searchPosts)
+    }
+    catch (error) {
+      console.error(error);
+
+    }
+
+
+  }
 
   if (keyword) {
     // if a keyword is passed, the user wants us to search through our posts.

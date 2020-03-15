@@ -79,7 +79,15 @@ export class DataExtractorHelper {
 
     let phone = null
     try {
-      phone = rawPost.match(/(\(?[1-9]{2}\)?\s?)?9[7-9]{1}[0-9]{3}(-)?\d+/g)[0] || rawPost.match(/\d+\s\d+/ig)[0] || rawPost.match(/^1\d\d(\d\d)?$|^0800 ?\d{3} ?\d{4}$|^(\(0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d\) ?|0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d[ .-]?)?(9|9[ .-])?[2-9]\d{3}[ .-]?\d{4}$/gm)[0] || rawPost.match(/^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/ig)[0]
+      phone = rawPost.replace(/\./g, '').match(/(\(?\d{2}\)?\.?\s?)?(\d{4,5}(\-?|\s?)\d{4})/g)[0]
+        .replace(/\./g, "")
+        .replace(/\-/g, "")
+        .replace(/(\()/g, "")
+        .replace(/(\))/g, "")
+        .replace(/\s/g, "")
+
+      console.log(phone);
+
     }
     catch (error) {
       phone = null
@@ -120,6 +128,8 @@ export class DataExtractorHelper {
 
     }
 
+    console.log(`RETURNING PHONE: ${phone}`);
+
     return {
       category: DataExtractorHelper._readCategory(isTemporary, isCLT, isInternship),
       positionType: isPartTime ? PostPositionType.PartTime : PostPositionType.FullTime,
@@ -135,7 +145,7 @@ export class DataExtractorHelper {
       requisites: DataExtractorHelper._tryExtractingData(rawPost, /(((Pre|Pré)?\-?(Requisitos|Essencial))\:?\n?)\s?(.+\n){1,100}/i, /((Pre|Pré)?\-?Requisitos|Essencial)\:?\n?\s?/i),
       schedule: DataExtractorHelper._tryExtractingData(rawPost, /((Horario|horário)\:?\n?)\s?(.+\n){1,100}/i, /(Horario|horário):\n?\s?/i),
       companyName: DataExtractorHelper._tryExtractingData(rawPost, /((Empresa):(\n)?)\s?.+(\n)?/ig, /(Empresa):\s?/)
-    }
+    };
 
 
 

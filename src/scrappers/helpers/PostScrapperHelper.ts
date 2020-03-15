@@ -18,7 +18,7 @@ export class PostScrapperHelper {
 
       if (lowerContent.includes(` ${word.toLowerCase()} `) || lowerContent.includes(`${word.toLowerCase()} `)) {
         console.log(`Forbidden word found: ${word}`);
-        return true
+        return word
       }
     }
 

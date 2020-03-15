@@ -140,8 +140,10 @@ export class ScrapperHelper {
 
       if (ScrapperHelper.owner) {
         const newPost = new Post({ ...postData, owner: ScrapperHelper.owner._id })
+
         newPost.save()
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
+        console.log(newPost);
       } else {
         console.log(`🤖: User with e-mail ${process.env.ADMIN_EMAIL} not found! It's necessary for saving our posts!`)
         console.log(`🤖: Failed to scrap data from ${link}!`)

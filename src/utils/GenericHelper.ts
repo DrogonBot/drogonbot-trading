@@ -13,9 +13,7 @@ export class GenericHelper {
   }
 
   public static stripHtml(html) {
-    let tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
+    return html.replace(/(<([^>]+)>)/ig, "");
   }
 
   public static arrayFlatten(arr) {
