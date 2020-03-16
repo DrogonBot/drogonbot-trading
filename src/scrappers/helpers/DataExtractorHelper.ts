@@ -86,7 +86,7 @@ export class DataExtractorHelper {
         .replace(/(\))/g, "")
         .replace(/\s/g, "")
 
-      console.log(phone);
+
 
     }
     catch (error) {

@@ -13,10 +13,19 @@ import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
 export class ScrapperFacebook {
 
+  public static browser: puppeteer.Browser
+  public static page: puppeteer.Page
+
   public static crawlPageFeed = async (link: string, postDataOverride?) => {
 
     console.log(`🔥 Starting PUPPETEER BOT 🔥`);
 
+    if (ScrapperFacebook.browser) {
+      await ScrapperFacebook.browser.close(); // close any possibly open browser instances
+    }
+    if (ScrapperFacebook.page) {
+      await ScrapperFacebook.page.close();
+    }
 
     let options;
     switch (process.env.ENV) {
@@ -46,20 +55,19 @@ export class ScrapperFacebook {
     }
 
 
-    const browser = await puppeteer.launch(options)
+    ScrapperFacebook.browser = await puppeteer.launch(options)
 
-    const page = await browser.newPage();
+
 
     try {
+      ScrapperFacebook.page = await ScrapperFacebook.browser.newPage();
 
-
-
-      await page.goto(link, { waitUntil: 'load', timeout: 60000 })
+      await ScrapperFacebook.page.goto(link, { waitUntil: 'load', timeout: 60000 })
 
 
       // Evaluate page data ========================================
 
-      const data = await page.evaluate(async () => {
+      const data = await ScrapperFacebook.page.evaluate(async () => {
 
         const moreLinks: HTMLElement[] = Array.from(document.querySelectorAll('.see_more_link'))
 
@@ -80,6 +88,8 @@ export class ScrapperFacebook {
 
         })
       })
+
+      await ScrapperFacebook.page.close();
 
       // Prepare output in the proper format ========================================
 
@@ -111,7 +121,7 @@ export class ScrapperFacebook {
 
       }))
 
-      await browser.close()
+      await ScrapperFacebook.browser.close()
 
       await GenericHelper.sleep(1000)
 
@@ -119,10 +129,10 @@ export class ScrapperFacebook {
     }
     catch (error) {
       console.error(error);
-      await browser.close()
+      await ScrapperFacebook.browser.close()
     }
     finally {
-      await browser.close()
+      await ScrapperFacebook.browser.close()
     }
   }
 }
