@@ -20,12 +20,6 @@ export class ScrapperFacebook {
 
     console.log(`🔥 Starting PUPPETEER BOT 🔥`);
 
-    if (ScrapperFacebook.browser) {
-      await ScrapperFacebook.browser.close(); // close any possibly open browser instances
-    }
-    if (ScrapperFacebook.page) {
-      await ScrapperFacebook.page.close();
-    }
 
     let options;
     switch (process.env.ENV) {
