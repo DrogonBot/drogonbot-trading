@@ -26,12 +26,10 @@ export class PostScrapperHelper {
   }
 
   public static isPostInvalid = async (post: IPost) => {
-    const existentPosts = await Post.find({
-      $or: [{ title: post.title }, { content: post.content }, { externalUrl: post.externalUrl }]
-    })
+    const existentPosts = await Post.find({ content: post.content })
 
     if (existentPosts.length >= 1) {
-      console.log(`🤖: Skipping because this post already exists!`)
+      console.log(`🤖: Skipping because this post already exists! => ${post.title}`)
       return true
     }
 

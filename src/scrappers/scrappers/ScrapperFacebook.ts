@@ -20,10 +20,12 @@ export class ScrapperFacebook {
     // This function clears memory by closing puppeteer open instances
 
     if (ScrapperFacebook.browser && ScrapperFacebook.browser.isConnected()) {
+      console.log(`🤖: Puppeteer: Closing opened browser`);
       await ScrapperFacebook.browser.close()
     }
 
     if (ScrapperFacebook.page && !ScrapperFacebook.page.isClosed()) {
+      console.log(`🤖: Puppeteer: Closing opened page`);
       await ScrapperFacebook.page.close()
     }
 

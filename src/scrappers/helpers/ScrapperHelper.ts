@@ -116,7 +116,7 @@ export class ScrapperHelper {
         newPost.save()
         console.log(`Saving post: ${post.title}`);
         await GenericHelper.sleep(1000)
-        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
+        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Post saved on database! => ${post.title}`)
       }
     } else {
       console.log(`🤖: User with e-mail ${process.env.ADMIN_EMAIL} not found! It's necessary for saving our posts!`)
