@@ -128,8 +128,6 @@ export class DataExtractorHelper {
 
     }
 
-    console.log(`RETURNING PHONE: ${phone}`);
-
     return {
       category: DataExtractorHelper._readCategory(isTemporary, isCLT, isInternship),
       positionType: isPartTime ? PostPositionType.PartTime : PostPositionType.FullTime,
