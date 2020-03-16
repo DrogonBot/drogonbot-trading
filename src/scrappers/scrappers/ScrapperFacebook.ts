@@ -42,7 +42,6 @@ export class ScrapperFacebook {
             `--proxy-server=http://${ScrapperHelper.chosenProxy.ip}:${ScrapperHelper.chosenProxy.port}`,
             `'--user-agent="${ScrapperHelper.userAgent}"'`]
         }
-        console.log(`🤖: Loading Development config`);
         break;
     }
 
