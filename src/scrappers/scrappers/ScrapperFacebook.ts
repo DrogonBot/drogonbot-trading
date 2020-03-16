@@ -19,11 +19,11 @@ export class ScrapperFacebook {
   public static clear = async () => {
     // This function clears memory by closing puppeteer open instances
 
-    if (ScrapperFacebook.browser) {
+    if (ScrapperFacebook.browser && ScrapperFacebook.browser.isConnected()) {
       await ScrapperFacebook.browser.close()
     }
 
-    if (ScrapperFacebook.page) {
+    if (ScrapperFacebook.page && !ScrapperFacebook.page.isClosed()) {
       await ScrapperFacebook.page.close()
     }
 
