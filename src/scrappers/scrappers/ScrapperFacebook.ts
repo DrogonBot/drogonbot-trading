@@ -50,68 +50,79 @@ export class ScrapperFacebook {
 
     const page = await browser.newPage();
 
+    try {
 
-    await page.goto(link, { waitUntil: 'load', timeout: 60000 })
 
 
-    // Evaluate page data ========================================
+      await page.goto(link, { waitUntil: 'load', timeout: 60000 })
 
-    const data = await page.evaluate(async () => {
 
-      const moreLinks: HTMLElement[] = Array.from(document.querySelectorAll('.see_more_link'))
+      // Evaluate page data ========================================
 
-      // First, click on all "See More" links, to show up hidden content to scrap
-      for (const elLink of moreLinks) {
-        elLink.click()
-        await new Promise(r => setTimeout(r, 2000)); // 2 sec for each click
-      }
+      const data = await page.evaluate(async () => {
 
-      const rawPosts = document.querySelectorAll('.userContentWrapper div.userContent[data-testid="post_message"]')
+        const moreLinks: HTMLElement[] = Array.from(document.querySelectorAll('.see_more_link'))
 
-      const posts = Array.from(rawPosts);
+        // First, click on all "See More" links, to show up hidden content to scrap
+        for (const elLink of moreLinks) {
+          elLink.click()
+          await new Promise(r => setTimeout(r, 2000)); // 2 sec for each click
+        }
 
-      return posts.map((post) => {
-        // @ts-ignore
+        const rawPosts = document.querySelectorAll('.userContentWrapper div.userContent[data-testid="post_message"]')
 
-        return post.innerText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '').replace('Nova vaga publicada!', '')
+        const posts = Array.from(rawPosts);
 
+        return posts.map((post) => {
+          // @ts-ignore
+
+          return post.innerText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '').replace('Nova vaga publicada!', '')
+
+        })
       })
-    })
 
-    // Prepare output in the proper format ========================================
+      // Prepare output in the proper format ========================================
 
-    const output = await Promise.all(data.map(async (postContent: string) => {
-      let title = (postContent && postContent.split('\n')[0] || postContent.split('\n\n')[0] || postContent.slice(0, 25)).replace('\n', '')
+      const output = await Promise.all(data.map(async (postContent: string) => {
+        let title = (postContent && postContent.split('\n')[0] || postContent.split('\n\n')[0] || postContent.slice(0, 25)).replace('\n', '')
 
-      const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(postContent.replace(new RegExp('\n', 'g'), " "), title)
+        const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(postContent.replace(new RegExp('\n', 'g'), " "), title)
 
-      if (!title || !title.length) {
-        title = jobRoleBestMatch
-      }
+        if (!title || !title.length) {
+          title = jobRoleBestMatch
+        }
 
-      // console.log(`Title: ${title}`);
-      // console.log(`SECTOR => ${sector}`);
-      // console.log(`JOB ROLE => ${jobRoleBestMatch}`);
+        // console.log(`Title: ${title}`);
+        // console.log(`SECTOR => ${sector}`);
+        // console.log(`JOB ROLE => ${jobRoleBestMatch}`);
 
-      const complementaryData = await DataExtractorHelper.extractJobData(postContent)
+        const complementaryData = await DataExtractorHelper.extractJobData(postContent)
 
-      return {
-        ...complementaryData,
-        ...postDataOverride,
-        title,
-        content: postContent,
-        source: IPostSource.Facebook,
-        sourceUrl: link,
-        sector,
-        jobRoles: [jobRoleBestMatch],
-      }
+        return {
+          ...complementaryData,
+          ...postDataOverride,
+          title,
+          content: postContent,
+          source: IPostSource.Facebook,
+          sourceUrl: link,
+          sector,
+          jobRoles: [jobRoleBestMatch],
+        }
 
-    }))
+      }))
 
-    await browser.close()
+      await browser.close()
 
-    await GenericHelper.sleep(1000)
+      await GenericHelper.sleep(1000)
 
-    return output
+      return output
+    }
+    catch (error) {
+      console.error(error);
+      await browser.close()
+    }
+    finally {
+      await browser.close()
+    }
   }
 }
