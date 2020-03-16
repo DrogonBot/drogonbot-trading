@@ -113,13 +113,13 @@ export class DataExtractorHelper {
 
       const emailValidator = new EmailValidator()
 
-      const { wellFormed, validDomain, validMailbox } = await emailValidator.verify(email);
+      const { wellFormed } = await emailValidator.verify(email);
 
 
       // console.log(`🤖: Checking if ${email} is valid...`);
 
-      if (!wellFormed || !validDomain) {
-        console.log(`🤖: ${email} is INVALID! (wellFormed: ${wellFormed} | validDomain: ${validDomain}) Setting it to null to prevent future errors`);
+      if (!wellFormed) {
+        console.log(`🤖: ${email} is INVALID! (wellFormed: ${wellFormed}) Setting it to null to prevent future errors`);
         email = null
       }
 

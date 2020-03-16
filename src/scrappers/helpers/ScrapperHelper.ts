@@ -5,6 +5,7 @@ import { IPost, Post } from '../../resources/Post/post.model';
 import { User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
+import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
 
@@ -74,6 +75,10 @@ export class ScrapperHelper {
     }
 
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished!`)
+
+    // Make sure we close our browser and pages once we're done, so we save up memory
+    ScrapperFacebook.browser.close();
+    ScrapperFacebook.page.close()
 
     if (process.env.ENV === EnvType.Production) {
       await GenericHelper.sleep(1000 * 60 * Math.floor(Math.random() * 5))
