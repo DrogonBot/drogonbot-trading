@@ -94,10 +94,6 @@ export class ScrapperHelper {
       return
     }
 
-
-
-
-
     if (ScrapperHelper.owner) {
 
       // loop through feed posts and start saving them into db

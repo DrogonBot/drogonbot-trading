@@ -7,6 +7,7 @@ import util from 'util';
 
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
+import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { IProxyItem, ScrapperHelper } from './ScrapperHelper';
 
 export class ConnectionHelper {
@@ -114,6 +115,10 @@ export class ConnectionHelper {
         // Change proxy and user agent on every request
         ScrapperHelper.chosenProxy = ConnectionHelper.rotateProxy(ScrapperHelper.proxyList);
         ScrapperHelper.userAgent = new UserAgent().random().data.userAgent;
+
+        // Close our browser agents to avoid memory leaks
+        ScrapperFacebook.browser.close();
+        ScrapperFacebook.page.close()
 
         await GenericHelper.sleep(15000)
       }
