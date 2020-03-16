@@ -117,8 +117,7 @@ export class ConnectionHelper {
         ScrapperHelper.userAgent = new UserAgent().random().data.userAgent;
 
         // Close our browser agents to avoid memory leaks
-        ScrapperFacebook.browser.close();
-        ScrapperFacebook.page.close()
+        await ScrapperFacebook.clear();
 
         await GenericHelper.sleep(15000)
       }

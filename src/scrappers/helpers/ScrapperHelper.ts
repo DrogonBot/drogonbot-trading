@@ -43,6 +43,8 @@ export class ScrapperHelper {
     const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
 
     console.log(`🤖: Initializing ${name}`);
+    // Make sure we close any puppeteer open instances, if that's the case
+    await ScrapperFacebook.clear()
 
     const proxyList = await ConnectionHelper.fetchProxyList();
     ScrapperHelper.proxyList = proxyList;
@@ -76,9 +78,8 @@ export class ScrapperHelper {
 
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished!`)
 
-    // Make sure we close our browser and pages once we're done, so we save up memory
-    ScrapperFacebook.browser.close();
-    ScrapperFacebook.page.close()
+    // Make sure we close any puppeteer open instances, if that's the case
+    await ScrapperFacebook.clear()
 
     if (process.env.ENV === EnvType.Production) {
       await GenericHelper.sleep(1000 * 60 * Math.floor(Math.random() * 5))

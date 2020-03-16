@@ -16,6 +16,20 @@ export class ScrapperFacebook {
   public static browser: puppeteer.Browser
   public static page: puppeteer.Page
 
+  public static clear = async () => {
+    // This function clears memory by closing puppeteer open instances
+
+    if (ScrapperFacebook.browser) {
+      await ScrapperFacebook.browser.close()
+    }
+
+    if (ScrapperFacebook.page) {
+      await ScrapperFacebook.page.close()
+    }
+
+
+  }
+
   public static crawlPageFeed = async (link: string, postDataOverride?) => {
 
     console.log(`🔥 Starting PUPPETEER BOT 🔥`);
@@ -50,9 +64,6 @@ export class ScrapperFacebook {
 
 
     ScrapperFacebook.browser = await puppeteer.launch(options)
-
-
-
 
     ScrapperFacebook.page = await ScrapperFacebook.browser.newPage();
 
@@ -114,7 +125,7 @@ export class ScrapperFacebook {
 
     }))
 
-    await ScrapperFacebook.browser.close()
+    await ScrapperFacebook.clear()
 
     await GenericHelper.sleep(1000)
 
