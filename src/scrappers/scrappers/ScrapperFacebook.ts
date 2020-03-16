@@ -89,7 +89,6 @@ export class ScrapperFacebook {
         })
       })
 
-      await ScrapperFacebook.page.close();
 
       // Prepare output in the proper format ========================================
 

@@ -85,9 +85,6 @@ export class DataExtractorHelper {
         .replace(/(\()/g, "")
         .replace(/(\))/g, "")
         .replace(/\s/g, "")
-
-
-
     }
     catch (error) {
       phone = null
