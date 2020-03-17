@@ -22,13 +22,10 @@ export class ScrapperFacebook {
     if (ScrapperFacebook.browser !== null) {
       console.log(`🤖: Puppeteer: Closing opened browser`);
       await ScrapperFacebook.browser.close()
+      ScrapperFacebook.browser = null
     }
   }
 
-  public static wasBrowserKilled = async (browser) => {
-    const procInfo = await browser.process();
-    return !!procInfo.signalCode; // null if browser is still running
-  }
 
   public static crawlPageFeed = async (link: string, postDataOverride?) => {
 
