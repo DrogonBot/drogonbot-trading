@@ -13,13 +13,13 @@ import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
 export class ScrapperFacebook {
 
-  public static browser: puppeteer.Browser
-  public static page: puppeteer.Page
+  public static browser: puppeteer.Browser | null = null
+  public static page: puppeteer.Page | null = null
 
   public static clear = async () => {
     // This function clears memory by closing puppeteer open instances
 
-    if (ScrapperFacebook.browser && !ScrapperFacebook.wasBrowserKilled(ScrapperFacebook.browser)) {
+    if (ScrapperFacebook.browser !== null) {
       console.log(`🤖: Puppeteer: Closing opened browser`);
       await ScrapperFacebook.browser.close()
     }
@@ -93,6 +93,8 @@ export class ScrapperFacebook {
 
       })
     })
+
+    ScrapperFacebook.page.close();
 
 
     // Prepare output in the proper format ========================================
