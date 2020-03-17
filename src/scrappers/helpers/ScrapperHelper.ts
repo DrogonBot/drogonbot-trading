@@ -6,6 +6,7 @@ import { User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
+import { IScrapperLink, ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
 
@@ -20,7 +21,7 @@ export enum PagePattern {
 }
 
 export interface ICrawlerFunctions {
-  crawlLinksFunction?: (externalSource: string) => Promise<string[]>,
+  crawlLinksFunction?: (externalSource: string) => Promise<IScrapperLink[]>,
   crawlPageDataFunction?: (link: string) => any,
   crawlFeedFunction?: (link: string) => Promise<any>
 }
@@ -55,18 +56,30 @@ export class ScrapperHelper {
 
     switch (type) {
 
-      case PagePattern.ListAndInternalPosts:
-        console.log(`🤖: Scrapping external source ${externalSource}`);
-        const links = await ConnectionHelper.tryRequestUntilSucceeds(crawlLinksFunction, [externalSource])
+      case PagePattern.ListAndInternalPosts: // used by ScrapperOLX
 
-        for (const link of links) {
-          await GenericHelper.sleep(10000)
-
-          await ScrapperHelper._scrapPage(link, crawlPageDataFunction, postDataOverride)
+        if (ScrapperOLX.postLinks === null) { // If no links were scrapped yet
+          ScrapperOLX.postLinks = await ConnectionHelper.tryRequestUntilSucceeds(crawlLinksFunction, [externalSource])
+          console.log(`🤖: Scrapping external source ${externalSource}`);
         }
+        // if we already have scrapped post links, filter the ones who were not scrapped
+
+        if (ScrapperOLX.postLinks) {
+
+          const links = ScrapperOLX.postLinks.filter((link) => !link.scrapped) // make sure we only scrap unscrapped items
+
+          for (const linkItem of links) {
+            await GenericHelper.sleep(10000)
+            await ScrapperHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride)
+
+          }
+
+
+        }
+
         break;
 
-      case PagePattern.Feed:
+      case PagePattern.Feed: // used by ScrapperFacebook
 
         if (externalSource) {
           await ScrapperHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride)
@@ -129,6 +142,8 @@ export class ScrapperHelper {
     try {
       console.log(`🤖: Scrapping data from ...${link}`);
 
+      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Scrapping link ${link}`)
+
       const args = postDataOverride ? [link, postDataOverride] : [link]
 
       const postData = await ConnectionHelper.tryRequestUntilSucceeds(crawlPageDataFunction, args)
@@ -145,6 +160,15 @@ export class ScrapperHelper {
 
         newPost.save()
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
+
+        if (ScrapperOLX.postLinks) {
+          ScrapperOLX.postLinks.map((postLink) => {
+            if (postLink.link === link) {
+              postLink.scrapped = true
+            }
+            return postLink
+          })
+        }
 
       } else {
         console.log(`🤖: User with e-mail ${process.env.ADMIN_EMAIL} not found! It's necessary for saving our posts!`)

@@ -6,9 +6,16 @@ import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
+export interface IScrapperLink {
+  link: string,
+  scrapped: boolean
+}
+
 export class ScrapperOLX {
 
-  public static crawlLinks = async (externalSource: string): Promise<string[]> => {
+  public static postLinks: IScrapperLink[] | null = null
+
+  public static crawlLinks = async (externalSource: string): Promise<IScrapperLink[]> => {
 
     console.log(`🤖: Fetching crawling links for ${externalSource}`);
 
@@ -34,7 +41,12 @@ export class ScrapperOLX {
     console.log('🤖: Links scrawled successfully!');
     console.log(links);
 
-    return links;
+    return links.map((link) => {
+      return {
+        link,
+        scrapped: false
+      }
+    });
 
 
   }
