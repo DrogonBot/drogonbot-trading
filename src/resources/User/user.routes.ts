@@ -51,25 +51,25 @@ userRouter.get('/users/search/:keyword', async (req, res) => {
 })
 
 
-userRouter.get('/policy/ptbr', async (req,res) => {
+userRouter.get('/policy/ptbr', async (req, res) => {
 
   const data = readFileSync(
     `./src/public/pages/policy_ptbr.html`,
     "utf-8"
   ).toString();
 
-    return res.status(200).send(data);
+  return res.status(200).send(data);
 
 })
 
-userRouter.get('/policy', async (req,res) => {
+userRouter.get('/policy', async (req, res) => {
 
   const data = readFileSync(
     `./src/public/pages/policy.html`,
     "utf-8"
   ).toString();
 
-    return res.status(200).send(data);
+  return res.status(200).send(data);
 
 })
 
@@ -859,9 +859,7 @@ userRouter.get('/test', async (req, res) => {
 |  >>> ADMIN ONLY ROUTES
 *##############################################################*/
 
-userRouter.get('/users', [userAuthMiddleware, (req, res, next) => {
-  UserMiddleware.restrictUserType(UserType.Admin, req, res, next)
-}], async (req, res) => {
+userRouter.get('/users', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
   const users = await User.find({});
@@ -878,7 +876,7 @@ userRouter.get('/users', [userAuthMiddleware, (req, res, next) => {
 // User ==> Delete an account
 
 userRouter.delete("/users/:id", [userAuthMiddleware, (req, res, next) => {
-  UserMiddleware.restrictUserType(UserType.Admin, req, res, next)
+  UserMiddleware.restrictUserType(UserType.Admin)
 }], async (req, res) => {
   let user;
 
@@ -904,7 +902,7 @@ userRouter.delete("/users/:id", [userAuthMiddleware, (req, res, next) => {
 });
 
 userRouter.patch("/users/:id", [userAuthMiddleware, (req, res, next) => {
-  UserMiddleware.restrictUserType(UserType.Admin, req, res, next)
+  UserMiddleware.restrictUserType(UserType.Admin)
 }], async (req, res) => {
 
 

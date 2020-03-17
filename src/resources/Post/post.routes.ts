@@ -16,7 +16,7 @@ const postRouter = new Router();
 
 
 // TODO: remove this route. It's just for testing!
-postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
+postRouter.get('/scrap', [userAuthMiddleware], async (req, res) => {
 
 
   /*#############################################################|

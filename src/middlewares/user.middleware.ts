@@ -5,22 +5,27 @@ import { MiddlewareHelper } from '../utils/MiddlewareHelper';
 
 export class UserMiddleware {
 
-  public static restrictUserType = async (type, req, res, next) => {
+  public static restrictUserType = (type) => {
 
-    const { user } = await MiddlewareHelper.getUserFromRequest(req);
+    return async (req, res, next) => {
 
-    if (user) {
-      if (user.type !== type) {
+      const { user } = await MiddlewareHelper.getUserFromRequest(req);
 
-        return res.status(401).send({
-          status: 'error',
-          message: LanguageHelper.getLanguageString('user', 'userTypeUnauthorized')
-        });
+      if (user) {
+        if (user.type !== type) {
+
+          return res.status(401).send({
+            status: 'error',
+            message: LanguageHelper.getLanguageString('user', 'userTypeUnauthorized')
+          });
+        }
       }
+
+      next()
     }
 
 
-    next()
+
 
 
   }
