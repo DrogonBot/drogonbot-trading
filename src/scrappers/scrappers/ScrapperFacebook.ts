@@ -24,10 +24,6 @@ export class ScrapperFacebook {
       await ScrapperFacebook.browser.close()
     }
 
-    // if (ScrapperFacebook.page && !ScrapperFacebook.page.isClosed()) {
-    //   console.log(`🤖: Puppeteer: Closing opened page`);
-    //   await ScrapperFacebook.page.close()
-    // }
 
 
   }
