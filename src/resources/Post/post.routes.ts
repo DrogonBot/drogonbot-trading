@@ -241,13 +241,6 @@ postRouter.get('/scrap', userAuthMiddleware, async (req, res) => {
     city: "Ribeirão Preto",
   })
 
-
-
-
-
-
-
-
   return res.status(200).send({
     status: 'ok'
   })
