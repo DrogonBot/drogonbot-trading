@@ -19,13 +19,15 @@ export class ScrapperFacebook {
   public static clear = async () => {
     // This function clears memory by closing puppeteer open instances
 
-    if (ScrapperFacebook.browser && ScrapperFacebook.browser.isConnected()) {
+    if (ScrapperFacebook.browser && !ScrapperFacebook.wasBrowserKilled(ScrapperFacebook.browser)) {
       console.log(`🤖: Puppeteer: Closing opened browser`);
       await ScrapperFacebook.browser.close()
     }
+  }
 
-
-
+  public static wasBrowserKilled = async (browser) => {
+    const procInfo = await browser.process();
+    return !!procInfo.signalCode; // null if browser is still running
   }
 
   public static crawlPageFeed = async (link: string, postDataOverride?) => {

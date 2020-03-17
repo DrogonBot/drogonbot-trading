@@ -126,7 +126,7 @@ export class JobsCron {
   public static initializeJobCrawlers = () => {
 
 
-    cron.schedule("0 0 * * *", async () => {
+    cron.schedule("0 */12 * * *", async () => {
 
       /*#############################################################|
       |  >>> ESPIRITO SANTO
