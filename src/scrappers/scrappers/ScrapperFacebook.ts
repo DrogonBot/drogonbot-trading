@@ -58,6 +58,7 @@ export class ScrapperFacebook {
     }
 
 
+
     ScrapperFacebook.browser = await puppeteer.launch(options)
 
     ScrapperFacebook.page = await ScrapperFacebook.browser.newPage();
