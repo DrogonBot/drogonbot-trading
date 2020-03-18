@@ -7,6 +7,7 @@ import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
 import { PagePattern, ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
 import { ScrapperFacebook } from '../scrappers/scrappers/ScrapperFacebook';
+import { ScrapperOLX } from '../scrappers/scrappers/ScrapperOLX';
 import { LanguageHelper } from '../utils/LanguageHelper';
 
 export class JobsCron {
@@ -133,34 +134,34 @@ export class JobsCron {
       *##############################################################*/
 
 
-      // await ScrapperHelper.init('OLX => ES', {
-      //   crawlLinksFunction: ScrapperOLX.crawlLinks,
-      //   crawlPageDataFunction: ScrapperOLX.crawlPageData
-      // }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego", {
-      //   country: "Brazil",
-      //   stateCode: "ES",
+      await ScrapperHelper.init('OLX => ES', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "ES",
 
-      // })
-
-
-      // await ScrapperHelper.init('OLX => SP/CAPITAL', {
-      //   crawlLinksFunction: ScrapperOLX.crawlLinks,
-      //   crawlPageDataFunction: ScrapperOLX.crawlPageData
-      // }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
-      //   country: "Brazil",
-      //   stateCode: "SP",
-
-      // })
+      })
 
 
-      // await ScrapperHelper.init('OLX => MG/BH', {
-      //   crawlLinksFunction: ScrapperOLX.crawlLinks,
-      //   crawlPageDataFunction: ScrapperOLX.crawlPageData
-      // }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
-      //   country: "Brazil",
-      //   stateCode: "MG",
+      await ScrapperHelper.init('OLX => SP/CAPITAL', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "SP",
 
-      // })
+      })
+
+
+      await ScrapperHelper.init('OLX => MG/BH', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+
+      })
 
 
 
