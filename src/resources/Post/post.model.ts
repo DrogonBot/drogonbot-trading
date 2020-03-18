@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 export enum PostCategory {
   Job = "Job",

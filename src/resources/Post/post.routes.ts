@@ -26,7 +26,9 @@ postRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(Us
 
 postRouter.get('/post', userAuthMiddleware, async (req, res) => {
 
-  const { id, keyword } = req.query;
+  const { id, keyword, limit, page } = req.query;
+
+
 
   // prepare our query
 
@@ -36,6 +38,9 @@ postRouter.get('/post', userAuthMiddleware, async (req, res) => {
   }
   delete rawQuery.id; // delete this id, since we'll use _id instead
   delete rawQuery.keyword; // remove this key, since we'll pass a specific query below
+  // delete offset and limit, because we'll use it for pagination only
+  delete rawQuery.page;
+  delete rawQuery.limit;
 
   if (keyword) {
     const keywordRegex = { $regex: keyword, $options: "i" }
@@ -54,8 +59,10 @@ postRouter.get('/post', userAuthMiddleware, async (req, res) => {
 
     const paginationOptions = {
       populate: 'owner',
-      offset: 2,
-      limit: 10
+      page: parseInt(page) || 1,
+      limit: parseInt(limit) || 10,
+      sort: { createdAt: -1 },
+
     }
 
     // @ts-ignore
