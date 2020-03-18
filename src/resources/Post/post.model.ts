@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate';
 
 export enum PostCategory {
   Job = "Job",
@@ -242,12 +243,11 @@ const postSchema = new mongoose.Schema({
       }
     }
   ],
-
-
-
 }, {
   timestamps: true
 })
+
+postSchema.plugin(mongoosePaginate)
 
 export const Post: Model<IPostModel> = model<IPostModel>('Post', postSchema)
 
