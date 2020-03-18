@@ -7,9 +7,4 @@ git --work-tree=/home/jonit/empregourgente-backend --git-dir=/home/jonit/repo/em
 npm run build --prefix /home/jonit/empregourgente-backend/admin
 
 # Refresh docker dependencies
-docker exec  node-api /bin/bash yarn install
-docker exec  node-admin /bin/bash yarn install
-
-# restart container
-
-docker-compose restart
+docker-compose -f /home/jonit/empregourgente-backend/docker-compose.yml up --build
