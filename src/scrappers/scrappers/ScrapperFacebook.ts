@@ -45,7 +45,6 @@ export class ScrapperFacebook {
         console.log(`🤖: Using Proxy IP: ${ScrapperHelper.chosenProxy.ip} on PORT: ${ScrapperHelper.chosenProxy.port}`);
         options = {
           ignoreHTTPSErrors: true,
-          userDataDir: './tmp',
           headless: true,
           args: ['--no-sandbox',
             '--disable-setuid-sandbox',

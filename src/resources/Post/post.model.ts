@@ -77,6 +77,7 @@ export interface IPost {
 
 export interface IPostModel extends IPost, Document {
   // insert functions here if needed.
+  paginate: (any) => any
 }
 
 const postSchema = new mongoose.Schema({
@@ -248,6 +249,7 @@ const postSchema = new mongoose.Schema({
 })
 
 postSchema.plugin(mongoosePaginate)
+
 
 export const Post: Model<IPostModel> = model<IPostModel>('Post', postSchema)
 
