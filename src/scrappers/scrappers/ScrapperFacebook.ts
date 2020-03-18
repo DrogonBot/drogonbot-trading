@@ -31,7 +31,6 @@ export class ScrapperFacebook {
 
     console.log(`🔥 Starting PUPPETEER BOT 🔥`);
 
-
     let options;
     switch (process.env.ENV) {
       case EnvType.Development:
