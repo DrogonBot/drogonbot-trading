@@ -8,3 +8,5 @@ npm run build --prefix /home/jonit/empregourgente-backend/admin
 
 # Refresh docker dependencies
 docker-compose -f /home/jonit/empregourgente-backend/docker-compose.yml up --build
+
+
