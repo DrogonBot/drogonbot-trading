@@ -6,7 +6,4 @@ git --work-tree=/home/jonit/empregourgente-backend --git-dir=/home/jonit/repo/em
 
 npm run build --prefix /home/jonit/empregourgente-backend/admin
 
-# Refresh docker dependencies
-docker-compose -f /home/jonit/empregourgente-backend/docker-compose.yml up --build
-
 
