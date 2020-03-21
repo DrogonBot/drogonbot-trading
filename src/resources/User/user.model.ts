@@ -32,13 +32,14 @@ export interface IUserDocument extends Document {
   language: string;
   givenName: string;
   familyName: string;
-  type: string;
+  type: string; // account type
   password: string;
   authType: { type: string; default: AuthType.EmailPassword };
   facebookId: string;
   email: string;
   tokens: Object[];
   avatar: Binary;
+  genericPositionsOfInterest: string[]
   avatarUrl: string;
   pushToken: string;
   createdAt: string;
@@ -66,6 +67,10 @@ export const userSchema: Schema = new Schema(
       type: String,
       trim: true
     },
+    genericPositionsOfInterest: {
+      type: [String],
+      default: []
+    },
     language: {
       type: String,
       trim: true,
@@ -87,7 +92,6 @@ export const userSchema: Schema = new Schema(
     },
     email: {
       type: String,
-
       lowercase: true,
       trim: true
     },

@@ -901,6 +901,40 @@ userRouter.delete("/users/:id", [userAuthMiddleware, (req, res, next) => {
   }
 });
 
+userRouter.patch("/users/me", [userAuthMiddleware], async (req, res) => {
+
+  const { user } = req;
+
+  // check if keys are allowed to be updated
+  if (
+    !RouterHelper.isAllowedKey(req.body, ["genericPositionsOfInterest", "type"])
+  ) {
+    return res.status(400).send({
+      status: "error",
+      message: LanguageHelper.getLanguageString(
+        "user",
+        "userPatchForbiddenKeys"
+      )
+    });
+  }
+
+  // if our keys to be updated are allowed, proceed!
+  try {
+
+    const updatePayload = req.body;
+
+    // update user keys
+    Object.entries(updatePayload).map(([key, value]) => {
+      user[key] = value;
+    })
+
+    await user.save();
+    return res.status(201).send(user);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 userRouter.patch("/users/:id", [userAuthMiddleware, (req, res, next) => {
   UserMiddleware.restrictUserType(UserType.Admin)
 }], async (req, res) => {
