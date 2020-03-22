@@ -6,18 +6,116 @@ import { UserMiddleware } from '../../middlewares/user.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
+import { Log } from '../Log/log.model';
 import { Resume } from '../Resume/resume.model';
 import { User, UserType } from '../User/user.model';
-import { IPostApplication, IPostApplicationStatus, Post } from './post.model';
+import { IPost, IPostApplication, IPostApplicationStatus, Post } from './post.model';
 
 // @ts-ignore
 const postRouter = new Router();
 
+export interface IJobReminder {
+  userPush: string,
+  jobs: IPost[]
+}
 
-// TODO: remove this route. It's just for testing!
-postRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+postRouter.get('/admin/test', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  // scrapper test route
+  try {
+    // loop through all users with generic positions of interest
+    const users = await User.find({
+      "genericPositionsOfInterest": { "$gt": 0 }
+    })
+    for (const user of users) {
+
+      // for each user, verify if there's a potential position of interest that he wasnt notified about yet
+
+      let jobsReminders: IJobReminder[] = []
+
+      for (const genericPositionOfInterest of user.genericPositionsOfInterest) {
+
+        const positionsFound = await Post.find({ jobRoles: { "$in": [genericPositionOfInterest] } })
+
+        console.log(`Found some jobs for ${user.name}...`);
+
+
+        // loop through positions found
+
+        for (const position of positionsFound) {
+          // check the user's log
+          const jobNotification = await Log.findOne({
+            emitter: user._id,
+            action: 'USER_JOB_NOTIFICATION',
+            target: position._id
+          })
+
+
+          // if we haven't warned the user about this position...
+          if (!jobNotification) {
+            // add it to our output report
+            jobsReminders = [
+              ...jobsReminders,
+              {
+                userPush: user.pushToken,
+                jobs: positionsFound
+              }
+            ]
+
+            // and then add notification to our logs
+            const newNotification = new Log({
+              emitter: user._id,
+              action: 'USER_JOB_NOTIFICATION',
+              target: position._id
+            })
+            await newNotification.save()
+          } else {
+            console.log(`Skipping job notification ${jobNotification._id}`);
+          }
+
+          // now, let's submit the push notifications regarding these positions
+
+          for (const jobReminder of jobsReminders) {
+
+            PushNotificationHelper.sendPush([jobReminder.userPush], {
+              sound: "default",
+              body: LanguageHelper.getLanguageString('user', 'cronInactiveUserReminderText', {
+                firstName: user.givenName || user.name
+              }),
+              data: {
+                jobs: jobReminder.jobs
+              }
+            })
+
+
+
+          }
+
+
+
+
+        }
+
+      }
+    }
+
+    return res.status(200).send(users)
+
+
+
+
+    // then check also for resumes
+
+    // make sure that job posts do not repeat
+  }
+  catch (error) {
+    console.error(error);
+
+  }
+
+
+
+
+
 
   return res.status(200).send({
     status: 'ok'
@@ -267,19 +365,19 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
     // send push notification to users about new post: //TODO: customize user groups who will receive this notification
 
-    const users = await User.find({})
+    // const users = await User.find({})
 
-    for (const u of users) {
-      if (u.pushToken !== user.pushToken) {
-        PushNotificationHelper.sendPush([u.pushToken], {
-          sound: "default",
-          body: LanguageHelper.getLanguageString('post', 'postCreationNotification', {
-            userName: user.name // post owner's name
-          })
-          // TODO: Add parameter that redirect users that click on this notification to the recently created post
-        })
-      }
-    }
+    // for (const u of users) {
+    //   if (u.pushToken !== user.pushToken) {
+    //     PushNotificationHelper.sendPush([u.pushToken], {
+    //       sound: "default",
+    //       body: LanguageHelper.getLanguageString('post', 'postCreationNotification', {
+    //         userName: user.name // post owner's name
+    //       })
+    //       // TODO: Add parameter that redirect users that click on this notification to the recently created post
+    //     })
+    //   }
+    // }
 
 
     // Images file upload ========================================

@@ -27,6 +27,10 @@ export enum UserType {
   Admin = "Admin",
 }
 
+export interface IUserNotification {
+  jobRoles: string[]
+}
+
 export interface IUserDocument extends Document {
   name: string;
   language: string;
@@ -44,6 +48,7 @@ export interface IUserDocument extends Document {
   pushToken: string;
   createdAt: string;
   updatedAt: string;
+
 }
 
 // methods
@@ -118,7 +123,8 @@ export const userSchema: Schema = new Schema(
     },
     avatarUrl: {
       type: String
-    }
+    },
+
   },
   {
     timestamps: true

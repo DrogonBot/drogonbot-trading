@@ -171,5 +171,14 @@ export const strings = {
   newAccountEmailBottom: {
     eng: "Thank you - {{appName}} team",
     ptBr: "Obrigado - Equipe {{appName}}"
+  },
+  cronInactiveUserReminderText: {
+    eng: "{{firstName}}, have you checked our latest job posts? Give it a look! You might find something interesting!",
+    ptBr: "Ei {{firstName}}, ficou sabendo sobre nossas últimas vagas de emprego adicionadas? Dê uma olhada!"
+  },
+
+  cronPositionsOfInterestText: {
+    eng: "",
+    ptBr: ""
   }
 };

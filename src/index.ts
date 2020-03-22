@@ -11,6 +11,7 @@ import socketio from 'socket.io';
 import { EnvType } from './constants/types/env.types';
 import { DatabaseCron } from './cron_jobs/database.cron';
 import { JobsCron } from './cron_jobs/jobs.cron';
+import { RetentionCron } from './cron_jobs/retention.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
 import { countryRouter } from './resources/Country/country.routes';
@@ -60,14 +61,14 @@ MixpanelHelper.init();
 *##############################################################*/
 
 // MainCron.sampleCron();
-// RetentionCron.inactiveUserReminder()
 
 switch (process.env.ENV) {
   case EnvType.Production: // Let's turn on our cron job in production only!
     JobsCron.submitApplications()
     const dbCron = new DatabaseCron();
     dbCron.backupAndExport()
-
+    JobsCron.positionsOfInterestPush();
+    RetentionCron.inactiveUserReminder()
 
 
     // job crawlers

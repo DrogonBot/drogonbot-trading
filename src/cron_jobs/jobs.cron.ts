@@ -361,4 +361,14 @@ export class JobsCron {
 
 
   }
+
+  public static positionsOfInterestPush = () => {
+
+    cron.schedule("0 0 */3 * *", async () => {
+
+
+
+
+    })
+  }
 }
