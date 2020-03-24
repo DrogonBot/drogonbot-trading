@@ -133,8 +133,6 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
   const { idToken, appClientId, language, type } = req.body;
 
   console.log("Google OAuth Login");
-  console.log(idToken);
-  console.log(appClientId);
 
   const client = new OAuth2Client();
 
@@ -154,8 +152,6 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
     const foundUser = await User.findOne({
       email: payload.email
     });
-
-
 
     if (!foundUser) {
       // if it doesnt exist in our database, create new one.
@@ -199,6 +195,9 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
 
         await user.save();
       } catch (error) {
+
+        console.log(error);
+
         return res.status(400).send({
           status: "error",
           message: LanguageHelper.getLanguageString(
