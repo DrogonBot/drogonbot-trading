@@ -132,9 +132,9 @@ userRouter.post("/users/login", async (req, res) => {
 userRouter.post("/users/login/google-oauth", async (req, res) => {
   const { idToken, appClientId, language, type } = req.body;
 
-  // console.log("Received new info...");
-  // console.log(idToken);
-  // console.log(appClientId);
+  console.log("Google OAuth Login");
+  console.log(idToken);
+  console.log(appClientId);
 
   const client = new OAuth2Client();
 
@@ -246,8 +246,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
 userRouter.post("/users/login/facebook-oauth", async (req, res) => {
   const { accessToken, language, type } = req.body;
 
-  console.log("Received new info...");
-  console.log(accessToken);
+  console.log('Facebook - OAuth - Login');
 
   // do a request do get user information based on this access token provided
 
