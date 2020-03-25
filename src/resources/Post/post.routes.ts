@@ -26,14 +26,31 @@ export interface IJobReminder {
 postRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
-  await PushNotificationHelper.sendPush(['ExponentPushToken[FTFCEhOBsU_NlUPuyoURXi]'], {
-    sound: "default",
-    body: 'This is a test notification',
-    toScreen: "IndividualFeed",
-    params: {
-      hello: 'world'
-    }
-  })
+  try {
+    const post = await Post.findOne({
+      _id: '5e70557c0de1c3008ec09d56'
+    })
+
+    const owner = await User.findOne({
+      _id: post?.owner
+    })
+
+    await PushNotificationHelper.sendPush(['ExponentPushToken[FTFCEhOBsU_NlUPuyoURXi]'], {
+      sound: "default",
+      body: 'This is a test notification',
+      toScreen: "IndividualFeed",
+      params: {
+        post,
+        user: owner
+      }
+    })
+
+  }
+  catch (error) {
+    console.error(error);
+
+  }
+
 
 
   return res.status(200).send({
