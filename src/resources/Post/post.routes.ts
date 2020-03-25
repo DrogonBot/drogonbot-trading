@@ -3,6 +3,9 @@ import _ from 'lodash';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
+import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
+import { ScrapperFacebook } from '../../scrappers/scrappers/ScrapperFacebook';
+import { ScrapperOLX } from '../../scrappers/scrappers/ScrapperOLX';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
@@ -18,6 +21,54 @@ export interface IJobReminder {
   userPush: string,
   jobs: IPost[]
 }
+
+
+postRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+
+  await PushNotificationHelper.sendPush(['ExponentPushToken[FTFCEhOBsU_NlUPuyoURXi]'], {
+    sound: "default",
+    body: 'This is a test notification',
+    toScreen: "IndividualFeed",
+    params: {
+      hello: 'world'
+    }
+  })
+
+
+  return res.status(200).send({
+    status: 'push submitted'
+  })
+
+
+})
+
+
+postRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+  await ScrapperHelper.init('OLX => ES', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego", {
+    country: "Brazil",
+    stateCode: "ES",
+
+  })
+
+  await ScrapperHelper.init('Facebook => Empregos ES', {
+    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/', {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Vitória",
+  })
+
+
+  return res.status(200).send({
+    'status': 'ok'
+  })
+
+});
 
 postRouter.get('/admin/test', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 

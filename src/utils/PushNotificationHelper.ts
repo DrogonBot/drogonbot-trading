@@ -1,7 +1,9 @@
 import Expo, { ExpoPushMessage } from 'expo-server-sdk';
 
+import { User } from '../resources/User/user.model';
+
 export class PushNotificationHelper {
-  public static sendPush(pushTokens: string[], customMessage: object) {
+  public static sendPush = async (pushTokens: string[], data: object) => {
     const expo = new Expo();
     const messages: ExpoPushMessage[] = [];
 
@@ -14,10 +16,32 @@ export class PushNotificationHelper {
         continue;
       }
 
+
+
+      // Save notification on user model - This is needed due to a Expo known bug where the app does not fires the notification event listener if the app is closed
+      // TODO: check: https://github.com/expo/expo/issues/3663
+
+      try {
+        const user = await User.findOne({
+          pushToken
+        })
+        if (user) {
+          user.lastNotification = {
+            data,
+            visualized: false
+          }
+          await user.save();
+        }
+      }
+      catch (error) {
+        console.error(error);
+      }
+
+
       // Construct a message (see https://docs.expo.io/versions/latest/guides/push-notifications.html)
       messages.push({
         to: pushToken,
-        ...customMessage
+        ...data
       });
     }
 

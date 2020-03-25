@@ -31,6 +31,11 @@ export interface IUserNotification {
   jobRoles: string[]
 }
 
+export interface ILastNotification {
+  data: Object,
+  visualized: boolean
+}
+
 export interface IUserDocument extends Document {
   name: string;
   language: string;
@@ -48,7 +53,7 @@ export interface IUserDocument extends Document {
   pushToken: string;
   createdAt: string;
   updatedAt: string;
-
+  lastNotification: ILastNotification
 }
 
 // methods
@@ -124,6 +129,10 @@ export const userSchema: Schema = new Schema(
     avatarUrl: {
       type: String
     },
+    lastNotification: {
+      data: Object,
+      visualized: Boolean
+    }
 
   },
   {
