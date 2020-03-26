@@ -1,6 +1,7 @@
 
 
 export interface IUser {
+  _id: string;
   name: string;
   language: string;
   givenName: string;
