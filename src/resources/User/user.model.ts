@@ -86,6 +86,18 @@ export const userSchema: Schema = new Schema(
       trim: true,
       default: "ptBr"
     },
+    country: {
+      type: String,
+      default: "Brazil"
+    },
+    stateCode: {
+      type: String,
+      default: "ES"
+    },
+    city: {
+      type: String,
+      default: "Vitória"
+    },
     type: {
       type: String,
       default: UserType.JobSeeker
