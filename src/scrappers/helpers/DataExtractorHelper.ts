@@ -63,6 +63,14 @@ export class DataExtractorHelper {
     }
   }
 
+  private static _repairEmail = (email: string) => {
+    const lastChar = email[email.length - 1]
+    if (lastChar === "." || lastChar === ",") {
+      email = email.slice(0, email.length - 1) // remove last char
+    }
+    return email
+  }
+
   public static extractJobData = async (rawPost) => {
 
     rawPost = rawPost.replace(new RegExp('\n', 'g'), " ");
@@ -110,6 +118,8 @@ export class DataExtractorHelper {
 
 
     if (email !== null) {
+
+      email = DataExtractorHelper._repairEmail(email); // search for errors and fix it if necessary
 
       const emailValidator = new EmailValidator()
 

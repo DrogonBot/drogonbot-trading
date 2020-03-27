@@ -13,7 +13,7 @@ export class PostScrapperHelper {
 
   private static _checkForBannedWords = (content: string) => {
 
-    const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador', 'preciso de um emprego', 'divulgador', 'ganhe dinheiro', "desempregado", "curso", "mim ajuda", "me ajuda", "pdf", "baixe", "orçamento", "grátis", "multinível", "divulgando", "divulgar", "trabalhe de casa", "procura-se emprego", "meu nome", "patrão", "indicar pessoas", "trabalhe em casa", "sem dinheiro", "desempregada"]
+    const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador', 'preciso de um emprego', 'divulgador', 'ganhe dinheiro', "desempregado", "curso", "mim ajuda", "me ajuda", "pdf", "baixe", "orçamento", "grátis", "multinível", "divulgando", "divulgar", "trabalhe de casa", "procura-se emprego", "meu nome", "patrão", "indicar pessoas", "trabalhe em casa", "sem dinheiro", "desempregada", "preço"]
 
     const lowerContent = content.toLowerCase();
 
