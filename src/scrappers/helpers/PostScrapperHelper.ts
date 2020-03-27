@@ -44,10 +44,10 @@ export class PostScrapperHelper {
     }
 
 
-    // if (post.content && post.content.length <= 30) {
-    //   console.log(`🤖: Skipping because post description is too short! Maybe its not a post!`)
-    //   return true
-    // }
+    if (post.content && post.content.length <= 70) {
+      console.log(`🤖: Skipping because post description is too short! Maybe its not a post!`)
+      return true
+    }
 
 
     if (!post.email && !post.phone && !post.externalUrl) {
