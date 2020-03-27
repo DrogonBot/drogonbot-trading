@@ -128,6 +128,11 @@ export class ScrapperHelper {
         const newPost = new Post({ ...post, owner: ScrapperHelper.owner._id })
         newPost.save()
         console.log(`Saving post: ${post.title}`);
+
+        // notify users that may be interested on this role, about this position
+        PostScrapperHelper.notifyUsers(post)
+
+
         await GenericHelper.sleep(1000)
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Post saved on database! => ${post.title}`)
       }

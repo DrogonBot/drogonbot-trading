@@ -20,6 +20,12 @@ export const strings = {
     ptBr: "Erro ao tentar excluir sua postagem."
   },
 
+  postNotification: {
+    eng: "A new post for {{jobRole}} was just added!",
+    ptBr: "Uma nova vaga de {{jobRole}} acabou de ser adicionada!"
+  },
+
+
   postCreationNotification: {
     eng: "{{userName}} just created a new post! Check it out!",
     ptBr: "{{userName}} acabou de criar uma nova postagem! Confira!"

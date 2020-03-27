@@ -2,7 +2,10 @@ import stringSimilarity from 'string-similarity';
 
 import { IPost, Post } from '../../resources/Post/post.model';
 import { ISector, Sector } from '../../resources/Sector/sector.model';
+import { User } from '../../resources/User/user.model';
 import { GenericHelper } from '../../utils/GenericHelper';
+import { LanguageHelper } from '../../utils/LanguageHelper';
+import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IBestMatchAndSector } from './ScrapperHelper';
 
 
@@ -161,6 +164,54 @@ export class PostScrapperHelper {
       jobRoleBestMatch: bestMatchOverall,
       sector
     }
+  }
+
+  public static notifyUsers = async (post: IPost) => {
+
+    const jobRole = post.jobRoles[0] // on this situation, the post only have 1 jobRole (was just added)
+
+    try {
+      // find users that have a particular jobRole
+      const users = await User.find({ genericPositionsOfInterest: { "$in": [jobRole] } })
+
+
+      for (const user of users) {
+
+        console.log(`🤖 Warning user ${user.email} about the post [${jobRole}] - ${post.title}`);
+
+        // then send a push notification to them, with this post
+        const owner = await User.findOne({
+          _id: post?.owner
+        })
+
+        await PushNotificationHelper.sendPush([user.pushToken], {
+          sound: "default",
+          body: LanguageHelper.getLanguageString('post', 'postNotification', {
+            jobRole
+          }),
+          toScreen: "IndividualFeed",
+          params: {
+            // @ts-ignore
+            postId: post._id,
+            ownerAvatarUrl: owner?.avatarUrl
+          }
+        })
+      }
+
+
+
+    }
+    catch (error) {
+      console.error(error);
+
+    }
+
+
+
+
+
+
+
   }
 
 

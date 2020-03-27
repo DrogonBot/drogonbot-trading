@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
+import { PostScrapperHelper } from '../../scrappers/helpers/PostScrapperHelper';
 import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
 import { ScrapperFacebook } from '../../scrappers/scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../../scrappers/scrappers/ScrapperOLX';
@@ -26,30 +27,22 @@ export interface IJobReminder {
 postRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
+
   try {
     const post = await Post.findOne({
-      _id: '5e70557c0de1c3008ec09d56'
+      _id: '5e70618023661b002af55f3e'
     })
 
-    const owner = await User.findOne({
-      _id: post?.owner
-    })
-
-    await PushNotificationHelper.sendPush(['ExponentPushToken[FTFCEhOBsU_NlUPuyoURXi]'], {
-      sound: "default",
-      body: 'This is a test notification',
-      toScreen: "IndividualFeed",
-      params: {
-        post,
-        user: owner
-      }
-    })
-
+    if (post) {
+      await PostScrapperHelper.notifyUsers(post)
+    }
   }
   catch (error) {
     console.error(error);
 
   }
+
+
 
 
 

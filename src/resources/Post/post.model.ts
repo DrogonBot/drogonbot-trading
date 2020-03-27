@@ -42,6 +42,7 @@ export enum IPostSource {
 }
 
 export interface IPost {
+
   sector: string,
   category: string,
   positionType?: PostPositionType
