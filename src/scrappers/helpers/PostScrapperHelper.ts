@@ -189,11 +189,13 @@ export class PostScrapperHelper {
           body: LanguageHelper.getLanguageString('post', 'postNotification', {
             jobRole
           }),
-          toScreen: "IndividualFeed",
-          params: {
-            // @ts-ignore
-            postId: post._id,
-            ownerAvatarUrl: owner?.avatarUrl
+          data: {
+            toScreen: "IndividualFeed",
+            params: {
+              // @ts-ignore
+              post,
+              user: owner
+            }
           }
         })
       }

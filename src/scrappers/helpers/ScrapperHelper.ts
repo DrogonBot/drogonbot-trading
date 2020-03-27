@@ -130,7 +130,7 @@ export class ScrapperHelper {
         console.log(`Saving post: ${post.title}`);
 
         // notify users that may be interested on this role, about this position
-        // PostScrapperHelper.notifyUsers(post)
+        PostScrapperHelper.notifyUsers(post)
 
 
         await GenericHelper.sleep(1000)

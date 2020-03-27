@@ -26,11 +26,9 @@ export interface IJobReminder {
 
 postRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-
-
   try {
     const post = await Post.findOne({
-      _id: '5e70618023661b002af55f3e'
+      _id: '5e7d7e75cf6a1c002b483314'
     })
 
     if (post) {

@@ -31,10 +31,6 @@ export interface IUserNotification {
   jobRoles: string[]
 }
 
-export interface ILastNotification {
-  data: Object,
-  visualized: boolean
-}
 
 export interface IUserDocument extends Document {
   name: string;
@@ -53,7 +49,7 @@ export interface IUserDocument extends Document {
   pushToken: string;
   createdAt: string;
   updatedAt: string;
-  lastNotification: ILastNotification
+  lastNotification: any
 }
 
 // methods
