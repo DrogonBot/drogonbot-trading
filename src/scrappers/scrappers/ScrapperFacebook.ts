@@ -1,4 +1,6 @@
-import puppeteer from 'puppeteer';
+import { Browser, Page } from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import { EnvType } from '../../constants/types/env.types';
 import { IPostSource } from '../../resources/Post/post.model';
@@ -7,14 +9,16 @@ import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
-
-
+puppeteer.use(StealthPlugin())
 
 
 export class ScrapperFacebook {
 
-  public static browser: puppeteer.Browser | null = null
-  public static page: puppeteer.Page | null = null
+
+
+
+  public static browser: Browser | null = null
+  public static page: Page | null = null
 
   public static clear = async () => {
     // This function clears memory by closing puppeteer open instances
@@ -49,8 +53,8 @@ export class ScrapperFacebook {
             '--disable-setuid-sandbox',
             '--disable-infobars',
             '--window-position=0,0',
-            '--ignore-certifcate-errors',
-            '--ignore-certifcate-errors-spki-list',
+            '--ignore-certificate-errors',
+            '--ignore-certificate-errors-spki-list',
             `--proxy-server=http://${ScrapperHelper.chosenProxy.ip}:${ScrapperHelper.chosenProxy.port}`,
             `'--user-agent="${ScrapperHelper.userAgent}"'`]
         }
