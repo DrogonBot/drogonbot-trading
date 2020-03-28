@@ -13,7 +13,7 @@ import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { EncryptionHelper } from '../../utils/EncryptionHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
-import { MixpanelHelper } from '../../utils/MixpanelHelper';
+import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { RouterHelper } from '../../utils/RouterHelper';
 import { TextHelper } from '../../utils/TextHelper';
 import { Log } from '../Log/log.model';
@@ -112,8 +112,7 @@ userRouter.post("/users/login", async (req, res) => {
     const user = await User.findByCredentials(preparedEmail, password);
     const token = await user.generateAuthToken();
 
-
-    MixpanelHelper.mixpanel.track('USER_LOGIN', {
+    MixpanelHelper.track(MixpanelEvent.USER_LOGIN, {
       distinct_id: user._id
     })
 
@@ -219,7 +218,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
 
       console.log("User was found, sending back current info!");
 
-      MixpanelHelper.mixpanel.track('USER_LOGIN', {
+      MixpanelHelper.track(MixpanelEvent.USER_LOGIN, {
         distinct_id: foundUser._id
       })
 
@@ -327,7 +326,7 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
 
     console.log("User was found, sending back current info!");
 
-    MixpanelHelper.mixpanel.track('USER_LOGIN', {
+    MixpanelHelper.track(MixpanelEvent.USER_LOGIN, {
       distinct_id: foundUser._id
     })
 
@@ -369,7 +368,7 @@ userRouter.post("/users/reset-password", async (req, res) => {
     });
   }
 
-  MixpanelHelper.mixpanel.track('USER_RESET_PASSWORD', {
+  MixpanelHelper.track(MixpanelEvent.USER_RESET_PASSWORD, {
     distinct_id: user._id
   })
 
@@ -414,7 +413,7 @@ userRouter.get("/users/reset-password/link", async (req, res) => {
   });
 
   if (user) {
-    MixpanelHelper.mixpanel.track('USER_RESET_PASSWORD_LINK', {
+    MixpanelHelper.track(MixpanelEvent.USER_RESET_PASSWORD_LINK, {
       distinct_id: user._id
     })
   }
@@ -579,7 +578,7 @@ userRouter.post("/users/logout", userAuthMiddleware, async (req, res) => {
   const { user } = req;
   const reqToken = req.token;
 
-  MixpanelHelper.mixpanel.track('USER_LOGOUT', {
+  MixpanelHelper.track(MixpanelEvent.USER_LOGOUT, {
     distinct_id: user._id
   })
 
@@ -784,7 +783,7 @@ userRouter.post("/users/change-password", async (req, res) => {
     user = await User.findByCredentials(preparedEmail, currentPassword);
 
     if (user) {
-      MixpanelHelper.mixpanel.track('USER_CHANGE_PASSWORD', {
+      MixpanelHelper.track(MixpanelEvent.USER_CHANGE_PASSWORD, {
         distinct_id: user._id
       })
     }

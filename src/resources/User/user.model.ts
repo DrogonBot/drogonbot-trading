@@ -7,7 +7,7 @@ import { AccountEmailManager } from '../../emails/account.email';
 import { MarketingEmailManager } from '../../emails/MarketingEmailManager';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
-import { MixpanelHelper } from '../../utils/MixpanelHelper';
+import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { TextHelper } from '../../utils/TextHelper';
 
 /*#############################################################|
@@ -176,7 +176,7 @@ userSchema.methods.registerUser = async function (req?) {
   const lastName = splittedName[splittedName.length - 1];
 
   try {
-    MixpanelHelper.mixpanel.people.set(user._id, {
+    MixpanelHelper.peopleSet(user._id, {
       $first_name: firstName,
       $last_name: lastName,
       $created: (new Date()).toISOString(),
@@ -186,10 +186,10 @@ userSchema.methods.registerUser = async function (req?) {
       IP: GenericHelper.getUserIp(req)
     })
 
-    MixpanelHelper.mixpanel.track('USER_REGISTER', {
+    MixpanelHelper.track(MixpanelEvent.USER_REGISTER, {
       distinct_id: user._id
     })
-    console.log('Mixpanel: registered user on mixpanel');
+
   }
   catch (error) {
     console.log('Mixpanel: failed to register new user');
