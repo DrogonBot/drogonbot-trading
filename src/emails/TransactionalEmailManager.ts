@@ -58,8 +58,6 @@ export class TransactionalEmailManager {
     if (globalKeys) {
       for (const globalKey of globalKeys) {
 
-        console.log(`Replacing => [${globalKey}]: ${globalTemplateVars[globalKey]}`);
-
         html = TextHelper.replaceAll(
           html,
           `[${globalKey}]`,

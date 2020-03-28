@@ -21,7 +21,7 @@ export class DatabaseCron extends TransactionalEmailManager {
 
         try {
           console.log('SUBMITTING YOUR DB BACKUP!');
-          this.sendGrid.send({
+          await this.sendGrid.send({
             to: process.env.ADMIN_EMAIL,
             from: process.env.ADMIN_EMAIL,
             subject: `Database Backup - ${moment().format()}`,
@@ -36,6 +36,10 @@ export class DatabaseCron extends TransactionalEmailManager {
               }
             ]
           });
+
+          await fs.unlink(backupsDirectory + '/db-dump.zip', (err) => {
+            console.log(err);
+          })
         }
         catch (error) {
           console.error(error);
