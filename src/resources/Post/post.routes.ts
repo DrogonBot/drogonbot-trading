@@ -26,9 +26,13 @@ export interface IJobReminder {
 
 postRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
+  const { jobId } = req.query;
+
+  console.log(`Submitting push regarding jobId=${jobId}`);
+
   try {
     const post = await Post.findOne({
-      _id: '5e7d7e75cf6a1c002b483314'
+      _id: jobId
     })
 
     if (post) {
@@ -40,14 +44,9 @@ postRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserType(Use
 
   }
 
-
-
-
-
   return res.status(200).send({
     status: 'push submitted'
   })
-
 
 })
 
