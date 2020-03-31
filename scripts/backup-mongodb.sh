@@ -1,7 +1,8 @@
 #!/bin/bash
 
 DB_CONTAINER="node-database"
-PROJECT_FOLDER="/home/jonit/empregourgente-backend"
+# PROJECT_FOLDER="/home/jonit/empregourgente-backend"
+PROJECT_FOLDER="/home/jonit/Personal_projects/emprego-urgente/empregourgente-backend"
 PROD_ENV="${PROJECT_FOLDER}/.env"
 
 echo "Loading production .env from ${PROD_ENV}"
@@ -20,3 +21,5 @@ docker cp $DB_CONTAINER:/db-dump ${PROJECT_FOLDER}/backups/db-dump
 zip -r ${PROJECT_FOLDER}/backups/db-dump.zip ${PROJECT_FOLDER}/backups/db-dump
 
 rm -rf ${PROJECT_FOLDER}/backups/db-dump
+
+chmod 755 ${PROJECT_FOLDER}/backups/db-dump.zip
