@@ -11,16 +11,17 @@ export class DatabaseCron extends TransactionalEmailManager {
 
     console.log("🕒  DatabaseCron: Initializing... 🕒");
 
-    cron.schedule("0 10 * * *", async () => {
+    cron.schedule("0 8 * * *", async () => {
 
-      console.log('Verifying database backup for submission...');
+
+      console.log('🤖 Verifying database backup for submission...');
 
 
       if (fs.existsSync(backupsDirectory + '/db-dump.zip')) {
         const attachment = fs.readFileSync(backupsDirectory + '/db-dump.zip').toString("base64");
 
         try {
-          console.log('SUBMITTING YOUR DB BACKUP!');
+          console.log('🤖 SUBMITTING YOUR DB BACKUP!');
           await this.sendGrid.send({
             to: process.env.ADMIN_EMAIL,
             from: process.env.ADMIN_EMAIL,
@@ -43,7 +44,7 @@ export class DatabaseCron extends TransactionalEmailManager {
 
         }
       } else {
-        console.log('Backup file does not exists on /backups. Aborting!');
+        console.log('🤖 Backup file does not exists on /backups. Aborting!');
       }
 
 

@@ -65,10 +65,15 @@ MixpanelHelper.init();
 // MainCron.sampleCron();
 
 switch (process.env.ENV) {
-  case EnvType.Production: // Let's turn on our cron job in production only!
-    JobsCron.submitApplications()
+
+  case EnvType.Development:
     const dbCron = new DatabaseCron();
     dbCron.backupAndExport()
+    break;
+
+  case EnvType.Production: // Let's turn on our cron job in production only!
+    JobsCron.submitApplications()
+
     JobsCron.positionsOfInterestPush();
     RetentionCron.inactiveUserReminder()
 
