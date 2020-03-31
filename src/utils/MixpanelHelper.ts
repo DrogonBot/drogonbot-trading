@@ -32,7 +32,7 @@ export class MixpanelHelper {
 
   public static peopleSet(userId: string, customData: object) {
     if (process.env.ENV === EnvType.Production) {
-      console.log(`📈 Mixpanel: registered person ${event}`);
+      console.log(`📈 Mixpanel: registering person...`);
       MixpanelHelper.mixpanel.people.set(userId, customData)
     } else {
       console.log(`📈 Mixpanel: Skipping registering person, since we are on development mode`);
