@@ -11,7 +11,7 @@ export class DatabaseCron extends TransactionalEmailManager {
 
     console.log("🕒  DatabaseCron: Initializing... 🕒");
 
-    cron.schedule("0 9 * * *", async () => {
+    cron.schedule("0 10 * * *", async () => {
 
       console.log('Verifying database backup for submission...');
 
@@ -37,9 +37,6 @@ export class DatabaseCron extends TransactionalEmailManager {
             ]
           });
 
-          await fs.unlink(backupsDirectory + '/db-dump.zip', (err) => {
-            console.log(err);
-          })
         }
         catch (error) {
           console.error(error);

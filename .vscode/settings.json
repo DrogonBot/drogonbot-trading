@@ -1,4 +1,5 @@
 {
   "workbench.colorTheme": "Shades of Purple",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.minimap.size": "fit"
 }

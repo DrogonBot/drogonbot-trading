@@ -4,6 +4,8 @@ DB_CONTAINER="node-database"
 PROJECT_FOLDER="/home/jonit/empregourgente-backend"
 PROD_ENV="${PROJECT_FOLDER}/.env"
 
+echo "Loading production .env from ${PROD_ENV}"
+
 USERNAME=$(awk -F'=' '/^MONGO_INITDB_ROOT_USERNAME/ { print $2}'  ${PROD_ENV})
 PASSWORD=$(awk -F'=' '/^MONGO_INITDB_ROOT_PASSWORD/ { print $2}'  ${PROD_ENV})
  
