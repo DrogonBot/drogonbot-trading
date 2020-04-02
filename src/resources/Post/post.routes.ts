@@ -180,7 +180,7 @@ postRouter.get('/admin/test', [userAuthMiddleware, UserMiddleware.restrictUserTy
   })
 })
 
-postRouter.get('/post', userAuthMiddleware, async (req, res) => {
+postRouter.get('/post', async (req, res) => {
 
   const { id, keyword, limit, page } = req.query;
 

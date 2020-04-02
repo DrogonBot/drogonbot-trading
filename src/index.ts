@@ -67,8 +67,7 @@ MixpanelHelper.init();
 switch (process.env.ENV) {
 
   case EnvType.Development:
-    const dbCron = new DatabaseCron();
-    dbCron.backupAndExport()
+    // Development only cron jobs
     break;
 
   case EnvType.Production: // Let's turn on our cron job in production only!
@@ -76,6 +75,9 @@ switch (process.env.ENV) {
 
     JobsCron.positionsOfInterestPush();
     RetentionCron.inactiveUserReminder()
+
+    const dbCron = new DatabaseCron();
+    dbCron.backupAndExport()
 
 
     // job crawlers
