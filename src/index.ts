@@ -79,7 +79,6 @@ switch (process.env.ENV) {
     const dbCron = new DatabaseCron();
     dbCron.backupAndExport()
 
-
     // job crawlers
 
     JobsCron.jobCrawlersCleaners();
