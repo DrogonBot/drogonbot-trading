@@ -13,4 +13,4 @@ environment/docker-compose.prod.yml
 tmp
 
 
-
+scripts/sendgrid-data.json
