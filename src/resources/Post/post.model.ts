@@ -42,7 +42,7 @@ export enum IPostSource {
 }
 
 export interface IPost {
-
+  slug: string;
   sector: string,
   category: string,
   positionType?: PostPositionType
@@ -90,6 +90,11 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+  },
+  slug: {
+    type: String,
+    required: true,
+    trim: true
   },
   content: {
     type: String,

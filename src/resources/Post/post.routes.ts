@@ -1,18 +1,11 @@
 import { Router } from 'express';
 import _ from 'lodash';
+import getSlug from 'speakingurl';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { UserMiddleware } from '../../middlewares/user.middleware';
-import { PostScrapperHelper } from '../../scrappers/helpers/PostScrapperHelper';
-import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
-import { ScrapperFacebook } from '../../scrappers/scrappers/ScrapperFacebook';
-import { ScrapperOLX } from '../../scrappers/scrappers/ScrapperOLX';
 import { LanguageHelper } from '../../utils/LanguageHelper';
-import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
-import { Log } from '../Log/log.model';
 import { Resume } from '../Resume/resume.model';
-import { User, UserType } from '../User/user.model';
 import { IPost, IPostApplication, IPostApplicationStatus, Post } from './post.model';
 
 // @ts-ignore
@@ -23,168 +16,60 @@ export interface IJobReminder {
   jobs: IPost[]
 }
 
-
-postRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  const { jobId } = req.query;
-
-  console.log(`Submitting push regarding jobId=${jobId}`);
-
-  try {
-    const post = await Post.findOne({
-      _id: jobId
-    })
-
-    if (post) {
-      await PostScrapperHelper.notifyUsers(post)
-    }
-  }
-  catch (error) {
-    console.error(error);
-
-  }
-
-  return res.status(200).send({
-    status: 'push submitted'
-  })
-
-})
-
-
-postRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  await ScrapperHelper.init('OLX => ES', {
-    crawlLinksFunction: ScrapperOLX.crawlLinks,
-    crawlPageDataFunction: ScrapperOLX.crawlPageData
-  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego", {
-    country: "Brazil",
-    stateCode: "ES",
-
-  })
-
-  await ScrapperHelper.init('Facebook => Empregos ES', {
-    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-  }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/', {
-    country: "Brazil",
-    stateCode: "ES",
-    city: "Vitória",
-  })
-
-
-  return res.status(200).send({
-    'status': 'ok'
-  })
-
-});
-
-postRouter.get('/admin/test', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  try {
-    // loop through all users with generic positions of interest
-    const users = await User.find({
-      "genericPositionsOfInterest": { "$gt": 0 }
-    })
-    for (const user of users) {
-
-      // for each user, verify if there's a potential position of interest that he wasnt notified about yet
-
-      let jobsReminders: IJobReminder[] = []
-
-      for (const genericPositionOfInterest of user.genericPositionsOfInterest) {
-
-        const positionsFound = await Post.find({ jobRoles: { "$in": [genericPositionOfInterest] } })
-
-        console.log(`Found some jobs for ${user.name}...`);
-
-
-        // loop through positions found
-
-        for (const position of positionsFound) {
-          // check the user's log
-          const jobNotification = await Log.findOne({
-            emitter: user._id,
-            action: 'USER_JOB_NOTIFICATION',
-            target: position._id
-          })
-
-
-          // if we haven't warned the user about this position...
-          if (!jobNotification) {
-            // add it to our output report
-            jobsReminders = [
-              ...jobsReminders,
-              {
-                userPush: user.pushToken,
-                jobs: positionsFound
-              }
-            ]
-
-            // and then add notification to our logs
-            const newNotification = new Log({
-              emitter: user._id,
-              action: 'USER_JOB_NOTIFICATION',
-              target: position._id
-            })
-            await newNotification.save()
-          } else {
-            console.log(`Skipping job notification ${jobNotification._id}`);
-          }
-
-          // now, let's submit the push notifications regarding these positions
-
-          for (const jobReminder of jobsReminders) {
-
-            PushNotificationHelper.sendPush([jobReminder.userPush], {
-              sound: "default",
-              body: LanguageHelper.getLanguageString('user', 'cronInactiveUserReminderText', {
-                firstName: user.givenName || user.name
-              }),
-              data: {
-                jobs: jobReminder.jobs
-              }
-            })
-
-
-
-          }
-
-
-
-
-        }
-
-      }
-    }
-
-    return res.status(200).send(users)
-
-
-
-
-    // then check also for resumes
-
-    // make sure that job posts do not repeat
-  }
-  catch (error) {
-    console.error(error);
-
-  }
-
-
-
-
-
-
-  return res.status(200).send({
-    status: 'ok'
-  })
-})
-
 postRouter.get('/post', async (req, res) => {
 
-  const { id, keyword, limit, page } = req.query;
+  const { id, keyword, limit, page, slug } = req.query;
 
 
+  // Fetching one post only ========================================
+
+  if (id || slug) {
+
+    console.log('Fecthing post by id or slug');
+    try {
+
+
+      const prePostQuery = {
+        _id: req.query.id,
+        slug: req.query.slug
+      }
+
+      // remove undefined fields from query
+      const postQuery = _.pickBy(prePostQuery, _.identity);
+
+      console.log(postQuery);
+
+      const post = await Post.findOne({
+        $or: [postQuery]
+      })
+
+      if (post) {
+        return res.status(200).send(post)
+      } else {
+        return res.status(401).send({
+          status: 'error',
+          message: LanguageHelper.getLanguageString('post', 'postNotFound')
+        })
+      }
+
+
+
+
+    }
+    catch (error) {
+      console.error(error);
+      return res.status(401).send({
+        status: 'error',
+        message: LanguageHelper.getLanguageString('post', 'postFetchError')
+      })
+    }
+
+
+
+  }
+
+
+  // Fetching multiple posts ========================================
 
   // prepare our query
 
@@ -403,11 +288,13 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
   // Post creation ========================================
 
+  const postSlug = getSlug(req.body.title)
+
   try {
 
     const newPost = new Post({
       ...req.body,
-
+      slug: postSlug,
       owner: user._id,
       benefits: req.body.benefits,
       images: []

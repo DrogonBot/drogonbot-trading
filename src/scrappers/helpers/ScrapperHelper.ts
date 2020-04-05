@@ -1,3 +1,4 @@
+import getSlug from 'speakingurl';
 import UserAgent from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
@@ -125,7 +126,9 @@ export class ScrapperHelper {
           continue
         }
 
-        const newPost = new Post({ ...post, owner: ScrapperHelper.owner._id })
+        const postSlug = getSlug(post.title)
+
+        const newPost = new Post({ ...post, slug: postSlug, owner: ScrapperHelper.owner._id })
         newPost.save()
         console.log(`Saving post: ${post.title}`);
 
@@ -161,7 +164,9 @@ export class ScrapperHelper {
 
 
       if (ScrapperHelper.owner) {
-        const newPost = new Post({ ...postData, owner: ScrapperHelper.owner._id })
+
+        const postSlug = getSlug(postData.title)
+        const newPost = new Post({ ...postData, slug: postSlug, owner: ScrapperHelper.owner._id })
 
         newPost.save()
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')

@@ -7,6 +7,10 @@ export const strings = {
     eng: 'Post not found.',
     ptBr: "Post não encontrado."
   },
+  postFetchError: {
+    eng: 'Error while fetching your post.',
+    ptBr: "Erro ao carregar seu post."
+  },
   postLikeError: {
     eng: 'Error while trying to perform a like action in your post.',
     ptBr: "Erro ao tentar dar like em sua postagem.",

@@ -16,6 +16,7 @@ import { GlobalMiddleware } from './middlewares/global.middleware';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
 import { countryRouter } from './resources/Country/country.routes';
 import { CountrySeeder } from './resources/Country/country.seed';
+import { operationRouter } from './resources/Operation/operation.routes';
 import { placeRouter } from './resources/Place/place.routes';
 import { PlaceSeeder } from './resources/Place/place.seeder';
 import { postRouter } from './resources/Post/post.routes';
@@ -143,6 +144,7 @@ app.use(placeRouter)
 app.use(sectorRouter)
 app.use(resumeRouter)
 app.use(countryRouter)
+app.use(operationRouter)
 
 server.listen(process.env.NODE_API_PORT, async () => {
 
