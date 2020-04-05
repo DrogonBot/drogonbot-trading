@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import getSlug from 'speakingurl';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
@@ -8,6 +7,7 @@ import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHel
 import { ScrapperFacebook } from '../../scrappers/scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../../scrappers/scrappers/ScrapperOLX';
 import { LanguageHelper } from '../../utils/LanguageHelper';
+import { PostHelper } from '../../utils/PostHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
@@ -29,8 +29,7 @@ operationRouter.get('/slug', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 
   for (const post of posts) {
 
-
-    post.slug = getSlug(post.title)
+    post.slug = PostHelper.generateTitleSlug(post.title)
     await post.save();
 
   }

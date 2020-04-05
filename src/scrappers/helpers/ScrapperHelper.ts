@@ -1,4 +1,3 @@
-import getSlug from 'speakingurl';
 import UserAgent from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
@@ -6,6 +5,7 @@ import { IPost, Post } from '../../resources/Post/post.model';
 import { User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
+import { PostHelper } from '../../utils/PostHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { IScrapperLink, ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ConnectionHelper } from './ConnectionHelper';
@@ -126,9 +126,9 @@ export class ScrapperHelper {
           continue
         }
 
-        const postSlug = getSlug(post.title)
 
-        const newPost = new Post({ ...post, slug: postSlug, owner: ScrapperHelper.owner._id })
+
+        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: ScrapperHelper.owner._id })
         newPost.save()
         console.log(`Saving post: ${post.title}`);
 
@@ -165,8 +165,8 @@ export class ScrapperHelper {
 
       if (ScrapperHelper.owner) {
 
-        const postSlug = getSlug(postData.title)
-        const newPost = new Post({ ...postData, slug: postSlug, owner: ScrapperHelper.owner._id })
+
+        const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: ScrapperHelper.owner._id })
 
         newPost.save()
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')

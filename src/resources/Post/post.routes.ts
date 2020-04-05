@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import _ from 'lodash';
-import getSlug from 'speakingurl';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
+import { PostHelper } from '../../utils/PostHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { Resume } from '../Resume/resume.model';
 import { IPost, IPostApplication, IPostApplicationStatus, Post } from './post.model';
@@ -37,7 +37,7 @@ postRouter.get('/post', async (req, res) => {
       // remove undefined fields from query
       const postQuery = _.pickBy(prePostQuery, _.identity);
 
-      console.log(postQuery);
+
 
       const post = await Post.findOne({
         $or: [postQuery]
@@ -288,13 +288,11 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
   // Post creation ========================================
 
-  const postSlug = getSlug(req.body.title)
-
   try {
 
     const newPost = new Post({
       ...req.body,
-      slug: postSlug,
+      slug: PostHelper.generateTitleSlug(req.body.title),
       owner: user._id,
       benefits: req.body.benefits,
       images: []
