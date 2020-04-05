@@ -9,7 +9,6 @@ import path from 'path';
 import socketio from 'socket.io';
 
 import { EnvType } from './constants/types/env.types';
-import { DatabaseCron } from './cron_jobs/database.cron';
 import { JobsCron } from './cron_jobs/jobs.cron';
 import { RetentionCron } from './cron_jobs/retention.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
@@ -77,16 +76,10 @@ switch (process.env.ENV) {
     JobsCron.positionsOfInterestPush();
     RetentionCron.inactiveUserReminder()
 
-    const dbCron = new DatabaseCron();
-    dbCron.backupAndExport()
-
     // job crawlers
 
     JobsCron.jobCrawlersCleaners();
     JobsCron.initializeJobCrawlers();
-
-
-
 
     break;
 }
