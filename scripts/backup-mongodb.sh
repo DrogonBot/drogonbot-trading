@@ -1,7 +1,11 @@
 #!/bin/bash
 
+
+ROOT_FOLDER=$(cd .. && pwd)
+ 
+echo $ROOT_FOLDER
 DB_CONTAINER="node-database"
-PROJECT_FOLDER=$(awk -F'=' '/^PROJECT_FOLDER/ { print $2}'  ../.env)
+PROJECT_FOLDER=$(awk -F'=' '/^PROJECT_FOLDER/ { print $2}'  ${ROOT_FOLDER}/.env)
 PROD_ENV="${PROJECT_FOLDER}/.env"
 BACKUPS_FOLDER="${PROJECT_FOLDER}/backups"
 BACKUP_FILE="${BACKUPS_FOLDER}/db-dump.zip"
