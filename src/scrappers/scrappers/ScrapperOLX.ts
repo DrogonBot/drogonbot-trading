@@ -17,8 +17,7 @@ export class ScrapperOLX {
 
   public static crawlLinks = async (externalSource: string): Promise<IScrapperLink[]> => {
 
-    console.log(`🤖: Fetching crawling links for ${externalSource}`);
-
+    console.log(`🤖: Crawling links for ${externalSource}`);
 
     const html = await ConnectionHelper.requestHtml(
       externalSource,
@@ -27,7 +26,7 @@ export class ScrapperOLX {
 
     const $ = cheerio.load(html);
 
-    const postList = $('.OLXad-list-link ')
+    const postList = $('a[data-lurker-detail="list_id"]')
 
     let links: string[] = []
 
@@ -38,7 +37,7 @@ export class ScrapperOLX {
       }
     })
 
-    console.log('🤖: Links scrawled successfully!');
+    console.log(`🤖: ${links.length} OLX Links crawled successfully!`);
     console.log(links);
 
     return links.map((link) => {

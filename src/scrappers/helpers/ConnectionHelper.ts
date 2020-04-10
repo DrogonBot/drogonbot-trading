@@ -85,7 +85,7 @@ export class ConnectionHelper {
 
       proxyList = [...proxyList, { ip, port }];
     });
-    console.log('🤖: Done, proxy list loaded!');
+    console.log(`🤖: Done, proxy list loaded! => ${proxyList.length} proxies found!`);
     return proxyList;
   };
 

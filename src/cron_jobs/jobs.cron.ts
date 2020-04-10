@@ -395,6 +395,14 @@ export class JobsCron {
         city: "Vitória",
       })
 
+      await ScrapperHelper.init('Facebook => Empregos e Vagas Espirito Santo', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/958646364179986/', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória",
+      })
+
 
 
 
