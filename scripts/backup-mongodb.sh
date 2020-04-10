@@ -2,8 +2,6 @@
 
 
 ROOT_FOLDER=$(cd .. && pwd)
- 
-echo $ROOT_FOLDER
 DB_CONTAINER="node-database"
 PROJECT_FOLDER=$(awk -F'=' '/^PROJECT_FOLDER/ { print $2}'  ${ROOT_FOLDER}/.env)
 PROD_ENV="${PROJECT_FOLDER}/.env"

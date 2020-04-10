@@ -13,7 +13,7 @@ export class PostScrapperHelper {
 
   private static _checkForBannedWords = (content: string) => {
 
-    const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador', 'preciso de um emprego', 'divulgador', 'ganhe dinheiro', "desempregado", "curso de", "mim ajuda", "me ajuda", "pdf", "baixe", "orçamento", "grátis", "multinível", "divulgando", "divulgar", "trabalhe de casa", "procura-se emprego", "meu nome", "patrão", "indicar pessoas", "trabalhe em casa", "sem dinheiro", "desempregada", "preço", "sem sair de casa"]
+    const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador', 'preciso de um emprego', 'divulgador', 'ganhe dinheiro', "desempregado", "curso de", "mim ajuda", "me ajuda", "pdf", "baixe", "orçamento", "grátis", "multinível", "divulgando", "divulgar", "trabalhe de casa", "procura-se emprego", "meu nome", "patrão", "indicar pessoas", "trabalhe em casa", "sem dinheiro", "desempregada", "preço", "sem sair de casa", "liberdade financeira", "reais por dia", "grupo de emprego", "bem-vindo", "boas-vindas", "mensalidade de", "procuro trabalho", "preciso muito de trabalhar"]
 
     const lowerContent = content.toLowerCase();
 
@@ -44,10 +44,10 @@ export class PostScrapperHelper {
     }
 
 
-    if (post.content && post.content.length <= 70) {
-      console.log(`🤖: Skipping because post description is too short! Maybe its not a post!`)
-      return true
-    }
+    // if (post.content && post.content.length <= 70) {
+    //   console.log(`🤖: Skipping because post description is too short (${post.content.length} characters only)! Maybe its not a post!`)
+    //   return true
+    // }
 
 
     if (!post.email && !post.phone && !post.externalUrl) {

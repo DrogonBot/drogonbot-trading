@@ -73,7 +73,6 @@ switch (process.env.ENV) {
   case EnvType.Production: // Let's turn on our cron job in production only!
     JobsCron.submitApplications()
 
-    JobsCron.positionsOfInterestPush();
     RetentionCron.inactiveUserReminder()
 
     // job crawlers

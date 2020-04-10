@@ -96,7 +96,7 @@ export class ScrapperHelper {
     await ScrapperFacebook.clear()
 
     if (process.env.ENV === EnvType.Production) {
-      await GenericHelper.sleep(1000 * 60 * Math.floor(Math.random() * 5))
+      await GenericHelper.sleep(1000 * 60 * Math.floor(Math.random() * 3))
     }
   };
 

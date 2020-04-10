@@ -25,7 +25,7 @@ postRouter.get('/post', async (req, res) => {
 
   if (id || slug) {
 
-    console.log('Fecthing post by id or slug');
+  
     try {
 
 
