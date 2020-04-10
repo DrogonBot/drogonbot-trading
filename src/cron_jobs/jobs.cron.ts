@@ -136,11 +136,47 @@ export class JobsCron {
       await ScrapperHelper.init('OLX => ES', {
         crawlLinksFunction: ScrapperOLX.crawlLinks,
         crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego", {
+      }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego?sf=1", {
         country: "Brazil",
         stateCode: "ES",
-
       })
+
+      await ScrapperHelper.init('OLX => Vitoria', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/vitoria/vagas-de-emprego?sf=1", {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória"
+      })
+
+      await ScrapperHelper.init('OLX => Vila Velha', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/vila-velha/vagas-de-emprego?sf=1", {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vila Velha"
+      })
+
+      await ScrapperHelper.init('OLX => Serra', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/serra/vagas-de-emprego?sf=1", {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Serra"
+      })
+
+      await ScrapperHelper.init('OLX => Cariacica', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/cariacica/vagas-de-emprego?f=p&sf=1", {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Cariacica"
+      })
+
 
 
       await ScrapperHelper.init('OLX => SP/CAPITAL', {
