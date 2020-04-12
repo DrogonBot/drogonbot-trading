@@ -1,8 +1,8 @@
 #!/bin/bash
 
 
-ROOT_FOLDER=$(cd .. && pwd)
-DB_CONTAINER="node-database"
+ROOT_FOLDER="/home/jonit/empregourgente-backend" # Production path
+DB_CONTAINER="app-database"
 PROJECT_FOLDER=$(awk -F'=' '/^PROJECT_FOLDER/ { print $2}'  ${ROOT_FOLDER}/.env)
 PROD_ENV="${PROJECT_FOLDER}/.env"
 BACKUPS_FOLDER="${PROJECT_FOLDER}/backups"

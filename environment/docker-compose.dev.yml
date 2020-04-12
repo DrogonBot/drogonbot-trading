@@ -4,8 +4,8 @@
 
 version: "3"
 services:
-  node-api:
-    container_name: node-api
+  app-api:
+    container_name: app-api
     restart: always
     build: .
     ports:
@@ -14,9 +14,9 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
-      - "node-database"
+      - "app-database"
     links:
-      - node-database
+      - app-database
     environment:
       VIRTUAL_HOST: api.empregourgente.com
       LETSENCRYPT_HOST: api.empregourgente.com
@@ -25,8 +25,8 @@ services:
       - db-network
       - default
 
-  node-database:
-    container_name: node-database
+  app-database:
+    container_name: app-database
     image: mongo
     ports: # these ports are commented out on production, so we don't have external connection in our db
       - "$MONGO_PORT:$MONGO_PORT"
@@ -49,9 +49,9 @@ services:
     volumes:
       - ./admin:/usr/src/app
     depends_on:
-      - "node-database"
+      - "app-database"
     links:
-      - node-database
+      - app-database
     environment:
       VIRTUAL_HOST: admin.empregourgente.com
       LETSENCRYPT_HOST: admin.empregourgente.com
@@ -61,9 +61,9 @@ services:
     container_name: node-admin-database
     image: "mrvautin/adminmongo"
     links:
-      - "node-database"
+      - "app-database"
     depends_on:
-      - "node-database"
+      - "app-database"
     environment:
       VIRTUAL_HOST: admin-mongo.empregourgente.com
       LETSENCRYPT_HOST: admin-mongo.empregourgente.com
