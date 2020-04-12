@@ -1,9 +1,8 @@
-# NodeJS + Puppeteer image 
-FROM buildkite/puppeteer 
+FROM node:10.16.0-alpine
 
-# Where our app will live in the container
-WORKDIR /usr/src/app 
+RUN mkdir -p /usr/src/app
 
+WORKDIR /usr/src/app
 
 # Move package.json and package.lock.json into our container root path (./). It will be used to install all of them later, with npm install
 COPY package*.json ./
@@ -14,8 +13,10 @@ RUN npm install
 # Copy our current root to the docker root
 COPY . .
 
-# Expose port 3000, so we can access our server.  
-EXPOSE 3000
+# Building the app
+RUN npm run build
 
-# This will run our npm run dev command under package.json
-CMD ["npm","run","dev"] 
+EXPOSE 3003
+
+CMD [ "npm", "start" ]
+

@@ -2,3 +2,4 @@ node_modules
 .next
 build
 ./src/constants/Env.constant.ts
+Dockerfile
