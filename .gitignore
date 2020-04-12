@@ -11,6 +11,12 @@ docker-compose.yml
 environment/prod.env
 environment/docker-compose.prod.yml
 tmp
-
-
 scripts/sendgrid-data.json
+
+# Web container
+
+./web/build
+./web/node_modules
+./web/src/constants/Env.constant.ts
+./web/.next
+./web/Dockerfile
