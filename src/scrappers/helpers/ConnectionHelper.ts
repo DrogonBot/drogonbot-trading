@@ -119,7 +119,7 @@ export class ConnectionHelper {
         // Close our browser agents to avoid memory leaks
         await ScrapperFacebook.clear();
 
-        await GenericHelper.sleep(3000)
+        await GenericHelper.sleep(ScrapperHelper.failedRequestIntervalMs)
       }
     }
 

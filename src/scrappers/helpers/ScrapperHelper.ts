@@ -38,6 +38,9 @@ export class ScrapperHelper {
   public static chosenProxy: IProxyItem;
   public static userAgent: string;
   public static owner;
+  public static failedRequestIntervalMs: number = 10000;
+  public static postLinkScrappingIntervalMs: number = 10000;
+  public static scrapperHelperFinishIntervalMs: number = 1000 * 60 * Math.floor(Math.random() * 5)
 
 
   public static init = async (name, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object) => {
@@ -70,12 +73,9 @@ export class ScrapperHelper {
           const links = ScrapperOLX.postLinks.filter((link) => !link.scrapped) // make sure we only scrap unscrapped items
 
           for (const linkItem of links) {
-            await GenericHelper.sleep(10000)
+            await GenericHelper.sleep(ScrapperHelper.postLinkScrappingIntervalMs)
             await ScrapperHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride)
-
           }
-
-
         }
 
         break;
@@ -96,7 +96,7 @@ export class ScrapperHelper {
     await ScrapperFacebook.clear()
 
     if (process.env.ENV === EnvType.Production) {
-      await GenericHelper.sleep(1000 * 60 * Math.floor(Math.random() * 3))
+      await GenericHelper.sleep(ScrapperHelper.scrapperHelperFinishIntervalMs)
     }
   };
 

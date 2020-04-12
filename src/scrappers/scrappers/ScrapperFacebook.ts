@@ -11,22 +11,25 @@ import { ScrapperHelper } from '../helpers/ScrapperHelper';
 
 puppeteer.use(StealthPlugin())
 
-
 export class ScrapperFacebook {
-
-
-
 
   public static browser: Browser | null = null
   public static page: Page | null = null
 
   public static clear = async () => {
-    // This function clears memory by closing puppeteer open instances
+    try {
+      // This function clears memory by closing puppeteer open instances
+      if (ScrapperFacebook.browser !== null) {
+        console.log(`🤖: Puppeteer: Closing opened browser`);
+        await ScrapperFacebook.browser.close()
+        ScrapperFacebook.browser = null
+      }
 
-    if (ScrapperFacebook.browser !== null) {
-      console.log(`🤖: Puppeteer: Closing opened browser`);
-      await ScrapperFacebook.browser.close()
-      ScrapperFacebook.browser = null
+
+    }
+    catch (error) {
+      console.log('Failed to close scrapper browser!');
+      console.error(error);
     }
   }
 
@@ -41,7 +44,10 @@ export class ScrapperFacebook {
         console.log(`🤖: Loading Development config - NOT USING PROXY!`);
         options = {
           headless: true,
-          args: ['--no-sandbox']
+          args: ['--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--no-zygote',
+          ]
         }
         break;
       case EnvType.Production:
@@ -51,6 +57,7 @@ export class ScrapperFacebook {
           headless: true,
           args: ['--no-sandbox',
             '--disable-setuid-sandbox',
+            '--no-zygote',
             '--disable-infobars',
             '--window-position=0,0',
             '--ignore-certificate-errors',
