@@ -18,5 +18,4 @@ scripts/sendgrid-data.json
 web/build
 web/node_modules
 web/src/constants/Env.constant.ts
-web/.next
 web/Dockerfile
