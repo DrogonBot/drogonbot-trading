@@ -63,6 +63,16 @@ if test -f "./environment/prod.env"; then
   
 fi
 
+# Setup Next.js
+
+if test -f "./web/environment/Dockerfile.prod"; then
+  printColor "Preparing Next.JS (front-end web) production Dockerfile"
+  sudo cp ./web/environment/Dockerfile.prod ./web/Dockerfile
+  else 
+    echo "You must have a ./web/environment/Dockerfile.prod to proceed!"
+    exit
+fi
+
 
 
 printColor "Installing some system necessary packages"

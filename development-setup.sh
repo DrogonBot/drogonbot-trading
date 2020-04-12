@@ -42,6 +42,18 @@ if test -f "./environment/dev.env"; then
     exit
   
 fi
+
+# Setup Next.js
+
+if test -f "./web/environment/Dockerfile.dev"; then
+  printColor "Preparing Next.JS (front-end web) development Dockerfile"
+  sudo cp ./web/environment/Dockerfile.dev ./web/Dockerfile
+  else 
+    echo "You must have a ./web/environment/Dockerfile.dev to proceed!"
+    exit
+fi
+
+
  
 printColor "Creating swap file (needed so our docker containers can run smoothly)"
 printColor "Reference: https://linuxize.com/post/create-a-linux-swap-file/"
