@@ -57,20 +57,42 @@ services:
       LETSENCRYPT_HOST: admin.empregourgente.com
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
 
-  app-admin-database:
-    container_name: app-admin-database
-    image: "mrvautin/adminmongo"
-    links:
-      - "app-database"
+  # app-admin-database:
+  #   container_name: app-admin-database
+  #   image: "mrvautin/adminmongo"
+  #   links:
+  #     - "app-database"
+  #   depends_on:
+  #     - "app-database"
+  #   environment:
+  #     VIRTUAL_HOST: admin-mongo.empregourgente.com
+  #     LETSENCRYPT_HOST: admin-mongo.empregourgente.com
+  #     LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
+  #     HOST: 0.0.0.0
+  #   ports:
+  #     - "$MONGO_ADMIN_PORT:$MONGO_ADMIN_PORT"
+
+  app-web:
+    container_name: app-web
+    restart: always
+    build:
+      context: ./app-web
+      dockerfile: Dockerfile
+    ports:
+      - "$WEB_PORT:$WEB_PORT"
+    volumes:
+      - "./app-web:/usr/src/app"
+      - "/usr/src/app/node_modules"
     depends_on:
+      - "app-api"
       - "app-database"
     environment:
-      VIRTUAL_HOST: admin-mongo.empregourgente.com
-      LETSENCRYPT_HOST: admin-mongo.empregourgente.com
+      ENV: ${ENV}
+      VIRTUAL_HOST: empregourgente.com
+      LETSENCRYPT_HOST: empregourgente.com
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
-      HOST: 0.0.0.0
-    ports:
-      - "$MONGO_ADMIN_PORT:$MONGO_ADMIN_PORT"
+    networks:
+      - db-network
 
 networks:
   default:
