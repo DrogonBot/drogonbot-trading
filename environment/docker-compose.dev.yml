@@ -39,8 +39,8 @@ services:
     networks:
       - db-network
 
-  node-admin:
-    container_name: node-admin
+  app-admin:
+    container_name: app-admin
     build:
       context: ./admin
       dockerfile: Dockerfile
@@ -57,8 +57,8 @@ services:
       LETSENCRYPT_HOST: admin.empregourgente.com
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
 
-  node-admin-database:
-    container_name: node-admin-database
+  app-admin-database:
+    container_name: app-admin-database
     image: "mrvautin/adminmongo"
     links:
       - "app-database"
