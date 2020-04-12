@@ -19,3 +19,4 @@ web/build
 web/node_modules
 web/src/constants/Env.constant.ts
 web/Dockerfile
+web/.next
