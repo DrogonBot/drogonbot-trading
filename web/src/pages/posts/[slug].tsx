@@ -261,7 +261,7 @@ const IndividualPage = ({ post, provinces }: IProps) => {
               target="_blank"
             >
               <Button variant="outlined" className="btnWhatsapp">
-                WHATSAPP
+                WHATSAPP TESTE
               </Button>
             </a>
 
