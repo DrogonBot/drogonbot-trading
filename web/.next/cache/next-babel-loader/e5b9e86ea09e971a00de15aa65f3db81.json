@@ -1,1 +1,0 @@
-{"ast":null,"code":"export var typography = {\n  smallTextSize: 12,\n  mediumTextSize: 16,\n  largeTextSize: 21,\n  ultraLargeTextSize: 28\n};","map":null,"metadata":{},"sourceType":"module"}

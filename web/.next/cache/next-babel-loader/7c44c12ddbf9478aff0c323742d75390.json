@@ -1,1 +1,0 @@
-{"ast":null,"code":"export const strings = {\n  searchButton: {\n    eng: \"Search\",\n    ptBr: \"Buscar\"\n  }\n};","map":null,"metadata":{},"sourceType":"module"}
