@@ -1,0 +1,1 @@
+{"ast":null,"code":"export let RequestTypes;\n\n(function (RequestTypes) {\n  RequestTypes[\"POST\"] = \"post\";\n  RequestTypes[\"GET\"] = \"get\";\n  RequestTypes[\"PATCH\"] = \"patch\";\n  RequestTypes[\"UPDATE\"] = \"update\";\n  RequestTypes[\"DELETE\"] = \"delete\";\n})(RequestTypes || (RequestTypes = {}));","map":null,"metadata":{},"sourceType":"module"}

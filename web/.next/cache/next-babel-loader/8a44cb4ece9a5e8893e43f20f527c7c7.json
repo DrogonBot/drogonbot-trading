@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var UI = {\n  mediumLayoutBreak: 700,\n  // in px\n  smallLayoutBreak: 400\n};","map":null,"metadata":{},"sourceType":"module"}
