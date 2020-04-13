@@ -43,6 +43,7 @@ interface IProps {
 }
 
 const IndividualPage = ({ post, provinces }: IProps) => {
+  //human readable date
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
 
   const onRenderPositionType = () => {
