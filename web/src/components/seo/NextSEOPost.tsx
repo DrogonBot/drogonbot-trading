@@ -30,10 +30,10 @@ export const NextSEOPost = ({
         description,
         images: [
           {
-            url: "/images/seo/emprego-urgente800600.png",
+            url: `${appEnv.serverUrl}/images/seo/emprego-urgente800600.png`,
             width: 800,
             height: 600,
-            alt: "Emprego urgente logo"
+            alt: `Imagem de ${jobRole} em ${city}, ${stateCode}`
           }
         ],
         site_name: appEnv.appName
