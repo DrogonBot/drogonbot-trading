@@ -53,6 +53,14 @@ if test -f "./web/environment/Dockerfile.dev"; then
     exit
 fi
 
+if test -f "./web/environment/Env.constant.dev.ts"; then
+  printColor "Preparing Next.JS (front-end web) environment files"
+  sudo cp ./web/environment/Env.constant.dev.ts ./web/src/constants/Env.constant.ts
+  else 
+    echo "You must have a ./web/environment/Env.constant.dev.ts to proceed!"
+    exit
+fi
+
 
  
 printColor "Creating swap file (needed so our docker containers can run smoothly)"

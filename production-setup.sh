@@ -63,13 +63,21 @@ if test -f "./environment/prod.env"; then
   
 fi
 
-# Setup Next.js
+# Setup Next.js web app
 
 if test -f "./web/environment/Dockerfile.prod"; then
   printColor "Preparing Next.JS (front-end web) production Dockerfile"
   sudo cp ./web/environment/Dockerfile.prod ./web/Dockerfile
   else 
     echo "You must have a ./web/environment/Dockerfile.prod to proceed!"
+    exit
+fi
+
+if test -f "./web/environment/Env.constant.prod.ts"; then
+  printColor "Preparing Next.JS (front-end web) environment files"
+  sudo cp ./web/environment/Env.constant.prod.ts ./web/src/constants/Env.constant.ts
+  else 
+    echo "You must have a ./web/environment/Env.constant.prod.ts to proceed!"
     exit
 fi
 

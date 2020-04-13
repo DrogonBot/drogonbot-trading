@@ -25,6 +25,7 @@ import { InfoTag } from '../../components/elements/ui/InfoTag';
 import { PostCTA } from '../../components/pages/posts/PostCTA';
 import { SearchBar } from '../../components/pages/posts/SearchBar';
 import { SearchLogo } from '../../components/pages/posts/SearchLogo';
+import { NextSEOPost } from '../../components/seo/NextSEOPost';
 import { appEnv } from '../../constants/Env.constant';
 import { colors } from '../../constants/UI/Colors.constant';
 import { H1, H2, Small } from '../../constants/UI/Common.constant';
@@ -113,7 +114,7 @@ const IndividualPage = ({ post, provinces }: IProps) => {
   };
 
   const onRenderBenefits = () => {
-    return post.benefits?.map((benefit) => {
+    return post.benefits?.map(benefit => {
       switch (benefit) {
         case PostBenefits.FoodTicket:
           return (
@@ -166,7 +167,7 @@ const IndividualPage = ({ post, provinces }: IProps) => {
     const facebookGroupLinks = {
       ES: "https://www.facebook.com/groups/empregoses/",
       SP: "https://www.facebook.com/groups/empregosessp/",
-      MG: "https://www.facebook.com/groups/grupoempregosbh/",
+      MG: "https://www.facebook.com/groups/grupoempregosbh/"
     };
 
     return facebookGroupLinks[stateCode];
@@ -185,25 +186,33 @@ const IndividualPage = ({ post, provinces }: IProps) => {
 
   return (
     <>
+      <NextSEOPost
+        jobRole={post.jobRoles[0] || post.title}
+        title={post.title}
+        description={post.content}
+        link={post.externalUrl || appEnv.serverUrl}
+        city={post.city}
+        stateCode={post.stateCode}
+      />
       <JobPostingJsonLd
         datePosted={post.createdAt}
         description={post.content}
         hiringOrganization={{
           name: post.companyName,
-          sameAs: null,
+          sameAs: null
         }}
         jobLocation={{
           streetAddress: post.neighborhood,
           addressLocality: post.city,
           addressRegion: post.stateCode,
           postalCode: post.zipCode,
-          addressCountry: "Brasil",
+          addressCountry: "Brasil"
         }}
         title={post.title}
         baseSalary={{
           currency: "BRL",
           value: post.monthlySalary,
-          unitText: "MONTH",
+          unitText: "MONTH"
         }}
         employmentType={getJobJsonLDType()}
         jobLocationType={null}
@@ -273,7 +282,7 @@ const IndividualPage = ({ post, provinces }: IProps) => {
   );
 };
 
-IndividualPage.getInitialProps = async (ctx) => {
+IndividualPage.getInitialProps = async ctx => {
   const { slug } = ctx.query;
 
   await ctx.store.dispatch(loadCountryProvinces(appEnv.appCountry));
@@ -283,7 +292,7 @@ IndividualPage.getInitialProps = async (ctx) => {
 
   return {
     post,
-    provinces,
+    provinces
   };
 };
 
