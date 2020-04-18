@@ -32,7 +32,7 @@ export const NextSEOPost = ({
         description,
         images: [
           {
-            url: `${appEnv.serverUrl}/images/seo/${sector}.jpg`,
+            url: `${appEnv.appUrl}/images/seo/${sector}.jpg`,
             width: 800,
             height: 600,
             alt: `Imagem de ${jobRole}, setor ${sector} em ${city}, ${stateCode}`,
