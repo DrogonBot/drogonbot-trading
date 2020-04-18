@@ -20,11 +20,13 @@ export class ScrapperFacebook {
     try {
       // This function clears memory by closing puppeteer open instances
       if (ScrapperFacebook.browser !== null) {
-        console.log(`🤖: Puppeteer: Closing opened browser`);
+
         await ScrapperFacebook.browser.close()
+
+        console.log(`🤖: Puppeteer: Closing opened browser`);
+
         ScrapperFacebook.browser = null
       }
-
 
     }
     catch (error) {
@@ -73,6 +75,9 @@ export class ScrapperFacebook {
         break;
     }
 
+    if (ScrapperFacebook.browser) {
+      await ScrapperFacebook.clear()
+    }
 
 
     ScrapperFacebook.browser = await puppeteer.launch(options)
@@ -106,7 +111,9 @@ export class ScrapperFacebook {
       })
     })
 
-    ScrapperFacebook.page.close();
+    await ScrapperFacebook.page.goto('about:blank')
+
+    await ScrapperFacebook.page.close();
 
 
     // Prepare output in the proper format ========================================
@@ -141,7 +148,7 @@ export class ScrapperFacebook {
 
     await ScrapperFacebook.clear()
 
-    await GenericHelper.sleep(1000)
+    await GenericHelper.sleep(5000)
 
     return output
 

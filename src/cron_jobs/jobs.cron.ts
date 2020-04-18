@@ -207,7 +207,7 @@ export class JobsCron {
     });
 
 
-    cron.schedule("0 */6 * * *", async () => {
+    cron.schedule("0 */12 * * *", async () => {
 
       try {
         await ScrapperHelper.init('Vagas e Oportunidades ES', {
@@ -389,7 +389,7 @@ export class JobsCron {
     })
 
     // highly active groups
-    cron.schedule("0 */4 * * *", async () => {
+    cron.schedule("0 */6 * * *", async () => {
 
       try {
         // SAO PAULO ========================================
