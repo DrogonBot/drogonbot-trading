@@ -115,7 +115,7 @@ const IndividualPage = ({ post, provinces }: IProps) => {
   };
 
   const onRenderBenefits = () => {
-    return post.benefits?.map(benefit => {
+    return post.benefits?.map((benefit) => {
       switch (benefit) {
         case PostBenefits.FoodTicket:
           return (
@@ -168,7 +168,7 @@ const IndividualPage = ({ post, provinces }: IProps) => {
     const facebookGroupLinks = {
       ES: "https://www.facebook.com/groups/empregoses/",
       SP: "https://www.facebook.com/groups/empregosessp/",
-      MG: "https://www.facebook.com/groups/grupoempregosbh/"
+      MG: "https://www.facebook.com/groups/grupoempregosbh/",
     };
 
     return facebookGroupLinks[stateCode];
@@ -194,26 +194,27 @@ const IndividualPage = ({ post, provinces }: IProps) => {
         link={post.externalUrl || appEnv.serverUrl}
         city={post.city}
         stateCode={post.stateCode}
+        sector={post.sector}
       />
       <JobPostingJsonLd
         datePosted={post.createdAt}
         description={post.content}
         hiringOrganization={{
           name: post.companyName,
-          sameAs: null
+          sameAs: null,
         }}
         jobLocation={{
           streetAddress: post.neighborhood,
           addressLocality: post.city,
           addressRegion: post.stateCode,
           postalCode: post.zipCode,
-          addressCountry: "Brasil"
+          addressCountry: "Brasil",
         }}
         title={post.title}
         baseSalary={{
           currency: "BRL",
           value: post.monthlySalary,
-          unitText: "MONTH"
+          unitText: "MONTH",
         }}
         employmentType={getJobJsonLDType()}
         jobLocationType={null}
@@ -227,7 +228,7 @@ const IndividualPage = ({ post, provinces }: IProps) => {
         </SearchHeader>
       </SearchContainer>
 
-      <Cover>
+      <Cover backgroundImagePath={`/images/seo/${post.sector}.jpg`}>
         <PostCTA
           phone={post.phone}
           externalUrl={post.externalUrl}
@@ -283,7 +284,7 @@ const IndividualPage = ({ post, provinces }: IProps) => {
   );
 };
 
-IndividualPage.getInitialProps = async ctx => {
+IndividualPage.getInitialProps = async (ctx) => {
   const { slug } = ctx.query;
 
   await ctx.store.dispatch(loadCountryProvinces(appEnv.appCountry));
@@ -293,7 +294,7 @@ IndividualPage.getInitialProps = async ctx => {
 
   return {
     post,
-    provinces
+    provinces,
   };
 };
 
@@ -304,7 +305,7 @@ const Cover = styled.div`
   height: 200px;
   background-color: ${colors.primary};
   background-repeat: no-repeat;
-  background-image: url("/images/posts/post-1.webp");
+  background-image: url('${(props) => props.backgroundImagePath}');
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center;

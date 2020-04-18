@@ -9,6 +9,7 @@ interface IProps {
   city: string;
   stateCode: string | string[];
   link: string;
+  sector: string;
 }
 
 export const NextSEOPost = ({
@@ -17,7 +18,8 @@ export const NextSEOPost = ({
   description,
   link,
   city,
-  stateCode
+  stateCode,
+  sector,
 }: IProps) => {
   return (
     <NextSeo
@@ -30,18 +32,18 @@ export const NextSEOPost = ({
         description,
         images: [
           {
-            url: `${appEnv.serverUrl}/images/seo/emprego-urgente800600.png`,
+            url: `${appEnv.serverUrl}/images/seo/${sector}.jpg`,
             width: 800,
             height: 600,
-            alt: `Imagem de ${jobRole} em ${city}, ${stateCode}`
-          }
+            alt: `Imagem de ${jobRole}, setor ${sector} em ${city}, ${stateCode}`,
+          },
         ],
-        site_name: appEnv.appName
+        site_name: appEnv.appName,
       }}
       twitter={{
         handle: "@handle",
         site: "@site",
-        cardType: "summary_large_image"
+        cardType: "summary_large_image",
       }}
     />
   );
