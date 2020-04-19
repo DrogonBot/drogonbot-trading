@@ -1,35 +1,45 @@
-import 'styles/global-styles';
-
-import Document, { Head, Html, Main, NextScript } from 'next/document';
-import React from 'react';
+import Document from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
-class MyDocument extends Document {
-  public render() {
+export default class MyDocument extends Document {
+  public static async getInitialProps(ctx) {
     const sheet = new ServerStyleSheet();
-    const main = sheet.collectStyles(<Main />);
-    const styleTags = sheet.getStyleElement();
+    const originalRenderPage = ctx.renderPage;
 
-    return (
-      <Html lang="en">
-        <Head>
-          <link
-            crossOrigin="anonymous"
-            href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
-            rel="stylesheet"
-          />
-          <link rel="stylesheet" href="/css/google/main/normalize.css" />
-          <link rel="stylesheet" href="/css/google/main/main.css" />
-          <link rel="stylesheet" href="/css/google/search/search.css" />
-          <link rel="stylesheet" href="/css/animations.css" />
-          {styleTags}
-        </Head>
-        <body>
-          <div className="root">{main}</div>
-          <NextScript />
-        </body>
-      </Html>
+    const baseStyles = (
+      <>
+        <link
+          crossOrigin="anonymous"
+          href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
+          rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/css/google/main/normalize.css" />
+        <link rel="stylesheet" href="/css/google/main/main.css" />
+        <link rel="stylesheet" href="/css/google/search/search.css" />
+        <link rel="stylesheet" href="/css/animations.css" />
+      </>
     );
+
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />),
+        });
+
+      const initialProps = await Document.getInitialProps(ctx);
+      return {
+        ...initialProps,
+        styles: (
+          <>
+            {baseStyles}
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </>
+        ),
+      };
+    } finally {
+      sheet.seal();
+    }
   }
 }
-export default MyDocument;
