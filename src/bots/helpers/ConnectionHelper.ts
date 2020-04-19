@@ -63,7 +63,7 @@ export class ConnectionHelper {
       }
     } catch (error) {
 
-      console.log(error);
+      console.log(error.message);
 
       throw new Error('PROXY CONNECTION FAILED!')
     }

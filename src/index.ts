@@ -168,7 +168,8 @@ app.on("error", err => {
 
 // Bugfix for proxy error crashes: https://github.com/webpack/webpack-dev-server/issues/1642#issuecomment-523908463
 process.on('uncaughtException', function (err) {
-  console.log('Caught exception: ' + err);
+  console.log('Uncaught node exception!');
+  console.log(err);
 });
 
 app.get('/', function (req, res) {
