@@ -25,11 +25,11 @@ interface IProps {
 const Home = (props: IProps) => {
   const [hookSearchField, hookSetSearchField] = useState<string>("");
 
-  const { searchProvince } = useSelector<any, any>(state => state.uiReducer);
+  const { searchProvince } = useSelector<any, any>((state) => state.uiReducer);
 
   const dispatch = useDispatch();
 
-  const onSubmit = async e => {
+  const onSubmit = async (e) => {
     console.log("Submitting search");
 
     e.preventDefault();
@@ -44,8 +44,8 @@ const Home = (props: IProps) => {
       pathname: "/posts",
       query: {
         searchProvince,
-        searchKeyword: hookSearchField
-      }
+        searchKeyword: hookSearchField,
+      },
     });
   };
 
@@ -65,7 +65,7 @@ const Home = (props: IProps) => {
               placeholder={TS.string("form", "indexSearchInput")}
               name="q"
               value={hookSearchField}
-              onChange={e => {
+              onChange={(e) => {
                 hookSetSearchField(e.target.value);
               }}
             />
@@ -88,13 +88,13 @@ const Home = (props: IProps) => {
 
 export default Home;
 
-Home.getInitialProps = async ctx => {
+Home.getInitialProps = async (ctx) => {
   await ctx.store.dispatch(loadCountryProvinces(appEnv.appCountry));
 
   const provinces = ctx.store.getState().formReducer.states;
 
   return {
-    provinces
+    provinces,
   };
 };
 
@@ -172,6 +172,7 @@ const BlueSearchButton = styled.button`
 
   svg {
     color: white;
+    height: 15px;
   }
 `;
 

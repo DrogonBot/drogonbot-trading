@@ -22,7 +22,7 @@ PASSWORD=$(awk -F'=' '/^MONGO_INITDB_ROOT_PASSWORD/ { print $2}'  ${PROD_ENV})
  
 # Execute dump command to export db files to mongo container
  
-docker exec -it node-database mongodump -u ${USERNAME} -p ${PASSWORD}  -o /db-dump/
+docker exec -it app-database mongodump -u ${USERNAME} -p ${PASSWORD}  -o /db-dump/
 
 # then we copy these files (under dump folder) to our host
   

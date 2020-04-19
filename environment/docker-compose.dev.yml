@@ -80,6 +80,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "$WEB_PORT:$WEB_PORT"
+    volumes:
+      - "./web:/usr/src/app"
+      - "/web/node_modules/"
     depends_on:
       - "app-api"
       - "app-database"
