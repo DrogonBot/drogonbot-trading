@@ -25,7 +25,6 @@ export const NextSEOPost = ({
     <NextSeo
       title={`Vaga para ${jobRole} em ${city}, ${stateCode}`}
       description={description}
-      canonical={link}
       openGraph={{
         url: link,
         title: `Vaga para ${jobRole} em ${city}, ${stateCode}`,
