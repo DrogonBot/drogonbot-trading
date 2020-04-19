@@ -3,11 +3,10 @@ import withRedux from 'next-redux-wrapper';
 import App from 'next/app';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
 
 import { NextSEOApp } from '../components/seo/NextSEOApp';
 import { MUITheme } from '../constants/UI/Theme.constant';
-import { persistor, store } from '../store/reducers/persist.store';
+import { store } from '../store/reducers/store';
 
 class MyApp extends App {
   public static async getInitialProps({ Component, ctx }) {
@@ -26,12 +25,10 @@ class MyApp extends App {
 
     return (
       <Provider store={initialStore}>
-        <PersistGate loading={null} persistor={persistor}>
-          <NextSEOApp />
-          <ThemeProvider theme={MUITheme}>
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </PersistGate>
+        <NextSEOApp />
+        <ThemeProvider theme={MUITheme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
       </Provider>
     );
   }
