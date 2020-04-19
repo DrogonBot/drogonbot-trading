@@ -12,7 +12,7 @@ import { ICrawlerFunctions, IProxyItem, PagePattern } from '../types/bots.types'
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
 
-export class ScrapperBotHelper {
+export class BotHelper {
 
   public static proxyList: IProxyItem[];
   public static chosenProxy: IProxyItem;
@@ -23,19 +23,25 @@ export class ScrapperBotHelper {
   public static scrapperHelperFinishIntervalMs: number = 1000 * 60 * Math.floor(Math.random() * 5)
 
 
-  public static init = async (name, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object) => {
-
-    const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
-
+  public static init = async (name: string) => {
     console.log(`🤖: Initializing ${name}`);
 
 
     const proxyList = await ConnectionHelper.fetchProxyList();
-    ScrapperBotHelper.proxyList = proxyList;
-    ScrapperBotHelper.chosenProxy = ConnectionHelper.rotateProxy(ScrapperBotHelper.proxyList);
-    ScrapperBotHelper.userAgent = new UserAgent().random().data.userAgent;
+    BotHelper.proxyList = proxyList;
+    BotHelper.chosenProxy = ConnectionHelper.rotateProxy(BotHelper.proxyList);
+    BotHelper.userAgent = new UserAgent().random().data.userAgent;
+    BotHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
+  }
 
-    ScrapperBotHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
+  public static initScrapper = async (name, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object) => {
+
+    const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
+
+
+
+    BotHelper.init(name)
+
 
     switch (type) {
 
@@ -52,8 +58,8 @@ export class ScrapperBotHelper {
           const links = ScrapperOLX.postLinks.filter((link) => !link.scrapped) // make sure we only scrap unscrapped items
 
           for (const linkItem of links) {
-            await GenericHelper.sleep(ScrapperBotHelper.postLinkScrappingIntervalMs)
-            await ScrapperBotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride)
+            await GenericHelper.sleep(BotHelper.postLinkScrappingIntervalMs)
+            await BotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride)
           }
         }
 
@@ -62,7 +68,7 @@ export class ScrapperBotHelper {
       case PagePattern.Feed: // used by ScrapperFacebook
 
         if (externalSource) {
-          await ScrapperBotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride)
+          await BotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride)
         } else {
           console.log(`🤖: Warning! You should define an external source page for scrapping on OnePageAllPosts PagePattern!`);
         }
@@ -75,11 +81,13 @@ export class ScrapperBotHelper {
     await ScrapperFacebook.clear()
 
     if (process.env.ENV === EnvType.Production) {
-      await GenericHelper.sleep(ScrapperBotHelper.scrapperHelperFinishIntervalMs)
+      await GenericHelper.sleep(BotHelper.scrapperHelperFinishIntervalMs)
     }
   };
 
+  public static initPoster = async (name, groupPostFunction) => {
 
+  }
 
   private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
@@ -93,7 +101,7 @@ export class ScrapperBotHelper {
       return
     }
 
-    if (ScrapperBotHelper.owner) {
+    if (BotHelper.owner) {
 
       // loop through feed posts and start saving them into db
 
@@ -107,7 +115,7 @@ export class ScrapperBotHelper {
 
 
 
-        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: ScrapperBotHelper.owner._id })
+        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id })
         newPost.save()
         console.log(`Saving post: ${post.title}`);
 
@@ -142,10 +150,10 @@ export class ScrapperBotHelper {
 
 
 
-      if (ScrapperBotHelper.owner) {
+      if (BotHelper.owner) {
 
 
-        const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: ScrapperBotHelper.owner._id })
+        const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id })
 
         newPost.save()
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
