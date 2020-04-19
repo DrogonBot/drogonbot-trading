@@ -26,9 +26,12 @@ export class BotHelper {
   public static init = async (name: string) => {
     console.log(`🤖: Initializing ${name}`);
 
+    // Let's fetch our proxies list only if we didn't do it before...
+    if (!BotHelper.proxyList) {
+      const proxyList = await ConnectionHelper.fetchProxyList();
+      BotHelper.proxyList = proxyList;
+    }
 
-    const proxyList = await ConnectionHelper.fetchProxyList();
-    BotHelper.proxyList = proxyList;
     BotHelper.chosenProxy = ConnectionHelper.rotateProxy(BotHelper.proxyList);
     BotHelper.userAgent = new UserAgent().random().data.userAgent;
     BotHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
@@ -160,10 +163,8 @@ export class BotHelper {
 
 
       if (BotHelper.owner) {
-
-
+        // create a new post and save with post data!
         const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id })
-
         newPost.save()
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
 

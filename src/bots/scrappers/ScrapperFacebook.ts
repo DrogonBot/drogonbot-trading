@@ -1,7 +1,6 @@
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
-import { EnvType } from '../../constants/types/env.types';
 import { IPostSource } from '../../resources/Post/post.model';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
@@ -21,47 +20,17 @@ export class ScrapperFacebook extends PuppeteerBot {
 
     console.log(`🔥 Starting PUPPETEER BOT 🔥`);
 
-    let options;
-    switch (process.env.ENV) {
-      case EnvType.Development:
 
-        console.log(`🤖: Loading Development config - NOT USING PROXY!`);
-        options = {
-          executablePath: 'google-chrome-unstable',
-          headless: true,
-          args: ['--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--no-zygote',
-            '--disable-dev-shm-usage'
-          ]
-        }
-        break;
-      case EnvType.Production:
-        console.log(`🤖: Using Proxy IP: ${BotHelper.chosenProxy.ip} on PORT: ${BotHelper.chosenProxy.port}`);
-        options = {
-          executablePath: 'google-chrome-unstable',
-          ignoreHTTPSErrors: true,
-          headless: true,
-          args: ['--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--no-zygote',
-            '--disable-infobars',
-            '--window-position=0,0',
-            '--disable-dev-shm-usage',
-            '--ignore-certificate-errors',
-            '--ignore-certificate-errors-spki-list',
-            `--proxy-server=http://${BotHelper.chosenProxy.ip}:${BotHelper.chosenProxy.port}`,
-            `'--user-agent="${BotHelper.userAgent}"'`]
-        }
-        break;
-    }
 
     if (ScrapperFacebook.browser) {
       await ScrapperFacebook.clear(ScrapperFacebook.browser)
     }
 
+    console.log(BotHelper.chosenProxy);
+    const puppeteerOptions = ScrapperFacebook.getOptions({ ip: BotHelper.chosenProxy.ip, port: BotHelper.chosenProxy.port }, BotHelper.userAgent)
 
-    ScrapperFacebook.browser = await puppeteer.launch(options)
+
+    ScrapperFacebook.browser = await puppeteer.launch(puppeteerOptions)
 
     ScrapperFacebook.page = await ScrapperFacebook.browser.newPage();
 

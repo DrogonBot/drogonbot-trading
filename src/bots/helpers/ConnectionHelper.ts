@@ -12,6 +12,7 @@ import { IProxyItem } from '../types/bots.types';
 import { BotHelper } from './BotHelper';
 
 
+
 export class ConnectionHelper {
 
   public static requestLocalHtml = async (location: string) => {
@@ -62,6 +63,7 @@ export class ConnectionHelper {
       }
     } catch (error) {
 
+      console.log(error);
 
       throw new Error('PROXY CONNECTION FAILED!')
     }
