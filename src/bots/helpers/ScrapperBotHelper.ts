@@ -7,30 +7,10 @@ import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
-import { IScrapperLink, ScrapperOLX } from '../scrappers/ScrapperOLX';
+import { ScrapperOLX } from '../scrappers/ScrapperOLX';
+import { ICrawlerFunctions, IProxyItem, PagePattern } from '../types/bots.types';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
-
-export interface IProxyItem {
-  ip: string;
-  port: string;
-}
-
-export enum PagePattern {
-  ListAndInternalPosts = "ListAndInternalPost", // Example: https://es.olx.com.br/vagas-de-emprego
-  Feed = "Feed" // Example: https://www.facebook.com/oportunidadesdeempregoes/
-}
-
-export interface ICrawlerFunctions {
-  crawlLinksFunction?: (externalSource: string) => Promise<IScrapperLink[]>,
-  crawlPageDataFunction?: (link: string) => any,
-  crawlFeedFunction?: (link: string) => Promise<any>
-}
-
-export interface IBestMatchAndSector {
-  jobRoleBestMatch: string,
-  sector: string
-}
 
 export class ScrapperBotHelper {
 

@@ -1,8 +1,9 @@
 import { Router } from 'express';
 
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
-import { PagePattern, ScrapperBotHelper } from '../../bots/helpers/ScrapperBotHelper';
+import { ScrapperBotHelper } from '../../bots/helpers/ScrapperBotHelper';
 import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
+import { PagePattern } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
@@ -12,6 +13,7 @@ import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
 import { IJobReminder } from '../Post/post.routes';
 import { User, UserType } from '../User/user.model';
+
 
 // @ts-ignore
 const operationRouter = new Router();

@@ -5,11 +5,9 @@ import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 import { ScrapperBotHelper } from '../helpers/ScrapperBotHelper';
+import { IScrapperLink } from '../types/bots.types';
 
-export interface IScrapperLink {
-  link: string,
-  scrapped: boolean
-}
+
 
 export class ScrapperOLX {
 

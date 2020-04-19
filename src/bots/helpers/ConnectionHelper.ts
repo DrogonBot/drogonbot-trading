@@ -8,7 +8,8 @@ import util from 'util';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
-import { IProxyItem, ScrapperBotHelper } from './ScrapperBotHelper';
+import { IProxyItem } from '../types/bots.types';
+import { ScrapperBotHelper } from './ScrapperBotHelper';
 
 export class ConnectionHelper {
 

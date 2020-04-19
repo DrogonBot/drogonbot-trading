@@ -1,9 +1,10 @@
 import moment = require('moment');
 import cron from 'node-cron';
 
-import { PagePattern, ScrapperBotHelper } from '../bots/helpers/ScrapperBotHelper';
+import { ScrapperBotHelper } from '../bots/helpers/ScrapperBotHelper';
 import { ScrapperFacebook } from '../bots/scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../bots/scrappers/ScrapperOLX';
+import { PagePattern } from '../bots/types/bots.types';
 import { JobsEmailManager } from '../emails/jobs.email';
 import { IPostApplication, IPostApplicationStatus, Post } from '../resources/Post/post.model';
 import { Resume } from '../resources/Resume/resume.model';
