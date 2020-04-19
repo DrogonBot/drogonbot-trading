@@ -191,7 +191,7 @@ const IndividualPage = ({ post, provinces }: IProps) => {
         jobRole={post.jobRoles[0] || post.title}
         title={post.title}
         description={post.content}
-        link={post.externalUrl || appEnv.serverUrl}
+        link={appEnv.appUrl + post.slug}
         city={post.city}
         stateCode={post.stateCode}
         sector={post.sector}
