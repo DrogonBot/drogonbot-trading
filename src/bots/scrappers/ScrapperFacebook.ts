@@ -13,20 +13,15 @@ puppeteer.use(StealthPlugin())
 
 export class ScrapperFacebook extends PuppeteerBot {
 
-
-
-
   public static crawlPageFeed = async (link: string, postDataOverride?) => {
 
     console.log(`🔥 Starting PUPPETEER BOT 🔥`);
-
-
 
     if (ScrapperFacebook.browser) {
       await ScrapperFacebook.clear(ScrapperFacebook.browser)
     }
 
-    console.log(BotHelper.chosenProxy);
+
     const puppeteerOptions = ScrapperFacebook.getOptions({ ip: BotHelper.chosenProxy.ip, port: BotHelper.chosenProxy.port }, BotHelper.userAgent)
 
 

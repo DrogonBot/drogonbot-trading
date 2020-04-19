@@ -54,7 +54,7 @@ export class BotHelper {
 
     const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
 
-    BotHelper.init(name)
+    await BotHelper.init(name)
 
 
     switch (type) {
@@ -94,7 +94,7 @@ export class BotHelper {
   };
 
   public static initPoster = async (name, groupPostFunction) => {
-    BotHelper.init(name)
+    await BotHelper.init(name)
 
     await groupPostFunction();
 
