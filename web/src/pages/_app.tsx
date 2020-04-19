@@ -1,3 +1,5 @@
+import '../styles/app.scss';
+
 import { ThemeProvider } from '@material-ui/core/styles';
 import withRedux from 'next-redux-wrapper';
 import App from 'next/app';

@@ -13,10 +13,6 @@ export default class MyDocument extends Document {
           href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
           rel="stylesheet"
         />
-        <link rel="stylesheet" href="/css/google/main/normalize.css" />
-        <link rel="stylesheet" href="/css/google/main/main.css" />
-        <link rel="stylesheet" href="/css/google/search/search.css" />
-        <link rel="stylesheet" href="/css/animations.css" />
       </>
     );
 
