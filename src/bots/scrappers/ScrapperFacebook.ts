@@ -7,7 +7,7 @@ import { IPostSource } from '../../resources/Post/post.model';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
-import { ScrapperHelper } from '../helpers/ScrapperHelper';
+import { ScrapperBotHelper } from '../helpers/ScrapperBotHelper';
 
 puppeteer.use(StealthPlugin())
 
@@ -56,7 +56,7 @@ export class ScrapperFacebook {
         }
         break;
       case EnvType.Production:
-        console.log(`🤖: Using Proxy IP: ${ScrapperHelper.chosenProxy.ip} on PORT: ${ScrapperHelper.chosenProxy.port}`);
+        console.log(`🤖: Using Proxy IP: ${ScrapperBotHelper.chosenProxy.ip} on PORT: ${ScrapperBotHelper.chosenProxy.port}`);
         options = {
           executablePath: 'google-chrome-unstable',
           ignoreHTTPSErrors: true,
@@ -69,8 +69,8 @@ export class ScrapperFacebook {
             '--disable-dev-shm-usage',
             '--ignore-certificate-errors',
             '--ignore-certificate-errors-spki-list',
-            `--proxy-server=http://${ScrapperHelper.chosenProxy.ip}:${ScrapperHelper.chosenProxy.port}`,
-            `'--user-agent="${ScrapperHelper.userAgent}"'`]
+            `--proxy-server=http://${ScrapperBotHelper.chosenProxy.ip}:${ScrapperBotHelper.chosenProxy.port}`,
+            `'--user-agent="${ScrapperBotHelper.userAgent}"'`]
         }
         break;
     }

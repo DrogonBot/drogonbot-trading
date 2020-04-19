@@ -1,13 +1,13 @@
 import moment = require('moment');
 import cron from 'node-cron';
 
+import { PagePattern, ScrapperBotHelper } from '../bots/helpers/ScrapperBotHelper';
+import { ScrapperFacebook } from '../bots/scrappers/ScrapperFacebook';
+import { ScrapperOLX } from '../bots/scrappers/ScrapperOLX';
 import { JobsEmailManager } from '../emails/jobs.email';
 import { IPostApplication, IPostApplicationStatus, Post } from '../resources/Post/post.model';
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
-import { PagePattern, ScrapperHelper } from '../scrappers/helpers/ScrapperHelper';
-import { ScrapperFacebook } from '../scrappers/scrappers/ScrapperFacebook';
-import { ScrapperOLX } from '../scrappers/scrappers/ScrapperOLX';
 import { LanguageHelper } from '../utils/LanguageHelper';
 
 export class JobsCron {
@@ -134,7 +134,7 @@ export class JobsCron {
       *##############################################################*/
 
 
-        await ScrapperHelper.init('OLX => ES', {
+        await ScrapperBotHelper.init('OLX => ES', {
           crawlLinksFunction: ScrapperOLX.crawlLinks,
           crawlPageDataFunction: ScrapperOLX.crawlPageData
         }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego?sf=1", {
@@ -142,7 +142,7 @@ export class JobsCron {
           stateCode: "ES",
         })
 
-        await ScrapperHelper.init('OLX => Vitoria', {
+        await ScrapperBotHelper.init('OLX => Vitoria', {
           crawlLinksFunction: ScrapperOLX.crawlLinks,
           crawlPageDataFunction: ScrapperOLX.crawlPageData
         }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/vitoria/vagas-de-emprego?sf=1", {
@@ -151,7 +151,7 @@ export class JobsCron {
           city: "Vitória"
         })
 
-        await ScrapperHelper.init('OLX => Vila Velha', {
+        await ScrapperBotHelper.init('OLX => Vila Velha', {
           crawlLinksFunction: ScrapperOLX.crawlLinks,
           crawlPageDataFunction: ScrapperOLX.crawlPageData
         }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/vila-velha/vagas-de-emprego?sf=1", {
@@ -160,7 +160,7 @@ export class JobsCron {
           city: "Vila Velha"
         })
 
-        await ScrapperHelper.init('OLX => Serra', {
+        await ScrapperBotHelper.init('OLX => Serra', {
           crawlLinksFunction: ScrapperOLX.crawlLinks,
           crawlPageDataFunction: ScrapperOLX.crawlPageData
         }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/serra/vagas-de-emprego?sf=1", {
@@ -169,7 +169,7 @@ export class JobsCron {
           city: "Serra"
         })
 
-        await ScrapperHelper.init('OLX => Cariacica', {
+        await ScrapperBotHelper.init('OLX => Cariacica', {
           crawlLinksFunction: ScrapperOLX.crawlLinks,
           crawlPageDataFunction: ScrapperOLX.crawlPageData
         }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/cariacica/vagas-de-emprego?f=p&sf=1", {
@@ -180,7 +180,7 @@ export class JobsCron {
 
 
 
-        await ScrapperHelper.init('OLX => SP/CAPITAL', {
+        await ScrapperBotHelper.init('OLX => SP/CAPITAL', {
           crawlLinksFunction: ScrapperOLX.crawlLinks,
           crawlPageDataFunction: ScrapperOLX.crawlPageData
         }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
@@ -190,7 +190,7 @@ export class JobsCron {
         })
 
 
-        await ScrapperHelper.init('OLX => MG/BH', {
+        await ScrapperBotHelper.init('OLX => MG/BH', {
           crawlLinksFunction: ScrapperOLX.crawlLinks,
           crawlPageDataFunction: ScrapperOLX.crawlPageData
         }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
@@ -210,7 +210,7 @@ export class JobsCron {
     cron.schedule("0 */12 * * *", async () => {
 
       try {
-        await ScrapperHelper.init('Vagas e Oportunidades ES', {
+        await ScrapperBotHelper.init('Vagas e Oportunidades ES', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/jo.darc.13/', {
           country: "Brazil",
@@ -219,7 +219,7 @@ export class JobsCron {
         })
 
 
-        await ScrapperHelper.init('Facebook => Emprego ES', {
+        await ScrapperBotHelper.init('Facebook => Emprego ES', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/470386613006396/', {
           country: "Brazil",
@@ -229,7 +229,7 @@ export class JobsCron {
 
 
 
-        await ScrapperHelper.init('Facebook => Empregos Vitoria ES', {
+        await ScrapperBotHelper.init('Facebook => Empregos Vitoria ES', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/462576003935602', {
           country: "Brazil",
@@ -237,7 +237,7 @@ export class JobsCron {
           city: "Vitória",
         })
 
-        await ScrapperHelper.init('Facebook => Gazeta Empregos ES', {
+        await ScrapperBotHelper.init('Facebook => Gazeta Empregos ES', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/2143865589172147/', {
           country: "Brazil",
@@ -246,7 +246,7 @@ export class JobsCron {
         })
 
 
-        await ScrapperHelper.init('Facebook => Empregos Vila Velha', {
+        await ScrapperBotHelper.init('Facebook => Empregos Vila Velha', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/1002682889820586/', {
           country: "Brazil",
@@ -254,7 +254,7 @@ export class JobsCron {
           city: "Vila Velha",
         })
 
-        await ScrapperHelper.init('Facebook => Empregos Guarapari', {
+        await ScrapperBotHelper.init('Facebook => Empregos Guarapari', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/145238849184087/', {
           country: "Brazil",
@@ -266,7 +266,7 @@ export class JobsCron {
         |  >>> BELO HORIZONTE
         *##############################################################*/
 
-        await ScrapperHelper.init('Facebook => Vagas de Empregos BH', {
+        await ScrapperBotHelper.init('Facebook => Vagas de Empregos BH', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/grupoempregosbh/', {
           country: "Brazil",
@@ -274,7 +274,7 @@ export class JobsCron {
           city: "Belo Horizonte",
         })
 
-        await ScrapperHelper.init('Facebook => Empregos BH', {
+        await ScrapperBotHelper.init('Facebook => Empregos BH', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/597673520276895/', {
           country: "Brazil",
@@ -282,7 +282,7 @@ export class JobsCron {
           city: "Belo Horizonte",
         })
 
-        await ScrapperHelper.init('Facebook => Empregos em Belo Horizonte', {
+        await ScrapperBotHelper.init('Facebook => Empregos em Belo Horizonte', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/833818616764376/', {
           country: "Brazil",
@@ -290,7 +290,7 @@ export class JobsCron {
           city: "Belo Horizonte",
         })
 
-        await ScrapperHelper.init('Facebook => Empregos Urgentes BH', {
+        await ScrapperBotHelper.init('Facebook => Empregos Urgentes BH', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosbhmg/', {
           country: "Brazil",
@@ -298,7 +298,7 @@ export class JobsCron {
           city: "Belo Horizonte",
         })
 
-        await ScrapperHelper.init('Facebook => Emprego BH', {
+        await ScrapperBotHelper.init('Facebook => Emprego BH', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/557833854267297/', {
           country: "Brazil",
@@ -306,7 +306,7 @@ export class JobsCron {
           city: "Belo Horizonte",
         })
 
-        await ScrapperHelper.init('Facebook => Melhor Emprego BH', {
+        await ScrapperBotHelper.init('Facebook => Melhor Emprego BH', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/718029571552489/', {
           country: "Brazil",
@@ -320,7 +320,7 @@ export class JobsCron {
         |  >>> SAO PAULO
         *##############################################################*/
 
-        await ScrapperHelper.init('Facebook => Empregos SP', {
+        await ScrapperBotHelper.init('Facebook => Empregos SP', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosessp/', {
           country: "Brazil",
@@ -329,7 +329,7 @@ export class JobsCron {
         })
 
 
-        await ScrapperHelper.init('Facebook => Vagas de Empregos SP', {
+        await ScrapperBotHelper.init('Facebook => Vagas de Empregos SP', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/508765489527560/', {
           country: "Brazil",
@@ -338,7 +338,7 @@ export class JobsCron {
         })
 
 
-        await ScrapperHelper.init('Facebook => Vagas de Empregos SP', {
+        await ScrapperBotHelper.init('Facebook => Vagas de Empregos SP', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/508765489527560/', {
           country: "Brazil",
@@ -348,7 +348,7 @@ export class JobsCron {
 
 
 
-        await ScrapperHelper.init('Facebook => Empregos em Osasco', {
+        await ScrapperBotHelper.init('Facebook => Empregos em Osasco', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/252483528524808/', {
           country: "Brazil",
@@ -356,7 +356,7 @@ export class JobsCron {
           city: "Osasco",
         })
 
-        await ScrapperHelper.init('Facebook => Empregos Marilia - SP', {
+        await ScrapperBotHelper.init('Facebook => Empregos Marilia - SP', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosmariliasp/', {
           country: "Brazil",
@@ -364,7 +364,7 @@ export class JobsCron {
           city: "Marília",
         })
 
-        await ScrapperHelper.init('Facebook => Empregos Marilia SP', {
+        await ScrapperBotHelper.init('Facebook => Empregos Marilia SP', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/901278506627755/', {
           country: "Brazil",
@@ -372,7 +372,7 @@ export class JobsCron {
           city: "Marília",
         })
 
-        await ScrapperHelper.init('Facebook => Ribeirao Preto', {
+        await ScrapperBotHelper.init('Facebook => Ribeirao Preto', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/923149231033037/', {
           country: "Brazil",
@@ -394,7 +394,7 @@ export class JobsCron {
       try {
         // SAO PAULO ========================================
 
-        await ScrapperHelper.init('Facebook => Grupo Vagas de Emprego Sao Paulo SP', {
+        await ScrapperBotHelper.init('Facebook => Grupo Vagas de Emprego Sao Paulo SP', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/grupovagasdeempregosaopaulo', {
           country: "Brazil",
@@ -402,7 +402,7 @@ export class JobsCron {
           city: "São Paulo",
         })
 
-        await ScrapperHelper.init('Facebook => SP EMPREGO SAO PAULO ', {
+        await ScrapperBotHelper.init('Facebook => SP EMPREGO SAO PAULO ', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/Temostrampo/', {
           country: "Brazil",
@@ -410,7 +410,7 @@ export class JobsCron {
           city: "São Paulo",
         })
 
-        await ScrapperHelper.init('Facebook => Grupo Vagas de Emprego Sao Paulo - SP', {
+        await ScrapperBotHelper.init('Facebook => Grupo Vagas de Emprego Sao Paulo - SP', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/grupovagasdeempregosaopaulosp/', {
           country: "Brazil",
@@ -418,7 +418,7 @@ export class JobsCron {
           city: "São Paulo",
         })
 
-        await ScrapperHelper.init('Facebook => Grupo Vagas de Emprego Sao Paulo - SP', {
+        await ScrapperBotHelper.init('Facebook => Grupo Vagas de Emprego Sao Paulo - SP', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/508765489527560/', {
           country: "Brazil",
@@ -429,7 +429,7 @@ export class JobsCron {
 
         // ESPIRITO SANTO ========================================
 
-        await ScrapperHelper.init('Facebook => Empregos ES', {
+        await ScrapperBotHelper.init('Facebook => Empregos ES', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/', {
           country: "Brazil",
@@ -437,7 +437,7 @@ export class JobsCron {
           city: "Vitória",
         })
 
-        await ScrapperHelper.init('Facebook => Emprego Urgente ES', {
+        await ScrapperBotHelper.init('Facebook => Emprego Urgente ES', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/255725088176388', {
           country: "Brazil",
@@ -445,7 +445,7 @@ export class JobsCron {
           city: "Vitória",
         })
 
-        await ScrapperHelper.init('Facebook => Empregos e Vagas Espirito Santo', {
+        await ScrapperBotHelper.init('Facebook => Empregos e Vagas Espirito Santo', {
           crawlFeedFunction: ScrapperFacebook.crawlPageFeed
         }, PagePattern.Feed, 'https://www.facebook.com/groups/958646364179986/', {
           country: "Brazil",

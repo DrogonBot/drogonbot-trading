@@ -4,7 +4,7 @@ import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
-import { ScrapperHelper } from '../helpers/ScrapperHelper';
+import { ScrapperBotHelper } from '../helpers/ScrapperBotHelper';
 
 export interface IScrapperLink {
   link: string,
@@ -21,7 +21,7 @@ export class ScrapperOLX {
 
     const html = await ConnectionHelper.requestHtml(
       externalSource,
-      ScrapperHelper.chosenProxy
+      ScrapperBotHelper.chosenProxy
     );
 
     const $ = cheerio.load(html);
@@ -52,7 +52,7 @@ export class ScrapperOLX {
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
 
-    const html = await ConnectionHelper.requestHtml(link, ScrapperHelper.chosenProxy)
+    const html = await ConnectionHelper.requestHtml(link, ScrapperBotHelper.chosenProxy)
 
     const $ = cheerio.load(html);
 

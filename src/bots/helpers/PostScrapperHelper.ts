@@ -6,7 +6,7 @@ import { User } from '../../resources/User/user.model';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
-import { IBestMatchAndSector } from './ScrapperHelper';
+import { IBestMatchAndSector } from './ScrapperBotHelper';
 
 
 export class PostScrapperHelper {

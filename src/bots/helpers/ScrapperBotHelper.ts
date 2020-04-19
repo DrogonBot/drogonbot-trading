@@ -32,7 +32,7 @@ export interface IBestMatchAndSector {
   sector: string
 }
 
-export class ScrapperHelper {
+export class ScrapperBotHelper {
 
   public static proxyList: IProxyItem[];
   public static chosenProxy: IProxyItem;
@@ -48,15 +48,14 @@ export class ScrapperHelper {
     const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
 
     console.log(`🤖: Initializing ${name}`);
-    // Make sure we close any puppeteer open instances, if that's the case
-    await ScrapperFacebook.clear()
+
 
     const proxyList = await ConnectionHelper.fetchProxyList();
-    ScrapperHelper.proxyList = proxyList;
-    ScrapperHelper.chosenProxy = ConnectionHelper.rotateProxy(ScrapperHelper.proxyList);
-    ScrapperHelper.userAgent = new UserAgent().random().data.userAgent;
+    ScrapperBotHelper.proxyList = proxyList;
+    ScrapperBotHelper.chosenProxy = ConnectionHelper.rotateProxy(ScrapperBotHelper.proxyList);
+    ScrapperBotHelper.userAgent = new UserAgent().random().data.userAgent;
 
-    ScrapperHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
+    ScrapperBotHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
 
     switch (type) {
 
@@ -73,8 +72,8 @@ export class ScrapperHelper {
           const links = ScrapperOLX.postLinks.filter((link) => !link.scrapped) // make sure we only scrap unscrapped items
 
           for (const linkItem of links) {
-            await GenericHelper.sleep(ScrapperHelper.postLinkScrappingIntervalMs)
-            await ScrapperHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride)
+            await GenericHelper.sleep(ScrapperBotHelper.postLinkScrappingIntervalMs)
+            await ScrapperBotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride)
           }
         }
 
@@ -83,7 +82,7 @@ export class ScrapperHelper {
       case PagePattern.Feed: // used by ScrapperFacebook
 
         if (externalSource) {
-          await ScrapperHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride)
+          await ScrapperBotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride)
         } else {
           console.log(`🤖: Warning! You should define an external source page for scrapping on OnePageAllPosts PagePattern!`);
         }
@@ -96,7 +95,7 @@ export class ScrapperHelper {
     await ScrapperFacebook.clear()
 
     if (process.env.ENV === EnvType.Production) {
-      await GenericHelper.sleep(ScrapperHelper.scrapperHelperFinishIntervalMs)
+      await GenericHelper.sleep(ScrapperBotHelper.scrapperHelperFinishIntervalMs)
     }
   };
 
@@ -114,7 +113,7 @@ export class ScrapperHelper {
       return
     }
 
-    if (ScrapperHelper.owner) {
+    if (ScrapperBotHelper.owner) {
 
       // loop through feed posts and start saving them into db
 
@@ -128,7 +127,7 @@ export class ScrapperHelper {
 
 
 
-        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: ScrapperHelper.owner._id })
+        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: ScrapperBotHelper.owner._id })
         newPost.save()
         console.log(`Saving post: ${post.title}`);
 
@@ -163,10 +162,10 @@ export class ScrapperHelper {
 
 
 
-      if (ScrapperHelper.owner) {
+      if (ScrapperBotHelper.owner) {
 
 
-        const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: ScrapperHelper.owner._id })
+        const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: ScrapperBotHelper.owner._id })
 
         newPost.save()
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')

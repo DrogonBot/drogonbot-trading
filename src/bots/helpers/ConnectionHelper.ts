@@ -8,7 +8,7 @@ import util from 'util';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
-import { IProxyItem, ScrapperHelper } from './ScrapperHelper';
+import { IProxyItem, ScrapperBotHelper } from './ScrapperBotHelper';
 
 export class ConnectionHelper {
 
@@ -29,16 +29,16 @@ export class ConnectionHelper {
       if (proxyItem) {
         console.log(`🤖: Using proxy IP ${proxyItem.ip} - PORT ${proxyItem.port}`);
 
-        ScrapperHelper.userAgent = new UserAgent().random().data.userAgent;
+        ScrapperBotHelper.userAgent = new UserAgent().random().data.userAgent;
 
-        console.log(`🤖: User agent: ${ScrapperHelper.userAgent}`);
+        console.log(`🤖: User agent: ${ScrapperBotHelper.userAgent}`);
 
         proxiedRequest = rp.defaults({
           proxy: `http://${proxyItem.ip}:${proxyItem.port}`,
           strictSSL: false,
           timeout: 15000,
           headers: {
-            'User-Agent': ScrapperHelper.userAgent
+            'User-Agent': ScrapperBotHelper.userAgent
           }
         });
 
@@ -113,13 +113,13 @@ export class ConnectionHelper {
         console.log(error);
 
         // Change proxy and user agent on every request
-        ScrapperHelper.chosenProxy = ConnectionHelper.rotateProxy(ScrapperHelper.proxyList);
-        ScrapperHelper.userAgent = new UserAgent().random().data.userAgent;
+        ScrapperBotHelper.chosenProxy = ConnectionHelper.rotateProxy(ScrapperBotHelper.proxyList);
+        ScrapperBotHelper.userAgent = new UserAgent().random().data.userAgent;
 
         // Close our browser agents to avoid memory leaks
         await ScrapperFacebook.clear();
 
-        await GenericHelper.sleep(ScrapperHelper.failedRequestIntervalMs)
+        await GenericHelper.sleep(ScrapperBotHelper.failedRequestIntervalMs)
       }
     }
 

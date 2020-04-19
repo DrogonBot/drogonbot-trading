@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
+import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
+import { PagePattern, ScrapperBotHelper } from '../../bots/helpers/ScrapperBotHelper';
+import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
-import { PostScrapperHelper } from '../../scrappers/helpers/PostScrapperHelper';
-import { PagePattern, ScrapperHelper } from '../../scrappers/helpers/ScrapperHelper';
-import { ScrapperFacebook } from '../../scrappers/scrappers/ScrapperFacebook';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
@@ -70,7 +70,7 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
-  await ScrapperHelper.init('Vagas e Oportunidades ES', {
+  await ScrapperBotHelper.init('Vagas e Oportunidades ES', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/jo.darc.13/', {
     country: "Brazil",
@@ -79,7 +79,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
   })
 
 
-  await ScrapperHelper.init('Facebook => Emprego ES', {
+  await ScrapperBotHelper.init('Facebook => Emprego ES', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/470386613006396/', {
     country: "Brazil",
@@ -89,7 +89,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
 
 
 
-  await ScrapperHelper.init('Facebook => Empregos Vitoria ES', {
+  await ScrapperBotHelper.init('Facebook => Empregos Vitoria ES', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/462576003935602', {
     country: "Brazil",
@@ -97,7 +97,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     city: "Vitória",
   })
 
-  await ScrapperHelper.init('Facebook => Gazeta Empregos ES', {
+  await ScrapperBotHelper.init('Facebook => Gazeta Empregos ES', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/2143865589172147/', {
     country: "Brazil",
@@ -106,7 +106,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
   })
 
 
-  await ScrapperHelper.init('Facebook => Empregos Vila Velha', {
+  await ScrapperBotHelper.init('Facebook => Empregos Vila Velha', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/1002682889820586/', {
     country: "Brazil",
@@ -114,7 +114,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     city: "Vila Velha",
   })
 
-  await ScrapperHelper.init('Facebook => Empregos Guarapari', {
+  await ScrapperBotHelper.init('Facebook => Empregos Guarapari', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/145238849184087/', {
     country: "Brazil",
@@ -126,7 +126,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
   |  >>> BELO HORIZONTE
   *##############################################################*/
 
-  await ScrapperHelper.init('Facebook => Vagas de Empregos BH', {
+  await ScrapperBotHelper.init('Facebook => Vagas de Empregos BH', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/grupoempregosbh/', {
     country: "Brazil",
@@ -134,7 +134,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     city: "Belo Horizonte",
   })
 
-  await ScrapperHelper.init('Facebook => Empregos BH', {
+  await ScrapperBotHelper.init('Facebook => Empregos BH', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/597673520276895/', {
     country: "Brazil",
@@ -142,7 +142,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     city: "Belo Horizonte",
   })
 
-  await ScrapperHelper.init('Facebook => Empregos em Belo Horizonte', {
+  await ScrapperBotHelper.init('Facebook => Empregos em Belo Horizonte', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/833818616764376/', {
     country: "Brazil",
@@ -150,7 +150,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     city: "Belo Horizonte",
   })
 
-  await ScrapperHelper.init('Facebook => Empregos Urgentes BH', {
+  await ScrapperBotHelper.init('Facebook => Empregos Urgentes BH', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosbhmg/', {
     country: "Brazil",
@@ -158,7 +158,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     city: "Belo Horizonte",
   })
 
-  await ScrapperHelper.init('Facebook => Emprego BH', {
+  await ScrapperBotHelper.init('Facebook => Emprego BH', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/557833854267297/', {
     country: "Brazil",
@@ -166,7 +166,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     city: "Belo Horizonte",
   })
 
-  await ScrapperHelper.init('Facebook => Melhor Emprego BH', {
+  await ScrapperBotHelper.init('Facebook => Melhor Emprego BH', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/718029571552489/', {
     country: "Brazil",
@@ -180,7 +180,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
   |  >>> SAO PAULO
   *##############################################################*/
 
-  await ScrapperHelper.init('Facebook => Empregos SP', {
+  await ScrapperBotHelper.init('Facebook => Empregos SP', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosessp/', {
     country: "Brazil",
@@ -189,7 +189,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
   })
 
 
-  await ScrapperHelper.init('Facebook => Vagas de Empregos SP', {
+  await ScrapperBotHelper.init('Facebook => Vagas de Empregos SP', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/508765489527560/', {
     country: "Brazil",
@@ -198,7 +198,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
   })
 
 
-  await ScrapperHelper.init('Facebook => Vagas de Empregos SP', {
+  await ScrapperBotHelper.init('Facebook => Vagas de Empregos SP', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/508765489527560/', {
     country: "Brazil",
@@ -208,7 +208,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
 
 
 
-  await ScrapperHelper.init('Facebook => Empregos em Osasco', {
+  await ScrapperBotHelper.init('Facebook => Empregos em Osasco', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/252483528524808/', {
     country: "Brazil",
@@ -216,7 +216,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     city: "Osasco",
   })
 
-  await ScrapperHelper.init('Facebook => Empregos Marilia - SP', {
+  await ScrapperBotHelper.init('Facebook => Empregos Marilia - SP', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosmariliasp/', {
     country: "Brazil",
@@ -224,7 +224,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     city: "Marília",
   })
 
-  await ScrapperHelper.init('Facebook => Empregos Marilia SP', {
+  await ScrapperBotHelper.init('Facebook => Empregos Marilia SP', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/901278506627755/', {
     country: "Brazil",
@@ -232,7 +232,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     city: "Marília",
   })
 
-  await ScrapperHelper.init('Facebook => Ribeirao Preto', {
+  await ScrapperBotHelper.init('Facebook => Ribeirao Preto', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
   }, PagePattern.Feed, 'https://www.facebook.com/groups/923149231033037/', {
     country: "Brazil",
