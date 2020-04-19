@@ -34,11 +34,22 @@ export class BotHelper {
     BotHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
   }
 
+  public static finish = async () => {
+
+    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished!`)
+
+    // Make sure we close any puppeteer open instances, if that's the case
+    await ScrapperFacebook.clear(ScrapperFacebook.browser)
+
+    if (process.env.ENV === EnvType.Production) {
+      await GenericHelper.sleep(BotHelper.scrapperHelperFinishIntervalMs)
+    }
+
+  }
+
   public static initScrapper = async (name, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object) => {
 
     const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
-
-
 
     BotHelper.init(name)
 
@@ -75,18 +86,16 @@ export class BotHelper {
         break;
     }
 
-    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished!`)
+    BotHelper.finish();
 
-    // Make sure we close any puppeteer open instances, if that's the case
-    await ScrapperFacebook.clear()
-
-    if (process.env.ENV === EnvType.Production) {
-      await GenericHelper.sleep(BotHelper.scrapperHelperFinishIntervalMs)
-    }
   };
 
   public static initPoster = async (name, groupPostFunction) => {
+    BotHelper.init(name)
 
+    await groupPostFunction();
+
+    BotHelper.finish();
   }
 
   private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object) => {

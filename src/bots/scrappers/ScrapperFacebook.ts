@@ -1,10 +1,10 @@
-import { Browser, Page } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import { EnvType } from '../../constants/types/env.types';
 import { IPostSource } from '../../resources/Post/post.model';
 import { GenericHelper } from '../../utils/GenericHelper';
+import { PuppeteerBot } from '../classes/PuppeteerBot';
 import { BotHelper } from '../helpers/BotHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -12,29 +12,9 @@ import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 
 puppeteer.use(StealthPlugin())
 
-export class ScrapperFacebook {
+export class ScrapperFacebook extends PuppeteerBot {
 
-  public static browser: Browser | null = null
-  public static page: Page | null = null
 
-  public static clear = async () => {
-    try {
-      // This function clears memory by closing puppeteer open instances
-      if (ScrapperFacebook.browser !== null) {
-
-        await ScrapperFacebook.browser.close()
-
-        console.log(`🤖: Puppeteer: Closing opened browser`);
-
-        ScrapperFacebook.browser = null
-      }
-
-    }
-    catch (error) {
-      console.log('Failed to close scrapper browser!');
-      console.error(error);
-    }
-  }
 
 
   public static crawlPageFeed = async (link: string, postDataOverride?) => {
@@ -77,7 +57,7 @@ export class ScrapperFacebook {
     }
 
     if (ScrapperFacebook.browser) {
-      await ScrapperFacebook.clear()
+      await ScrapperFacebook.clear(ScrapperFacebook.browser)
     }
 
 
@@ -147,7 +127,7 @@ export class ScrapperFacebook {
 
     }))
 
-    await ScrapperFacebook.clear()
+    await ScrapperFacebook.clear(ScrapperFacebook.browser)
 
     await GenericHelper.sleep(5000)
 

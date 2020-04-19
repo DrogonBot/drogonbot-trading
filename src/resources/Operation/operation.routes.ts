@@ -3,7 +3,6 @@ import { Router } from 'express';
 import { BotHelper } from '../../bots/helpers/BotHelper';
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
 import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
-import { ScrapperOLX } from '../../bots/scrappers/ScrapperOLX';
 import { PagePattern } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
@@ -80,15 +79,6 @@ operationRouter.get('/fb-poster', [userAuthMiddleware, UserMiddleware.restrictUs
 });
 
 operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  await BotHelper.initScrapper('OLX => ES', {
-    crawlLinksFunction: ScrapperOLX.crawlLinks,
-    crawlPageDataFunction: ScrapperOLX.crawlPageData
-  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego?sf=1", {
-    country: "Brazil",
-    stateCode: "ES",
-  })
-
 
   await BotHelper.initScrapper('Vagas e Oportunidades ES', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
