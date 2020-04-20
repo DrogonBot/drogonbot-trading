@@ -9,22 +9,22 @@ import { Provider } from 'react-redux';
 
 import { NextSEOApp } from '../components/seo/NextSEOApp';
 import { MUITheme } from '../constants/UI/Theme.constant';
-import { AnalyticsHelper } from '../helpers/AnalyticsHelper';
+import { GAnalyticsHelper } from '../helpers/GAnalyticsHelper';
 import { store } from '../store/reducers/store';
 
 class MyApp extends App {
   public componentDidMount() {
     // @ts-ignore
     if (!window.GA_INITIALIZED) {
-      AnalyticsHelper.initGA();
+      GAnalyticsHelper.initGA();
       // @ts-ignore
       window.GA_INITIALIZED = true;
     }
-    AnalyticsHelper.logPageView();
+    GAnalyticsHelper.logPageView();
 
     // lets watch the router for every page change and trigger a page view appropriately
     Router.events.on("routeChangeComplete", () => {
-      AnalyticsHelper.logPageView();
+      GAnalyticsHelper.logPageView();
     });
   }
 

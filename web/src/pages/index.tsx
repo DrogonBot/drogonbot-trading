@@ -12,6 +12,7 @@ import { NextSEOIndex } from '../components/seo/NextSEOIndex';
 import { appEnv } from '../constants/Env.constant';
 import { colors } from '../constants/UI/Colors.constant';
 import { UI } from '../constants/UI/UI.constant';
+import { GAnalyticsHelper } from '../helpers/GAnalyticsHelper';
 import { TS } from '../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../store/actions/form.actions';
 import { postClearAll } from '../store/actions/post.action';
@@ -33,6 +34,10 @@ const Home = (props: IProps) => {
     console.log("Submitting search");
 
     e.preventDefault();
+
+    // track what was searched in GA
+
+    GAnalyticsHelper.logEvent("search", hookSearchField);
 
     // validate and set our keyword to the state
 

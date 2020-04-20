@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { UI } from '../../../constants/UI/UI.constant';
+import { GAnalyticsHelper } from '../../../helpers/GAnalyticsHelper';
 import { setSearchKey } from '../../../store/actions/ui.action';
 import { IProvince } from '../../../types/Form.types';
 import { ProvinceSelector } from '../../elements/form/ProvinceSelector';
@@ -20,8 +21,10 @@ export const SearchBar = (props: IProps) => {
 
   const [hookSearchInput, setHookSearchInput] = useState<string>("");
 
-  const onSubmit = async e => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+
+    GAnalyticsHelper.logEvent("search", hookSearchInput);
 
     await dispatch(setSearchKey("searchKeyword", hookSearchInput));
 
@@ -34,8 +37,8 @@ export const SearchBar = (props: IProps) => {
       query: {
         searchProvince,
         searchKeyword: hookSearchInput,
-        page: 1 // since its a new search, page will be always 1!
-      }
+        page: 1, // since its a new search, page will be always 1!
+      },
     });
   };
 
@@ -44,7 +47,7 @@ export const SearchBar = (props: IProps) => {
       <SearchBarInput
         type="text"
         title="Search"
-        onChange={e => setHookSearchInput(e.target.value)}
+        onChange={(e) => setHookSearchInput(e.target.value)}
         value={hookSearchInput}
       />
       <ProvinceContainer>
