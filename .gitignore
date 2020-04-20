@@ -15,7 +15,6 @@ scripts/sendgrid-data.json
 
 # Web container
 
-web/build
 web/node_modules
 web/src/constants/Env.constant.ts
 web/Dockerfile

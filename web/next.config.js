@@ -29,5 +29,3 @@ module.exports = {
     return config;
   },
 };
-
-module.exports = { distDir: "build" };
