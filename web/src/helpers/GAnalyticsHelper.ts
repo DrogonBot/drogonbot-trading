@@ -10,13 +10,14 @@ export class GAnalyticsHelper {
       return;
     }
 
+    console.log("📈 GA: Initializing");
     ReactGA.initialize(appEnv.monitoring.googleAnalytics.UA.web); // EmpregoUrgenteWeb property
   };
 
   public static logPageView = () => {
     if (ENV === EnvironmentTypes.Development) {
       console.log(
-        `📈 Skipping logging pageview for ${window.location.pathname} - we're running on development mode!`
+        `📈 GA: Skipping logging pageview for ${window.location.pathname} - we're running on development mode!`
       );
       return;
     }
@@ -36,7 +37,7 @@ export class GAnalyticsHelper {
 
     if (category && action) {
       console.log(
-        `📈 Logging event: category - ${category} | action: ${action}`
+        `📈 GA: Logging event: category - ${category} | action: ${action}`
       );
       ReactGA.event({ category, action });
     }
