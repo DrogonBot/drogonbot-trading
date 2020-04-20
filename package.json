@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --inspect=5858 --require ts-node/register --require dotenv/config ./src/index.ts",
+    "start": "node --require ts-node/register --require dotenv/config ./src/index.ts",
     "mongo": "/home/jonit/mongodb/bin/mongod --dbpath=/home/jonit/mongodb-data",
     "dev": "nodemon",
     "build": "tsc -p .",
