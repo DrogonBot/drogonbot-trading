@@ -3,14 +3,32 @@ import '../styles/app.scss';
 import { ThemeProvider } from '@material-ui/core/styles';
 import withRedux from 'next-redux-wrapper';
 import App from 'next/app';
+import { Router } from 'next/router';
 import React from 'react';
 import { Provider } from 'react-redux';
 
 import { NextSEOApp } from '../components/seo/NextSEOApp';
 import { MUITheme } from '../constants/UI/Theme.constant';
+import { AnalyticsHelper } from '../helpers/AnalyticsHelper';
 import { store } from '../store/reducers/store';
 
 class MyApp extends App {
+  public componentDidMount() {
+    // @ts-ignore
+    if (!window.GA_INITIALIZED) {
+      AnalyticsHelper.initGA();
+      // @ts-ignore
+      window.GA_INITIALIZED = true;
+    }
+    AnalyticsHelper.logPageView();
+
+    // lets watch the router for every page change
+
+    Router.events.on("routeChangeComplete", () => {
+      AnalyticsHelper.logPageView();
+    });
+  }
+
   public static async getInitialProps({ Component, ctx }) {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
