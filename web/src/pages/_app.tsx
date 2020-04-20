@@ -22,8 +22,7 @@ class MyApp extends App {
     }
     AnalyticsHelper.logPageView();
 
-    // lets watch the router for every page change
-
+    // lets watch the router for every page change and trigger a page view appropriately
     Router.events.on("routeChangeComplete", () => {
       AnalyticsHelper.logPageView();
     });
