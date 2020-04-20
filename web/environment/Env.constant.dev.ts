@@ -51,32 +51,35 @@ export const appEnv = {
       androidStandaloneAppClientId:
         "1053239267142-ejd570705r05ci422khsfsr5tt7qj2qs.apps.googleusercontent.com",
       iosStandaloneAppClientId:
-        "1053239267142-ujhhl1gajisdavkp81qbtb16kfthabsn.apps.googleusercontent.com"
+        "1053239267142-ujhhl1gajisdavkp81qbtb16kfthabsn.apps.googleusercontent.com",
     },
     // * Docs: https://docs.expo.io/versions/latest/sdk/facebook/
     facebook: {
       appId: "635354810586069",
-      appName: "Emprego Urgente"
-    }
+      appName: "Emprego Urgente",
+    },
   },
   admob: {
     // * Docs: https://docs.expo.io/versions/latest/sdk/admob/
     // * REMEMBER: you should also configure app.json with proper ids
     enabled: true,
-    adUnitID: "ca-app-pub-6892417234935549/5214954384"
+    adUnitID: "ca-app-pub-6892417234935549/5214954384",
   },
   onboarding: {
     // * Configure it at Onboarding.screen.tsx
-    enabled: false
+    enabled: false,
   },
   monitoring: {
     sentry: {
       dns: "https://f71fae3a5cb8473a9d7e2c9f584e5de9@sentry.io/1887002",
       projectName: "emprego-urgente",
-      organizationName: "emprego-urgente"
+      organizationName: "emprego-urgente",
     },
     googleAnalytics: {
-      UA: "UA-156516010-1"
-    }
-  }
+      UA: {
+        mobile: "UA-156516010-1",
+        web: "UA-156516010-2",
+      },
+    },
+  },
 };
