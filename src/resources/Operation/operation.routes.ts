@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { BotHelper } from '../../bots/helpers/BotHelper';
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
+import { PosterFacebook } from '../../bots/posters/PosterFacebook';
 import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
 import { PagePattern } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
@@ -69,7 +70,7 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 
 operationRouter.get('/fb-poster', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  // await BotHelper.initializePoster('Empregos ES', PosterFacebook.post)
+  await BotHelper.initPoster('Empregos ES', 'https://www.facebook.com/groups/empregoses/', PosterFacebook.postToGroup)
 
 
   return res.status(200).send({

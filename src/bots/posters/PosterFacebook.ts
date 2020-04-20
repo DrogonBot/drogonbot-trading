@@ -14,7 +14,7 @@ export class PosterFacebook extends PuppeteerBot {
 
 
 
-  public static crawlPageFeed = async (link: string, postDataOverride?) => {
+  public static postToGroup = async (link: string) => {
 
     console.log(`🔥 Starting PUPPETEER BOT 🔥`);
 

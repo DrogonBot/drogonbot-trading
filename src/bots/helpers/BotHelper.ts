@@ -93,10 +93,10 @@ export class BotHelper {
 
   };
 
-  public static initPoster = async (name, groupPostFunction) => {
+  public static initPoster = async (name, link, groupPostFunction) => {
     await BotHelper.init(name)
 
-    await groupPostFunction();
+    await groupPostFunction(link);
 
     BotHelper.finish();
   }
@@ -160,12 +160,18 @@ export class BotHelper {
         return false
       }
 
-
-
       if (BotHelper.owner) {
         // create a new post and save with post data!
-        const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id })
-        newPost.save()
+
+        try {
+          const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id })
+          newPost.save()
+        }
+        catch (error) {
+          console.error(error);
+        }
+
+
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
 
         if (ScrapperOLX.postLinks) {
