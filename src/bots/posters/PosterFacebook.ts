@@ -103,6 +103,7 @@ export class PosterFacebook extends PuppeteerBot {
 
 
     PosterFacebook.page = await PosterFacebook.browser.newPage();
+    await PosterFacebook.page.setDefaultNavigationTimeout(0);
 
     await PuppeteerBot.loginUser(bot, PosterFacebook.page);
 
