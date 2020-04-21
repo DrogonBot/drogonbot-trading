@@ -87,9 +87,8 @@ services:
       - "app-api"
       - "app-database"
     environment:
-      ENV: ${ENV}
-      VIRTUAL_HOST: empregourgente.com
-      LETSENCRYPT_HOST: empregourgente.com
+      VIRTUAL_HOST: empregourgente.com,vagasempregourgente.com
+      LETSENCRYPT_HOST: empregourgente.com,vagasempregourgente.com
       LETSENCRYPT_EMAIL: joaopaulofurtado@live.com
     networks:
       - db-network
