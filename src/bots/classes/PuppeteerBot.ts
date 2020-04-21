@@ -2,7 +2,7 @@ import { Browser, Page } from 'puppeteer';
 import { UserAgent } from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
-import { IProxyItem } from '../types/bots.types';
+import { IBot, IProxyItem } from '../types/bots.types';
 
 
 
@@ -26,7 +26,7 @@ export class PuppeteerBot {
     }
   }
 
-  public static getOptions = (proxyItem: IProxyItem, userAgent: UserAgent) => {
+  public static getOptions = (proxyItem: IProxyItem, userAgent: UserAgent, extraOptions?) => {
     switch (process.env.ENV) {
       case EnvType.Development:
 
@@ -38,7 +38,8 @@ export class PuppeteerBot {
             '--disable-setuid-sandbox',
             '--no-zygote',
             '--disable-dev-shm-usage'
-          ]
+          ],
+          ...extraOptions
         }
 
 
@@ -57,10 +58,50 @@ export class PuppeteerBot {
             '--ignore-certificate-errors',
             '--ignore-certificate-errors-spki-list',
             `--proxy-server=http://${proxyItem.ip}:${proxyItem.port}`,
-            `'--user-agent="${userAgent}"'`]
+            `'--user-agent="${userAgent}"'`],
+          ...extraOptions
         }
 
     }
   }
+
+  public static getRandomDelay = () => Math.floor(Math.random() * 10)
+
+  public static loginUser = async (bot: IBot, page: Page) => {
+
+    try {
+      await page.goto('https://m.facebook.com/login/', { waitUntil: 'networkidle2' })
+
+      // capture page console for debugging
+      page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+
+
+
+      console.log(`Logging in bot ${bot.email}...`);
+
+      // Fill login and password
+
+      await page.type('#m_login_email', bot.email); // Types slower, like a user
+      await page.type('#m_login_password', bot.password); // Types slower, like a user
+
+
+      await page.click('button[name="login"]');
+
+      await page.waitForNavigation(); // it will change page, so wait
+
+      await page.waitForSelector('._55sr');
+
+      await page.click('._55sr') // do not save password button
+
+      console.log('Finished login!');
+
+    }
+    catch (error) {
+      console.log('Failed to login bot!');
+      console.error(error);
+    }
+
+  }
+
 
 }

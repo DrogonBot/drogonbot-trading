@@ -8,7 +8,7 @@ import { GenericHelper } from '../../utils/GenericHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
-import { ICrawlerFunctions, IProxyItem, PagePattern } from '../types/bots.types';
+import { IBot, ICrawlerFunctions, IProxyItem, PagePattern } from '../types/bots.types';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
 
@@ -93,10 +93,10 @@ export class BotHelper {
 
   };
 
-  public static initPoster = async (name, link, groupPostFunction) => {
-    await BotHelper.init(name)
+  public static initPoster = async (bot: IBot, link: string, post: string, groupPostFunction) => {
+    await BotHelper.init(bot.name)
 
-    await groupPostFunction(link);
+    await groupPostFunction(bot, link, post);
 
     BotHelper.finish();
   }

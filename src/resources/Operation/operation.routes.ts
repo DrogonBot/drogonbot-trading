@@ -1,10 +1,11 @@
 import { Router } from 'express';
 
+import botsAccounts from '../../bots/data/botsAccounts.json';
 import { BotHelper } from '../../bots/helpers/BotHelper';
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
 import { PosterFacebook } from '../../bots/posters/PosterFacebook';
 import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
-import { PagePattern } from '../../bots/types/bots.types';
+import { IBot, PagePattern } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
@@ -70,7 +71,18 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 
 operationRouter.get('/fb-poster', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  await BotHelper.initPoster('Empregos ES', 'https://www.facebook.com/groups/empregoses/', PosterFacebook.postToGroup)
+  const bots: IBot[] = botsAccounts;
+  const randomBot = bots[Math.floor(bots.length * Math.random())]
+  const randomAvailableGroup = randomBot.availableGroups[Math.floor(randomBot.availableGroups.length * Math.random())]
+  const randomGroup = randomAvailableGroup.groups[Math.floor(Math.random() * randomAvailableGroup.groups.length)]
+  const randomPost = randomBot.randomPosts[Math.floor(Math.random() * randomBot.randomPosts.length)]
+
+  console.log('Initializing posting with...');
+  console.log(randomBot.name);
+  console.log(randomGroup);
+  console.log(randomPost);
+
+  await BotHelper.initPoster(randomBot, randomGroup, randomPost, PosterFacebook.postToGroup)
 
 
   return res.status(200).send({

@@ -23,3 +23,16 @@ export interface IScrapperLink {
   link: string,
   scrapped: boolean
 }
+
+export interface IBotAvailableGroups {
+  stateCode: string,
+  groups: string[]
+}
+
+export interface IBot {
+  name: string,
+  email: string,
+  password: string,
+  availableGroups: IBotAvailableGroups[],
+  randomPosts: string[]
+}
