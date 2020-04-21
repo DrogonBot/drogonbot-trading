@@ -40,7 +40,11 @@ export class PosterFacebook extends PuppeteerBot {
 
         const randomJobPost: IPost = popularJobPosts[Math.floor(Math.random() * popularJobPosts.length)]
 
-        post = `${randomJobPost.title}
+        post = `💼 ${randomJobPost.title} 💼
+
+        ✔️ CURTA e COMPARTILHE o post para postarmos mais vagas como essa!
+        ✔️ Se interessou? Comente "INTERESSADO(A)" abaixo!
+
         https://vagasempregourgente.com/posts/${randomJobPost.slug}
         `
 
