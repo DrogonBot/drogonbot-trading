@@ -2,6 +2,7 @@ import moment = require('moment');
 import cron from 'node-cron';
 
 import { BotHelper } from '../bots/helpers/BotHelper';
+import { PosterFacebook } from '../bots/posters/PosterFacebook';
 import { ScrapperFacebook } from '../bots/scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../bots/scrappers/ScrapperOLX';
 import { PagePattern } from '../bots/types/bots.types';
@@ -10,6 +11,7 @@ import { IPostApplication, IPostApplicationStatus, Post } from '../resources/Pos
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
 import { LanguageHelper } from '../utils/LanguageHelper';
+
 
 export class JobsCron {
   public static submitApplications() {
@@ -467,6 +469,33 @@ export class JobsCron {
 
 
     });
+
+
+  }
+
+  public static initializeJobPoster = () => {
+    cron.schedule("0 */8 * * *", async () => {
+
+      console.log(`🤖: Starting job poster bot - MARKETING POST`);
+
+
+      PosterFacebook.triggerMarketingPost();
+
+
+
+    })
+    cron.schedule("0 0 * * *", async () => {
+
+      // Random posts are useful to avoid a bot like behaviour in our account.
+      console.log(`🤖: Starting job poster bot - RANDOM POST`);
+
+      PosterFacebook.triggerRandomPostComments();
+
+
+
+
+    })
+
 
 
   }

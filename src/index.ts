@@ -80,6 +80,10 @@ switch (process.env.ENV) {
     JobsCron.jobCrawlersCleaners();
     JobsCron.initializeJobCrawlers();
 
+    // Job posters
+
+    JobsCron.initializeJobPoster();
+
     break;
 }
 
