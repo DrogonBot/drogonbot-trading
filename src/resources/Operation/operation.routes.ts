@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
 import { BotHelper } from '../../bots/helpers/BotHelper';
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
-import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
+import { RecurPostSocialSchedulerBot } from '../../bots/schedulers/RecurPostSocialSchedulerBot';
 import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
 import { PagePattern } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
@@ -72,10 +72,10 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 operationRouter.get('/poster', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
   // schedule a random post
-  const randomPost = await PuppeteerBot.getRandomPost("ES")
+  const randomPost = await PuppeteerBot.getRandomPost("SP")
   if (randomPost) {
-    await ZohoSocialSchedulerBot.schedulePost(randomPost)
-    // await RecurPostSocialSchedulerBot.schedulePost(randomPost);
+    // await ZohoSocialSchedulerBot.schedulePost(randomPost)
+    await RecurPostSocialSchedulerBot.schedulePost(randomPost);
   }
 
   return res.status(200).send({

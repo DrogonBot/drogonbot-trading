@@ -31,7 +31,8 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
       ignoreHTTPSErrors: true,
       slowMo: 50,
       timeout: 0,
-      executablePath: 'google-chrome-unstable',
+      // executablePath: 'google-chrome-unstable',
+      userDataDir: "./src/bots/data/recurpost_session_data",
       headless: true,
       args: ['--no-sandbox',
         '--disable-setuid-sandbox',
@@ -49,11 +50,20 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
     page.setDefaultNavigationTimeout(0);
 
 
-    await RecurPostSocialSchedulerBot.loginRecurPost(page);
+    // go to create post page
+    await page.goto('https://recurpost.com/signin', { waitUntil: 'networkidle2' })
+
+
+    const needsLogin = await page.$('#loginemail_address') // if this input is found (if it does not redirect us automatically to the dashboard), it means we should login!
+    if (needsLogin) {
+      console.log('🤖: User needs login...');
+      await RecurPostSocialSchedulerBot.loginRecurPost(page)
+    }
+
 
     // Publishing
 
-    console.log('🤖 Clicking on share something input');
+    console.log('🤖: Clicking on share something input');
     await page.waitForSelector('.add_content_btn .btn')
     await page.click('.add_content_btn .btn')
 
@@ -68,7 +78,7 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
 
     await page.waitFor(10000) // wait for a while, to fb scrap image
 
-    console.log('🤖 Scheduling post');
+    console.log('🤖: Scheduling post');
     await page.waitForSelector('.custom-control-label[data-target*=schedule-post]')
     await page.click('.custom-control-label[data-target*=schedule-post]')
 
@@ -78,7 +88,7 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
 
     await page.waitFor(1000)
 
-    console.log('🤖 Shortening url');
+    console.log('🤖: Shortening url');
     await page.waitForSelector('label[data-target=".shorten-url"]')
     await page.click('label[data-target=".shorten-url"]')
     await page.waitForSelector('label[for=google_shorten_radio]')
@@ -88,10 +98,10 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
     await page.waitFor(1000)
 
 
-    console.log('🤖 Scheduling...');
+    console.log('🤖: Scheduling...');
     await page.click('#pc_schedulebtn')
 
-    console.log('🤖 Done!');
+    console.log('🤖: Done!');
 
     if (RecurPostSocialSchedulerBot.browser) {
       await RecurPostSocialSchedulerBot.clear(RecurPostSocialSchedulerBot.browser)
