@@ -1,8 +1,11 @@
-import puppeteer, { Page } from 'puppeteer';
+import { Page } from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import { PuppeteerBot } from '../classes/PuppeteerBot';
 import { RECURPOST_CREDENTIALS } from '../data/loginCredentials';
 
+puppeteer.use(StealthPlugin())
 export class RecurPostSocialSchedulerBot extends PuppeteerBot {
 
   public static loginRecurPost = async (page: Page) => {
@@ -65,7 +68,7 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
     await page.type('.newpost_content_textarea', postContent)
 
 
-    await page.waitFor(2000)
+    await page.waitFor(10000) // wait for a while, to fb scrap image
 
     console.log('🤖 Scheduling post');
     await page.waitForSelector('.custom-control-label[data-target*=schedule-post]')
@@ -78,10 +81,11 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
     await page.waitFor(1000)
 
     console.log('🤖 Shortening url');
+    await page.waitForSelector('label[data-target=".shorten-url"]')
     await page.click('label[data-target=".shorten-url"]')
-    await page.waitFor(1000)
+    await page.waitForSelector('label[for=google_shorten_radio]')
     await page.click('label[for=google_shorten_radio]')
-    await page.waitFor(1000)
+    await page.waitForSelector('#google_short_url_btn')
     await page.click('#google_short_url_btn')
     await page.waitFor(1000)
 

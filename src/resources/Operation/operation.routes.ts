@@ -85,31 +85,21 @@ operationRouter.get('/poster', [userAuthMiddleware, UserMiddleware.restrictUserT
 
 operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  await BotHelper.initScrapper('Vagas e Oportunidades ES', {
+  await BotHelper.initScrapper('Facebook => Empregos SP', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-  }, PagePattern.Feed, 'https://www.facebook.com/groups/jo.darc.13/', {
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosessp/', {
     country: "Brazil",
-    stateCode: "ES",
-    city: "Vitória",
+    stateCode: "SP",
+    city: "São Paulo",
   })
 
 
-  await BotHelper.initScrapper('Facebook => Emprego ES', {
+  await BotHelper.initScrapper('Facebook => Vagas de Empregos SP', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-  }, PagePattern.Feed, 'https://www.facebook.com/groups/470386613006396/', {
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/508765489527560/', {
     country: "Brazil",
-    stateCode: "ES",
-    city: "Vitória",
-  })
-
-
-
-  await BotHelper.initScrapper('Facebook => Empregos Vitoria ES', {
-    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-  }, PagePattern.Feed, 'https://www.facebook.com/groups/462576003935602', {
-    country: "Brazil",
-    stateCode: "ES",
-    city: "Vitória",
+    stateCode: "SP",
+    city: "São Paulo",
   })
 
 

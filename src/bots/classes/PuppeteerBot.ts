@@ -108,6 +108,18 @@ export class PuppeteerBot {
 
   }
 
+  public static preparePostContent = (post: IPost) => {
+
+    return `💼 ${post.title} 💼
+
+    ✔️ CURTA e COMPARTILHE o post para postarmos mais vagas como essa!
+    ✔️ Se interessou? Comente "INTERESSADO(A)" abaixo!
+
+    https://vagasempregourgente.com/posts/${post.slug}
+    `
+
+  }
+
   public static getRandomPost = async (stateCode: string) => {
     try {
 
@@ -120,13 +132,7 @@ export class PuppeteerBot {
 
       const randomJobPost: IPost = popularJobPosts[Math.floor(Math.random() * popularJobPosts.length)]
 
-      return `💼 ${randomJobPost.title} 💼
-
-      ✔️ CURTA e COMPARTILHE o post para postarmos mais vagas como essa!
-      ✔️ Se interessou? Comente "INTERESSADO(A)" abaixo!
-
-      https://vagasempregourgente.com/posts/${randomJobPost.slug}
-      `
+      return PuppeteerBot.preparePostContent(randomJobPost)
 
 
     }
