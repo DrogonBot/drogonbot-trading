@@ -2,6 +2,8 @@ import { Browser, Page } from 'puppeteer';
 import { UserAgent } from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
+import { IPost, Post } from '../../resources/Post/post.model';
+import botsAccounts from '../data/botsAccounts.json';
 import {
   FB_LOGIN_EMAIL_INPUT,
   FB_LOGIN_LOGIN_CTA,
@@ -73,7 +75,7 @@ export class PuppeteerBot {
 
   public static getRandomDelay = () => Math.floor(Math.random() * 10)
 
-  public static loginUser = async (bot: IBot, page: Page) => {
+  public static loginUserFacebook = async (bot: IBot, page: Page) => {
 
     try {
       await page.goto('https://m.facebook.com/login/', { waitUntil: 'networkidle2' })
@@ -102,6 +104,62 @@ export class PuppeteerBot {
     catch (error) {
       console.log('Failed to login bot!');
       console.error(error);
+    }
+
+  }
+
+  public static getRandomPost = async (stateCode: string) => {
+    try {
+
+      const popularJobPosts = await Post.find({
+        stateCode,
+        jobRoles: { "$in": ['Atendente', 'Vendedor', 'Recepcionista', 'Auxiliar Administrativo', 'Administrador'] }
+      })
+
+      // select one of these popularJobPosts randomly
+
+      const randomJobPost: IPost = popularJobPosts[Math.floor(Math.random() * popularJobPosts.length)]
+
+      return `💼 ${randomJobPost.title} 💼
+
+      ✔️ CURTA e COMPARTILHE o post para postarmos mais vagas como essa!
+      ✔️ Se interessou? Comente "INTERESSADO(A)" abaixo!
+
+      https://vagasempregourgente.com/posts/${randomJobPost.slug}
+      `
+
+
+    }
+    catch (error) {
+      console.error(error);
+      console.log('Failed to fetch popular job posts');
+    }
+  }
+
+  public static getRandomData = async (isMarketingPost: boolean) => {
+    const bots: IBot[] = botsAccounts;
+
+    const randomBot = bots[Math.floor(bots.length * Math.random())]
+    const randomAvailableGroup = randomBot.availableGroups[Math.floor(randomBot.availableGroups.length * Math.random())]
+
+    const randomGroup = randomAvailableGroup.groups[Math.floor(Math.random() * randomAvailableGroup.groups.length)]
+
+    let post;
+    if (!isMarketingPost) {
+      post = randomBot.randomPosts[Math.floor(Math.random() * randomBot.randomPosts.length)]
+    } else {
+
+      // get posts from the most popular job roles only
+      post = PuppeteerBot.getRandomPost(randomAvailableGroup.stateCode)
+
+
+    }
+
+
+    return {
+      randomBot,
+      randomGroup,
+      post
     }
 
   }

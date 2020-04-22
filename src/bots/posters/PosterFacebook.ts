@@ -1,8 +1,6 @@
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
-import botsAccounts from '../../bots/data/botsAccounts.json';
-import { IPost, Post } from '../../resources/Post/post.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
@@ -16,57 +14,7 @@ puppeteer.use(StealthPlugin())
 
 export class PosterFacebook extends PuppeteerBot {
 
-  public static getRandomData = async (isMarketingPost: boolean) => {
-    const bots: IBot[] = botsAccounts;
 
-    const randomBot = bots[Math.floor(bots.length * Math.random())]
-    const randomAvailableGroup = randomBot.availableGroups[Math.floor(randomBot.availableGroups.length * Math.random())]
-
-    const randomGroup = randomAvailableGroup.groups[Math.floor(Math.random() * randomAvailableGroup.groups.length)]
-
-    let post;
-    if (!isMarketingPost) {
-      post = randomBot.randomPosts[Math.floor(Math.random() * randomBot.randomPosts.length)]
-    } else {
-
-      // get posts from the most popular job roles only
-
-      try {
-
-        const popularJobPosts = await Post.find({
-          stateCode: randomAvailableGroup.stateCode,
-          jobRoles: { "$in": ['Atendente', 'Vendedor', 'Recepcionista', 'Auxiliar Administrativo', 'Administrador'] }
-        })
-
-        // select one of these popularJobPosts randomly
-
-        const randomJobPost: IPost = popularJobPosts[Math.floor(Math.random() * popularJobPosts.length)]
-
-        post = `💼 ${randomJobPost.title} 💼
-
-        ✔️ CURTA e COMPARTILHE o post para postarmos mais vagas como essa!
-        ✔️ Se interessou? Comente "INTERESSADO(A)" abaixo!
-
-        https://vagasempregourgente.com/posts/${randomJobPost.slug}
-        `
-
-
-      }
-      catch (error) {
-        console.error(error);
-        console.log('Failed to fetch popular job posts');
-      }
-
-    }
-
-
-    return {
-      randomBot,
-      randomGroup,
-      post
-    }
-
-  }
 
   public static triggerMarketingPost = async () => {
     const { randomBot, randomGroup, post } = await PosterFacebook.getRandomData(true);
@@ -100,13 +48,13 @@ export class PosterFacebook extends PuppeteerBot {
         await PosterFacebook.clear(PosterFacebook.browser)
       }
 
-      PosterFacebook.browser = await puppeteer.launch(ScrapperFacebook.getOptions({ ip: BotHelper.chosenProxy.ip, port: BotHelper.chosenProxy.port }, BotHelper.userAgent, { slowMo: 50 }))
+      PosterFacebook.browser = await puppeteer.launch(ScrapperFacebook.getOptions({ ip: BotHelper.chosenProxy.ip, port: BotHelper.chosenProxy.port }, BotHelper.userAgent, { slowMo: 50, timeout: 0 }))
 
 
       PosterFacebook.page = await PosterFacebook.browser.newPage();
       await PosterFacebook.page.setDefaultNavigationTimeout(60000 * 2);
 
-      await PuppeteerBot.loginUser(bot, PosterFacebook.page);
+      await PuppeteerBot.loginUserFacebook(bot, PosterFacebook.page);
 
       // go to create post page
       console.log(`🤖: Vising group page: ${link}`);

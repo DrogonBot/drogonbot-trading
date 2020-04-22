@@ -1,8 +1,9 @@
 import moment = require('moment');
 import cron from 'node-cron';
 
+import { PuppeteerBot } from '../bots/classes/PuppeteerBot';
 import { BotHelper } from '../bots/helpers/BotHelper';
-import { PosterFacebook } from '../bots/posters/PosterFacebook';
+import { RecurPostSocialSchedulerBot } from '../bots/schedulers/RecurPostSocialSchedulerBot';
 import { ScrapperFacebook } from '../bots/scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../bots/scrappers/ScrapperOLX';
 import { PagePattern } from '../bots/types/bots.types';
@@ -473,31 +474,44 @@ export class JobsCron {
 
   }
 
-  public static initializeJobPoster = () => {
+  // public static initializeJobPoster = () => {
+  //   cron.schedule("0 */8 * * *", async () => {
+
+  //     console.log(`🤖: Starting job poster bot - MARKETING POST`);
+
+
+  //     PosterFacebook.triggerMarketingPost();
+
+
+
+  //   })
+  //   cron.schedule("0 0 * * *", async () => {
+
+  //     // Random posts are useful to avoid a bot like behaviour in our account.
+  //     console.log(`🤖: Starting job poster bot - RANDOM POST`);
+
+  //     PosterFacebook.triggerRandomPostComments();
+
+
+
+
+  //   })
+
+
+
+  // }
+
+  public static initializeJobPostSchedulers = () => {
     cron.schedule("0 */8 * * *", async () => {
 
-      console.log(`🤖: Starting job poster bot - MARKETING POST`);
+      // ! Recurpost only supports SP groups for now!
 
-
-      PosterFacebook.triggerMarketingPost();
-
-
-
-    })
-    cron.schedule("0 0 * * *", async () => {
-
-      // Random posts are useful to avoid a bot like behaviour in our account.
-      console.log(`🤖: Starting job poster bot - RANDOM POST`);
-
-      PosterFacebook.triggerRandomPostComments();
-
-
-
+      const randomPost = await PuppeteerBot.getRandomPost("SP")
+      if (randomPost) {
+        await RecurPostSocialSchedulerBot.schedulePost(randomPost);
+      }
 
     })
-
-
-
   }
 
 }

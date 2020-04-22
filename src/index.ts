@@ -84,6 +84,9 @@ switch (process.env.ENV) {
 
     // JobsCron.initializeJobPoster();
 
+    // Job post Schedulers
+    JobsCron.initializeJobPostSchedulers()
+
     break;
 }
 
