@@ -19,3 +19,8 @@ web/node_modules
 web/src/constants/Env.constant.ts
 web/Dockerfile
 web/.next
+
+
+# Bots
+./src/bots/data/zoho_session_data
+./src/bots/data/recurpost_session_data
