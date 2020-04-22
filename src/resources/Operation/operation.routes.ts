@@ -70,7 +70,7 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 
 operationRouter.get('/fb-poster', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  PosterFacebook.triggerMarketingPost();
+  await PosterFacebook.triggerMarketingPost();
 
   return res.status(200).send({
     status: 'ok'

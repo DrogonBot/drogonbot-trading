@@ -1,23 +1,5 @@
 [
   {
-    "name": "Richard Dias",
-    "email": "richarddias223123@gmail.com",
-    "password": "32258190",
-    "availableGroups": [
-      {
-        "stateCode": "ES",
-        "groups": [
-          "https://m.facebook.com/groups/empregoses/",
-          "https://m.facebook.com/groups/255725088176388/"
-        ]
-      }
-    ],
-    "randomPosts": [
-      "Procuro vaga de emprego de Marceneiro. Sou marceneiro Profissional fino acabamento , tenho experiência em fabricação de móveis. Trabalho com Projetos",
-      "Procuro bico de pedreiro só final de semana"
-    ]
-  },
-  {
     "name": "Julia Almeida",
     "email": "julia.almeida23241@gmail.com",
     "password": "32258190",
@@ -25,7 +7,9 @@
       {
         "stateCode": "ES",
         "groups": [
-          "https://m.facebook.com/groups/empregoses/"
+          "https://m.facebook.com/groups/empregoses/",
+          "https://m.facebook.com/groups/470386613006396/",
+          "https://m.facebook.com/groups/430777620452719/"
         ]
       }
     ],

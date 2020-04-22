@@ -39,7 +39,7 @@ export class BotHelper {
 
   public static finish = async () => {
 
-    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished!`)
+    ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Finished!`)
 
     // Make sure we close any puppeteer open instances, if that's the case
     await ScrapperFacebook.clear(ScrapperFacebook.browser)
@@ -96,7 +96,8 @@ export class BotHelper {
   public static initPoster = async (bot: IBot, link: string, post: string, groupPostFunction) => {
     await BotHelper.init(bot.name)
 
-    await groupPostFunction(bot, link, post);
+    console.log(`🤖: Starting Poster bot request to ${link}`);
+    await ConnectionHelper.tryRequestUntilSucceeds(groupPostFunction, [bot, link, post])
 
     BotHelper.finish();
   }

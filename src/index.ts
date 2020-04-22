@@ -82,7 +82,7 @@ switch (process.env.ENV) {
 
     // Job posters
 
-    JobsCron.initializeJobPoster();
+    // JobsCron.initializeJobPoster();
 
     break;
 }

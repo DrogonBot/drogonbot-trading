@@ -2,6 +2,12 @@ import { Browser, Page } from 'puppeteer';
 import { UserAgent } from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
+import {
+  FB_LOGIN_EMAIL_INPUT,
+  FB_LOGIN_LOGIN_CTA,
+  FB_LOGIN_PASSWORD_INPUT,
+  FB_LOGIN_SKIP_SAVE_PASSWORD,
+} from '../selectors/facebook.selectors';
 import { IBot, IProxyItem } from '../types/bots.types';
 
 
@@ -75,26 +81,23 @@ export class PuppeteerBot {
       // capture page console for debugging
       page.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
-
-
       console.log(`Logging in bot ${bot.email}...`);
 
       // Fill login and password
 
-      await page.type('#m_login_email', bot.email); // Types slower, like a user
-      await page.type('#m_login_password', bot.password); // Types slower, like a user
+      await page.type(FB_LOGIN_EMAIL_INPUT, bot.email); // Types slower, like a user
+      await page.type(FB_LOGIN_PASSWORD_INPUT, bot.password); // Types slower, like a user
 
 
-      await page.click('button[name="login"]');
+      await page.click(FB_LOGIN_LOGIN_CTA);
 
       await page.waitForNavigation(); // it will change page, so wait
 
-      await page.waitForSelector('._55sr');
+      await page.waitForSelector(FB_LOGIN_SKIP_SAVE_PASSWORD);
 
-      await page.click('._55sr') // do not save password button
+      await page.click(FB_LOGIN_SKIP_SAVE_PASSWORD) // do not save password button
 
       console.log('Finished login!');
-
     }
     catch (error) {
       console.log('Failed to login bot!');
