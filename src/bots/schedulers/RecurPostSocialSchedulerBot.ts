@@ -38,8 +38,6 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
         '--no-zygote',
         '--disable-dev-shm-usage',
         '--start-maximized',
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
       ]
     })
     const browser = RecurPostSocialSchedulerBot.browser

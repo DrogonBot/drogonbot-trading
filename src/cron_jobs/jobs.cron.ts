@@ -4,6 +4,7 @@ import cron from 'node-cron';
 import { PuppeteerBot } from '../bots/classes/PuppeteerBot';
 import { BotHelper } from '../bots/helpers/BotHelper';
 import { RecurPostSocialSchedulerBot } from '../bots/schedulers/RecurPostSocialSchedulerBot';
+import { ZohoSocialSchedulerBot } from '../bots/schedulers/ZohoSocialSchedulerBot';
 import { ScrapperFacebook } from '../bots/scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../bots/scrappers/ScrapperOLX';
 import { PagePattern } from '../bots/types/bots.types';
@@ -506,9 +507,14 @@ export class JobsCron {
 
       // ! Recurpost only supports SP groups for now!
 
-      const randomPost = await PuppeteerBot.getRandomPost("SP")
-      if (randomPost) {
-        await RecurPostSocialSchedulerBot.schedulePost(randomPost);
+      const randomPostSP = await PuppeteerBot.getRandomPost("SP")
+      if (randomPostSP) {
+        await RecurPostSocialSchedulerBot.schedulePost(randomPostSP);
+      }
+
+      const randomPostES = await PuppeteerBot.getRandomPost("ES")
+      if (randomPostES) {
+        await ZohoSocialSchedulerBot.schedulePost(randomPostES);
       }
 
     })

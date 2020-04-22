@@ -112,8 +112,7 @@ export class PuppeteerBot {
 
     return `💼 ${post.title} 💼
 
-    ✔️ CURTA e COMPARTILHE o post para postarmos mais vagas como essa!
-    ✔️ Se interessou? Comente "INTERESSADO(A)" abaixo!
+    ✔️ Se interessou? Deixe uma mensagem abaixo!
 
     https://vagasempregourgente.com/posts/${post.slug}
     `
