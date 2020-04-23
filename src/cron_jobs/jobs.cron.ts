@@ -505,7 +505,6 @@ export class JobsCron {
   public static initializeJobPostSchedulers = () => {
     cron.schedule("0 */8 * * *", async () => {
 
-      // ! Recurpost only supports SP groups for now!
 
       const randomPostSP = await PuppeteerBot.getRandomPost("SP")
       if (randomPostSP) {

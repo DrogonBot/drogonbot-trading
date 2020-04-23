@@ -222,7 +222,8 @@ userSchema.methods.registerUser = async function (req?) {
       newAccountEmailForReference: LanguageHelper.getLanguageString('user', 'newAccountEmailForReference'),
       newAccountEmailBottom: LanguageHelper.getLanguageString('user', 'newAccountEmailBottom', {
         appName: process.env.APP_NAME
-      })
+      }),
+      newAccountWhatsAppGroup: LanguageHelper.getLanguageString('user', 'newAccountWhatsAppGroup')
     }
   );
 

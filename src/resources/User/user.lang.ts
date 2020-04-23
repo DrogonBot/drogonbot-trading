@@ -172,6 +172,20 @@ export const strings = {
     eng: "Thank you - {{appName}} team",
     ptBr: "Obrigado - Equipe {{appName}}"
   },
+  newAccountWhatsAppGroup: {
+    eng: `Tip: join our communities in
+         <a
+           href = "https://empregourgente-4.github.io/eu4-whatsapp-group/?state=vancouver&language=eng"
+           > Whatsapp </ a
+         >
+         for even greater chances of getting a new job!`,
+    ptBr: `Dica: participe de nossas comunidades no
+    <a
+      href="https://empregourgente-4.github.io/eu4-whatsapp-group/"
+      >Whatsapp</a
+    >
+    para ainda maiores chances de conseguir sua vaga!`
+  },
   cronInactiveUserReminderText: {
     eng: "{{firstName}}, have you checked our latest job posts? Give it a look! You might find something interesting!",
     ptBr: "Ei {{firstName}}, ficou sabendo sobre nossas últimas vagas de emprego adicionadas? Dê uma olhada!"
