@@ -31,9 +31,9 @@ const Home = (props: IProps) => {
   const dispatch = useDispatch();
 
   const onSubmit = async (e) => {
-    console.log("Submitting search");
-
     e.preventDefault();
+
+    console.log("Submitting search");
 
     // track what was searched in GA
 

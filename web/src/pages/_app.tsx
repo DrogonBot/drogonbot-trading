@@ -3,10 +3,11 @@ import '../styles/app.scss';
 import { ThemeProvider } from '@material-ui/core/styles';
 import withRedux from 'next-redux-wrapper';
 import App from 'next/app';
-import { Router } from 'next/router';
 import React from 'react';
 import { Provider } from 'react-redux';
 
+import { LinearLoadingTop } from '../components/elements/ui/LinearLoadingTop';
+import { RouterEventsWatcher } from '../components/elements/ui/RouterEvents';
 import { NextSEOApp } from '../components/seo/NextSEOApp';
 import { MUITheme } from '../constants/UI/Theme.constant';
 import { GAnalyticsHelper } from '../helpers/GAnalyticsHelper';
@@ -21,11 +22,6 @@ class MyApp extends App {
       window.GA_INITIALIZED = true;
     }
     GAnalyticsHelper.logPageView();
-
-    // lets watch the router for every page change and trigger a page view appropriately
-    Router.events.on("routeChangeComplete", () => {
-      GAnalyticsHelper.logPageView();
-    });
   }
 
   public static async getInitialProps({ Component, ctx }) {
@@ -45,7 +41,9 @@ class MyApp extends App {
     return (
       <Provider store={initialStore}>
         <NextSEOApp />
+        <RouterEventsWatcher />
         <ThemeProvider theme={MUITheme}>
+          <LinearLoadingTop />
           <Component {...pageProps} />
         </ThemeProvider>
       </Provider>
