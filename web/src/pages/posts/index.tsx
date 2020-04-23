@@ -43,8 +43,8 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
       query: {
         searchProvince,
         searchKeyword,
-        page
-      }
+        page,
+      },
     });
   };
 
@@ -92,7 +92,7 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
 
 export default Posts;
 
-Posts.getInitialProps = async ctx => {
+Posts.getInitialProps = async (ctx) => {
   await ctx.store.dispatch(loadCountryProvinces(appEnv.appCountry));
   console.log("Loading provinces...");
   const provinces = ctx.store.getState().formReducer.states; // populate province dropdown
@@ -110,7 +110,7 @@ Posts.getInitialProps = async ctx => {
   return {
     provinces,
     posts,
-    paginationData
+    paginationData,
   };
 };
 
