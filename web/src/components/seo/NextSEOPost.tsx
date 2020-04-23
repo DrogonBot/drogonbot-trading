@@ -21,13 +21,15 @@ export const NextSEOPost = ({
   stateCode,
   sector,
 }: IProps) => {
+  const seoTitle = `Vaga para ${jobRole} em ${city}, ${stateCode} - ${title}`;
+
   return (
     <NextSeo
-      title={`Vaga para ${jobRole} em ${city}, ${stateCode}`}
+      title={seoTitle}
       description={description}
       openGraph={{
         url: link,
-        title: `Vaga para ${jobRole} em ${city}, ${stateCode}`,
+        title: seoTitle,
         description,
         images: [
           {
