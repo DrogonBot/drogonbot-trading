@@ -124,7 +124,7 @@ export class PuppeteerBot {
 
       const popularJobPosts = await Post.find({
         stateCode,
-        jobRoles: { "$in": ['Atendente', 'Vendedor', 'Recepcionista', 'Auxiliar Administrativo', 'Administrador'] }
+        // jobRoles: { "$in": ['Atendente', 'Vendedor', 'Recepcionista', 'Auxiliar Administrativo', 'Administrador'] }
       })
 
       // select one of these popularJobPosts randomly

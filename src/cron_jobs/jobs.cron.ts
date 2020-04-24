@@ -503,7 +503,7 @@ export class JobsCron {
   // }
 
   public static initializeJobPostSchedulers = () => {
-    cron.schedule("0 */8 * * *", async () => {
+    cron.schedule("0 */5 * * *", async () => {
 
 
       const randomPostSP = await PuppeteerBot.getRandomPost("SP")
