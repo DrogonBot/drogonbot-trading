@@ -84,6 +84,8 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
     await page.waitForSelector('.postInput');
     await page.type('.postInput', postContent)
 
+    await page.waitFor(10000)
+
     console.log('🤖: Scheduling post');
     await (await page.waitForSelector('[onclick*=customq]')).click();
     await page.click("[onclick*=publish_postnow]")
