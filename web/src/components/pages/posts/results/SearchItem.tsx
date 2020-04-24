@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import styled from 'styled-components';
 
 import { colors } from '../../../../constants/UI/Colors.constant';
@@ -32,11 +31,11 @@ export const SearchItem = ({
   return (
     <Container>
       <Breadcumb parent={`${stateCode} - ${category}`} child={tags} />
-      <Link href="/posts/[slug]" as={`/posts/${slug}`}>
+      <a href={`/posts/${slug}`}>
         <Title>{title}</Title>
-      </Link>
+      </a>
       <MobileDate>{humanDate}</MobileDate>
-      <Link href="/posts/[slug]" as={`/posts/${slug}`}>
+      <a href={`/posts/${slug}`}>
         <Description>
           <DesktopDate>
             {humanDate}
@@ -44,7 +43,7 @@ export const SearchItem = ({
           </DesktopDate>
           {description}
         </Description>
-      </Link>
+      </a>
     </Container>
   );
 };
