@@ -5,6 +5,8 @@ import { ServerStyleSheet } from 'styled-components';
 
 import { MUITheme as theme } from '../constants/UI/Theme.constant';
 
+// As suggested on: https://stackoverflow.com/questions/55109497/how-to-integrate-nextjs-styled-components-with-material-ui
+
 class MyDocument extends Document {
   public static async getInitialProps(ctx) {
     const styledComponentsSheet = new ServerStyleSheet();
@@ -49,7 +51,7 @@ class MyDocument extends Document {
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap"
           />
         </Head>
         <body>
