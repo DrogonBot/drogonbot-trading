@@ -44,12 +44,16 @@ export const SearchBar = (props: IProps) => {
 
   return (
     <FormContainer onSubmit={onSubmit}>
-      <SearchBarInput
-        type="text"
-        title="Search"
-        onChange={(e) => setHookSearchInput(e.target.value)}
-        value={hookSearchInput}
-      />
+      <SearchBarInputContainer>
+        <SearchBarInput
+          type="text"
+          title="Search"
+          onChange={(e) => setHookSearchInput(e.target.value)}
+          value={hookSearchInput}
+        />
+        <SearchBarInputIcon onClick={onSubmit} />
+      </SearchBarInputContainer>
+
       <ProvinceContainer>
         <ProvinceSelector provinces={props.provinces} />
       </ProvinceContainer>
@@ -80,9 +84,8 @@ const ProvinceContainer = styled.div`
   flex: 20%;
   display: flex;
   justify-content: center;
-
+  max-width: 70px;
   height: 3.3rem;
-  padding-right: 1rem;
 
   /*DESKTOP ONLY CODE*/
   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
@@ -97,17 +100,30 @@ const ProvinceContainer = styled.div`
   }
 `;
 
-const SearchBarInput = styled.input`
-  border: 1px solid #dfe1e5;
-  border-radius: 24px;
+const SearchBarInputContainer = styled.div`
+  position: relative;
+  flex: auto;
+`;
+
+const SearchBarInputIcon = styled.div`
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
+  width: 44px;
   height: 44px;
   background-image: url("/images/search.png");
   background-repeat: no-repeat;
   background-position: 98% 50%;
+`;
+
+const SearchBarInput = styled.input`
+  border: 1px solid #dfe1e5;
+  border-radius: 24px;
+  height: 44px;
   font-size: 14px;
   padding-left: 20px;
-
-  flex: 80%;
+  width: 100%;
 
   :focus,
   :focus,

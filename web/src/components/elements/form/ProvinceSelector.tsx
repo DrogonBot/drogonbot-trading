@@ -19,9 +19,10 @@ export const ProvinceSelector = ({ provinces }: IProps) => {
 
   const { searchKeyword } = router.query;
 
-  const { searchProvince } = useSelector<any, any>(state => state.uiReducer);
+  const { searchProvince } = useSelector<any, any>((state) => state.uiReducer);
 
-  const onChangeProvince = async e => {
+  const onChangeProvince = async (e) => {
+    console.log(`changing province to ${e.target.value}`);
     const selectedProvince = e.target.value;
 
     //  update our redux (we'll need this info for our post requests)
@@ -36,8 +37,8 @@ export const ProvinceSelector = ({ provinces }: IProps) => {
       query: {
         searchProvince: e.target.value,
         searchKeyword,
-        page: 1 // since its a new search, page will be always 1!
-      }
+        page: 1, // since its a new search, page will be always 1!
+      },
     });
   };
 
