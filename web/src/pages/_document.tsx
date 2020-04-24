@@ -1,41 +1,64 @@
-import Document from 'next/document';
+import { ServerStyleSheets } from '@material-ui/styles';
+import Document, { Head, Main, NextScript } from 'next/document';
+import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
 
-export default class MyDocument extends Document {
-  public static async getInitialProps(ctx) {
-    const sheet = new ServerStyleSheet();
-    const originalRenderPage = ctx.renderPage;
+import { MUITheme as theme } from '../constants/UI/Theme.constant';
 
-    const baseStyles = (
-      <>
-        <link
-          crossOrigin="anonymous"
-          href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
-          rel="stylesheet"
-        />
-      </>
-    );
+class MyDocument extends Document {
+  public static async getInitialProps(ctx) {
+    const styledComponentsSheet = new ServerStyleSheet();
+    const materialSheets = new ServerStyleSheets();
+    const originalRenderPage = ctx.renderPage;
 
     try {
       ctx.renderPage = () =>
         originalRenderPage({
           enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
+            styledComponentsSheet.collectStyles(
+              materialSheets.collect(<App {...props} />)
+            ),
         });
-
       const initialProps = await Document.getInitialProps(ctx);
       return {
         ...initialProps,
         styles: (
-          <>
-            {baseStyles}
+          <React.Fragment>
             {initialProps.styles}
-            {sheet.getStyleElement()}
-          </>
+            {materialSheets.getStyleElement()}
+            {styledComponentsSheet.getStyleElement()}
+          </React.Fragment>
         ),
       };
     } finally {
-      sheet.seal();
+      styledComponentsSheet.seal();
     }
   }
+
+  public render() {
+    return (
+      <html lang="en" dir="ltr">
+        <Head>
+          <meta charSet="utf-8" />
+          {/* Use minimum-scale=1 to enable GPU rasterization */}
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+          />
+          {/* PWA primary color */}
+          <meta name="theme-color" content={theme.palette.primary.main} />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </html>
+    );
+  }
 }
+
+export default MyDocument;
