@@ -18,6 +18,7 @@ import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
 
 
+
 // @ts-ignore
 const operationRouter = new Router();
 
@@ -73,9 +74,16 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 
 
 
-operationRouter.get('/report', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+operationRouter.get('/leads', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
+
+
+
+
+  return res.status(200).send({
+    'status': 'ok'
+  })
 
 
 

@@ -7,3 +7,10 @@ export interface ILead {
   name: string,
   jobRoles: string[]
 }
+
+export interface ILeadRaw {
+  email: string,
+  group: string,
+  name: string,
+  position: string
+}
