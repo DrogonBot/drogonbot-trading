@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { Binary } from 'mongodb';
-import { Document, Model, model, Schema } from 'mongoose';
+import { Model, model, Schema } from 'mongoose';
 
 import { AccountEmailManager } from '../../emails/account.email';
 import { MarketingEmailManager } from '../../emails/MarketingEmailManager';
@@ -9,48 +8,12 @@ import { GenericHelper } from '../../utils/GenericHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { TextHelper } from '../../utils/TextHelper';
+import { AuthType, IUserDocument, UserType } from './user.types';
 
 /*#############################################################|
 |  >>> MODEL FUNCTIONS (static, methods)
 *##############################################################*/
 
-export enum AuthType {
-  EmailPassword = "EmailPassword",
-  GoogleOAuth = "GoogleOAuth",
-  FacebookOAuth = "FacebookOAuth"
-}
-
-export enum UserType {
-  JobSeeker = "JobSeeker",
-  Company = "Company",
-  Staff = "Staff",
-  Admin = "Admin",
-}
-
-export interface IUserNotification {
-  jobRoles: string[]
-}
-
-
-export interface IUserDocument extends Document {
-  name: string;
-  language: string;
-  givenName: string;
-  familyName: string;
-  type: string; // account type
-  password: string;
-  authType: { type: string; default: AuthType.EmailPassword };
-  facebookId: string;
-  email: string;
-  tokens: Object[];
-  avatar: Binary;
-  genericPositionsOfInterest: string[]
-  avatarUrl: string;
-  pushToken: string;
-  createdAt: string;
-  updatedAt: string;
-  lastNotification: any
-}
 
 // methods
 export interface IUser extends IUserDocument {

@@ -1,11 +1,11 @@
-import { IPost, IPostApplication } from '../resources/Post/post.model';
+import { IPost, IPostApplication } from '../resources/Post/post.types';
 import {
   IResume,
   IResumeAdditionalInfo,
   IResumeAward,
   IResumeEducation,
   IResumeExperience,
-} from '../resources/Resume/resume.model';
+} from '../resources/Resume/resume.types';
 import { IUser } from '../resources/User/user.model';
 import { DateTimeHelper } from '../utils/DateTimeHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';

@@ -1,6 +1,7 @@
 import EmailValidator from 'email-deep-validator';
 
-import { PostBenefits, PostCategory, PostPositionType } from '../../resources/Post/post.model';
+import { PostBenefits, PostCategory, PostPositionType } from '../../resources/Post/post.types';
+
 
 export class DataExtractorHelper {
 

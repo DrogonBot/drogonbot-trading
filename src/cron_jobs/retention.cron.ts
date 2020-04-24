@@ -32,18 +32,8 @@ export class RetentionCron {
               firstName: user.givenName || user.name
             }),
           })
-
-
         }
-
-
-
-
-
       }
-
-
-
     });
   }
 }

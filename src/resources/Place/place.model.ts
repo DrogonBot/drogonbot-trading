@@ -1,18 +1,7 @@
 import mongoose, { Document, Model, model } from 'mongoose';
 
+import { IPlace } from './place.types';
 
-export interface IPlaceCity {
-  ibgeCode: number,
-  cityName: string
-}
-
-export interface IPlace {
-  country: string,
-  uf: string,
-  stateCode: string,
-  stateName: string,
-  cities: IPlaceCity[]
-}
 
 
 

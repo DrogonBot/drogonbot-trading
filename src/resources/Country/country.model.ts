@@ -1,9 +1,8 @@
 import mongoose, { Document, Model, model } from 'mongoose';
 
-export interface ICountry {
-  name: String,
-  code: String
-}
+import { ICountry } from './country.types';
+
+
 
 export interface ICountryModel extends ICountry, Document {
   // insert functions here if needed.

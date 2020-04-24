@@ -6,7 +6,8 @@ import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { Resume } from '../Resume/resume.model';
-import { IPost, IPostApplication, IPostApplicationStatus, Post } from './post.model';
+import { Post } from './post.model';
+import { IPost, IPostApplication, IPostApplicationStatus } from './post.types';
 
 // @ts-ignore
 const postRouter = new Router();

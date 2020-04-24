@@ -4,7 +4,9 @@ import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { RouterHelper } from '../../utils/RouterHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
-import { IResumeAttachment, Resume } from './resume.model';
+import { Resume } from './resume.model';
+import { IResumeAttachment } from './resume.types';
+
 
 // @ts-ignore
 const resumeRouter = new express.Router();

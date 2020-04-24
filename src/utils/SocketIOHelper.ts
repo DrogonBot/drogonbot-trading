@@ -1,4 +1,5 @@
-import { Conversation, ConversationType } from '../resources/Conversation/conversation.model';
+import { Conversation } from '../resources/Conversation/conversation.model';
+import { ConversationType } from '../resources/Conversation/conversation.types';
 import { User } from '../resources/User/user.model';
 import { PushNotificationHelper } from './PushNotificationHelper';
 

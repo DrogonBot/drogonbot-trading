@@ -2,7 +2,8 @@ import { Browser, Page } from 'puppeteer';
 import { UserAgent } from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
-import { IPost, Post } from '../../resources/Post/post.model';
+import { Post } from '../../resources/Post/post.model';
+import { IPost } from '../../resources/Post/post.types';
 import botsAccounts from '../data/botsAccounts.json';
 import {
   FB_LOGIN_EMAIL_INPUT,

@@ -1,7 +1,9 @@
 import stringSimilarity from 'string-similarity';
 
-import { IPost, Post } from '../../resources/Post/post.model';
-import { ISector, Sector } from '../../resources/Sector/sector.model';
+import { Post } from '../../resources/Post/post.model';
+import { IPost } from '../../resources/Post/post.types';
+import { Sector } from '../../resources/Sector/sector.model';
+import { ISector } from '../../resources/Sector/sector.types';
 import { User } from '../../resources/User/user.model';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';

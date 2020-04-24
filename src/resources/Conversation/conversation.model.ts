@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 
-export enum ConversationType {
-  Individual = 'Individual',
-  Group = 'Group'
-}
+import { ConversationType } from './conversation.types';
+
 
 const conversationSchema = new mongoose.Schema(
   {

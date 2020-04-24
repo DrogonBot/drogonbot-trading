@@ -14,7 +14,9 @@ import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
 import { IJobReminder } from '../Post/post.routes';
-import { User, UserType } from '../User/user.model';
+import { User } from '../User/user.model';
+import { UserType } from '../User/user.types';
+
 
 // @ts-ignore
 const operationRouter = new Router();
@@ -68,6 +70,16 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
   })
 
 })
+
+
+
+operationRouter.get('/report', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+
+
+
+
+});
 
 operationRouter.get('/poster', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 

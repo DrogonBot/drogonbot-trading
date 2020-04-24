@@ -1,11 +1,7 @@
 import mongoose, { Document, Model, model } from 'mongoose';
 
+import { ISector } from './sector.types';
 
-export interface ISector {
-  country: string;
-  name: string;
-  keywords: string[];
-}
 
 export interface ISectorModel extends ISector, Document {
 

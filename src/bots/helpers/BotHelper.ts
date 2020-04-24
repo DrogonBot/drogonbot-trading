@@ -1,7 +1,8 @@
 import UserAgent from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
-import { IPost, Post } from '../../resources/Post/post.model';
+import { Post } from '../../resources/Post/post.model';
+import { IPost } from '../../resources/Post/post.types';
 import { User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
@@ -11,6 +12,7 @@ import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { IBot, ICrawlerFunctions, IProxyItem, PagePattern } from '../types/bots.types';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
+
 
 export class BotHelper {
 

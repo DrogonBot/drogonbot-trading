@@ -17,7 +17,8 @@ import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { RouterHelper } from '../../utils/RouterHelper';
 import { TextHelper } from '../../utils/TextHelper';
 import { Log } from '../Log/log.model';
-import { AuthType, User, UserType } from './user.model';
+import { User } from './user.model';
+import { AuthType, UserType } from './user.types';
 
 
 // @ts-ignore

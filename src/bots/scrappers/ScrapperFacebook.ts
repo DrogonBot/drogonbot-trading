@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
-import { IPostSource } from '../../resources/Post/post.model';
+import { IPostSource } from '../../resources/Post/post.types';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
 import { BotHelper } from '../helpers/BotHelper';
