@@ -142,8 +142,59 @@ export const strings = {
   jobsEmailNoData: {
     eng: "No Data",
     ptBr: "Sem dados"
-  }
+  },
 
+  // Jobs notification email ========================================
+
+  jobsNotificationSubject: {
+    eng: "New position for {{jobRole}}",
+    ptBr: "Nova vaga para {{jobRole}}"
+  },
+  jobsNotificationPostCTA: {
+    eng: "See Post",
+    ptBr: "Acessar Vaga"
+  },
+  jobsNotificationFirstPhrase: {
+    eng: "Hey {{userName}}, how are things going?",
+    ptBr: "Ei {{userName}}, tudo certo?"
+  },
+  jobsNotificationSecondParagraph: {
+    eng: "We've found a job post that may interest you",
+    ptBr: "Encontramos uma vaga que pode ser de seu interesse:"
+  },
+  jobsNotificationClosing: {
+    eng: `We suggest that <strong> apply immediately </strong>,
+         because generally the first candidates have higher
+         chances of getting an interview.
+    <br />
+    <br />
+
+Good Luck!
+
+<br />
+                        <br />
+
+                       JobAlert Team
+
+
+    `,
+    ptBr: `Sugerimos que <strong>aplique imediatamente</strong>,
+    pois geralmente os primeiros candidatos têm maiores
+    chances de conseguir uma entrevista.
+
+    <br />
+    <br />
+
+    Boa sorte!
+
+    <br />
+    <br />
+
+    Equipe EmpregoUrgente
+
+
+    `
+  }
 
 
 

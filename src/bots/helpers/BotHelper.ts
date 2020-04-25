@@ -1,6 +1,7 @@
 import UserAgent from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
+import { Lead } from '../../resources/Lead/lead.model';
 import { Post } from '../../resources/Post/post.model';
 import { IPost } from '../../resources/Post/post.types';
 import { User } from '../../resources/User/user.model';
@@ -132,10 +133,41 @@ export class BotHelper {
 
         const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id })
         newPost.save()
-        console.log(`Saving post: ${post.title}`);
+        console.log(`🤖: Saving post: ${post.title}`);
 
         // notify users that may be interested on this role, about this position
-        PostScrapperHelper.notifyUsers(post)
+
+        PostScrapperHelper.notifyUsersPushNotification(post)
+
+        // notify users and or leads that have this jobRole as position of interest
+
+        try {
+          const leads = await Lead.find({
+            jobRoles: { "$in": [post.jobRoles[0]] }
+          })
+          const users = await User.find({
+            jobRoles: { "$in": [post.jobRoles[0]] }
+          })
+
+          const targetedUsers = [
+            ...leads,
+            ...users
+          ]
+
+          for (const targetedUser of targetedUsers) {
+            console.log(`🤖: Notifying user ${targetedUser.email} about new post (${post.title})`);
+            PostScrapperHelper.notifyUsersEmail(targetedUser, post)
+          }
+
+        }
+        catch (error) {
+          console.log('🤖:  Failed to run new post email notification');
+          console.error(error);
+
+        }
+
+
+
 
 
         await GenericHelper.sleep(1000)

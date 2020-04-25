@@ -88,9 +88,6 @@ export class JobsEmailManager extends TransactionalEmailManager {
 
       console.log(`Sending resume to ${post.email} - from ${from}`);
 
-
-
-
       this.sendGrid.send({
         to: post.email,
         from,

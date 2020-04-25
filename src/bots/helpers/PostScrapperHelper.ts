@@ -1,10 +1,12 @@
 import stringSimilarity from 'string-similarity';
 
+import { AccountEmailManager } from '../../emails/account.email';
+import { ILeadModel } from '../../resources/Lead/lead.model';
 import { Post } from '../../resources/Post/post.model';
 import { IPost } from '../../resources/Post/post.types';
 import { Sector } from '../../resources/Sector/sector.model';
 import { ISector } from '../../resources/Sector/sector.types';
-import { User } from '../../resources/User/user.model';
+import { IUser, User } from '../../resources/User/user.model';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
@@ -169,7 +171,32 @@ export class PostScrapperHelper {
     }
   }
 
-  public static notifyUsers = async (post: IPost) => {
+  public static notifyUsersEmail = (user: IUser | ILeadModel, post: IPost) => {
+
+    const accountEmailManager = new AccountEmailManager();
+
+    accountEmailManager.postEmailNotification(
+      user.email,
+      LanguageHelper.getLanguageString('post', 'jobsNotificationSubject', { jobRole: post.jobRoles[0] }),
+      "comment-notification", {
+      jobsNotificationFirstPhrase: LanguageHelper.getLanguageString('post', 'jobsNotificationFirstPhrase', { userName: user.name }),
+      jobsNotificationSecondParagraph: LanguageHelper.getLanguageString('post', 'jobsNotificationSecondParagraph'),
+      jobsNotificationClosing: LanguageHelper.getLanguageString('post', 'jobsNotificationClosing'),
+
+      postSummary: `
+      ${post.title}
+      <br />
+      <br />
+      <td align="center" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px;">
+                                    <a href="https://vagasempregourgente.com/posts/${post.slug}" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">${LanguageHelper.getLanguageString('post', 'jobsNotificationPostCTA')}</a>
+                                  </td>
+      `
+    }
+    );
+
+  }
+
+  public static notifyUsersPushNotification = async (post: IPost) => {
 
     const jobRole = post.jobRoles[0] // on this situation, the post only have 1 jobRole (was just added)
 

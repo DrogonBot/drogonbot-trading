@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Router } from 'express';
 
 import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
@@ -8,15 +9,16 @@ import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
 import { PagePattern } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
+import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
+import { Lead } from '../Lead/lead.model';
 import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
 import { IJobReminder } from '../Post/post.routes';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
-
 
 
 // @ts-ignore
@@ -58,7 +60,7 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
     })
 
     if (post) {
-      await PostScrapperHelper.notifyUsers(post)
+      await PostScrapperHelper.notifyUsersPushNotification(post)
     }
   }
   catch (error) {
@@ -72,14 +74,74 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 
 })
 
+operationRouter.get('/leads-add', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+  const response = await axios.get(`https://app-bo.firebaseio.com/.json`);
+
+  const { leads } = response.data;
+
+  // change BH to MG, since we need the stateCode
+  leads.ptbr.mg = leads.ptbr.bh;
+  delete leads.ptbr.bh;
 
 
-operationRouter.get('/leads', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+  const states = Object.keys(leads.ptbr);
 
+  for (const state of states) {
 
+    for (const [key, value] of Object.entries(leads.ptbr[state])) {
 
+      const leadInfo: any = value;
+      // value is what matter to us (user data)
 
+      // check if lead is already saved on database
 
+      try {
+
+        const leadExists = await Lead.exists({ email: leadInfo.email });
+
+        if (leadExists) {
+          console.log(`Skipping ${leadInfo.email} because it's already in our database`);
+          continue
+        }
+
+        // define job roles
+
+        const rawPOIs = leadInfo.position.split(',')
+
+        let jobRolesFound: string[] = []
+
+        // based on what the user has typed in "position" key, lets try to guess what jobRole tag he mean't
+        for (let POI of rawPOIs) {
+          POI = POI.trim();
+          const { jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(POI);
+          jobRolesFound = [
+            ...jobRolesFound,
+            jobRoleBestMatch
+          ]
+        }
+
+        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Adding lead ${leadInfo.email} (${leadInfo.name}) to our database!`)
+
+        const stateCode = state.toUpperCase()
+
+        const newLead = new Lead({
+          stateCode,
+          country: "Brazil",
+          email: leadInfo.email,
+          name: leadInfo.name,
+          jobRoles: jobRolesFound
+        })
+        await newLead.save()
+
+      }
+      catch (error) {
+        console.error(error);
+
+      }
+
+    }
+  }
 
   return res.status(200).send({
     'status': 'ok'
