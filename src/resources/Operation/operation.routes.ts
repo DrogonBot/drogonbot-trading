@@ -166,6 +166,32 @@ operationRouter.get('/poster', [userAuthMiddleware, UserMiddleware.restrictUserT
 
 });
 
+operationRouter.get('/garbage-posts-clean', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+  try {
+    const posts = await Post.find({})
+
+    for (const post of posts) {
+      if (PostScrapperHelper.checkForBannedWords(post.title) || PostScrapperHelper.checkForBannedWords(post.content)) {
+        console.log(`🤖: Deleting post ${post.title}`);
+        await post.remove();
+      }
+    }
+
+    return res.status(200).send({
+      status: 'ok'
+    })
+
+  }
+  catch (error) {
+    console.error(error);
+
+  }
+
+
+
+})
+
 operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 

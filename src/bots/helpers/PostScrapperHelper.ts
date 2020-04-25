@@ -16,7 +16,7 @@ import { IBestMatchAndSector } from '../types/bots.types';
 
 export class PostScrapperHelper {
 
-  private static _checkForBannedWords = (content: string) => {
+  public static checkForBannedWords = (content: string) => {
 
     const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador', 'preciso de um emprego', 'divulgador', 'ganhe dinheiro', "desempregado", "curso de", "mim ajuda", "me ajuda", "pdf", "baixe", "orçamento", "grátis", "multinível", "divulgando", "divulgar", "trabalhe de casa", "procura-se emprego", "meu nome", "patrão", "indicar pessoas", "trabalhe em casa", "sem dinheiro", "desempregada", "preço", "sem sair de casa", "liberdade financeira", "reais por dia", "grupo de emprego", "bem-vindo", "boas-vindas", "mensalidade de", "procuro trabalho", "preciso muito de trabalhar", "culto", "tik tok", "como ganhar dinheiro", "Grátis", "cursos", "afiliados", "Bem-vindos", "sócio", "chat.whatsapp", "infoproduto", "marketing digital", "curso", "home office", "zcu.io", "igvagas", "chat.whatsapp.com"]
 
@@ -42,7 +42,7 @@ export class PostScrapperHelper {
     }
 
 
-    const bannedWord = PostScrapperHelper._checkForBannedWords(post.content)
+    const bannedWord = PostScrapperHelper.checkForBannedWords(post.content)
     if (bannedWord) {
       console.log(`🤖: ${post.title} Skipping scrapping! This post contains a forbidden word: ${bannedWord}.`)
       return true
