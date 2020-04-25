@@ -3,6 +3,7 @@ import cron from 'node-cron';
 
 import { PuppeteerBot } from '../bots/classes/PuppeteerBot';
 import { BotHelper } from '../bots/helpers/BotHelper';
+import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
 import { RecurPostSocialSchedulerBot } from '../bots/schedulers/RecurPostSocialSchedulerBot';
 import { ZohoSocialSchedulerBot } from '../bots/schedulers/ZohoSocialSchedulerBot';
 import { ScrapperFacebook } from '../bots/scrappers/ScrapperFacebook';
@@ -126,6 +127,24 @@ export class JobsCron {
           console.log(`🤖: Cleaning post ${post.title} - diff: ${diff}`);
           await post.remove() // delete post!
         }
+
+      }
+
+      // Clean posts with forbidden keywords, that somehow ended up in our database
+      try {
+        const posts = await Post.find({})
+
+        for (const post of posts) {
+          if (PostScrapperHelper.checkForBannedWords(post.title) || PostScrapperHelper.checkForBannedWords(post.content)) {
+            console.log(`🤖: Deleting post ${post.title}`);
+            await post.remove();
+          }
+        }
+
+
+      }
+      catch (error) {
+        console.error(error);
 
       }
     });

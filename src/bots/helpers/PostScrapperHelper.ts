@@ -45,7 +45,7 @@ export class PostScrapperHelper {
     }
 
 
-    const bannedWord = PostScrapperHelper.checkForBannedWords(post.content)
+    const bannedWord = PostScrapperHelper.checkForBannedWords(post.content) || PostScrapperHelper.checkForBannedWords(post.title)
     if (bannedWord) {
       console.log(`🤖: ${post.title} Skipping scrapping! This post contains a forbidden word: ${bannedWord}.`)
       return true
