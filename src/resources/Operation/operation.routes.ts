@@ -6,6 +6,7 @@ import { BotHelper } from '../../bots/helpers/BotHelper';
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
 import { RecurPostSocialSchedulerBot } from '../../bots/schedulers/RecurPostSocialSchedulerBot';
 import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
+import { ScrapperOLX } from '../../bots/scrappers/ScrapperOLX';
 import { PagePattern } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
@@ -168,21 +169,128 @@ operationRouter.get('/poster', [userAuthMiddleware, UserMiddleware.restrictUserT
 
 operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  await BotHelper.initScrapper('Facebook => Empregos SP', {
+  await BotHelper.initScrapper('OLX => ES', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego?sf=1", {
+    country: "Brazil",
+    stateCode: "ES",
+  })
+
+  await BotHelper.initScrapper('OLX => Vitoria', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/vitoria/vagas-de-emprego?sf=1", {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Vitória"
+  })
+
+  await BotHelper.initScrapper('OLX => Vila Velha', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/vila-velha/vagas-de-emprego?sf=1", {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Vila Velha"
+  })
+
+  await BotHelper.initScrapper('OLX => Serra', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/serra/vagas-de-emprego?sf=1", {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Serra"
+  })
+
+  await BotHelper.initScrapper('OLX => Cariacica', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/cariacica/vagas-de-emprego?f=p&sf=1", {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Cariacica"
+  })
+
+
+
+  await BotHelper.initScrapper('OLX => SP/CAPITAL', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
+    country: "Brazil",
+    stateCode: "SP",
+
+  })
+
+
+  await BotHelper.initScrapper('OLX => MG/BH', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
+    country: "Brazil",
+    stateCode: "MG",
+
+  })
+
+  await BotHelper.initScrapper('Facebook => Grupo Vagas de Emprego Sao Paulo SP', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-  }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosessp/', {
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/grupovagasdeempregosaopaulo', {
+    country: "Brazil",
+    stateCode: "SP",
+    city: "São Paulo",
+  })
+
+  await BotHelper.initScrapper('Facebook => SP EMPREGO SAO PAULO ', {
+    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/Temostrampo/', {
+    country: "Brazil",
+    stateCode: "SP",
+    city: "São Paulo",
+  })
+
+  await BotHelper.initScrapper('Facebook => Grupo Vagas de Emprego Sao Paulo - SP', {
+    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/grupovagasdeempregosaopaulosp/', {
+    country: "Brazil",
+    stateCode: "SP",
+    city: "São Paulo",
+  })
+
+  await BotHelper.initScrapper('Facebook => Grupo Vagas de Emprego Sao Paulo - SP', {
+    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/508765489527560/', {
     country: "Brazil",
     stateCode: "SP",
     city: "São Paulo",
   })
 
 
-  await BotHelper.initScrapper('Facebook => Vagas de Empregos SP', {
+  // ESPIRITO SANTO ========================================
+
+  await BotHelper.initScrapper('Facebook => Empregos ES', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-  }, PagePattern.Feed, 'https://www.facebook.com/groups/508765489527560/', {
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/', {
     country: "Brazil",
-    stateCode: "SP",
-    city: "São Paulo",
+    stateCode: "ES",
+    city: "Vitória",
+  })
+
+  await BotHelper.initScrapper('Facebook => Emprego Urgente ES', {
+    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/255725088176388', {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Vitória",
+  })
+
+  await BotHelper.initScrapper('Facebook => Empregos e Vagas Espirito Santo', {
+    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/958646364179986/', {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Vitória",
   })
 
 
