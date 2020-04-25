@@ -143,12 +143,12 @@ export class BotHelper {
 
         try {
           const leads = await Lead.find({
-            stateCode: post.stateCode,
-            jobRoles: { "$in": [post.jobRoles[0]] }
+            stateCode: newPost.stateCode,
+            jobRoles: { "$in": [newPost.jobRoles[0]] }
           })
           const users = await User.find({
-            stateCode: post.stateCode,
-            jobRoles: { "$in": [post.jobRoles[0]] }
+            stateCode: newPost.stateCode,
+            genericPositionsOfInterest: { "$in": [newPost.jobRoles[0]] }
           })
 
           const targetedUsers = [
@@ -157,23 +157,17 @@ export class BotHelper {
           ]
 
           for (const targetedUser of targetedUsers) {
-            console.log(`🤖: Notifying user ${targetedUser.email} about new post (${post.title}) - slug: ${post.slug}`);
-            PostScrapperHelper.notifyUsersEmail(targetedUser, post)
+            console.log(`🤖: Notifying user ${targetedUser.email} about new post (${newPost.title}) - slug: ${newPost.slug}`);
+            PostScrapperHelper.notifyUsersEmail(targetedUser, newPost)
           }
-
         }
         catch (error) {
           console.log('🤖:  Failed to run new post email notification');
           console.error(error);
-
         }
 
-
-
-
-
         await GenericHelper.sleep(1000)
-        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Post saved on database! => ${post.title}`)
+        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Post saved on database! => ${newPost.title}`)
       }
     } else {
       console.log(`🤖: User with e-mail ${process.env.ADMIN_EMAIL} not found! It's necessary for saving our posts!`)
