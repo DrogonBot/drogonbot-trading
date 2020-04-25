@@ -132,7 +132,7 @@ export class BotHelper {
 
 
         const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id })
-        newPost.save()
+        await newPost.save()
         console.log(`🤖: Saving post: ${post.title}`);
 
         // notify users that may be interested on this role, about this position
@@ -157,7 +157,7 @@ export class BotHelper {
           ]
 
           for (const targetedUser of targetedUsers) {
-            console.log(`🤖: Notifying user ${targetedUser.email} about new post (${post.title})`);
+            console.log(`🤖: Notifying user ${targetedUser.email} about new post (${post.title}) - slug: ${post.slug}`);
             PostScrapperHelper.notifyUsersEmail(targetedUser, post)
           }
 
