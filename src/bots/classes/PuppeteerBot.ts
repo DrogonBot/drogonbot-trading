@@ -1,9 +1,11 @@
+import child_process from 'child_process';
 import { Browser, Page } from 'puppeteer';
 import { UserAgent } from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
 import { Post } from '../../resources/Post/post.model';
 import { IPost } from '../../resources/Post/post.types';
+import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import botsAccounts from '../data/botsAccounts.json';
 import {
   FB_LOGIN_EMAIL_INPUT,
@@ -23,10 +25,32 @@ export class PuppeteerBot {
   public static clear = async (browser: Browser | null) => {
     try {
       // This function clears memory by closing puppeteer open instances
-      if (browser) {
+
+      if (browser && browser.isConnected()) {
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Puppeteer: Closing opened browser instance`)
+
         await browser.close()
-        console.log(`🤖: Puppeteer: Closing opened browser`);
       }
+
+      // if it stills open, force it to close!!
+      if (browser && browser.isConnected()) {
+
+        browser.on('disconnected', () => {
+          console.log('sleeping 100ms'); //  sleep to eliminate race condition
+          setTimeout(function () {
+            console.log(`Browser Disconnected... Process Id: ${process}`);
+            child_process.exec(`kill -9 ${process}`, (error, stdout, stderr) => {
+              if (error) {
+                console.log(`Process Kill Error: ${error}`)
+              }
+              console.log(`Process Kill Success. stdout: ${stdout} stderr:${stderr}`);
+            });
+          }, 100);
+        });
+
+      }
+
+
 
     }
     catch (error) {
@@ -61,10 +85,18 @@ export class PuppeteerBot {
           args: ['--no-sandbox',
             '--disable-setuid-sandbox',
             '--no-zygote',
+            '--disable-gpu',
+            '--single-process',
+            '--disable-web-security',
+            '--disable-dev-profile',
             '--disable-infobars',
             '--window-position=0,0',
             '--disable-dev-shm-usage',
             '--ignore-certificate-errors',
+            '--disable-notifications',
+            '--disable-geolocation',
+            '--disable-infobars',
+            '--disable-session-crashed-bubble',
             '--ignore-certificate-errors-spki-list',
             `--proxy-server=http://${proxyItem.ip}:${proxyItem.port}`,
             `'--user-agent="${userAgent}"'`],

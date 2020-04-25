@@ -17,7 +17,7 @@ export class ScrapperFacebook extends PuppeteerBot {
 
     console.log(`🔥 Starting PUPPETEER BOT 🔥`);
 
-    if (ScrapperFacebook.browser) {
+    if (ScrapperFacebook.browser && ScrapperFacebook.browser.isConnected()) {
       await ScrapperFacebook.clear(ScrapperFacebook.browser)
     }
 

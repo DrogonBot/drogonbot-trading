@@ -63,6 +63,9 @@ export class ConnectionHelper {
       }
     } catch (error) {
 
+      // Make sure we close any puppeteer open instances, on errors
+      await ScrapperFacebook.clear(ScrapperFacebook.browser)
+
       console.log(error.message);
 
       throw new Error('PROXY CONNECTION FAILED!')
