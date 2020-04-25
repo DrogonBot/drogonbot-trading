@@ -20,11 +20,14 @@ export class PostScrapperHelper {
 
     const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'home office', 'digitador', 'preciso de um emprego', 'divulgador', 'ganhe dinheiro', "desempregado", "curso de", "mim ajuda", "me ajuda", "pdf", "baixe", "orçamento", "grátis", "multinível", "divulgando", "divulgar", "trabalhe de casa", "procura-se emprego", "meu nome", "patrão", "indicar pessoas", "trabalhe em casa", "sem dinheiro", "desempregada", "preço", "sem sair de casa", "liberdade financeira", "reais por dia", "grupo de emprego", "bem-vindo", "boas-vindas", "mensalidade de", "procuro trabalho", "preciso muito de trabalhar", "culto", "tik tok", "como ganhar dinheiro", "Grátis", "cursos", "afiliados", "Bem-vindos", "sócio", "chat.whatsapp", "infoproduto", "marketing digital", "curso", "home office", "zcu.io", "igvagas", "chat.whatsapp.com"]
 
-    const lowerContent = content.toLowerCase();
+    const lowerCaseContent = content.toLowerCase();
 
     for (const word of bannedWords) {
 
-      if (lowerContent.includes(` ${word.toLowerCase()} `) || lowerContent.includes(`${word.toLowerCase()} `)) {
+
+      const bannedKeywordFound = new RegExp(word, 'gi').test(lowerCaseContent)
+
+      if (bannedKeywordFound) {
         console.log(`Forbidden word found: ${word}`);
         return word
       }
