@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Router } from 'express';
+import mailjet from 'node-mailjet';
 
 import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
 import { BotHelper } from '../../bots/helpers/BotHelper';
@@ -19,7 +20,6 @@ import { Post } from '../Post/post.model';
 import { IJobReminder } from '../Post/post.routes';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
-
 
 // @ts-ignore
 const operationRouter = new Router();
@@ -163,6 +163,52 @@ operationRouter.get('/poster', [userAuthMiddleware, UserMiddleware.restrictUserT
   return res.status(200).send({
     status: 'ok'
   })
+
+});
+
+operationRouter.get('/mailjet', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+
+
+
+  const mailjetClient = mailjet.connect(
+    process.env.MAILJET_API_KEY_PUBLIC,
+    process.env.MAILJET_API_KEY_PRIVATE
+  );
+
+  try {
+    await mailjetClient.post("send", { version: 'v3.1' }).request(
+      {
+        "Messages": [
+          {
+            "From": {
+              "Email": "admin@empregourgente.com",
+              "Name": "Mailjet Pilot"
+            },
+            "To": [
+              {
+                "Email": "admin@empregourgente.com",
+                "Name": "passenger 1"
+              }
+            ],
+            "Subject": "Your email flight plan!",
+            "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+            "HTMLPart": "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!"
+          }
+        ]
+      }
+    );
+  }
+  catch (error) {
+    console.error(error);
+
+  }
+
+  return res.status(200).send({
+    status: 'ok'
+  })
+
+
 
 });
 
