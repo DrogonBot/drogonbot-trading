@@ -143,9 +143,11 @@ export class BotHelper {
 
         try {
           const leads = await Lead.find({
+            stateCode: post.stateCode,
             jobRoles: { "$in": [post.jobRoles[0]] }
           })
           const users = await User.find({
+            stateCode: post.stateCode,
             jobRoles: { "$in": [post.jobRoles[0]] }
           })
 
