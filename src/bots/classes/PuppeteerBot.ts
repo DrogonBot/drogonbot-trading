@@ -156,7 +156,9 @@ export class PuppeteerBot {
 
 
 
-    return `${post.title}
+    return `💼 VAGA: ${post.title} 💼
+
+    ✔️ Se interessou? Deixe uma mensagem abaixo!
 
     https://vagasempregourgente.com/posts/${post.slug}
     `

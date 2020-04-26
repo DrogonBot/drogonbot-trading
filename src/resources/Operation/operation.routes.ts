@@ -6,7 +6,7 @@ import SibApiV3Sdk from 'sib-api-v3-sdk';
 import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
 import { BotHelper } from '../../bots/helpers/BotHelper';
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
-import { RecurPostSocialSchedulerBot } from '../../bots/schedulers/RecurPostSocialSchedulerBot';
+import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
 import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
 import { PagePattern } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
@@ -158,8 +158,8 @@ operationRouter.get('/poster', [userAuthMiddleware, UserMiddleware.restrictUserT
   // schedule a random post
   const randomPost = await PuppeteerBot.getRandomPost("SP")
   if (randomPost) {
-    // await ZohoSocialSchedulerBot.schedulePost(randomPost)
-    await RecurPostSocialSchedulerBot.schedulePost(randomPost);
+    await ZohoSocialSchedulerBot.schedulePost(randomPost)
+    // await RecurPostSocialSchedulerBot.schedulePost(randomPost);
   }
 
   return res.status(200).send({
