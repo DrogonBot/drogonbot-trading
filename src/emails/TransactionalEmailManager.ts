@@ -29,7 +29,7 @@ export class TransactionalEmailManager {
 
     try {
       // check how many submissions for sendgrid today
-      const sendGridFreeTierThreshold = 100;
+      const sendGridFreeTierThreshold = 1300; // We're under sendgrid free trial 40k emails month for now
       const sendGridEmailsToday = await Log.find({
         action: "SENDGRID_EMAIL_SUBMISSION",
         emitter: from,

@@ -105,6 +105,46 @@ export class BotHelper {
     BotHelper.finish();
   }
 
+  private static _notifyUsers = async (post: IPost) => {
+
+    console.log(`Trying to notify users about post slug ${post.slug}`);
+    // notify users that may be interested on this role, about this position
+
+    await PostScrapperHelper.notifyUsersPushNotification(post)
+
+    // notify users and or leads that have this jobRole as position of interest
+
+    try {
+      const leads = await Lead.find({
+        stateCode: post.stateCode,
+        jobRoles: { "$in": [post.jobRoles[0]] }
+      })
+      const users = await User.find({
+        stateCode: post.stateCode,
+        genericPositionsOfInterest: { "$in": [post.jobRoles[0]] }
+      })
+
+      const targetedUsers = [
+        ...leads,
+        ...users
+      ]
+
+
+
+      for (const targetedUser of targetedUsers) {
+        console.log(post.slug);
+        if (post.slug) {
+          console.log(`🤖: Email notification: Notifying user ${targetedUser.email} about new post (${post.title}) - slug: ${post.slug}`);
+          await PostScrapperHelper.notifyUsersEmail(targetedUser, post)
+        }
+      }
+    }
+    catch (error) {
+      console.log('🤖:  Failed to run new post email notification');
+      console.error(error);
+    }
+  }
+
   private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
 
@@ -135,36 +175,9 @@ export class BotHelper {
         await newPost.save()
         console.log(`🤖: Saving post: ${post.title}`);
 
-        // notify users that may be interested on this role, about this position
 
-        PostScrapperHelper.notifyUsersPushNotification(post)
 
-        // notify users and or leads that have this jobRole as position of interest
-
-        try {
-          const leads = await Lead.find({
-            stateCode: newPost.stateCode,
-            jobRoles: { "$in": [newPost.jobRoles[0]] }
-          })
-          const users = await User.find({
-            stateCode: newPost.stateCode,
-            genericPositionsOfInterest: { "$in": [newPost.jobRoles[0]] }
-          })
-
-          const targetedUsers = [
-            ...leads,
-            ...users
-          ]
-
-          for (const targetedUser of targetedUsers) {
-            console.log(`🤖: Notifying user ${targetedUser.email} about new post (${newPost.title}) - slug: ${newPost.slug}`);
-            PostScrapperHelper.notifyUsersEmail(targetedUser, newPost)
-          }
-        }
-        catch (error) {
-          console.log('🤖:  Failed to run new post email notification');
-          console.error(error);
-        }
+        await BotHelper._notifyUsers(newPost);
 
         await GenericHelper.sleep(1000)
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Post saved on database! => ${newPost.title}`)
@@ -196,7 +209,10 @@ export class BotHelper {
 
         try {
           const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id })
-          newPost.save()
+          await newPost.save()
+
+          await BotHelper._notifyUsers(newPost);
+
         }
         catch (error) {
           console.error(error);

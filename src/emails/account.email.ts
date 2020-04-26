@@ -39,7 +39,7 @@ export class AccountEmailManager extends TransactionalEmailManager {
     );
 
   }
-  public postEmailNotification(to: string,
+  public async postEmailNotification(to: string,
     subject: string,
     template: string,
     customVars: object) {
@@ -63,7 +63,7 @@ export class AccountEmailManager extends TransactionalEmailManager {
       customVars
     );
 
-    this.sendGrid.send({
+    await this.sendGrid.send({
       to,
       from: process.env.ADMIN_EMAIL,
       subject,

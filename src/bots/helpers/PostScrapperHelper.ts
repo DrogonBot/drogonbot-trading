@@ -174,11 +174,11 @@ export class PostScrapperHelper {
     }
   }
 
-  public static notifyUsersEmail = (user: IUser | ILeadModel, post: IPost) => {
+  public static notifyUsersEmail = async (user: IUser | ILeadModel, post: IPost) => {
 
     const accountEmailManager = new AccountEmailManager();
 
-    accountEmailManager.postEmailNotification(
+    await accountEmailManager.postEmailNotification(
       user.email,
       LanguageHelper.getLanguageString('post', 'jobsNotificationSubject', { jobRole: post.jobRoles[0] }),
       "comment-notification", {
@@ -210,7 +210,7 @@ export class PostScrapperHelper {
 
       for (const user of users) {
 
-        console.log(`🤖 Warning user ${user.email} about the post [${jobRole}] - ${post.title}`);
+        console.log(`🤖 Push notification: Warning user ${user.email} about the post [${jobRole}] - ${post.title}`);
 
         // then send a push notification to them, with this post
         const owner = await User.findOne({
