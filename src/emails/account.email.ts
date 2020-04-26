@@ -30,7 +30,7 @@ export class AccountEmailManager extends TransactionalEmailManager {
       customVars
     );
 
-    await this.smartSend(
+    this.smartSend(
       to,
       process.env.ADMIN_EMAIL,
       subject,
@@ -63,7 +63,7 @@ export class AccountEmailManager extends TransactionalEmailManager {
       customVars
     );
 
-    await this.smartSend(
+    this.smartSend(
       to,
       process.env.ADMIN_EMAIL,
       subject,

@@ -1,2 +1,4 @@
 node_modules
 npm-debug.log
+src/bots/data/recurpost_session_data
+src/bots/data/zoho_session_data
