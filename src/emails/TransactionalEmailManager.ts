@@ -1,137 +1,80 @@
-import sgMail from '@sendgrid/mail';
 import { readFileSync } from 'fs';
-import mailjet from 'node-mailjet';
+import moment from 'moment';
 
 import { Log } from '../resources/Log/log.model';
 import { TextHelper } from '../utils/TextHelper';
-
+import { emailProviders } from './constants/emailProviders.constant';
 
 export enum EmailType {
   Html = "Html",
   Text = "Text"
 }
 
+export interface IEmailProvider {
+  key: string,
+  freeTierThreshold: number
+  emailSendingFunction: Function
+}
+
 
 export class TransactionalEmailManager {
-  private _apiKey: string | undefined;
-  public sendGrid: any;
+  public emailProviders: IEmailProvider[]
 
   constructor() {
-    this._apiKey = process.env.SENDGRID_API_KEY;
-    this.sendGrid = sgMail;
-    this.sendGrid.setApiKey(this._apiKey);
+    this.emailProviders = emailProviders
   }
 
-  public async smartSend(to: string, from: string | undefined, subject: string, html: string, text: string) {
+  public async smartSend(to: string | undefined, from: string | undefined, subject: string, html: string, text: string) {
 
     console.log('Smart sending email...');
 
+    // loop through email providers and check which one has an unmet free tier threshold.
+    for (const emailProvider of this.emailProviders) {
 
-    try {
-      // check how many submissions for sendgrid today
-      const sendGridFreeTierThreshold = 1300; // We're under sendgrid free trial 40k emails month for now
-      const sendGridEmailsToday = await Log.find({
-        action: "SENDGRID_EMAIL_SUBMISSION",
-        emitter: from,
-        target: to
-      })
-
-
-
-      if (sendGridEmailsToday.length < sendGridFreeTierThreshold) {
-        // use sendgrid
-        console.log('Using sendgrid to submit email...');
-
-        await this.sendGrid.send({
-          to,
-          from: process.env.ADMIN_EMAIL,
-          subject,
-          html,
-          text
-        });
-
-        // register sendgrid submission in our logs!
-
-        const newSendgridLog = new Log({
-          action: "SENDGRID_EMAIL_SUBMISSION",
+      const today = moment(new Date()).format('YYYY-MM-DD[T00:00:00.000Z]');
+      try {
+        const providerEmailsToday = await Log.find({
+          action: `${emailProvider.key}_EMAIL_SUBMISSION`,
           emitter: from,
-          target: to
+          target: to,
+          createdAt: { "$gte": today }
         })
-        await newSendgridLog.save()
 
-        return
-      }
-    }
-    catch (error) {
-      console.log('Failed to submit email through SENDGRID');
-      console.error(error);
 
-    }
+        if (providerEmailsToday.length < emailProvider.freeTierThreshold) {
 
-    // if sendgrid is not available for free anymore, lets try mailJet
+          console.log(`Using ${emailProvider.key} to submit email...`);
 
-    try {
-      const mailJetFreeTierDailyThreshold = 200;
-      const mailJetEmailsToday = await Log.find({
-        action: "MAILJET_EMAIL_SUBMISSION",
-        emitter: from,
-        target: to
-      })
+          console.log(`Free tier balance today: ${providerEmailsToday.length}/${emailProvider.freeTierThreshold}`);
 
-      if (mailJetEmailsToday.length < mailJetFreeTierDailyThreshold) {
-
-        console.log('Using mailjet to submit email...');
-
-        const mailjetClient = mailjet.connect(
-          process.env.MAILJET_API_KEY_PUBLIC,
-          process.env.MAILJET_API_KEY_PRIVATE
-        );
-
-        try {
-          await mailjetClient.post("send", { version: 'v3.1' }).request(
-            {
-              "Messages": [
-                {
-                  "From": {
-                    "Email": from,
-                  },
-                  "To": [
-                    {
-                      "Email": to,
-                    }
-                  ],
-                  "Subject": subject,
-                  "TextPart": text,
-                  "HTMLPart": html
-                }
-              ]
-            }
+          await emailProvider.emailSendingFunction(
+            to,
+            process.env.ADMIN_EMAIL,
+            subject,
+            html,
+            text
           );
+
+          // register submission in our logs, so we can keep track of whats being sent
+          const newEmailProviderLog = new Log({
+            action: `${emailProvider.key}_EMAIL_SUBMISSION`,
+            emitter: from,
+            target: to
+          })
+          await newEmailProviderLog.save()
+
+          return
         }
-        catch (error) {
-          console.error(error);
-        }
-
-        // register mailjet submission in our logs!
-
-        const newMailJetLog = new Log({
-          action: "MAILJET_EMAIL_SUBMISSION",
-          emitter: from,
-          target: to
-        })
-        await newMailJetLog.save()
-
-        return
+      }
+      catch (error) {
+        console.log(`Failed to submit email through ${emailProvider.key}`);
+        console.error(error);
       }
     }
-    catch (error) {
-      console.log('Failed to submit email through MailJet');
-      console.error(error);
-
-    }
-
-
   }
+
+
+
 
   public loadTemplate(type: EmailType, template: string, customVars: object) {
     let extension;

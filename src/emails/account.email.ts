@@ -63,13 +63,13 @@ export class AccountEmailManager extends TransactionalEmailManager {
       customVars
     );
 
-    await this.sendGrid.send({
+    await this.smartSend(
       to,
-      from: process.env.ADMIN_EMAIL,
+      process.env.ADMIN_EMAIL,
       subject,
-      html: htmlEmail,
-      text: textEmail
-    });
+      htmlEmail,
+      textEmail
+    );
 
 
 

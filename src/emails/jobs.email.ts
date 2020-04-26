@@ -88,13 +88,13 @@ export class JobsEmailManager extends TransactionalEmailManager {
 
       console.log(`Sending resume to ${post.email} - from ${from}`);
 
-      this.sendGrid.send({
-        to: post.email,
+      this.smartSend(
+        post.email,
         from,
         subject,
-        html: htmlEmail,
-        text: textEmail
-      });
+        htmlEmail,
+        textEmail
+      );
 
     }
     catch (error) {

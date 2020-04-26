@@ -36,13 +36,13 @@ export class GenericEmailManager extends TransactionalEmailManager {
           customVars
         );
 
-        this.sendGrid.send({
+        this.smartSend(
           to,
-          from: process.env.SUPPORT_EMAIL,
+          process.env.SUPPORT_EMAIL,
           subject,
-          html: htmlEmail,
-          text: textEmail
-        });
+          htmlEmail,
+          textEmail
+        );
 
         break;
     }
