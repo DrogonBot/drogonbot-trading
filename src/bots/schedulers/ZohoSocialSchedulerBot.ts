@@ -51,6 +51,7 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
         "--disable-setuid-sandbox",
         '--no-zygote',
         '--disable-dev-shm-usage',
+        '--disable-setuid-sandbox'
       ]
     })
     const browser = ZohoSocialSchedulerBot.browser;
