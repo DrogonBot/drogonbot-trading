@@ -3,6 +3,7 @@ import Router from 'next/router';
 
 import { appEnv, ENV } from '../constants/Env.constant';
 import { EnvironmentTypes } from '../types/Global.types';
+import { GenericHelper } from './GenericHelper';
 import { TS } from './LanguageHelper';
 
 export class APIHelper {
@@ -22,12 +23,12 @@ export class APIHelper {
 
         AUTH_HEADERS = {
           Authorization: `Bearer ${token}`,
-          "Content-type": "application/json"
+          "Content-type": "application/json",
         };
       }
 
       const GUEST_HEADERS = {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
       };
 
       // prepare connection timeout callback
@@ -39,7 +40,9 @@ export class APIHelper {
           onTimeoutCallback();
         } else {
           console.log("request timeout");
-          alert(TS.string("global", "requestTimeoutTitle"));
+
+          GenericHelper.clientAlert(TS.string("global", "requestTimeoutTitle"));
+
           Router.push("/login");
         }
       }, timeout);
@@ -60,7 +63,7 @@ export class APIHelper {
         },
         headers: useAuth
           ? { ...AUTH_HEADERS, ...customHeaders }
-          : { ...GUEST_HEADERS, ...customHeaders }
+          : { ...GUEST_HEADERS, ...customHeaders },
       });
 
       // If user is not authenticated...
@@ -71,7 +74,9 @@ export class APIHelper {
         // persistor.purge();
 
         console.log("authentication error");
-        alert(TS.string("account", "loginUserNotAuthenticated"));
+        GenericHelper.clientAlert(
+          TS.string("account", "loginUserNotAuthenticated")
+        );
         Router.push("/login");
         // NavigationHelper.navigate("Auth", null);
       }

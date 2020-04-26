@@ -12,10 +12,17 @@ export class GenericHelper {
     return parseFloat(parsedValue);
   };
 
-  public static generateUrlParams = (baseUrl, params) => {
-    const values = Object.keys(params).map(key => params[key]);
+  public static clientAlert = (message: string) => {
+    if (typeof window !== "undefined") {
+      // if we're on the client
+      alert(message);
+    }
+  };
 
-    const everyNull = values.every(value => value === null || undefined);
+  public static generateUrlParams = (baseUrl, params) => {
+    const values = Object.keys(params).map((key) => params[key]);
+
+    const everyNull = values.every((value) => value === null || undefined);
 
     if (everyNull) {
       return baseUrl;

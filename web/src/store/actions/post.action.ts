@@ -29,7 +29,7 @@ export const postRead = (
 
   if (response) {
     if (response.status !== 200) {
-      alert(response.data.message);
+      GenericHelper.clientAlert(response.data.message);
       return;
     }
 
@@ -83,7 +83,7 @@ export const postReadOne = (id?, slug?) => async (dispatch) => {
     const data: IPost = response.data;
 
     if (response.status !== 200) {
-      alert(response.data.message);
+      GenericHelper.clientAlert(response.data.message);
     }
 
     await dispatch({

@@ -1,4 +1,5 @@
 import { APIHelper } from '../../helpers/APIHelper';
+import { GenericHelper } from '../../helpers/GenericHelper';
 import { TS } from '../../helpers/LanguageHelper';
 import { ICityResponse, ICountry, IJobRole, IProvince, ISector } from '../../types/Form.types';
 import { RequestTypes } from '../../types/Request.types';
@@ -28,7 +29,7 @@ export const loadCountries = () => async (dispatch) => {
     await dispatch(setLoading(false, "loadingLocation"));
 
     if (response.status !== 200) {
-      alert(response.data.message);
+      GenericHelper.clientAlert(response.data.message);
     }
 
     dispatch({ type: READ_COUNTRIES, payload: data });
@@ -60,7 +61,7 @@ export const loadCountryProvinces = (
     }
 
     if (response.status !== 200) {
-      alert(response.data.message);
+      GenericHelper.clientAlert(response.data.message);
     }
 
     dispatch({ type: READ_STATES, payload: data });
@@ -84,7 +85,7 @@ export const loadProvinceCities = (
     await dispatch(setLoading(false, "loadingLocation"));
 
     if (response.status !== 200) {
-      alert(response.data.message);
+      GenericHelper.clientAlert(response.data.message);
     }
 
     dispatch({ type: READ_CITIES, payload: data });
@@ -96,14 +97,14 @@ export const loadJobRoles = (keyword: string) => async (dispatch) => {
     RequestTypes.GET,
     `/sectors/search/${keyword}`,
     {},
-    true
+    false
   );
 
   if (response) {
     const data: IJobRole[] = response.data;
 
     if (response.status !== 200) {
-      alert(response.data.message);
+      GenericHelper.clientAlert(response.data.message);
     }
 
     dispatch({ type: READ_JOB_ROLES, payload: data });
@@ -115,14 +116,14 @@ export const readSectors = (country: string) => async (dispatch) => {
     RequestTypes.GET,
     `/sectors/${country}`,
     {},
-    true
+    false
   );
 
   if (response) {
     const data: ISector[] = response.data;
 
     if (response.status !== 200) {
-      alert(response.data.message);
+      GenericHelper.clientAlert(response.data.message);
     }
 
     dispatch({ type: READ_SECTORS, payload: data });
