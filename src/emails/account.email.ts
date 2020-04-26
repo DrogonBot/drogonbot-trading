@@ -4,12 +4,12 @@ import { EmailType, TransactionalEmailManager } from './TransactionalEmailManage
 
 export class AccountEmailManager extends TransactionalEmailManager {
 
-  public newAccount(
+  public async newAccount(
     to: string,
     subject: string,
     template: string,
     customVars: object
-  ): void {
+  ) {
 
     if (process.env.ENV === EnvType.Development) {
       console.log(
@@ -30,13 +30,13 @@ export class AccountEmailManager extends TransactionalEmailManager {
       customVars
     );
 
-    this.sendGrid.send({
+    await this.smartSend(
       to,
-      from: process.env.ADMIN_EMAIL,
+      process.env.ADMIN_EMAIL,
       subject,
-      html: htmlEmail,
-      text: textEmail
-    });
+      htmlEmail,
+      textEmail
+    );
 
   }
   public postEmailNotification(to: string,

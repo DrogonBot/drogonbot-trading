@@ -98,6 +98,12 @@ echo "0 1 * * * ${PROJECT_FOLDER}/scripts/backup-mongodb.sh" >> dbBackupCron
 sudo crontab dbBackupCron
 sudo rm dbBackupCron
 
+# Chrome killer (avoid multiple spawned chrome instances from puppeteer hanging and leaking memory)
+sudo crontab -l > chromeKiller
+echo "0 * * * * sudo pgrep chrome | xargs kill -9" >> chromeKiller
+sudo crontab chromeKiller
+sudo rm chromeKiller
+
 
 printColor "Creating swap file (needed so our docker containers can run smoothly)"
 printColor "Reference: https://linuxize.com/post/create-a-linux-swap-file/"

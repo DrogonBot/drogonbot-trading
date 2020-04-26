@@ -6,10 +6,10 @@ const logSchema: Schema = new Schema(
       type: String
     },
     emitter: {
-      type: Schema.Types.ObjectId
+      type: String
     },
     target: {
-      type: Schema.Types.ObjectId
+      type: String
     }
   },
   {
