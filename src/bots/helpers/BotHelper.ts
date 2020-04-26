@@ -130,7 +130,6 @@ export class BotHelper {
       ]
 
 
-
       for (const targetedUser of targetedUsers) {
         console.log(post.slug);
         if (post.slug) {
