@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Router from 'next/router';
 
 import { appEnv, ENV } from '../constants/Env.constant';
 import { EnvironmentTypes } from '../types/Global.types';
@@ -42,8 +41,6 @@ export class APIHelper {
           console.log("request timeout");
 
           GenericHelper.clientAlert(TS.string("global", "requestTimeoutTitle"));
-
-          Router.push("/login");
         }
       }, timeout);
 
@@ -77,7 +74,7 @@ export class APIHelper {
         GenericHelper.clientAlert(
           TS.string("account", "loginUserNotAuthenticated")
         );
-        Router.push("/login");
+
         // NavigationHelper.navigate("Auth", null);
       }
 
