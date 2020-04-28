@@ -21,7 +21,7 @@ export const NextSEOPost = ({
   stateCode,
   sector,
 }: IProps) => {
-  const seoTitle = `Vaga para ${jobRole} em ${city}, ${stateCode} - ${title}`;
+  const seoTitle = `${title} - Vaga em ${city}, ${stateCode}`;
 
   return (
     <NextSeo
