@@ -181,18 +181,22 @@ export class PostScrapperHelper {
     await accountEmailManager.postEmailNotification(
       user.email,
       LanguageHelper.getLanguageString('post', 'jobsNotificationSubject', { jobRole: post.jobRoles[0] }),
-      "comment-notification", {
+      "job-notification", {
       jobsNotificationFirstPhrase: LanguageHelper.getLanguageString('post', 'jobsNotificationFirstPhrase', { userName: user.name }),
       jobsNotificationSecondParagraph: LanguageHelper.getLanguageString('post', 'jobsNotificationSecondParagraph'),
       jobsNotificationClosing: LanguageHelper.getLanguageString('post', 'jobsNotificationClosing'),
 
       postSummary: `
+      <tr>
       ${post.title}
+      </tr>
       <br />
       <br />
-      <td align="center" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px;">
-                                    <a href="https://vagasempregourgente.com/posts/${post.slug}" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">${LanguageHelper.getLanguageString('post', 'jobsNotificationPostCTA')}</a>
-                                  </td>
+    <tr>
+    <td align="center" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px;">
+    <a href="https://vagasempregourgente.com/posts/${post.slug}" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">${LanguageHelper.getLanguageString('post', 'jobsNotificationPostCTA')}</a>
+  </td>
+  </tr>
       `
     }
     );

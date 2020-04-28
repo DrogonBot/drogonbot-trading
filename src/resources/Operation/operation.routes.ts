@@ -239,6 +239,35 @@ operationRouter.get('/sendinblue', [userAuthMiddleware, UserMiddleware.restrictU
 
 });
 
+operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+  try {
+    const user = await User.findOne({ email: "admin@empregourgente.com" })
+    const post = await Post.findOne({
+      jobRoles: {
+        $in: ['Vendedor']
+      }
+    })
+
+
+
+    if (user && post) {
+      await PostScrapperHelper.notifyUsersEmail(user, post);
+    }
+  }
+  catch (error) {
+    console.error(error);
+
+  }
+
+  return res.status(200).send({
+    status: 'ok'
+  })
+
+
+
+});
+
 operationRouter.get('/mailjet', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
