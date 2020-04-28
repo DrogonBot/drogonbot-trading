@@ -31,7 +31,6 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
       ignoreHTTPSErrors: true,
       slowMo: 50,
       timeout: 0,
-      // executablePath: 'google-chrome-unstable',
       userDataDir: "./src/bots/data/recurpost_session_data",
       headless: true,
       args: ['--no-sandbox',

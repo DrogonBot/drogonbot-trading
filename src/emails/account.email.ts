@@ -44,12 +44,12 @@ export class AccountEmailManager extends TransactionalEmailManager {
     template: string,
     customVars: object) {
 
-    // if (process.env.ENV === EnvType.Development) {
-    //   console.log(
-    //     "Skipping sending notification email... Option only available in production."
-    //   );
-    //   return
-    // }
+    if (process.env.ENV === EnvType.Development) {
+      console.log(
+        "Skipping sending notification email... Option only available in production."
+      );
+      return
+    }
 
     console.log("Sending job notification email...");
     const htmlEmail = this.loadTemplate(

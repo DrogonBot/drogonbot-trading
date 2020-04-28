@@ -56,6 +56,8 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
     })
     const browser = ZohoSocialSchedulerBot.browser;
 
+    console.log('Starting ZohoSocialSchedulerBot');
+
     ZohoSocialSchedulerBot.page = await browser.newPage();
     const page = ZohoSocialSchedulerBot.page;
     await page.setViewport({ width: 1366, height: 768 });

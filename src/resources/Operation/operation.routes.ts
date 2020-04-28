@@ -154,7 +154,7 @@ operationRouter.get('/leads-add', [userAuthMiddleware, UserMiddleware.restrictUs
 
 });
 
-operationRouter.get('/poster', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+operationRouter.get('/scheduler', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
   // schedule a random post
   const randomPost = await PuppeteerBot.getRandomPost("SP")

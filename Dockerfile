@@ -41,7 +41,7 @@ EXPOSE 3000
 # Uncomment to skip the chromium download when installing puppeteer. If you do,
 # you'll need to launch puppeteer with:
 #     browser.launch({executablePath: 'google-chrome-unstable'})
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # This will run our npm run dev command under package.json
 CMD ["npm","run","dev"] 
