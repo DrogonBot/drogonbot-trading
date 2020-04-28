@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Router } from 'express';
+import moment from 'moment-timezone';
 import mailjet from 'node-mailjet';
 import SibApiV3Sdk from 'sib-api-v3-sdk';
 
@@ -167,6 +168,29 @@ operationRouter.get('/poster', [userAuthMiddleware, UserMiddleware.restrictUserT
   })
 
 });
+operationRouter.get('/logs', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+
+  const nowInVancouver = moment.tz(new Date(), 'America/Vancouver').format('YYYY-MM-DD[T00:00:00.000Z]');
+
+  console.log(nowInVancouver);
+
+  const providerEmailsToday = await Log.find({
+    action: `SENDGRID_EMAIL_SUBMISSION`,
+    createdAt: { $gte: nowInVancouver }
+  })
+
+
+
+
+
+
+
+  return res.status(200).send({
+    count: providerEmailsToday.length
+  })
+
+})
 
 operationRouter.get('/sendinblue', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 

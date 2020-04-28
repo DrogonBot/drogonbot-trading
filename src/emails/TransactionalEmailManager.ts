@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import { Log } from '../resources/Log/log.model';
 import { TextHelper } from '../utils/TextHelper';
@@ -31,12 +31,11 @@ export class TransactionalEmailManager {
     // loop through email providers and check which one has an unmet free tier threshold.
     for (const emailProvider of this.emailProviders) {
 
-      const today = moment(new Date()).format('YYYY-MM-DD[T00:00:00.000Z]');
+      const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+
       try {
         const providerEmailsToday = await Log.find({
           action: `${emailProvider.key}_EMAIL_SUBMISSION`,
-          emitter: from,
-          target: to,
           createdAt: { "$gte": today }
         })
 
