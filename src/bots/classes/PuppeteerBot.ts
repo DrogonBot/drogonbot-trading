@@ -65,7 +65,7 @@ export class PuppeteerBot {
 
         console.log(`🤖: Loading Development config - NOT USING PROXY!`);
         return {
-
+          executablePath: 'google-chrome-unstable',
           headless: true,
           args: ['--no-sandbox',
             '--disable-setuid-sandbox',
@@ -79,7 +79,7 @@ export class PuppeteerBot {
       case EnvType.Production:
         console.log(`🤖: Using Proxy IP: ${proxyItem.ip} on PORT: ${proxyItem.port}`);
         return {
-
+          executablePath: 'google-chrome-unstable',
           ignoreHTTPSErrors: true,
           headless: true,
           args: ['--no-sandbox',

@@ -46,6 +46,7 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
       headless: true,
       slowMo: 50,
       timeout: 0,
+      executablePath: 'google-chrome-unstable',
       // userDataDir: "./src/bots/data/zoho_session_data",
       args: [
         '--start-maximized',

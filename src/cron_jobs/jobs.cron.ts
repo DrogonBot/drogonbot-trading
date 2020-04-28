@@ -153,7 +153,9 @@ export class JobsCron {
 
   public static initializeJobCrawlers = () => {
 
-    cron.schedule("0 */12 * * *", async () => {
+    // OLX CRAWLERS
+
+    cron.schedule("0 0 * * *", async () => {
 
       try {
         /*#############################################################|
@@ -234,7 +236,7 @@ export class JobsCron {
     });
 
 
-    cron.schedule("0 */8 * * *", async () => {
+    cron.schedule("0 */12 * * *", async () => {
 
       try {
         await BotHelper.initScrapper('Vagas e Oportunidades ES', {
@@ -416,7 +418,7 @@ export class JobsCron {
     })
 
     // highly active groups
-    cron.schedule("0 */4 * * *", async () => {
+    cron.schedule("0 */8 * * *", async () => {
 
       try {
         // SAO PAULO ========================================
