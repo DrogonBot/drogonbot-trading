@@ -34,6 +34,7 @@ export interface IPostApplication {
 export enum IPostSource {
   Blog = "Blog",
   Facebook = "Facebook",
+  OLX = "OLX",
   Internal = "Internal",
   Other = "Other"
 }
