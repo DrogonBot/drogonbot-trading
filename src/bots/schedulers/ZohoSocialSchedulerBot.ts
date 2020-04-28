@@ -1,20 +1,22 @@
 import puppeteer, { Page } from 'puppeteer';
 
+import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
+import { ICredential } from '../types/bots.types';
 
 export class ZohoSocialSchedulerBot extends PuppeteerBot {
 
-  public static zohoLogin = async (page: Page) => {
+  public static zohoLogin = async (page: Page, credentials: ICredential) => {
 
     console.log('🤖: Starting Zoho Login');
 
     await page.goto('https://accounts.zoho.com/signin?servicename=ZohoSocial', { waitUntil: 'networkidle2' })
 
     console.log('🤖: Typing username and password');
-    await page.type('#login_id', 'admin@empregourgente.com')
+    await page.type('#login_id', credentials.login)
     await page.waitForSelector('#nextbtn')
     await page.click('#nextbtn')
-    await page.type('#password', 'abc3225ABC@@')
+    await page.type('#password', credentials.password)
     await page.waitForSelector('#nextbtn')
     await page.click('#nextbtn')
     await page.waitForNavigation();
@@ -32,7 +34,7 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
     }
   }
 
-  public static schedulePost = async (postContent: string) => {
+  public static schedulePost = async (stateCode: string, credentials: ICredential, postContent: string) => {
 
     if (ZohoSocialSchedulerBot.browser) {
       await ZohoSocialSchedulerBot.clear(ZohoSocialSchedulerBot.browser)
@@ -44,7 +46,7 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
       headless: true,
       slowMo: 50,
       timeout: 0,
-      userDataDir: "./src/bots/data/zoho_session_data",
+      // userDataDir: "./src/bots/data/zoho_session_data",
       args: [
         '--start-maximized',
         "--no-sandbox",
@@ -56,7 +58,8 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
     })
     const browser = ZohoSocialSchedulerBot.browser;
 
-    console.log('Starting ZohoSocialSchedulerBot');
+    ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Starting ZohoSocialSchedulerBot for ${stateCode}`)
+
 
     ZohoSocialSchedulerBot.page = await browser.newPage();
     const page = ZohoSocialSchedulerBot.page;
@@ -69,13 +72,13 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
     const needsLogin = await page.$('#login_id') // if this input is found (if Zoho does not redirect us automatically to the dashboard), it means we should login!
     if (needsLogin) {
       console.log('🤖: User needs login...');
-      await ZohoSocialSchedulerBot.zohoLogin(page)
+      await ZohoSocialSchedulerBot.zohoLogin(page, credentials)
     }
 
 
     // Goto dashboard
     console.log('🤖: Accessing dashboard');
-    await page.goto('https://social.zoho.com/social/empregourgentecom/915797000000018019/Home.do#home', { waitUntil: 'networkidle2' })
+    await page.goto('https://social.zoho.com/social/', { waitUntil: 'networkidle2' })
 
 
     // Publishing

@@ -1,3 +1,8 @@
+export interface ICredential {
+  login: string,
+  password: string
+}
+
 export interface IProxyItem {
   ip: string;
   port: string;
