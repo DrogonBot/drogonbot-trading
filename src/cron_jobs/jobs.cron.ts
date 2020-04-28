@@ -132,9 +132,9 @@ export class JobsCron {
 
       // Clean posts with forbidden keywords, that somehow ended up in our database
       try {
-        const posts = await Post.find({})
+        const dbPosts = await Post.find({})
 
-        for (const post of posts) {
+        for (const post of dbPosts) {
           if (PostScrapperHelper.checkForBannedWords(post.title) || PostScrapperHelper.checkForBannedWords(post.content)) {
             console.log(`🤖: Deleting post ${post.title}`);
             await post.remove();
