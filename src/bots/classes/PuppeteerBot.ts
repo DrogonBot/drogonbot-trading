@@ -196,6 +196,7 @@ export class PuppeteerBot {
     const randomGroup = randomAvailableGroup.groups[Math.floor(Math.random() * randomAvailableGroup.groups.length)]
 
     let post;
+    // tslint:disable-next-line: prefer-conditional-expression
     if (!isMarketingPost) {
       post = randomBot.randomPosts[Math.floor(Math.random() * randomBot.randomPosts.length)]
     } else {
