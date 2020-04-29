@@ -65,18 +65,24 @@ const Home = (props: IProps) => {
           <SearchBarContainer>
             <ProvinceSelector provinces={props.provinces} />
 
-            <SearchInput
-              type="text"
-              placeholder={TS.string("form", "indexSearchInput")}
-              name="q"
-              value={hookSearchField}
-              onChange={(e) => {
-                hookSetSearchField(e.target.value);
-              }}
-            />
+            <label htmlFor="searchInput">
+              <SearchInput
+                type="text"
+                placeholder={TS.string("form", "indexSearchInput")}
+                name="searchInput"
+                value={hookSearchField}
+                onChange={(e) => {
+                  hookSetSearchField(e.target.value);
+                }}
+              />
+            </label>
           </SearchBarContainer>
 
-          <BlueSearchButton type="submit" form="search-form">
+          <BlueSearchButton
+            type="submit"
+            form="search-form"
+            name="blueSearchButton"
+          >
             <FontAwesomeIcon icon={faSearch} />
           </BlueSearchButton>
 
@@ -129,6 +135,10 @@ const SearchBarContainer = styled.div`
     left: 21px;
     height: 100%;
   }
+
+  label {
+    flex: 100%;
+  }
 `;
 
 const Form = styled.form`
@@ -148,6 +158,7 @@ const SearchInput = styled.input`
   flex-grow: 1;
   border: 1px solid #d9d9d9;
   padding: 0.7em;
+  width: 100%;
   flex: 8;
   padding-left: 6rem;
 
@@ -164,7 +175,6 @@ const SearchInput = styled.input`
 `;
 
 const BlueSearchButton = styled.button`
-  margin-left: -5px;
   border-radius: 0 3px 3px 0;
   background-color: ${colors.primary};
   border: 1px solid ${colors.primaryDark};

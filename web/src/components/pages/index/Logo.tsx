@@ -5,7 +5,10 @@ import { appEnv } from '../../../constants/Env.constant';
 export const Logo = () => {
   return (
     <LogoContainer>
-      <img src={`/images/logo-${appEnv.language}.svg`} />
+      <img
+        src={`/images/logo-${appEnv.language}.svg`}
+        alt="Emprego Urgente Logo"
+      />
     </LogoContainer>
   );
 };
