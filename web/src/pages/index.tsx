@@ -65,9 +65,6 @@ const Home = (props: IProps) => {
           <SearchBarContainer>
             <ProvinceSelector provinces={props.provinces} />
 
-            <label htmlFor="searchInput" className="hidden">
-              Search input:{" "}
-            </label>
             <SearchInput
               type="text"
               placeholder={TS.string("form", "indexSearchInput")}
@@ -76,6 +73,7 @@ const Home = (props: IProps) => {
               onChange={(e) => {
                 hookSetSearchField(e.target.value);
               }}
+              aria-label="search input"
             />
           </SearchBarContainer>
 
