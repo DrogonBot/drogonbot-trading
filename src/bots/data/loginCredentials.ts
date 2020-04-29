@@ -8,7 +8,7 @@ export const RECURPOST_CREDENTIALS_MG: ICredential = {
 
 export const ZOHO_SOCIAL_ES_CREDENTIALS: ICredential = {
   login: "admin@empregourgente.com",
-  password: "abc3225ABC@@"
+  password: "cQBNY2SC)Wi,amT"
 }
 
 export const ZOHO_SOCIAL_SP_CREDENTIALS: ICredential = {
