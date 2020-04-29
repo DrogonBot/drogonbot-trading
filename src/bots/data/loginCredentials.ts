@@ -1,7 +1,7 @@
 import { ICredential } from '../types/bots.types';
 
 
-export const RECURPOST_CREDENTIALS: ICredential = {
+export const RECURPOST_CREDENTIALS_MG: ICredential = {
   login: "joaopaulofurtado@live.com",
   password: "KWX@RmH95KkiFgi"
 }

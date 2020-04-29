@@ -2,43 +2,49 @@ import { Page } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
+import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
-import { RECURPOST_CREDENTIALS } from '../data/loginCredentials';
+import { ICredential } from '../types/bots.types';
 
 puppeteer.use(StealthPlugin())
 export class RecurPostSocialSchedulerBot extends PuppeteerBot {
 
-  public static loginRecurPost = async (page: Page) => {
+  public static loginRecurPost = async (credentials: ICredential, page: Page) => {
+
+    console.log('🤖: Login user...');
+
     await page.goto('https://recurpost.com/signin', { waitUntil: 'networkidle2' })
 
     // Login
-    await page.type('#loginemail_address', RECURPOST_CREDENTIALS.login)
-    await page.type('#loginpassword', RECURPOST_CREDENTIALS.password)
+    await page.type('#loginemail_address', credentials.login)
+    await page.type('#loginpassword', credentials.password)
     await page.click('#btnlogin')
     await page.waitForNavigation();
     console.log('🤖 Logged in on RecurPost');
   }
 
-  public static schedulePost = async (postContent: string) => {
+  public static schedulePost = async (stateCode: string, credentials: ICredential, postContent: string) => {
 
     if (RecurPostSocialSchedulerBot.browser) {
       await RecurPostSocialSchedulerBot.clear(RecurPostSocialSchedulerBot.browser)
     }
 
-    console.log('🤖 Starting Recurpost...');
+    ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Starting RecurPostSocialScheduler for ${stateCode}`)
 
     RecurPostSocialSchedulerBot.browser = await puppeteer.launch({
       ignoreHTTPSErrors: true,
+      headless: true,
       slowMo: 50,
       timeout: 0,
-      executablePath: 'google-chrome-unstable',
       // userDataDir: "./src/bots/data/recurpost_session_data",
-      headless: true,
-      args: ['--no-sandbox',
-        '--disable-setuid-sandbox',
+      executablePath: 'google-chrome-unstable',
+      args: [
+        '--start-maximized',
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
         '--no-zygote',
         '--disable-dev-shm-usage',
-        '--start-maximized',
+        '--disable-setuid-sandbox'
       ]
     })
     const browser = RecurPostSocialSchedulerBot.browser
@@ -50,6 +56,7 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
     page.setDefaultNavigationTimeout(0);
 
 
+
     // go to create post page
     await page.goto('https://recurpost.com/signin', { waitUntil: 'networkidle2' })
 
@@ -57,7 +64,7 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
     const needsLogin = await page.$('#loginemail_address') // if this input is found (if it does not redirect us automatically to the dashboard), it means we should login!
     if (needsLogin) {
       console.log('🤖: User needs login...');
-      await RecurPostSocialSchedulerBot.loginRecurPost(page)
+      await RecurPostSocialSchedulerBot.loginRecurPost(credentials, page)
     }
 
 
@@ -72,6 +79,7 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
 
     // if its a random post content, lets fetch it
 
+    console.log('🤖: Typing post content...');
 
     await page.type('.newpost_content_textarea', postContent)
 

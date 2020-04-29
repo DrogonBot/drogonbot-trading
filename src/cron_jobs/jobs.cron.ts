@@ -2,9 +2,14 @@ import moment = require('moment');
 import cron from 'node-cron';
 
 import { PuppeteerBot } from '../bots/classes/PuppeteerBot';
-import { ZOHO_SOCIAL_ES_CREDENTIALS, ZOHO_SOCIAL_SP_CREDENTIALS } from '../bots/data/loginCredentials';
+import {
+  RECURPOST_CREDENTIALS_MG,
+  ZOHO_SOCIAL_ES_CREDENTIALS,
+  ZOHO_SOCIAL_SP_CREDENTIALS,
+} from '../bots/data/loginCredentials';
 import { BotHelper } from '../bots/helpers/BotHelper';
 import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
+import { RecurPostSocialSchedulerBot } from '../bots/schedulers/RecurPostSocialSchedulerBot';
 import { ZohoSocialSchedulerBot } from '../bots/schedulers/ZohoSocialSchedulerBot';
 import { ScrapperFacebook } from '../bots/scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../bots/scrappers/ScrapperOLX';
@@ -528,12 +533,16 @@ export class JobsCron {
   public static initializeJobPostSchedulers = () => {
     cron.schedule("0 */2 * * *", async () => {
 
+      const randomPostMG = await PuppeteerBot.getRandomPost("MG")
+      if (randomPostMG) {
+        await RecurPostSocialSchedulerBot.schedulePost("MG", RECURPOST_CREDENTIALS_MG, randomPostMG);
+      }
+
+      await GenericHelper.sleep(60 * 1000 * 3)
+
       const randomPostSP = await PuppeteerBot.getRandomPost("SP")
       if (randomPostSP) {
-        // await RecurPostSocialSchedulerBot.schedulePost(randomPostSP);
-
         await ZohoSocialSchedulerBot.schedulePost("SP", ZOHO_SOCIAL_SP_CREDENTIALS, randomPostSP)
-
       }
 
       await GenericHelper.sleep(60 * 1000 * 3)
