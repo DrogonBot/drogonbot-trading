@@ -69,7 +69,7 @@ const Home = (props: IProps) => {
               <SearchInput
                 type="text"
                 placeholder={TS.string("form", "indexSearchInput")}
-                name="searchInput"
+                id="searchInput"
                 value={hookSearchField}
                 onChange={(e) => {
                   hookSetSearchField(e.target.value);
@@ -82,6 +82,7 @@ const Home = (props: IProps) => {
             type="submit"
             form="search-form"
             name="blueSearchButton"
+            aria-label="Blue search button"
           >
             <FontAwesomeIcon icon={faSearch} />
           </BlueSearchButton>
