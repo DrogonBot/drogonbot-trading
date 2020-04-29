@@ -220,18 +220,69 @@ export class JobsCron {
         }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
           country: "Brazil",
           stateCode: "SP",
-
+          city: "São Paulo"
         })
-
-
-        await BotHelper.initScrapper('OLX => MG/BH', {
+        await BotHelper.initScrapper('OLX => SP/Guarulhos', {
           crawlLinksFunction: ScrapperOLX.crawlLinks,
           crawlPageDataFunction: ScrapperOLX.crawlPageData
-        }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
+        }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/sao-paulo-e-regiao/outras-cidades/guarulhos/vagas-de-emprego", {
           country: "Brazil",
-          stateCode: "MG",
-
+          stateCode: "SP",
+          city: "Guarulhos"
         })
+
+        await BotHelper.initScrapper('OLX => SP/Campinas', {
+          crawlLinksFunction: ScrapperOLX.crawlLinks,
+          crawlPageDataFunction: ScrapperOLX.crawlPageData
+        }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/grande-campinas/vagas-de-emprego", {
+          country: "Brazil",
+          stateCode: "SP",
+          city: "Campinas"
+        })
+
+        await BotHelper.initScrapper('OLX => SP/Sao bernardo do campo', {
+          crawlLinksFunction: ScrapperOLX.crawlLinks,
+          crawlPageDataFunction: ScrapperOLX.crawlPageData
+        }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/sao-paulo-e-regiao/abcd/sao-bernardo-do-campo/vagas-de-emprego", {
+          country: "Brazil",
+          stateCode: "SP",
+          city: "São Bernardo do Campo"
+        })
+
+        await BotHelper.initScrapper('OLX => SP/Sao jose dos campos', {
+          crawlLinksFunction: ScrapperOLX.crawlLinks,
+          crawlPageDataFunction: ScrapperOLX.crawlPageData
+        }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vale-do-paraiba-e-litoral-norte/vale-do-paraiba/sao-jose-dos-campos/vagas-de-emprego", {
+          country: "Brazil",
+          stateCode: "SP",
+          city: "São José dos Campos"
+        })
+
+
+        await BotHelper.initScrapper('OLX => SP/Santo andre', {
+          crawlLinksFunction: ScrapperOLX.crawlLinks,
+          crawlPageDataFunction: ScrapperOLX.crawlPageData
+        }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/sao-paulo-e-regiao/abcd/santo-andre/vagas-de-emprego", {
+          country: "Brazil",
+          stateCode: "SP",
+          city: "Santo André"
+        })
+
+        await BotHelper.initScrapper('OLX => SP/Ribeirao Preto', {
+          crawlLinksFunction: ScrapperOLX.crawlLinks,
+          crawlPageDataFunction: ScrapperOLX.crawlPageData
+        }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/regiao-de-ribeirao-preto/vagas-de-emprego", {
+          country: "Brazil",
+          stateCode: "SP",
+          city: "Ribeirão Preto"
+        })
+
+
+
+
+
+
+
       }
       catch (error) {
         console.error(error);
@@ -373,6 +424,69 @@ export class JobsCron {
     })
 
     cron.schedule("0 3 * * *", async () => {
+
+      await BotHelper.initScrapper('OLX => MG/BH', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+      })
+
+      await BotHelper.initScrapper('OLX => MG/BH', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte"
+      })
+
+      await BotHelper.initScrapper('OLX => MG/Uberlandia', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/triangulo-mineiro/uberlandia/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Uberlândia"
+      })
+
+
+      await BotHelper.initScrapper('OLX => MG/Uberlandia', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/triangulo-mineiro/uberlandia/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Uberlândia"
+      })
+
+      await BotHelper.initScrapper('OLX => MG/Contagem', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/grande-belo-horizonte/contagem/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Contagem"
+      })
+
+      await BotHelper.initScrapper('OLX => MG/Juiz de Fora', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/regiao-de-juiz-de-fora/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Juiz de Fora"
+      })
+
+      await BotHelper.initScrapper('OLX => MG/Betim', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/grande-belo-horizonte/betim/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Juiz de Fora"
+      })
 
       /*#############################################################|
       |  >>> BELO HORIZONTE
