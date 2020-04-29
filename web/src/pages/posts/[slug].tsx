@@ -15,6 +15,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@material-ui/core';
+import FlagIcon from '@material-ui/icons/Flag';
 import { JobPostingJsonLd } from 'next-seo';
 import Linkify from 'react-linkify';
 import styled from 'styled-components';
@@ -237,7 +238,21 @@ const IndividualPage = ({ post, provinces }: IProps) => {
       </Cover>
       <SearchContainer>
         <SearchMain>
-          <H1>{post.title}</H1>
+          <TitleContainer>
+            <H1>{post.title}</H1>{" "}
+            <a
+              target="_blank"
+              href={`mailto:${appEnv.appEmail}?subject=Denuncia%20de%20Vaga&body=Bom+dia%21+Venho+por+meio+desta+mensagem+denunciar+a+vaga+https://vagasempregourgente.com/posts/${post.slug}%0D%0A%0D%0AMotivos: %0D%0A - DIGITE AQUI O MOTIVO %0D%0A%0D%0AObrigado`}
+            >
+              <Button
+                startIcon={<FlagIcon />}
+                variant="outlined"
+                color="secondary"
+              >
+                Denunciar Vaga
+              </Button>
+            </a>
+          </TitleContainer>
           <Breadcumb parent={post.sector} child={post.jobRoles.join(", ")} />
           <Small>{humanDate}</Small>
           <ContentArea>
@@ -311,6 +326,13 @@ const Cover = styled.div`
   background-position: center;
   display: flex;
   justify-content: center;
+  align-items: center;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
 `;
 
