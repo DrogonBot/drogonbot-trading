@@ -296,57 +296,7 @@ export class JobsCron {
           city: "Guarapari",
         })
 
-        /*#############################################################|
-        |  >>> BELO HORIZONTE
-        *##############################################################*/
 
-        await BotHelper.initScrapper('Facebook => Vagas de Empregos BH', {
-          crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-        }, PagePattern.Feed, 'https://www.facebook.com/groups/grupoempregosbh/', {
-          country: "Brazil",
-          stateCode: "MG",
-          city: "Belo Horizonte",
-        })
-
-        await BotHelper.initScrapper('Facebook => Empregos BH', {
-          crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-        }, PagePattern.Feed, 'https://www.facebook.com/groups/597673520276895/', {
-          country: "Brazil",
-          stateCode: "MG",
-          city: "Belo Horizonte",
-        })
-
-        await BotHelper.initScrapper('Facebook => Empregos em Belo Horizonte', {
-          crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-        }, PagePattern.Feed, 'https://www.facebook.com/groups/833818616764376/', {
-          country: "Brazil",
-          stateCode: "MG",
-          city: "Belo Horizonte",
-        })
-
-        await BotHelper.initScrapper('Facebook => Empregos Urgentes BH', {
-          crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-        }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosbhmg/', {
-          country: "Brazil",
-          stateCode: "MG",
-          city: "Belo Horizonte",
-        })
-
-        await BotHelper.initScrapper('Facebook => Emprego BH', {
-          crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-        }, PagePattern.Feed, 'https://www.facebook.com/groups/557833854267297/', {
-          country: "Brazil",
-          stateCode: "MG",
-          city: "Belo Horizonte",
-        })
-
-        await BotHelper.initScrapper('Facebook => Melhor Emprego BH', {
-          crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-        }, PagePattern.Feed, 'https://www.facebook.com/groups/718029571552489/', {
-          country: "Brazil",
-          stateCode: "MG",
-          city: "Belo Horizonte",
-        })
 
 
 
@@ -419,6 +369,85 @@ export class JobsCron {
         console.error(error);
 
       }
+
+    })
+
+    cron.schedule("0 3 * * *", async () => {
+
+      /*#############################################################|
+      |  >>> BELO HORIZONTE
+      *##############################################################*/
+
+      await BotHelper.initScrapper('Facebook => Vagas de Empregos BH', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/grupoempregosbh/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+      await BotHelper.initScrapper('Facebook => Empregos BH', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/597673520276895/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+      await BotHelper.initScrapper('Facebook => Empregos em Belo Horizonte', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/833818616764376/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+      await BotHelper.initScrapper('Facebook => Empregos Urgentes BH', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/empregosbhmg/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+      await BotHelper.initScrapper('Facebook => Emprego BH', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/557833854267297/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+
+      await BotHelper.initScrapper('Facebook => Melhor Emprego BH', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/718029571552489/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte",
+      })
+      await BotHelper.initScrapper('Facebook => Empregos de A&Z Extrema-MG e regiao', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/963229973714703/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Extrema",
+      })
+
+      await BotHelper.initScrapper('Facebook => Balcao de empregos - Betim MG', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/1641409356177065/', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Betim",
+      })
+
+      await BotHelper.initScrapper('Facebook => Cambui - MG', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/838499019528802', {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Cambuí",
+      })
 
     })
 
