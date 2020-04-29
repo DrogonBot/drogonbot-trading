@@ -65,16 +65,17 @@ const Home = (props: IProps) => {
           <SearchBarContainer>
             <ProvinceSelector provinces={props.provinces} />
 
-            <SearchInput
-              type="text"
-              placeholder={TS.string("form", "indexSearchInput")}
-              id="searchInput"
-              value={hookSearchField}
-              aria-labelledby="search input"
-              onChange={(e) => {
-                hookSetSearchField(e.target.value);
-              }}
-            />
+            <label htmlFor="searchInput">
+              <SearchInput
+                type="text"
+                placeholder={TS.string("form", "indexSearchInput")}
+                id="searchInput"
+                value={hookSearchField}
+                onChange={(e) => {
+                  hookSetSearchField(e.target.value);
+                }}
+              />
+            </label>
           </SearchBarContainer>
 
           <BlueSearchButton
@@ -134,6 +135,10 @@ const SearchBarContainer = styled.div`
     top: 0;
     left: 21px;
     height: 100%;
+  }
+
+  label {
+    flex: 100%;
   }
 `;
 
