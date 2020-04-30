@@ -14,7 +14,7 @@ import {
   faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button } from '@material-ui/core';
+import { Button, Link } from '@material-ui/core';
 import FlagIcon from '@material-ui/icons/Flag';
 import { JobPostingJsonLd } from 'next-seo';
 import Linkify from 'react-linkify';
@@ -293,6 +293,12 @@ const IndividualPage = ({ post, provinces }: IProps) => {
               </Button>
             </a>
           </CommunitiesContainer>
+
+          <TOSContainer>
+            <Link href={`/terms?language=${appEnv.language}`}>
+              {TS.string("terms", "tosAgree")}
+            </Link>
+          </TOSContainer>
         </SearchMain>
       </SearchContainer>
     </>
@@ -327,6 +333,13 @@ const Cover = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const TOSContainer = styled.p`
+  font-size: 0.9rem;
+  color: ${colors.silver};
+  text-align: center;
+  margin-top: 3rem;
 `;
 
 const TitleContainer = styled.div`
