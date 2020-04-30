@@ -143,19 +143,6 @@ export class PuppeteerBot {
 
   public static preparePostContent = (post: IPost) => {
 
-
-    const n = Math.floor(Math.random() * 10)
-
-    // share full post 30% of the times, to increase our group organic reach
-    if (n <= 3) {
-      return `${post.title}
-
-      ${post.content}
-      `
-    }
-
-
-
     return `💼 VAGA: ${post.title} 💼
 
     ✔️ Se interessou? Deixe uma mensagem abaixo!
