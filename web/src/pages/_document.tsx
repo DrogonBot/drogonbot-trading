@@ -53,18 +53,18 @@ class MyDocument extends Document {
           {/* PWA TAGS */}
           <link rel="manifest" href="/manifest.json" />
           <link
-            href="images/icons/favicon-16x16.png"
+            href="/images/icons/favicon-16x16.png"
             rel="icon"
             type="image/png"
             sizes="16x16"
           />
           <link
-            href="images/icons/favicon-32x32.png"
+            href="/images/icons/favicon-32x32.png"
             rel="icon"
             type="image/png"
             sizes="32x32"
           />
-          <link rel="apple-touch-icon" href="images/icon/apple-icon.png" />
+          <link rel="apple-touch-icon" href="/images/icon/apple-icon.png" />
           <meta name="theme-color" content="#317EFB" />
 
           <link
