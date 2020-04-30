@@ -334,6 +334,11 @@ const TitleContainer = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+
+  /*MOBILE ONLY CODE*/
+  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const InfoTagsContainer = styled.div`
