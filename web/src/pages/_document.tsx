@@ -51,7 +51,6 @@ class MyDocument extends Document {
           <meta name="theme-color" content={theme.palette.primary.main} />
 
           {/* PWA TAGS */}
-
           <link rel="manifest" href="/manifest.json" />
           <link
             href="images/icons/favicon-16x16.png"
