@@ -34,7 +34,6 @@ import { H1, H2, Small } from '../../constants/UI/Common.constant';
 import { UI } from '../../constants/UI/UI.constant';
 import { DateHelper } from '../../helpers/DateHelper';
 import { TS } from '../../helpers/LanguageHelper';
-import { PWAHelper } from '../../helpers/PWAHelper';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
 import { postReadOne } from '../../store/actions/post.action';
 import { IProvince } from '../../types/Form.types';
@@ -48,18 +47,6 @@ interface IProps {
 const IndividualPage = ({ post, provinces }: IProps) => {
   //  human readable date -
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
-
-  useEffect(() => {
-    if (PWAHelper.deferredPrompt) {
-      PWAHelper.deferredPrompt.prompt();
-      PWAHelper.deferredPrompt.userChoice.then((result) => {
-        if (result.outcome === "accepted") {
-          console.log("user accepted pwa install");
-        }
-        PWAHelper.deferredPrompt = null;
-      });
-    }
-  }, []);
 
   const onRenderPositionType = () => {
     switch (post.positionType) {

@@ -11,7 +11,6 @@ import { RouterEventsWatcher } from '../components/elements/ui/RouterEvents';
 import { NextSEOApp } from '../components/seo/NextSEOApp';
 import { MUITheme } from '../constants/UI/Theme.constant';
 import { GAnalyticsHelper } from '../helpers/GAnalyticsHelper';
-import { PWAHelper } from '../helpers/PWAHelper';
 import { store } from '../store/reducers/store';
 
 class MyApp extends App {
@@ -23,15 +22,6 @@ class MyApp extends App {
       window.GA_INITIALIZED = true;
     }
     GAnalyticsHelper.logPageView();
-
-    window.addEventListener("beforeinstallprompt", (e) => {
-      console.log("beforeinstallprompt triggered");
-
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      PWAHelper.deferredPrompt = e;
-    });
   }
 
   public static async getInitialProps({ Component, ctx }) {
