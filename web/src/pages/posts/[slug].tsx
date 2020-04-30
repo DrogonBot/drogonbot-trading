@@ -348,10 +348,7 @@ const TitleContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  /*MOBILE ONLY CODE*/
-  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
-    margin-bottom: 1.5rem;
-  }
+  margin-bottom: 1.5rem;
 `;
 
 const InfoTagsContainer = styled.div`
