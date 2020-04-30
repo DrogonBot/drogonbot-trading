@@ -17,7 +17,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Link } from '@material-ui/core';
 import FlagIcon from '@material-ui/icons/Flag';
 import { JobPostingJsonLd } from 'next-seo';
-import { useEffect } from 'react';
 import Linkify from 'react-linkify';
 import styled from 'styled-components';
 
