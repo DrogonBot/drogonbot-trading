@@ -49,6 +49,25 @@ class MyDocument extends Document {
           />
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
+
+          {/* PWA TAGS */}
+
+          <link rel="manifest" href="/manifest.json" />
+          <link
+            href="images/icons/favicon-16x16.png"
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+          />
+          <link
+            href="images/icons/favicon-32x32.png"
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+          />
+          <link rel="apple-touch-icon" href="images/icon/apple-icon.png" />
+          <meta name="theme-color" content="#317EFB" />
+
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap"
