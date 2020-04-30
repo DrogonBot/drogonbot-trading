@@ -145,7 +145,8 @@ export class PuppeteerBot {
 
     return `💼 VAGA: ${post.title} 💼
 
-    ✔️ Se interessou? Deixe uma mensagem abaixo!
+    ✔️ Apenas repassamos vagas! Maiores informações no link ou diretamente com anunciante ✔️
+    👇 Se interessou? Aplique através do link abaixo 👇
 
     https://vagasempregourgente.com/posts/${post.slug}
     `
