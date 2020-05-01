@@ -1,4 +1,3 @@
-import { resolve } from 'path';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
@@ -56,7 +55,7 @@ export class PosterFacebook extends PuppeteerBot {
         slowMo: 50,
         timeout: 0,
         executablePath: 'google-chrome-unstable',
-        userDataDir: resolve('./src/bots/data/fb_poster_session_data'),
+        // userDataDir: resolve('./src/bots/data/fb_poster_session_data'),
         args: [
           '--start-maximized',
           "--no-sandbox",
