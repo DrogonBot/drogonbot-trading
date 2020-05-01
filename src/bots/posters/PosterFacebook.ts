@@ -83,6 +83,15 @@ export class PosterFacebook extends PuppeteerBot {
         }
       }
 
+      const checkpointPresent = await page.$('#checkpointSubmitButton')
+
+      if (checkpointPresent) {
+        console.log('Location checkpoint present, clicking to skip...');
+        await page.click('#checkpointSubmitButton')
+      }
+
+      await page.waitForNavigation()
+
       // go to create post page
       console.log(`🤖: Vising group page: ${groupUrl}`);
       await page.goto(groupUrl, { waitUntil: 'networkidle2' })
