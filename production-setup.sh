@@ -99,10 +99,10 @@ sudo crontab dbBackupCron
 sudo rm dbBackupCron
 
 # Chrome killer (avoid multiple spawned chrome instances from puppeteer hanging and leaking memory)
-# sudo crontab -l > chromeKiller
-# echo "0 */3 * * * pgrep chrome | xargs kill -9" >> chromeKiller
-# sudo crontab chromeKiller
-# sudo rm chromeKiller
+sudo crontab -l > chromeKiller
+echo "0 0 * * * pgrep chrome | xargs kill -9" >> chromeKiller
+sudo crontab chromeKiller
+sudo rm chromeKiller
 
 # Docker system prune (remove unused data periodically, avoiding your disk to completely fill over time)
 sudo crontab -l > dockerSystemPrune
