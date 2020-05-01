@@ -129,8 +129,19 @@ export class BotHelper {
         ...users
       ]
 
+      // TODO: This is temporarely hardcoded. We'll automatize it later with an unsubscribe button
+      const optOutList = ['francielyoliveira6633@gmail.com']
+
 
       for (const targetedUser of targetedUsers) {
+
+
+        if (optOutList.includes(targetedUser.email)) {
+          console.log(`Skipping user ${targetedUser.email} since opted out from our alert system!`);
+          continue
+        }
+
+
         console.log(post.slug);
         if (post.slug) {
           console.log(`🤖: Email notification: Notifying user ${targetedUser.email} about new post (${post.title}) - slug: ${post.slug}`);
