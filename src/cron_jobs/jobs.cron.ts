@@ -1,4 +1,4 @@
-import moment = require('moment');
+import moment from 'moment';
 import cron from 'node-cron';
 
 import { PuppeteerBot } from '../bots/classes/PuppeteerBot';
@@ -9,6 +9,7 @@ import {
 } from '../bots/data/loginCredentials';
 import { BotHelper } from '../bots/helpers/BotHelper';
 import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
+import { PosterFacebook } from '../bots/posters/PosterFacebook';
 import { RecurPostSocialSchedulerBot } from '../bots/schedulers/RecurPostSocialSchedulerBot';
 import { ZohoSocialSchedulerBot } from '../bots/schedulers/ZohoSocialSchedulerBot';
 import { ScrapperFacebook } from '../bots/scrappers/ScrapperFacebook';
@@ -672,6 +673,16 @@ export class JobsCron {
 
 
   // }
+
+  public static initPostersBot = () => {
+    cron.schedule("0 */6 * * *", async () => {
+
+      await PosterFacebook.triggerMarketingPost()
+
+    });
+
+
+  }
 
   public static initializeJobPostSchedulers = () => {
     cron.schedule("0 */2 * * *", async () => {

@@ -15,3 +15,5 @@ export const FB_GROUP_ADD_POST_INPUT = '[onclick*="bgUploadInlineComposerCallbac
 export const FB_GROUP_WRITE_POST_TEXTAREA = '.composerInput.mentions-input'
 
 export const FB_GROUP_POST_CTA = 'button._54k8._52jg._56bs._26vk._56b_._56bw._56bv'
+
+export const FB_GROUP_WRITE_POST_INPUT = "onclick*=bgUploadInlineComposerCallback]"

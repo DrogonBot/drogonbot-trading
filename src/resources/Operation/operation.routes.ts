@@ -8,6 +8,7 @@ import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
 import { ZOHO_SOCIAL_ES_CREDENTIALS, ZOHO_SOCIAL_SP_CREDENTIALS } from '../../bots/data/loginCredentials';
 import { BotHelper } from '../../bots/helpers/BotHelper';
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
+import { PosterFacebook } from '../../bots/posters/PosterFacebook';
 import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
 import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
 import { PagePattern } from '../../bots/types/bots.types';
@@ -156,6 +157,17 @@ operationRouter.get('/leads-add', [userAuthMiddleware, UserMiddleware.restrictUs
 
 
 });
+
+operationRouter.get('/fb-poster', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+  await PosterFacebook.triggerMarketingPost()
+
+
+  return res.status(200).send({
+    status: 'ok'
+  })
+});
+
 
 operationRouter.get('/scheduler', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 

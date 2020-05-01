@@ -190,7 +190,7 @@ export class PuppeteerBot {
     } else {
 
       // get posts from the most popular job roles only
-      post = PuppeteerBot.getRandomPost(randomAvailableGroup.stateCode)
+      post = await PuppeteerBot.getRandomPost(randomAvailableGroup.stateCode)
 
 
     }

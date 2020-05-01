@@ -100,7 +100,8 @@ export class BotHelper {
     await BotHelper.init(bot.name)
 
     console.log(`🤖: Starting Poster bot request to ${link}`);
-    await ConnectionHelper.tryRequestUntilSucceeds(groupPostFunction, [bot, link, post])
+    // await ConnectionHelper.tryRequestUntilSucceeds(groupPostFunction, [bot, link, post])
+    groupPostFunction(bot, link, post)
 
     BotHelper.finish();
   }
