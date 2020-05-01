@@ -128,9 +128,12 @@ export class PosterFacebook extends PuppeteerBot {
       await page.goto('about:blank')
       await page.close();
 
-      await PosterFacebook.clear(PosterFacebook.browser)
+      if (PosterFacebook.browser) {
+        await PosterFacebook.clear(PosterFacebook.browser)
+      }
 
       await GenericHelper.sleep(5000)
+
     }
     catch (error) {
       console.log('Error while running your poster bot!');
