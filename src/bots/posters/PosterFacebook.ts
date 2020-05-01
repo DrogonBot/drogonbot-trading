@@ -60,7 +60,7 @@ export class PosterFacebook extends PuppeteerBot {
         args: [
           '--start-maximized',
           "--no-sandbox",
-          "--disable-setuid-sandbox",
+          "--disable-setuid-sandbox"
         ]
       })
 

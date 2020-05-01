@@ -162,7 +162,6 @@ operationRouter.get('/fb-poster', [userAuthMiddleware, UserMiddleware.restrictUs
 
   await PosterFacebook.triggerMarketingPost()
 
-
   return res.status(200).send({
     status: 'ok'
   })
