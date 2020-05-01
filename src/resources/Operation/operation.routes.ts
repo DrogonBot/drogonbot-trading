@@ -5,14 +5,9 @@ import mailjet from 'node-mailjet';
 import SibApiV3Sdk from 'sib-api-v3-sdk';
 
 import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
-import {
-  RECURPOST_CREDENTIALS_MG,
-  ZOHO_SOCIAL_ES_CREDENTIALS,
-  ZOHO_SOCIAL_SP_CREDENTIALS,
-} from '../../bots/data/loginCredentials';
+import { ZOHO_SOCIAL_ES_CREDENTIALS, ZOHO_SOCIAL_SP_CREDENTIALS } from '../../bots/data/loginCredentials';
 import { BotHelper } from '../../bots/helpers/BotHelper';
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
-import { RecurPostSocialSchedulerBot } from '../../bots/schedulers/RecurPostSocialSchedulerBot';
 import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
 import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
 import { PagePattern } from '../../bots/types/bots.types';
@@ -164,12 +159,12 @@ operationRouter.get('/leads-add', [userAuthMiddleware, UserMiddleware.restrictUs
 
 operationRouter.get('/scheduler', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  const randomPostMG = await PuppeteerBot.getRandomPost("MG")
-  if (randomPostMG) {
-    await RecurPostSocialSchedulerBot.schedulePost("MG", RECURPOST_CREDENTIALS_MG, randomPostMG);
-  }
+  // const randomPostMG = await PuppeteerBot.getRandomPost("MG")
+  // if (randomPostMG) {
+  //   await RecurPostSocialSchedulerBot.schedulePost("MG", RECURPOST_CREDENTIALS_MG, randomPostMG);
+  // }
 
-  await GenericHelper.sleep(60 * 1000 * 3)
+  // await GenericHelper.sleep(60 * 1000 * 3)
 
   const randomPostSP = await PuppeteerBot.getRandomPost("SP")
   if (randomPostSP) {

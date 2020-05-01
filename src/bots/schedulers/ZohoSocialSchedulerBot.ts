@@ -4,6 +4,7 @@ import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
 import { ICredential } from '../types/bots.types';
 
+
 export class ZohoSocialSchedulerBot extends PuppeteerBot {
 
   public static zohoLogin = async (page: Page, credentials: ICredential) => {
@@ -90,6 +91,11 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
     console.log('🤖: Typing post content');
     await page.waitForSelector('.postInput');
     await page.type('.postInput', postContent)
+
+
+    await page.keyboard.down('Control')
+    await page.keyboard.press('V')
+    await page.keyboard.up('Control')
 
     await page.waitFor(10000)
 
