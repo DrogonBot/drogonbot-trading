@@ -113,8 +113,6 @@ export class PuppeteerBot {
     try {
       await page.goto('https://m.facebook.com/login/', { waitUntil: 'networkidle2' })
 
-      // capture page console for debugging
-      page.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
       console.log(`Logging in bot ${bot.email}...`);
 
