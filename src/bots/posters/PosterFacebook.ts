@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
+import { GenericEmailManager } from '../../emails/generic.email';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
 import { BotHelper } from '../helpers/BotHelper';
@@ -134,6 +135,10 @@ export class PosterFacebook extends PuppeteerBot {
     catch (error) {
       console.log('Error while running your poster bot!');
       console.error(error);
+      const genericEmailManager = new GenericEmailManager();
+      genericEmailManager.sendEmail(process.env.ADMIN_EMAIL, 'Failure: PosterFacebook BOT', 'admin-notification', {
+        notification: "Your PosterFacebook bot is failing. Please check on docker logs what's going on."
+      })
 
     }
 

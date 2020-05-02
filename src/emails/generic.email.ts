@@ -4,7 +4,7 @@ import { EmailType, TransactionalEmailManager } from './TransactionalEmailManage
 
 export class GenericEmailManager extends TransactionalEmailManager {
   public sendEmail(
-    to: string,
+    to: string | undefined,
     subject: string,
     template: string,
     customVars: object
