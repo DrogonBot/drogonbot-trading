@@ -50,7 +50,7 @@ export class TransactionalEmailManager {
 
           console.log(`Free tier balance today: ${providerEmailsToday.length}/${emailProvider.freeTierThreshold}`);
 
-          // check if we should skip this user submission or not
+          // Unsubscribed users: check if we should skip this user submission or not
 
           const user = await User.findOne({ email: to })
           const lead = await Lead.findOne({ email: to })

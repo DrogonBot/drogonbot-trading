@@ -28,12 +28,12 @@ export const globalStrings = {
     ptBr: "DD/MM/YYYY"
   },
   unsubscribeLink: {
-    eng: `<br/><br/><p style="text-align: center; display: block;">
-    <a href='{{unsubscribeUrl}}'>If you'd like to stop receiving these e-mails, just click here</a>
+    eng: `<br/><br/><p style="text-align: center; display: block; font-size: 12px;">
+    <a style="color: rgb(168,170,175)" href='{{unsubscribeUrl}}'>If you'd like to stop receiving these e-mails, just click here</a>
     </p>
     `,
-    ptBr: `<br/><br/><p style="text-align: center; display: block;">
-    <a  href='{{unsubscribeUrl}}'> Se você quer parar de receber esses e-mails, clique aqui</a>
+    ptBr: `<br/><br/><p style="text-align: center; display: block; font-size: 12px;">
+    <a style="color: rgb(168,170,175)" href='{{unsubscribeUrl}}'> Se você quer parar de receber esses e-mails, clique aqui</a>
     </p>`
   }
 };
