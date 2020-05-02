@@ -11,6 +11,7 @@ import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
 import { PosterFacebook } from '../../bots/posters/PosterFacebook';
 import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
 import { ScrapperFacebook } from '../../bots/scrappers/ScrapperFacebook';
+import { ScrapperOLX } from '../../bots/scrappers/ScrapperOLX';
 import { PagePattern } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
@@ -369,6 +370,66 @@ operationRouter.get('/garbage-posts-clean', [userAuthMiddleware, UserMiddleware.
 operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
+  await BotHelper.initScrapper('OLX => ES', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/vagas-de-emprego?sf=1", {
+    country: "Brazil",
+    stateCode: "ES",
+  })
+
+  await BotHelper.initScrapper('OLX => Vitoria', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/vitoria/vagas-de-emprego?sf=1", {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Vitória"
+  })
+
+  await BotHelper.initScrapper('OLX => Vila Velha', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/vila-velha/vagas-de-emprego?sf=1", {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Vila Velha"
+  })
+
+  await BotHelper.initScrapper('OLX => Serra', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/serra/vagas-de-emprego?sf=1", {
+    country: "Brazil",
+    stateCode: "ES",
+    city: "Serra"
+  })
+
+  await BotHelper.initScrapper('OLX => SP/CAPITAL', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
+    country: "Brazil",
+    stateCode: "SP",
+    city: "São Paulo"
+  })
+  await BotHelper.initScrapper('OLX => SP/Guarulhos', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/sao-paulo-e-regiao/outras-cidades/guarulhos/vagas-de-emprego", {
+    country: "Brazil",
+    stateCode: "SP",
+    city: "Guarulhos"
+  })
+
+  await BotHelper.initScrapper('OLX => SP/Campinas', {
+    crawlLinksFunction: ScrapperOLX.crawlLinks,
+    crawlPageDataFunction: ScrapperOLX.crawlPageData
+  }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/grande-campinas/vagas-de-emprego", {
+    country: "Brazil",
+    stateCode: "SP",
+    city: "Campinas"
+  })
 
   await BotHelper.initScrapper('Facebook => Grupo Vagas de Emprego Sao Paulo SP', {
     crawlFeedFunction: ScrapperFacebook.crawlPageFeed
@@ -427,6 +488,34 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     country: "Brazil",
     stateCode: "ES",
     city: "Vitória",
+  })
+
+  /*#############################################################|
+      |  >>> BELO HORIZONTE
+      *##############################################################*/
+
+  await BotHelper.initScrapper('Facebook => Vagas de Empregos BH', {
+    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/grupoempregosbh/', {
+    country: "Brazil",
+    stateCode: "MG",
+    city: "Belo Horizonte",
+  })
+
+  await BotHelper.initScrapper('Facebook => Empregos BH', {
+    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/597673520276895/', {
+    country: "Brazil",
+    stateCode: "MG",
+    city: "Belo Horizonte",
+  })
+
+  await BotHelper.initScrapper('Facebook => Empregos em Belo Horizonte', {
+    crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+  }, PagePattern.Feed, 'https://www.facebook.com/groups/833818616764376/', {
+    country: "Brazil",
+    stateCode: "MG",
+    city: "Belo Horizonte",
   })
 
 
