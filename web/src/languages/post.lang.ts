@@ -186,8 +186,8 @@ export const strings = {
     ptBr: "Experiência necessária!",
   },
   postSimilar: {
-    eng: "Similar Posts",
-    ptBr: "Vagas Semelhantes",
+    eng: "Suggested posts",
+    ptBr: "Veja mais vagas",
   },
   postFlag: {
     eng: "Flag as Inappropriate",
