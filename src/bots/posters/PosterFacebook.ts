@@ -17,10 +17,7 @@ export class PosterFacebook extends PuppeteerBot {
   public static triggerMarketingPost = async () => {
     const { randomBot, randomGroup, post: postContent } = await PosterFacebook.getRandomData(true);
 
-    console.log('Initializing MARKETING posting with...');
-    console.log(randomBot.name);
-    console.log(randomGroup);
-    console.log(postContent);
+
 
     // await BotHelper.initPoster(randomBot, randomGroup, post, PosterFacebook.postToGroup)
 

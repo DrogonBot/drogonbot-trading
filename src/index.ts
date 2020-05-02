@@ -85,6 +85,8 @@ switch (process.env.ENV) {
 
     // Job posters
 
+    JobsCron.initPostersBot();
+
     // JobsCron.initializeJobPoster();
 
     // Job post Schedulers
@@ -125,9 +127,6 @@ if (process.env.MAINTENANCE_MODE === "on") {
 
 // allows static files serving
 app.use(express.static(publicDirectory, { dotfiles: 'allow' }))
-
-
-
 
 
 // app.use(middleware.checkMethods);

@@ -160,7 +160,7 @@ operationRouter.get('/leads-add', [userAuthMiddleware, UserMiddleware.restrictUs
 
 operationRouter.get('/fb-poster', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  await PosterFacebook.triggerMarketingPost()
+  PosterFacebook.triggerMarketingPost()
 
   return res.status(200).send({
     status: 'ok'

@@ -193,6 +193,14 @@ export class PuppeteerBot {
 
     }
 
+    console.log('Initializing MARKETING posting with...');
+    console.log(randomBot.name);
+    console.log(randomGroup);
+    console.log(randomAvailableGroup);
+    console.log(randomAvailableGroup.stateCode);
+
+    console.log(post);
+
 
     return {
       randomBot,

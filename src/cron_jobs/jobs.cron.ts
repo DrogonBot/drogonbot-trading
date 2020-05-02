@@ -647,33 +647,6 @@ export class JobsCron {
 
   }
 
-  // public static initializeJobPoster = () => {
-  //   cron.schedule("0 */8 * * *", async () => {
-
-  //     console.log(`🤖: Starting job poster bot - MARKETING POST`);
-
-
-  //     PosterFacebook.triggerMarketingPost();
-
-
-
-  //   })
-  //   cron.schedule("0 0 * * *", async () => {
-
-  //     // Random posts are useful to avoid a bot like behaviour in our account.
-  //     console.log(`🤖: Starting job poster bot - RANDOM POST`);
-
-  //     PosterFacebook.triggerRandomPostComments();
-
-
-
-
-  //   })
-
-
-
-  // }
-
   public static initPostersBot = () => {
     cron.schedule("0 */4 * * *", async () => {
 
