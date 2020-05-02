@@ -185,4 +185,12 @@ export const strings = {
     eng: "Experience required!",
     ptBr: "Experiência necessária!",
   },
+  postSimilar: {
+    eng: "Similar Posts",
+    ptBr: "Vagas Semelhantes",
+  },
+  postFlag: {
+    eng: "Flag as Inappropriate",
+    ptBr: "Denunciar Vaga",
+  },
 };

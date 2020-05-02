@@ -23,6 +23,7 @@ import styled from 'styled-components';
 import { SearchContainer, SearchHeader, SearchMain } from '.';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { InfoTag } from '../../components/elements/ui/InfoTag';
+import { PostCard } from '../../components/pages/posts/PostCard';
 import { PostCTA } from '../../components/pages/posts/PostCTA';
 import { SearchBar } from '../../components/pages/posts/SearchBar';
 import { SearchLogo } from '../../components/pages/posts/SearchLogo';
@@ -34,16 +35,17 @@ import { UI } from '../../constants/UI/UI.constant';
 import { DateHelper } from '../../helpers/DateHelper';
 import { TS } from '../../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
-import { postReadOne } from '../../store/actions/post.action';
+import { postReadFeed, postReadOne } from '../../store/actions/post.action';
 import { IProvince } from '../../types/Form.types';
 import { IPost, PostBenefits, PostCategory, PostPositionType } from '../../types/Post.types';
 
 interface IProps {
   post: IPost;
   provinces: IProvince[];
+  relatedPosts: IPost[];
 }
 
-const IndividualPage = ({ post, provinces }: IProps) => {
+const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
   //  human readable date -
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
 
@@ -186,6 +188,24 @@ const IndividualPage = ({ post, provinces }: IProps) => {
     }
   };
 
+  const onRenderRelatedPosts = () => {
+    if (!relatedPosts) {
+      return null;
+    }
+
+    return relatedPosts.map((relatedPost) => (
+      <PostCard
+        key={relatedPost._id}
+        title={relatedPost.title}
+        sector={relatedPost.sector}
+        content={relatedPost.content}
+        slug={relatedPost.slug}
+        stateCode={relatedPost.stateCode}
+        city={relatedPost.city}
+      />
+    ));
+  };
+
   return (
     <>
       <NextSEOPost
@@ -250,7 +270,7 @@ const IndividualPage = ({ post, provinces }: IProps) => {
                 variant="outlined"
                 color="secondary"
               >
-                Denunciar Vaga
+                {TS.string("post", "postFlag")}
               </Button>
             </a>
           </TitleContainer>
@@ -271,6 +291,23 @@ const IndividualPage = ({ post, provinces }: IProps) => {
             {onRenderBenefits()}
             {onRenderSalary()}
           </InfoTagsContainer>
+
+          <MainCTAContainer>
+            <PostCTA
+              phone={post.phone}
+              externalUrl={post.externalUrl}
+              email={post.email}
+            />
+          </MainCTAContainer>
+
+          <RelatedPosts>
+            <H2>{TS.string("post", "postSimilar")}</H2>
+
+            <RelatedPostsContainer>
+              {onRenderRelatedPosts()}
+            </RelatedPostsContainer>
+          </RelatedPosts>
+
           <H2>{TS.string("global", "joinOurCommunity")}</H2>
           <CommunitiesContainer>
             <a
@@ -311,16 +348,42 @@ IndividualPage.getInitialProps = async (ctx) => {
 
   await ctx.store.dispatch(loadCountryProvinces(appEnv.appCountry));
   await ctx.store.dispatch(postReadOne(null, slug));
-  const provinces = ctx.store.getState().formReducer.states;
-  const post = ctx.store.getState().postReducer.post;
+  const provinces = await ctx.store.getState().formReducer.states;
+  const post: IPost = await ctx.store.getState().postReducer.post;
+
+  await ctx.store.dispatch(
+    postReadFeed(1, 10, post.stateCode, post.jobRoles[0], false)
+  );
+
+  const relatedPosts: IPost[] = await ctx.store.getState().postReducer.posts;
 
   return {
     post,
     provinces,
+    relatedPosts,
   };
 };
 
 export default IndividualPage;
+
+const MainCTAContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const RelatedPosts = styled.div`
+  margin-top: 6rem;
+`;
+
+const RelatedPostsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+
+  /*MOBILE ONLY CODE*/
+  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
+    justify-content: center;
+  }
+`;
 
 const Cover = styled.div`
   width: 100%;
