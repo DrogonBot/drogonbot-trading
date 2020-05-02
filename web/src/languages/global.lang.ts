@@ -73,6 +73,11 @@ export const globalStrings = {
     ptBr: "Enviar",
   },
 
+  genericLearnMore: {
+    eng: "Learn More",
+    ptBr: "Saiba mais",
+  },
+
   genericSelect: {
     eng: "Select",
     ptBr: "Selecionar",
