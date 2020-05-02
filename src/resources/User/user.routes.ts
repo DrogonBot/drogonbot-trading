@@ -16,6 +16,7 @@ import { LanguageHelper } from '../../utils/LanguageHelper';
 import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { RouterHelper } from '../../utils/RouterHelper';
 import { TextHelper } from '../../utils/TextHelper';
+import { Lead } from '../Lead/lead.model';
 import { Log } from '../Log/log.model';
 import { User } from './user.model';
 import { AuthType, UserType } from './user.types';
@@ -71,6 +72,44 @@ userRouter.get('/policy', async (req, res) => {
   ).toString();
 
   return res.status(200).send(data);
+
+})
+
+userRouter.get('/unsubscribe', async (req, res) => {
+
+  const { hashEmail, lang } = req.query
+
+  const encryptionHelper = new EncryptionHelper();
+  const email = encryptionHelper.decrypt(hashEmail);
+
+  console.log(`unsubscribing email ${email}`);
+
+  // try to find a lead or email with this data, and unsubscribe it
+
+  const user = await User.findOne({ email })
+
+  if (user) {
+    user.emailSubscriptionStatus.transactional = false;
+    user.emailSubscriptionStatus.marketing = false;
+    await user.save();
+  } else {
+    const lead = await Lead.findOne({ email })
+
+    if (lead) {
+      lead.emailSubscriptionStatus.transactional = false;
+      lead.emailSubscriptionStatus.marketing = false;
+      await lead.save();
+    }
+  }
+
+
+  const data = readFileSync(
+    `./src/public/pages/unsubscribe_${lang}.html`,
+    "utf-8"
+  ).toString();
+
+  return res.status(200).send(data)
+
 
 })
 

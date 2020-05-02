@@ -1,7 +1,11 @@
 import { readFileSync } from 'fs';
 import moment from 'moment-timezone';
 
+import { Lead } from '../resources/Lead/lead.model';
 import { Log } from '../resources/Log/log.model';
+import { User } from '../resources/User/user.model';
+import { EncryptionHelper } from '../utils/EncryptionHelper';
+import { LanguageHelper } from '../utils/LanguageHelper';
 import { TextHelper } from '../utils/TextHelper';
 import { emailProviders } from './constants/emailProviders.constant';
 
@@ -46,11 +50,40 @@ export class TransactionalEmailManager {
 
           console.log(`Free tier balance today: ${providerEmailsToday.length}/${emailProvider.freeTierThreshold}`);
 
+          // check if we should skip this user submission or not
+
+          const user = await User.findOne({ email: to })
+          const lead = await Lead.findOne({ email: to })
+
+          if ((user?.emailSubscriptionStatus.transactional === false) || (!lead?.emailSubscriptionStatus.transactional === false)) {
+            console.log(`Skipping email submission to unsubscribed user`);
+            return
+          }
+
+          // insert unsubscribe link
+
+          let htmlWithUnsubscribeLink;
+
+          if (!to) {
+            console.log('You should provide a valid "to" email');
+            return
+          }
+
+          // here we encrypt the to email for security purposes
+          const encryptionHelper = new EncryptionHelper();
+          const encryptedEmail = encryptionHelper.encrypt(to);
+
+          htmlWithUnsubscribeLink = html.replace('[Unsubscribe Link]', LanguageHelper.getLanguageString(null, 'unsubscribeLink', {
+            unsubscribeUrl: `${process.env.API_URL}/unsubscribe?hashEmail=${encryptedEmail}&lang=${process.env.LANGUAGE}`
+          }))
+
+
+
           await emailProvider.emailSendingFunction(
             to,
             process.env.ADMIN_EMAIL,
             subject,
-            html,
+            htmlWithUnsubscribeLink,
             text
           );
 
@@ -61,6 +94,7 @@ export class TransactionalEmailManager {
             target: to
           })
           await newEmailProviderLog.save()
+
 
           return
         }
@@ -99,7 +133,8 @@ export class TransactionalEmailManager {
       "Product Name": process.env.GLOBAL_VAR_PRODUCT_NAME,
       "Sender Name": process.env.GLOBAL_VAR_SENDER_NAME,
       "Company Name, LLC": process.env.GLOBAL_VAR_COMPANY_NAME_LLC,
-      "Company Address": process.env.GLOBAL_VAR_COMPANY_ADDRESS
+      "Company Address": process.env.GLOBAL_VAR_COMPANY_ADDRESS,
+
     }
 
 

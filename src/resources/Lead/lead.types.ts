@@ -1,3 +1,4 @@
+import { IEmailSubscriptionStatus } from '../User/user.types';
 
 
 export interface ILead {
@@ -5,7 +6,8 @@ export interface ILead {
   country: string,
   email: string,
   name: string,
-  jobRoles: string[]
+  jobRoles: string[],
+  emailSubscriptionStatus: IEmailSubscriptionStatus
 }
 
 export interface ILeadRaw {

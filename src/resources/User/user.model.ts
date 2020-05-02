@@ -103,8 +103,11 @@ export const userSchema: Schema = new Schema(
     lastNotification: {
       data: Object,
       visualized: Boolean
+    },
+    emailSubscriptionStatus: {
+      transactional: Boolean,
+      marketing: Boolean
     }
-
   },
   {
     timestamps: true

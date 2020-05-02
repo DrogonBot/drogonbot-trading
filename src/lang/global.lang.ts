@@ -26,5 +26,14 @@ export const globalStrings = {
   globalDateFormat: {
     eng: "MM/DD/YYYY",
     ptBr: "DD/MM/YYYY"
+  },
+  unsubscribeLink: {
+    eng: `<br/><br/><p style="text-align: center; display: block;">
+    <a href='{{unsubscribeUrl}}'>If you'd like to stop receiving these e-mails, just click here</a>
+    </p>
+    `,
+    ptBr: `<br/><br/><p style="text-align: center; display: block;">
+    <a  href='{{unsubscribeUrl}}'> Se você quer parar de receber esses e-mails, clique aqui</a>
+    </p>`
   }
 };

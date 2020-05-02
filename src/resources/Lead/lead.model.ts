@@ -26,6 +26,10 @@ const leadSchema = new mongoose.Schema({
   jobRoles: {
     type: [String],
     default: []
+  },
+  emailSubscriptionStatus: {
+    transactional: Boolean,
+    marketing: Boolean
   }
 })
 
