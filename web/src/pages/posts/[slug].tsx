@@ -355,7 +355,10 @@ IndividualPage.getInitialProps = async (ctx) => {
     postReadFeed(1, 10, post.stateCode, post.jobRoles[0], false)
   );
 
-  const relatedPosts: IPost[] = await ctx.store.getState().postReducer.posts;
+  // fetch related posts, filter any with same id as current post
+  const relatedPosts: IPost[] = await ctx.store
+    .getState()
+    .postReducer.posts.filter((relatedPost) => relatedPost._id !== post._id);
 
   return {
     post,

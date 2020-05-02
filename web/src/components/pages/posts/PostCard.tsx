@@ -31,6 +31,11 @@ export const PostCard = ({
     <Container>
       <Link href={`/posts/${slug}`}>
         <Card>
+          <CardTopHeader>
+            <Typography color="textSecondary" gutterBottom>
+              {`${city}, ${stateCode}`}
+            </Typography>
+          </CardTopHeader>
           <CardActionArea>
             {/* <CardMedia
               component="img"
@@ -64,4 +69,9 @@ export const PostCard = ({
 const Container = styled.div`
   max-width: 315px;
   margin: 1rem;
+`;
+
+const CardTopHeader = styled.div`
+  margin-left: 1.3rem;
+  margin-top: 1rem;
 `;
