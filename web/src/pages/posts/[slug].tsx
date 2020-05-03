@@ -15,7 +15,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Link } from '@material-ui/core';
+import FacebookIcon from '@material-ui/icons/Facebook';
 import FlagIcon from '@material-ui/icons/Flag';
+import SmartphoneIcon from '@material-ui/icons/Smartphone';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { JobPostingJsonLd } from 'next-seo';
 import Linkify from 'react-linkify';
 import styled from 'styled-components';
@@ -300,43 +303,56 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
             />
           </MainCTAContainer>
 
-          <RelatedPosts>
-            <H2>{TS.string("post", "postSimilar")}</H2>
+          <H2Block>
+            <H2>{TS.string("global", "joinOurCommunity")}</H2>
+            <CommunitiesContainer>
+              <a
+                href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
+                target="_blank"
+              >
+                <Button
+                  variant="outlined"
+                  className="btnWhatsapp"
+                  startIcon={<WhatsAppIcon />}
+                >
+                  WHATSAPP
+                </Button>
+              </a>
 
-            <RelatedPostsContainer>
-              {onRenderRelatedPosts()}
-            </RelatedPostsContainer>
-          </RelatedPosts>
+              <a href={getFacebookLink(post.stateCode)} target="_blank">
+                <Button
+                  variant="outlined"
+                  className="btnFacebook"
+                  startIcon={<FacebookIcon />}
+                >
+                  FACEBOOK
+                </Button>
+              </a>
 
-          <H2>{TS.string("global", "joinOurCommunity")}</H2>
-          <CommunitiesContainer>
-            <a
-              href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
-              target="_blank"
-            >
-              <Button variant="outlined" className="btnWhatsapp">
-                WHATSAPP
-              </Button>
-            </a>
-
-            <a href={getFacebookLink(post.stateCode)} target="_blank">
-              <Button variant="outlined" className="btnFacebook">
-                FACEBOOK
-              </Button>
-            </a>
-
-            <a href={`https://bit.ly/emprego-urgente-link1`} target="_blank">
-              <Button variant="outlined" className="btnEU">
-                APP
-              </Button>
-            </a>
-          </CommunitiesContainer>
+              <a href={`https://bit.ly/emprego-urgente-link1`} target="_blank">
+                <Button
+                  variant="outlined"
+                  className="btnEU"
+                  startIcon={<SmartphoneIcon />}
+                >
+                  APP
+                </Button>
+              </a>
+            </CommunitiesContainer>
+          </H2Block>
 
           <TOSContainer>
             <Link href={`/terms?language=${appEnv.language}`}>
               {TS.string("terms", "tosAgree")}
             </Link>
           </TOSContainer>
+
+          <RelatedPosts>
+            <H2>{TS.string("post", "postSimilar")}</H2>
+            <RelatedPostsContainer>
+              {onRenderRelatedPosts()}
+            </RelatedPostsContainer>
+          </RelatedPosts>
         </SearchMain>
       </SearchContainer>
     </>
@@ -368,6 +384,10 @@ IndividualPage.getInitialProps = async (ctx) => {
 };
 
 export default IndividualPage;
+
+const H2Block = styled.div`
+  margin-top: 4rem;
+`;
 
 const MainCTAContainer = styled.div`
   display: flex;
@@ -438,11 +458,17 @@ const ContentArea = styled.p`
 `;
 
 const CommunitiesContainer = styled.div`
+  margin-top: 3rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 80%;
+  width: 90%;
   justify-content: space-between;
+
+  /*MOBILE ONLY CODE*/
+  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
+    margin: 0 auto;
+  }
 
   .btnWhatsapp {
     background-color: white;
