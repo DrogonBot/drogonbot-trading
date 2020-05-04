@@ -505,73 +505,6 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
     case "mg":
 
       /*#############################################################|
-          |  >>> BELO HORIZONTE
-          *##############################################################*/
-
-      await BotHelper.initScrapper('OLX => MG/BH', {
-        crawlLinksFunction: ScrapperOLX.crawlLinks,
-        crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
-        country: "Brazil",
-        stateCode: "MG",
-      })
-
-      await BotHelper.initScrapper('OLX => MG/BH', {
-        crawlLinksFunction: ScrapperOLX.crawlLinks,
-        crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
-        country: "Brazil",
-        stateCode: "MG",
-        city: "Belo Horizonte"
-      })
-
-      await BotHelper.initScrapper('OLX => MG/Uberlandia', {
-        crawlLinksFunction: ScrapperOLX.crawlLinks,
-        crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/triangulo-mineiro/uberlandia/vagas-de-emprego", {
-        country: "Brazil",
-        stateCode: "MG",
-        city: "Uberlândia"
-      })
-
-
-      await BotHelper.initScrapper('OLX => MG/Uberlandia', {
-        crawlLinksFunction: ScrapperOLX.crawlLinks,
-        crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/triangulo-mineiro/uberlandia/vagas-de-emprego", {
-        country: "Brazil",
-        stateCode: "MG",
-        city: "Uberlândia"
-      })
-
-      await BotHelper.initScrapper('OLX => MG/Contagem', {
-        crawlLinksFunction: ScrapperOLX.crawlLinks,
-        crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/grande-belo-horizonte/contagem/vagas-de-emprego", {
-        country: "Brazil",
-        stateCode: "MG",
-        city: "Contagem"
-      })
-
-      await BotHelper.initScrapper('OLX => MG/Juiz de Fora', {
-        crawlLinksFunction: ScrapperOLX.crawlLinks,
-        crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/regiao-de-juiz-de-fora/vagas-de-emprego", {
-        country: "Brazil",
-        stateCode: "MG",
-        city: "Juiz de Fora"
-      })
-
-      await BotHelper.initScrapper('OLX => MG/Betim', {
-        crawlLinksFunction: ScrapperOLX.crawlLinks,
-        crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/grande-belo-horizonte/betim/vagas-de-emprego", {
-        country: "Brazil",
-        stateCode: "MG",
-        city: "Juiz de Fora"
-      })
-
-      /*#############################################################|
       |  >>> BELO HORIZONTE
       *##############################################################*/
 
@@ -644,6 +577,73 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
         country: "Brazil",
         stateCode: "MG",
         city: "Cambuí",
+      })
+
+      /*#############################################################|
+         |  >>> BELO HORIZONTE
+         *##############################################################*/
+
+      await BotHelper.initScrapper('OLX => MG/BH', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+      })
+
+      await BotHelper.initScrapper('OLX => MG/BH', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Belo Horizonte"
+      })
+
+      await BotHelper.initScrapper('OLX => MG/Uberlandia', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/triangulo-mineiro/uberlandia/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Uberlândia"
+      })
+
+
+      await BotHelper.initScrapper('OLX => MG/Uberlandia', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/triangulo-mineiro/uberlandia/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Uberlândia"
+      })
+
+      await BotHelper.initScrapper('OLX => MG/Contagem', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/grande-belo-horizonte/contagem/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Contagem"
+      })
+
+      await BotHelper.initScrapper('OLX => MG/Juiz de Fora', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/regiao-de-juiz-de-fora/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Juiz de Fora"
+      })
+
+      await BotHelper.initScrapper('OLX => MG/Betim', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://mg.olx.com.br/belo-horizonte-e-regiao/grande-belo-horizonte/betim/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "MG",
+        city: "Juiz de Fora"
       })
 
       break;
