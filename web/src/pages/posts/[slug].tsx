@@ -229,6 +229,10 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
                   Participe do nosso grupo exclusivo de vagas no WhatsApp e
                   receba diariamente oportunidades exclusivas em seu celular!
                 </p>
+                <p>
+                  Também enviaremos emails com vagas de seu interesse assim que
+                  estiverem disponíveis!
+                </p>
 
                 <AlertModalContainer>
                   <a
@@ -349,6 +353,21 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
             />
           </MainCTAContainer>
 
+          <TOSContainer>
+            <Link href={`/terms?language=${appEnv.language}`}>
+              {TS.string("terms", "tosAgree")}
+            </Link>
+          </TOSContainer>
+
+          {relatedPosts && (
+            <RelatedPosts>
+              <H2>{TS.string("post", "postSimilar")}</H2>
+              <RelatedPostsContainer>
+                {onRenderRelatedPosts()}
+              </RelatedPostsContainer>
+            </RelatedPosts>
+          )}
+
           <H2Block>
             <H2>{TS.string("global", "joinOurCommunity")}</H2>
             <CommunitiesContainer>
@@ -387,18 +406,6 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
             </CommunitiesContainer>
           </H2Block>
 
-          <TOSContainer>
-            <Link href={`/terms?language=${appEnv.language}`}>
-              {TS.string("terms", "tosAgree")}
-            </Link>
-          </TOSContainer>
-
-          <RelatedPosts>
-            <H2>{TS.string("post", "postSimilar")}</H2>
-            <RelatedPostsContainer>
-              {onRenderRelatedPosts()}
-            </RelatedPostsContainer>
-          </RelatedPosts>
           {onShowWhatsAppLeadCaptureAlert()}
         </SearchMain>
       </SearchContainer>
@@ -442,7 +449,7 @@ const MainCTAContainer = styled.div`
 `;
 
 const RelatedPosts = styled.div`
-  margin-top: 6rem;
+  margin-top: 3rem;
 `;
 
 const RelatedPostsContainer = styled.div`
@@ -506,6 +513,7 @@ const ContentArea = styled.p`
 
 const CommunitiesContainer = styled.div`
   margin-top: 3rem;
+  margin-bottom: 3rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
