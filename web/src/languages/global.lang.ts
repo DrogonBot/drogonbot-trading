@@ -106,4 +106,12 @@ export const globalStrings = {
     eng: "Join our communities!",
     ptBr: "Participe de nossas comunidades!",
   },
+  genericClose: {
+    eng: "Close",
+    ptBr: "Fechar",
+  },
+  genericDontShowAgain: {
+    eng: "Don't Show Again",
+    ptBr: "Não Mostrar Novamente",
+  },
 };

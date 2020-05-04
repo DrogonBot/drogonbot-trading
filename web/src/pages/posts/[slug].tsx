@@ -24,6 +24,7 @@ import Linkify from 'react-linkify';
 import styled from 'styled-components';
 
 import { SearchContainer, SearchHeader, SearchMain } from '.';
+import { AlertModal } from '../../components/elements/ui/AlertModal';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { InfoTag } from '../../components/elements/ui/InfoTag';
 import { PostCard } from '../../components/pages/posts/PostCard';
@@ -209,6 +210,51 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
     ));
   };
 
+  const onShowWhatsAppLeadCaptureAlert = () => {
+    if (typeof window !== "undefined") {
+      const whatsAppModal = localStorage.getItem("whatsapp-modal");
+
+      if (whatsAppModal === "dont-show") {
+        return null;
+      }
+
+      return (
+        <>
+          <AlertModal
+            alertKey="whatsapp-modal"
+            title="Grupo de Vagas no WhatsApp"
+            content={
+              <>
+                <p>
+                  Participe do nosso grupo exclusivo de vagas no WhatsApp e
+                  receba diariamente oportunidades exclusivas em seu celular!
+                </p>
+
+                <AlertModalContainer>
+                  <a
+                    href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
+                    target="_blank"
+                  >
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      startIcon={<WhatsAppIcon />}
+                    >
+                      Acessar Grupo
+                    </Button>
+                  </a>
+                </AlertModalContainer>
+              </>
+            }
+            showDontShowAgain={true}
+          />
+        </>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <>
       <NextSEOPost
@@ -353,6 +399,7 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
               {onRenderRelatedPosts()}
             </RelatedPostsContainer>
           </RelatedPosts>
+          {onShowWhatsAppLeadCaptureAlert()}
         </SearchMain>
       </SearchContainer>
     </>
@@ -486,4 +533,12 @@ const CommunitiesContainer = styled.div`
     border: 1px solid ${colors.accent};
     color: ${colors.accent};
   }
+`;
+
+const AlertModalContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
 `;
