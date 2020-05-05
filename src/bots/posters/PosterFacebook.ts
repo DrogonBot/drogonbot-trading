@@ -156,7 +156,9 @@ export class PosterFacebook extends PuppeteerBot {
       console.log('🤖: Done posting!')
 
       await page.goto('about:blank')
-      await page.close();
+
+
+
 
       console.log(`browser status => ${browser.isConnected()}`);
 

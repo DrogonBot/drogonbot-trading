@@ -18,10 +18,22 @@ export class PuppeteerBot {
 
   public static clear = async (browser: Browser | null) => {
     try {
+
+      // clear pending pages
+
+
+
+
+
       // This function clears memory by closing puppeteer open instances
 
       if (browser && browser.isConnected()) {
-        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Puppeteer: Closing opened browser instance`)
+
+        for (const browserPage of await browser.pages()) {
+          await browserPage.close();
+        }
+
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Puppeteer: Closing opened browser and pages instances`)
 
         await browser.close()
       }
