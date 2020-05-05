@@ -156,8 +156,8 @@ export class PosterFacebook extends PuppeteerBot {
 
       console.log(`browser status => ${browser.isConnected()}`);
 
-      if (browser) {
-        await PosterFacebook.clear(browser)
+      if (PosterFacebook.browser) {
+        await PosterFacebook.clear(PosterFacebook.browser)
       }
 
     }
