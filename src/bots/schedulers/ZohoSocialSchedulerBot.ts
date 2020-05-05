@@ -79,7 +79,6 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
         await ZohoSocialSchedulerBot.zohoLogin(page, credentials)
       }
 
-
       // Goto dashboard
       console.log('🤖: Accessing dashboard');
       await page.goto('https://social.zoho.com/social/', { waitUntil: 'networkidle2' })
