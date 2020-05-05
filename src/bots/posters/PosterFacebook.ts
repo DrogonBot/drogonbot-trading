@@ -3,7 +3,6 @@ import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import { GenericEmailManager } from '../../emails/generic.email';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
 import {
   FB_LOGIN_EMAIL_INPUT,
@@ -142,31 +141,24 @@ export class PosterFacebook extends PuppeteerBot {
 
       await page.click('.composerInput.mentions-input')
 
-      console.log('Typing post');
+      console.log('🤖: Typing post...');
 
       await page.type('.composerInput.mentions-input', postContent)
 
       await page.waitForSelector('button._54k8._52jg._56bs._26vk._56b_._56bw._56bv')
 
-      console.log('Posting...');
+      console.log('🤖: Posting...');
 
       await page.click('button._54k8._52jg._56bs._26vk._56b_._56bw._56bv');
 
 
-      console.log('🤖: Done posting!')
-
-      await page.goto('about:blank')
-
-
-
+      console.log('🤖: Done posting! Closing browser...')
 
       console.log(`browser status => ${browser.isConnected()}`);
 
       if (browser) {
         await PosterFacebook.clear(browser)
       }
-
-      await GenericHelper.sleep(5000)
 
     }
     catch (error) {
