@@ -79,6 +79,13 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
         await ZohoSocialSchedulerBot.zohoLogin(page, credentials)
       }
 
+      const skipManageSessions = await page.$('#continue_skip')
+
+      if (skipManageSessions) {
+        console.log('🤖: Skipping manage sessions page...');
+        await skipManageSessions.click();
+      }
+
       // Goto dashboard
       console.log('🤖: Accessing dashboard');
       await page.goto('https://social.zoho.com/social/', { waitUntil: 'networkidle2' })
