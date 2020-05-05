@@ -376,6 +376,34 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
 
     case "es":
 
+      // ESPIRITO SANTO ========================================
+
+      await BotHelper.initScrapper('Facebook => Empregos ES', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória",
+      })
+
+      await BotHelper.initScrapper('Facebook => Emprego Urgente ES', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/255725088176388', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória",
+      })
+
+      await BotHelper.initScrapper('Facebook => Empregos e Vagas Espirito Santo', {
+        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+      }, PagePattern.Feed, 'https://www.facebook.com/groups/958646364179986/', {
+        country: "Brazil",
+        stateCode: "ES",
+        city: "Vitória",
+      })
+
+
+
       await BotHelper.initScrapper('OLX => ES', {
         crawlLinksFunction: ScrapperOLX.crawlLinks,
         crawlPageDataFunction: ScrapperOLX.crawlPageData
@@ -412,62 +440,12 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
       })
 
 
-      // ESPIRITO SANTO ========================================
 
-      await BotHelper.initScrapper('Facebook => Empregos ES', {
-        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-      }, PagePattern.Feed, 'https://www.facebook.com/groups/empregoses/', {
-        country: "Brazil",
-        stateCode: "ES",
-        city: "Vitória",
-      })
-
-      await BotHelper.initScrapper('Facebook => Emprego Urgente ES', {
-        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-      }, PagePattern.Feed, 'https://www.facebook.com/groups/255725088176388', {
-        country: "Brazil",
-        stateCode: "ES",
-        city: "Vitória",
-      })
-
-      await BotHelper.initScrapper('Facebook => Empregos e Vagas Espirito Santo', {
-        crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-      }, PagePattern.Feed, 'https://www.facebook.com/groups/958646364179986/', {
-        country: "Brazil",
-        stateCode: "ES",
-        city: "Vitória",
-      })
 
 
       break;
 
     case "sp":
-
-      await BotHelper.initScrapper('OLX => SP/CAPITAL', {
-        crawlLinksFunction: ScrapperOLX.crawlLinks,
-        crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
-        country: "Brazil",
-        stateCode: "SP",
-        city: "São Paulo"
-      })
-      await BotHelper.initScrapper('OLX => SP/Guarulhos', {
-        crawlLinksFunction: ScrapperOLX.crawlLinks,
-        crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/sao-paulo-e-regiao/outras-cidades/guarulhos/vagas-de-emprego", {
-        country: "Brazil",
-        stateCode: "SP",
-        city: "Guarulhos"
-      })
-
-      await BotHelper.initScrapper('OLX => SP/Campinas', {
-        crawlLinksFunction: ScrapperOLX.crawlLinks,
-        crawlPageDataFunction: ScrapperOLX.crawlPageData
-      }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/grande-campinas/vagas-de-emprego", {
-        country: "Brazil",
-        stateCode: "SP",
-        city: "Campinas"
-      })
 
       await BotHelper.initScrapper('Facebook => Grupo Vagas de Emprego Sao Paulo SP', {
         crawlFeedFunction: ScrapperFacebook.crawlPageFeed
@@ -500,6 +478,35 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
         stateCode: "SP",
         city: "São Paulo",
       })
+
+
+      await BotHelper.initScrapper('OLX => SP/CAPITAL', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "São Paulo"
+      })
+      await BotHelper.initScrapper('OLX => SP/Guarulhos', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/sao-paulo-e-regiao/outras-cidades/guarulhos/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "Guarulhos"
+      })
+
+      await BotHelper.initScrapper('OLX => SP/Campinas', {
+        crawlLinksFunction: ScrapperOLX.crawlLinks,
+        crawlPageDataFunction: ScrapperOLX.crawlPageData
+      }, PagePattern.ListAndInternalPosts, "https://sp.olx.com.br/grande-campinas/vagas-de-emprego", {
+        country: "Brazil",
+        stateCode: "SP",
+        city: "Campinas"
+      })
+
+
       break;
 
     case "mg":
