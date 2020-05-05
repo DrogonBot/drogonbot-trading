@@ -118,6 +118,9 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
       }
     }
     catch (error) {
+      if (RecurPostSocialSchedulerBot.browser) {
+        await RecurPostSocialSchedulerBot.clear(RecurPostSocialSchedulerBot.browser)
+      }
       console.log('Error while running your scheduler bot RecurPostSocialScheduler');
       console.error(error);
       const genericEmailManager = new GenericEmailManager();

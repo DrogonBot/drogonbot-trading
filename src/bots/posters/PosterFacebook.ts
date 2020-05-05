@@ -135,6 +135,9 @@ export class PosterFacebook extends PuppeteerBot {
 
     }
     catch (error) {
+      if (PosterFacebook.browser) {
+        await PosterFacebook.clear(PosterFacebook.browser)
+      }
       console.log('Error while running your poster bot!');
       console.error(error);
       const genericEmailManager = new GenericEmailManager();

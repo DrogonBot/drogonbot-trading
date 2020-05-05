@@ -116,6 +116,9 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
       }
     }
     catch (error) {
+      if (ZohoSocialSchedulerBot.browser) {
+        await ZohoSocialSchedulerBot.clear(ZohoSocialSchedulerBot.browser)
+      }
       console.log('Error while running your scheduler bot ZohoSocialScheduler');
       console.error(error);
       const genericEmailManager = new GenericEmailManager();
