@@ -60,6 +60,7 @@ export class PosterFacebook extends PuppeteerBot {
           "--disable-setuid-sandbox"
         ]
       })
+      const browser = PosterFacebook.browser;
 
 
       PosterFacebook.page = await PosterFacebook.browser.newPage();
@@ -98,8 +99,6 @@ export class PosterFacebook extends PuppeteerBot {
       // Go to group post page...
       console.log('🤖: Clicking on "Write something input"');
 
-
-
       // Go to group post page...
       await page.evaluate(() => {
         // @ts-ignore
@@ -123,13 +122,15 @@ export class PosterFacebook extends PuppeteerBot {
 
       console.log('🤖: Done posting!')
 
-
-
       await page.goto('about:blank')
       await page.close();
 
+      console.log(`browser status => ${browser.isConnected()}`);
 
-      await PosterFacebook.clear(PosterFacebook.browser)
+      if (browser) {
+        await PosterFacebook.clear(browser)
+      }
+
       await GenericHelper.sleep(5000)
 
     }
