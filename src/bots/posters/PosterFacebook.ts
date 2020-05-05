@@ -23,7 +23,7 @@ export class PosterFacebook extends PuppeteerBot {
     try {
       await page.goto('https://m.facebook.com/login/', { waitUntil: 'networkidle2' })
 
-      console.log(`Logging in bot ${bot.email}...`);
+      console.log(`🤖: Logging in bot ${bot.email}...`);
 
       // Fill login and password
 
@@ -36,10 +36,10 @@ export class PosterFacebook extends PuppeteerBot {
       await page.waitForSelector(FB_LOGIN_SKIP_SAVE_PASSWORD);
       await page.click(FB_LOGIN_SKIP_SAVE_PASSWORD) // do not save password button
 
-      console.log('Finished login!');
+      console.log('🤖: Finished login!');
     }
     catch (error) {
-      console.log('Failed to login bot!');
+      console.log('🤖: Failed to login bot!');
       console.error(error);
     }
 
@@ -103,12 +103,12 @@ export class PosterFacebook extends PuppeteerBot {
 
       const needsLogin = await page.$('#m_login_email') // if this input is found (if Zoho does not redirect us automatically to the dashboard), it means we should login!
       if (needsLogin) {
-        console.log('User needs login...');
+        console.log('🤖: User needs login...');
         try {
           await PosterFacebook.loginUserFacebook(bot, page);
         }
         catch (error) {
-          console.log('Login failure!');
+          console.log('🤖: Login failure!');
           console.error(error);
           return
         }
@@ -118,7 +118,7 @@ export class PosterFacebook extends PuppeteerBot {
       const checkpointPresent = await page.$('#checkpointSubmitButton')
 
       if (checkpointPresent) {
-        console.log('Location checkpoint present, clicking to skip...');
+        console.log('🤖: Location checkpoint present, clicking to skip...');
         await page.click('#checkpointSubmitButton')
       }
 
@@ -153,8 +153,6 @@ export class PosterFacebook extends PuppeteerBot {
 
 
       console.log('🤖: Done posting! Closing browser...')
-
-      console.log(`browser status => ${browser.isConnected()}`);
 
       if (PosterFacebook.browser) {
         await PosterFacebook.clear(PosterFacebook.browser)
