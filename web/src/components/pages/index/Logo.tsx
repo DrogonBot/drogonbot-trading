@@ -6,7 +6,7 @@ export const Logo = () => {
   return (
     <LogoContainer>
       <img
-        src={`/images/logo-${appEnv.language}.svg`}
+        src={`/images/logos/logo-${appEnv.language}.svg`}
         alt="Emprego Urgente Logo"
       />
     </LogoContainer>

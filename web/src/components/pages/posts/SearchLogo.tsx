@@ -8,7 +8,7 @@ export const SearchLogo = () => {
   return (
     <Container>
       <Link href="/">
-        <img src={`/images/logo-${appEnv.language}.svg`} />
+        <img src={`/images/logos/logo-${appEnv.language}.svg`} />
       </Link>
     </Container>
   );

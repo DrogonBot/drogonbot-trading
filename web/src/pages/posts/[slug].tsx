@@ -225,6 +225,17 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
             title="Grupo de Vagas no WhatsApp"
             content={
               <>
+                <a
+                  href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
+                  target="_blank"
+                >
+                  <WhatsAppContainer>
+                    <WhatsAppLogo
+                      src={"/images/logos/whatsapp.svg"}
+                      alt="WhatsApp Logo"
+                    />
+                  </WhatsAppContainer>
+                </a>
                 <p>
                   Participe do nosso grupo exclusivo de vagas no WhatsApp e
                   receba diariamente oportunidades exclusivas em seu celular!
@@ -438,6 +449,16 @@ IndividualPage.getInitialProps = async (ctx) => {
 };
 
 export default IndividualPage;
+
+const WhatsAppContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const WhatsAppLogo = styled.img`
+  max-width: 100px;
+`;
 
 const H2Block = styled.div`
   margin-top: 4rem;
