@@ -130,8 +130,6 @@ export class PosterFacebook extends PuppeteerBot {
 
 
       await PosterFacebook.clear(PosterFacebook.browser)
-
-
       await GenericHelper.sleep(5000)
 
     }
@@ -146,6 +144,10 @@ export class PosterFacebook extends PuppeteerBot {
         notification: "Your PosterFacebook bot is failing. Please check on docker logs what's going on."
       })
 
+    }
+
+    if (PosterFacebook.browser) {
+      await PosterFacebook.clear(PosterFacebook.browser)
     }
 
 
