@@ -66,6 +66,8 @@ export class PosterFacebook extends PuppeteerBot {
       const page = PosterFacebook.page;
 
       await page.goto('https://m.facebook.com/login', { waitUntil: 'networkidle2' })
+      await page.setDefaultNavigationTimeout(0);
+
 
       const needsLogin = await page.$('#m_login_email') // if this input is found (if Zoho does not redirect us automatically to the dashboard), it means we should login!
       if (needsLogin) {
