@@ -124,12 +124,13 @@ export class PosterFacebook extends PuppeteerBot {
       console.log('🤖: Done posting!')
 
 
+
       await page.goto('about:blank')
       await page.close();
 
-      if (PosterFacebook.browser) {
-        await PosterFacebook.clear(PosterFacebook.browser)
-      }
+
+      await PosterFacebook.clear(PosterFacebook.browser)
+
 
       await GenericHelper.sleep(5000)
 
