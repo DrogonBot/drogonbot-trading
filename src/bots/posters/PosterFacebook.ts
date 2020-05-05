@@ -23,6 +23,10 @@ export class PosterFacebook extends PuppeteerBot {
     // await BotHelper.initPoster(randomBot, randomGroup, post, PosterFacebook.postToGroup)
 
     await PosterFacebook.postToGroup(randomBot, randomGroup, postContent)
+
+    if (PosterFacebook.browser) {
+      await PosterFacebook.clear(PosterFacebook.browser)
+    }
   }
 
   public static triggerRandomPostComments = async () => {
