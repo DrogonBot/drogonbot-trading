@@ -1,10 +1,16 @@
+import { Page } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import { GenericEmailManager } from '../../emails/generic.email';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
-import { BotHelper } from '../helpers/BotHelper';
+import {
+  FB_LOGIN_EMAIL_INPUT,
+  FB_LOGIN_LOGIN_CTA,
+  FB_LOGIN_PASSWORD_INPUT,
+  FB_LOGIN_SKIP_SAVE_PASSWORD,
+} from '../selectors/facebook.selectors';
 import { IBot } from '../types/bots.types';
 
 
@@ -13,7 +19,32 @@ puppeteer.use(StealthPlugin())
 
 export class PosterFacebook extends PuppeteerBot {
 
+  public static loginUserFacebook = async (bot: IBot, page: Page) => {
 
+    try {
+      await page.goto('https://m.facebook.com/login/', { waitUntil: 'networkidle2' })
+
+      console.log(`Logging in bot ${bot.email}...`);
+
+      // Fill login and password
+
+      await page.type(FB_LOGIN_EMAIL_INPUT, bot.email); // Types slower, like a user
+      await page.type(FB_LOGIN_PASSWORD_INPUT, bot.password); // Types slower, like a user
+
+      await page.click(FB_LOGIN_LOGIN_CTA);
+      await page.waitForNavigation(); // it will change page, so wait
+
+      await page.waitForSelector(FB_LOGIN_SKIP_SAVE_PASSWORD);
+      await page.click(FB_LOGIN_SKIP_SAVE_PASSWORD) // do not save password button
+
+      console.log('Finished login!');
+    }
+    catch (error) {
+      console.log('Failed to login bot!');
+      console.error(error);
+    }
+
+  }
 
   public static triggerMarketingPost = async () => {
     const { randomBot, randomGroup, post: postContent } = await PosterFacebook.getRandomData(true);
@@ -29,17 +60,17 @@ export class PosterFacebook extends PuppeteerBot {
     }
   }
 
-  public static triggerRandomPostComments = async () => {
+  // public static triggerRandomPostComments = async () => {
 
-    const { randomBot, randomGroup, post } = await PosterFacebook.getRandomData(false);
+  //   const { randomBot, randomGroup, post } = await PosterFacebook.getRandomData(false);
 
-    console.log('Initializing RANDOM posting with...');
-    console.log(randomBot.name);
-    console.log(randomGroup);
-    console.log(post);
+  //   console.log('Initializing RANDOM posting with...');
+  //   console.log(randomBot.name);
+  //   console.log(randomGroup);
+  //   console.log(post);
 
-    await BotHelper.initPoster(randomBot, randomGroup, post, PosterFacebook.postToGroup)
-  }
+  //   await BotHelper.initPoster(randomBot, randomGroup, post, PosterFacebook.postToGroup)
+  // }
 
   public static postToGroup = async (bot: IBot, groupUrl: string, postContent: string) => {
 
@@ -49,7 +80,6 @@ export class PosterFacebook extends PuppeteerBot {
       if (PosterFacebook.browser) {
         await PosterFacebook.clear(PosterFacebook.browser)
       }
-
 
       PosterFacebook.browser = await puppeteer.launch({
         ignoreHTTPSErrors: true,
@@ -66,13 +96,11 @@ export class PosterFacebook extends PuppeteerBot {
       })
       const browser = PosterFacebook.browser;
 
-
-      PosterFacebook.page = await PosterFacebook.browser.newPage();
+      PosterFacebook.page = await browser.newPage();
       const page = PosterFacebook.page;
 
       await page.goto('https://m.facebook.com/login', { waitUntil: 'networkidle2' })
       await page.setDefaultNavigationTimeout(0);
-
 
       const needsLogin = await page.$('#m_login_email') // if this input is found (if Zoho does not redirect us automatically to the dashboard), it means we should login!
       if (needsLogin) {
@@ -87,6 +115,7 @@ export class PosterFacebook extends PuppeteerBot {
         }
       }
 
+      // This happens when facebook finds a mismatch between IPs that are logging into your account (security measure)
       const checkpointPresent = await page.$('#checkpointSubmitButton')
 
       if (checkpointPresent) {
@@ -150,11 +179,6 @@ export class PosterFacebook extends PuppeteerBot {
       })
 
     }
-
-    if (PosterFacebook.browser) {
-      await PosterFacebook.clear(PosterFacebook.browser)
-    }
-
 
   }
 }
