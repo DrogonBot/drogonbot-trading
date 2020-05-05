@@ -106,10 +106,16 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
       await page.click("[onclick*=publish_postnow]")
 
 
-
-      await page.waitFor(4000)
-
       console.log('🤖: Posted!');
+
+
+      await page.waitFor(2000)
+
+      // logout user
+      await page.goto('https://social.zoho.com/Logout.do', { waitUntil: 'networkidle2' })
+
+
+      await page.waitFor(2000)
 
       if (ZohoSocialSchedulerBot.browser) {
         await ZohoSocialSchedulerBot.clear(ZohoSocialSchedulerBot.browser)
