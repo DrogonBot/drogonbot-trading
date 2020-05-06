@@ -205,7 +205,7 @@ export class JobsCron {
   }
 
   public static initPostersBot = () => {
-    cron.schedule("0 */3 * * *", async () => {
+    cron.schedule("0 */4 * * *", async () => {
 
       await PosterFacebook.triggerMarketingPost()
 
