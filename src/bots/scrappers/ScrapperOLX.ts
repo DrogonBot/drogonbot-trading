@@ -1,6 +1,6 @@
 import cheerio from 'cheerio';
 
-import { IPostSource } from '../../resources/Post/post.types';
+import { PostSource } from '../../resources/Post/post.types';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
@@ -75,7 +75,7 @@ export class ScrapperOLX {
       content: rawContent,
       externalUrl: link,
       country: "Brazil",
-      source: IPostSource.OLX,
+      source: PostSource.OLX,
       city: rawCity,
       zipCode,
       neighborhood,

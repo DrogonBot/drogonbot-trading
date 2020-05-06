@@ -2,7 +2,7 @@ import { PostSource } from '../../resources/Post/post.types';
 import { scrappingTargets } from '../data/scrappingTargets';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
-import { IScrappingTarget, PagePattern } from '../types/bots.types';
+import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
 import { BotHelper } from './BotHelper';
 
 
@@ -13,10 +13,15 @@ export interface IScrappingTargetFilter {
 
 export class ScrappingTargetHelper {
 
-  public static getScrappingTargetList = (sortByPriority: boolean, stateCode: string) => {
+  public static getScrappingTargetList = (filterByPriority: TargetPriority, sortByPriority: boolean, stateCode: string) => {
 
 
     let results = scrappingTargets;
+
+
+    if (filterByPriority) {
+      results = results.filter((result) => result.priority === filterByPriority)
+    }
 
     if (stateCode) {
       results = results.filter((result) => result.dataOverride.stateCode === stateCode.toUpperCase())

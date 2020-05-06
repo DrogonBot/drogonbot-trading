@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
-import { IPostSource } from '../../resources/Post/post.types';
+import { PostSource } from '../../resources/Post/post.types';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
 import { BotHelper } from '../helpers/BotHelper';
@@ -83,7 +83,7 @@ export class ScrapperFacebook extends PuppeteerBot {
         ...postDataOverride,
         title,
         content: postContent,
-        source: IPostSource.Facebook,
+        source: PostSource.Facebook,
         sourceUrl: link,
         sector,
         jobRoles: [jobRoleBestMatch],

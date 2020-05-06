@@ -10,6 +10,7 @@ import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../../bots/helpers/ScrappingTargetHelper';
 import { PosterFacebook } from '../../bots/posters/PosterFacebook';
 import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
+import { TargetPriority } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
@@ -368,7 +369,7 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
 
   const { target } = req.query;
 
-  const results = ScrappingTargetHelper.getScrappingTargetList(true, target);
+  const results = ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, target);
 
   await ScrappingTargetHelper.startScrappers(results);
 
