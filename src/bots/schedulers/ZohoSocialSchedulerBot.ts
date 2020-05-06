@@ -90,6 +90,14 @@ export class ZohoSocialSchedulerBot extends PuppeteerBot {
       console.log('🤖: Accessing dashboard');
       await page.goto('https://social.zoho.com/social/', { waitUntil: 'networkidle2' })
 
+      // Skip zoho social modal
+      const closeZohoSocialExperienceModal = await page.$('._fbClose')
+      if (closeZohoSocialExperienceModal) {
+        console.log('closing zoho experience modal');
+        await closeZohoSocialExperienceModal.click();
+      }
+
+
 
       // Publishing
       console.log('🤖: Clicking on blue Publish CTA');
