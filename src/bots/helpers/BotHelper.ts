@@ -1,41 +1,88 @@
+import moment from 'moment-timezone';
 import UserAgent from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
 import { Lead } from '../../resources/Lead/lead.model';
+import { Log } from '../../resources/Log/log.model';
 import { Post } from '../../resources/Post/post.model';
-import { IPost } from '../../resources/Post/post.types';
+import { IPost, PostSource } from '../../resources/Post/post.types';
 import { User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
-import { IBot, ICrawlerFunctions, IProxyItem, PagePattern } from '../types/bots.types';
+import { ICrawlerFunctions, IProxyItem, PagePattern, ProxyType } from '../types/bots.types';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
 
-
 export class BotHelper {
 
+  public static proxyType: ProxyType
   public static proxyList: IProxyItem[];
-  public static chosenProxy: IProxyItem;
+  public static chosenProxy: IProxyItem | null;
   public static userAgent: string;
   public static owner;
   public static failedRequestIntervalMs: number = 10000;
   public static postLinkScrappingIntervalMs: number = 10000;
   public static scrapperHelperFinishIntervalMs: number = 1000 * 60 * Math.floor(Math.random() * 5)
+  public static ZenScrapeDailyLimit = 33;
 
 
-  public static init = async (name: string) => {
+
+  public static init = async (name: string, source: PostSource) => {
     console.log(`🤖: Initializing ${name}`);
 
-    // Let's fetch our proxies list only if we didn't do it before...
-    if (!BotHelper.proxyList) {
-      const proxyList = await ConnectionHelper.fetchFreeProxyList();
-      BotHelper.proxyList = proxyList;
+    switch (process.env.ENV) {
+      case EnvType.Production:
+
+        // lets check if our free tier on ZenScrape is already gone. If so, use free proxy for requests
+
+        const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+
+        // ! Here we use Zenscrape only for PagePattern.feed (eg. Facebook), since PagePattern.ListAndInternalPosts would consome too much credits for now
+        if (source === PostSource.Facebook) {
+          const zenScrapeUsedRequests = await Log.find({
+            action: `ZENSCRAPE_REQUEST`,
+            createdAt: { "$gte": today }
+          })
+
+          if (zenScrapeUsedRequests.length <= BotHelper.ZenScrapeDailyLimit) { // 33 is our current ZenScrape free tier
+            BotHelper.proxyType = ProxyType.ZenScrape;
+          } else {
+            BotHelper.proxyType = ProxyType.FreeProxy;
+          }
+        } else {
+          BotHelper.proxyType = ProxyType.FreeProxy;
+        }
+
+
+        // BotHelper.proxyType = ProxyType.FreeProxy;
+
+
+        if (BotHelper.proxyType === ProxyType.FreeProxy) {
+          // Let's fetch our proxies list only if we didn't do it before...
+          if (!BotHelper.proxyList) {
+            const proxyList = await ConnectionHelper.fetchFreeProxyList();
+            BotHelper.proxyList = proxyList;
+          }
+          BotHelper.chosenProxy = ConnectionHelper.rotateProxy(BotHelper.proxyList);
+
+        } else {
+          BotHelper.proxyList = []
+          BotHelper.chosenProxy = null
+        }
+
+        break;
+      case EnvType.Development:
+
+        // We don't use proxies on development, since it slow us down...
+        BotHelper.proxyType = ProxyType.None;
+        BotHelper.proxyList = []
+        BotHelper.chosenProxy = null
+        break;
     }
 
-    BotHelper.chosenProxy = ConnectionHelper.rotateProxy(BotHelper.proxyList);
     BotHelper.userAgent = new UserAgent().random().data.userAgent;
     BotHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
   }
@@ -53,11 +100,11 @@ export class BotHelper {
 
   }
 
-  public static initScrapper = async (name, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object) => {
+  public static initScrapper = async (name, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object) => {
 
     const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
 
-    await BotHelper.init(name)
+    await BotHelper.init(name, source)
 
 
     switch (type) {
@@ -95,16 +142,6 @@ export class BotHelper {
     BotHelper.finish();
 
   };
-
-  public static initPoster = async (bot: IBot, link: string, post: string, groupPostFunction) => {
-    await BotHelper.init(bot.name)
-
-    console.log(`🤖: Starting Poster bot request to ${link}`);
-    // await ConnectionHelper.tryRequestUntilSucceeds(groupPostFunction, [bot, link, post])
-    groupPostFunction(bot, link, post)
-
-    BotHelper.finish();
-  }
 
   private static _notifyUsers = async (post: IPost) => {
 

@@ -22,7 +22,7 @@ export class ScrapperFacebook extends PuppeteerBot {
     }
 
 
-    const puppeteerOptions = ScrapperFacebook.getOptions({ ip: BotHelper.chosenProxy.ip, port: BotHelper.chosenProxy.port }, BotHelper.userAgent)
+    const puppeteerOptions = ScrapperFacebook.getOptions(BotHelper.chosenProxy ? { ip: BotHelper.chosenProxy.ip, port: BotHelper.chosenProxy.port } : null, BotHelper.userAgent)
 
 
     ScrapperFacebook.browser = await puppeteer.launch(puppeteerOptions)

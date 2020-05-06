@@ -1,17 +1,17 @@
 import cheerio from 'cheerio';
 import fs from 'fs';
+import moment from 'moment-timezone';
 import path from 'path';
 import rp from 'request-promise';
 import UserAgent from 'user-agents';
 import util from 'util';
 
-import { EnvType } from '../../constants/types/env.types';
+import { Log } from '../../resources/Log/log.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
-import { IProxyItem } from '../types/bots.types';
+import { IProxyItem, ProxyType } from '../types/bots.types';
 import { BotHelper } from './BotHelper';
-
 
 
 export class ConnectionHelper {
@@ -23,42 +23,80 @@ export class ConnectionHelper {
 
   public static requestHtml = async (
     url: string,
-    showProxyWarnings?: boolean
+    noProxy?: boolean
   ) => {
 
-    let proxiedRequest;
-
     try {
-      if (BotHelper.chosenProxy && process.env.ENV === EnvType.Production) {
-        console.log(`🤖: Using proxy IP ${BotHelper.chosenProxy.ip} - PORT ${BotHelper.chosenProxy.port}`);
 
-        BotHelper.userAgent = new UserAgent().random().data.userAgent;
+      if (noProxy) {
+        return await rp(url);
+      }
 
-        console.log(`🤖: User agent: ${BotHelper.userAgent}`);
 
-        proxiedRequest = rp.defaults({
-          proxy: `http://${BotHelper.chosenProxy.ip}:${BotHelper.chosenProxy.port}`,
-          strictSSL: false,
-          timeout: 15000,
-          headers: {
-            'User-Agent': BotHelper.userAgent
+      switch (BotHelper.proxyType) {
+        case ProxyType.FreeProxy:
+          if (BotHelper.chosenProxy) {
+
+            ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (FreeProxy) Using proxy IP ${BotHelper.chosenProxy.ip} - PORT ${BotHelper.chosenProxy.port}`)
+
+            BotHelper.userAgent = new UserAgent().random().data.userAgent;
+
+            console.log(`🤖: User agent: ${BotHelper.userAgent}`);
+
+            const proxiedRequest = rp.defaults({
+              proxy: `http://${BotHelper.chosenProxy.ip}:${BotHelper.chosenProxy.port}`,
+              strictSSL: false,
+              timeout: 15000,
+              headers: {
+                'User-Agent': BotHelper.userAgent
+              }
+            });
+
+
+            // console.log('TEST RESULTS');
+            // const test = await proxiedRequest('https://api.ipify.org?format=json');
+            // console.log(test);
+
+            return await proxiedRequest(url);
           }
-        });
+          break;
+
+        case ProxyType.ZenScrape:
+
+          const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+
+          const zenScrapeUsedRequests = await Log.find({
+            action: `ZENSCRAPE_REQUEST`,
+            createdAt: { "$gte": today }
+          })
+
+          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (ZenScrape) - Using ZenScrape Proxy API (${zenScrapeUsedRequests}/${BotHelper.ZenScrapeDailyLimit}`)
 
 
-        // console.log('TEST RESULTS');
-        // const test = await proxiedRequest('https://api.ipify.org?format=json');
-        // console.log(test);
 
-        const req = await proxiedRequest(url);
+          BotHelper.userAgent = new UserAgent().random().data.userAgent;
 
-        return req;
-      } else {
+          console.log(`🤖: User agent: ${BotHelper.userAgent}`);
 
-        console.log("🔥 WARNING - YOU'RE NOT BEHIND A PROXY! 🔥");
+          const zenScrapeRequest = rp.defaults({
+            strictSSL: false,
+            timeout: 15000,
+            headers: {
+              'User-Agent': BotHelper.userAgent
+            }
+          });
 
-        const req = await rp(url);
-        return req;
+          const registerZenScrapeRequest = new Log({
+            action: `ZENSCRAPE_REQUEST`,
+          })
+          await registerZenScrapeRequest.save()
+
+          return await zenScrapeRequest(`https://app.zenscrape.com/api/v1/get?apikey=${process.env.ZEN_SCRAPE_API_KEY}&url=` + url);
+
+        case ProxyType.None:
+          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (None) - 🔥 WARNING - YOU'RE NOT BEHIND A PROXY! 🔥`)
+          return await rp(url);
+
       }
     } catch (error) {
 
@@ -75,8 +113,7 @@ export class ConnectionHelper {
   public static fetchFreeProxyList = async () => {
     console.log('🤖: Fetching proxy list...');
 
-    const html = await ConnectionHelper.requestHtml('https://sslproxies.org/',
-      false)
+    const html = await ConnectionHelper.requestHtml('https://sslproxies.org/', true)
 
     const $ = cheerio.load(html);
 

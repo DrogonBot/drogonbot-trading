@@ -65,7 +65,7 @@ export class PuppeteerBot {
     }
   }
 
-  public static getOptions = (proxyItem: IProxyItem, userAgent: UserAgent, extraOptions?) => {
+  public static getOptions = (proxyItem: IProxyItem | null, userAgent: UserAgent, extraOptions?) => {
     switch (process.env.ENV) {
       case EnvType.Development:
 
@@ -83,7 +83,13 @@ export class PuppeteerBot {
 
 
       case EnvType.Production:
-        console.log(`🤖: Using Proxy IP: ${proxyItem.ip} on PORT: ${proxyItem.port}`);
+
+        const proxyString = proxyItem ? `--proxy-server=http://${proxyItem.ip}:${proxyItem.port}` : ''
+
+
+        if (proxyItem) {
+          console.log(`🤖: Using Proxy IP: ${proxyItem.ip} on PORT: ${proxyItem.port}`);
+        }
         return {
           executablePath: 'google-chrome-unstable',
           ignoreHTTPSErrors: true,
@@ -104,7 +110,7 @@ export class PuppeteerBot {
             '--disable-infobars',
             '--disable-session-crashed-bubble',
             '--ignore-certificate-errors-spki-list',
-            `--proxy-server=http://${proxyItem.ip}:${proxyItem.port}`,
+            proxyString,
             `'--user-agent="${userAgent}"'`],
           ...extraOptions
         }

@@ -20,6 +20,7 @@ export enum TargetPriority {
 }
 
 export enum ProxyType {
+  None,
   FreeProxy,
   ZenScrape
 }
