@@ -21,7 +21,6 @@ import { Lead } from '../Lead/lead.model';
 import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
 import { IJobReminder } from '../Post/post.routes';
-import { PostSource } from '../Post/post.types';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
 
@@ -367,9 +366,9 @@ operationRouter.get('/garbage-posts-clean', [userAuthMiddleware, UserMiddleware.
 
 operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  const { target } = req.query;
+  const { target, source } = req.query;
 
-  const results = ScrappingTargetHelper.getScrappingTargetList(false, true, target, PostSource.Facebook);
+  const results = ScrappingTargetHelper.getScrappingTargetList(false, true, target, source);
 
   await ScrappingTargetHelper.startScrappers(results);
 
