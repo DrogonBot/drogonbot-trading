@@ -19,12 +19,6 @@ export class PuppeteerBot {
   public static clear = async (browser: Browser | null) => {
     try {
 
-      // clear pending pages
-
-
-
-
-
       // This function clears memory by closing puppeteer open instances
 
       if (browser && browser.isConnected()) {
