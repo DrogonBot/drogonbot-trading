@@ -49,11 +49,9 @@ export class BotHelper {
           // use ZenScrape if we still have credits left
           zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD) ? BotHelper.proxyType = ProxyType.ZenScrape : BotHelper.proxyType = ProxyType.FreeProxy;
 
-        } else {
+        } else { // use FreeProxy as fallback, is ZenScrape is not available anymore
           BotHelper.proxyType = ProxyType.FreeProxy
         }
-
-        // BotHelper.proxyType = ProxyType.FreeProxy;
 
         if (BotHelper.proxyType === ProxyType.FreeProxy) {
           // Let's fetch our proxies list only if we didn't do it before...
@@ -63,7 +61,7 @@ export class BotHelper {
           }
           BotHelper.chosenProxy = ConnectionHelper.rotateProxy(BotHelper.proxyList);
 
-        } else {
+        } else { // proxyType.None
           BotHelper.proxyList = []
           BotHelper.chosenProxy = null
         }

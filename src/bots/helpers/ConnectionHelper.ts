@@ -70,7 +70,7 @@ export class ConnectionHelper {
             createdAt: { "$gte": today }
           })
 
-          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (ZenScrape) - Using ZenScrape Proxy API (${zenScrapeUsedRequests.length}/${Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)}`)
+          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (ZenScrape) - Using ZenScrape Proxy API (${zenScrapeUsedRequests.length}/${Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)})`)
 
 
 

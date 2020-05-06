@@ -9,7 +9,6 @@ import {
 } from '../bots/data/loginCredentials';
 import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
-import { PosterFacebook } from '../bots/posters/PosterFacebook';
 import { RecurPostSocialSchedulerBot } from '../bots/schedulers/RecurPostSocialSchedulerBot';
 import { ZohoSocialSchedulerBot } from '../bots/schedulers/ZohoSocialSchedulerBot';
 import { TargetPriority } from '../bots/types/bots.types';
@@ -205,11 +204,13 @@ export class JobsCron {
   }
 
   public static initPostersBot = () => {
-    cron.schedule("0 */4 * * *", async () => {
 
-      await PosterFacebook.triggerMarketingPost()
+    //!Temp disabled
+    // cron.schedule("0 */4 * * *", async () => {
 
-    });
+    //   await PosterFacebook.triggerMarketingPost()
+
+    // });
 
 
   }

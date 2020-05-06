@@ -25,9 +25,22 @@ export class ScrapperFacebook extends PuppeteerBot {
       await ScrapperFacebook.clear(ScrapperFacebook.browser)
     }
 
+    let puppeteerOptions;
 
-    const puppeteerOptions = ScrapperFacebook.getOptions(BotHelper.chosenProxy ? { ip: BotHelper.chosenProxy.ip, port: BotHelper.chosenProxy.port } : null, BotHelper.userAgent)
+    switch (BotHelper.proxyType) {
+      case ProxyType.ZenScrape:
+      case ProxyType.None:
+        puppeteerOptions = ScrapperFacebook.getOptions(null, BotHelper.userAgent)
+        break;
+      case ProxyType.FreeProxy:
+        if (BotHelper.chosenProxy) {
+          puppeteerOptions = ScrapperFacebook.getOptions({ ip: BotHelper.chosenProxy.ip, port: BotHelper.chosenProxy.port }, BotHelper.userAgent)
+        } else {
+          console.log('Error! Puppeteer is set to FreeProxy mode but no chosenProxy was found!');
+        }
 
+        break;
+    }
 
     ScrapperFacebook.browser = await puppeteer.launch(puppeteerOptions)
 
@@ -41,7 +54,7 @@ export class ScrapperFacebook extends PuppeteerBot {
         action: `ZENSCRAPE_REQUEST`,
         createdAt: { "$gte": today }
       })
-      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (ZenScrape) - Using ZenScrape Proxy API (${zenScrapeUsedRequests.length}/${Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)}`)
+      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (ZenScrape) - Using ZenScrape Proxy API (${zenScrapeUsedRequests.length}/${Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)})`)
 
       // execute request
       await ScrapperFacebook.page.goto(`https://app.zenscrape.com/api/v1/get?apikey=${process.env.ZEN_SCRAPE_API_KEY}&url=${link}`, { waitUntil: 'load', timeout: 60000 })
