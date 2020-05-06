@@ -2,7 +2,6 @@ import cheerio from 'cheerio';
 
 import { IPostSource } from '../../resources/Post/post.types';
 import { GenericHelper } from '../../utils/GenericHelper';
-import { BotHelper } from '../helpers/BotHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -19,8 +18,7 @@ export class ScrapperOLX {
     console.log(`🤖: Crawling links for ${externalSource}`);
 
     const html = await ConnectionHelper.requestHtml(
-      externalSource,
-      BotHelper.chosenProxy
+      externalSource
     );
 
     const $ = cheerio.load(html);
@@ -51,7 +49,7 @@ export class ScrapperOLX {
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
 
-    const html = await ConnectionHelper.requestHtml(link, BotHelper.chosenProxy)
+    const html = await ConnectionHelper.requestHtml(link)
 
     const $ = cheerio.load(html);
 

@@ -31,7 +31,7 @@ export class BotHelper {
 
     // Let's fetch our proxies list only if we didn't do it before...
     if (!BotHelper.proxyList) {
-      const proxyList = await ConnectionHelper.fetchProxyList();
+      const proxyList = await ConnectionHelper.fetchFreeProxyList();
       BotHelper.proxyList = proxyList;
     }
 

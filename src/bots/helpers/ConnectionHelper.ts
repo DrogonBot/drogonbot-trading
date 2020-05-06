@@ -22,22 +22,21 @@ export class ConnectionHelper {
 
   public static requestHtml = async (
     url: string,
-    proxyItem?: IProxyItem | null,
     showProxyWarnings?: boolean
   ) => {
 
     let proxiedRequest;
 
     try {
-      if (proxyItem) {
-        console.log(`🤖: Using proxy IP ${proxyItem.ip} - PORT ${proxyItem.port}`);
+      if (BotHelper.chosenProxy) {
+        console.log(`🤖: Using proxy IP ${BotHelper.chosenProxy.ip} - PORT ${BotHelper.chosenProxy.port}`);
 
         BotHelper.userAgent = new UserAgent().random().data.userAgent;
 
         console.log(`🤖: User agent: ${BotHelper.userAgent}`);
 
         proxiedRequest = rp.defaults({
-          proxy: `http://${proxyItem.ip}:${proxyItem.port}`,
+          proxy: `http://${BotHelper.chosenProxy.ip}:${BotHelper.chosenProxy.port}`,
           strictSSL: false,
           timeout: 15000,
           headers: {
@@ -73,11 +72,10 @@ export class ConnectionHelper {
 
   };
 
-  public static fetchProxyList = async () => {
+  public static fetchFreeProxyList = async () => {
     console.log('🤖: Fetching proxy list...');
 
     const html = await ConnectionHelper.requestHtml('https://sslproxies.org/',
-      null,
       false)
 
     const $ = cheerio.load(html);

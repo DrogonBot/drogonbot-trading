@@ -3,6 +3,11 @@ export interface ICredential {
   password: string
 }
 
+export enum ProxyType {
+  FreeProxy,
+  ZenScrape
+}
+
 export interface IProxyItem {
   ip: string;
   port: string;
