@@ -6,11 +6,6 @@ import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.typ
 import { BotHelper } from './BotHelper';
 
 
-export interface IScrappingTargetFilter {
-  key: string,
-  value: string
-}
-
 export class ScrappingTargetHelper {
 
   public static getScrappingTargetList = (filterByPriority: TargetPriority, sortByPriority: boolean, stateCode: string) => {
