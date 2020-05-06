@@ -26,7 +26,7 @@ export class BotHelper {
   public static failedRequestIntervalMs: number = 10000;
   public static postLinkScrappingIntervalMs: number = 10000;
   public static scrapperHelperFinishIntervalMs: number = 1000 * 60 * Math.floor(Math.random() * 5)
-  public static ZenScrapeDailyLimit = 33;
+
 
 
 
@@ -40,19 +40,14 @@ export class BotHelper {
 
         const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
 
-        // ! Here we use ZenScrape only for PagePattern.feed (eg. Facebook), since PagePattern.ListAndInternalPosts would consome too much credits for now
-        if (source === PostSource.Facebook) {
-          const zenScrapeUsedRequests = await Log.find({
-            action: `ZENSCRAPE_REQUEST`,
-            createdAt: { "$gte": today }
-          })
 
-          zenScrapeUsedRequests.length <= BotHelper.ZenScrapeDailyLimit ? BotHelper.proxyType = ProxyType.ZenScrape : BotHelper.proxyType = ProxyType.FreeProxy;
+        const zenScrapeUsedRequests = await Log.find({
+          action: `ZENSCRAPE_REQUEST`,
+          createdAt: { "$gte": today }
+        })
 
-
-        } else {
-          BotHelper.proxyType = ProxyType.FreeProxy;
-        }
+        // use ZenScrape if we still have credits left
+        zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD) ? BotHelper.proxyType = ProxyType.ZenScrape : BotHelper.proxyType = ProxyType.FreeProxy;
 
 
         // BotHelper.proxyType = ProxyType.FreeProxy;
