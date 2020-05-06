@@ -1,12 +1,16 @@
+import moment from 'moment-timezone';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
+import { Log } from '../../resources/Log/log.model';
 import { PostSource } from '../../resources/Post/post.types';
+import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
 import { BotHelper } from '../helpers/BotHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
+import { ProxyType } from '../types/bots.types';
 
 
 puppeteer.use(StealthPlugin())
@@ -29,7 +33,36 @@ export class ScrapperFacebook extends PuppeteerBot {
 
     ScrapperFacebook.page = await ScrapperFacebook.browser.newPage();
 
-    await ScrapperFacebook.page.goto(link, { waitUntil: 'load', timeout: 60000 })
+    if (BotHelper.proxyType === ProxyType.ZenScrape) {
+
+      // display how many zenscrape requests were made today
+      const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+      const zenScrapeUsedRequests = await Log.find({
+        action: `ZENSCRAPE_REQUEST`,
+        createdAt: { "$gte": today }
+      })
+      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (ZenScrape) - Using ZenScrape Proxy API (${zenScrapeUsedRequests.length}/${Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)}`)
+
+      // execute request
+      await ScrapperFacebook.page.goto(`https://app.zenscrape.com/api/v1/get?apikey=${process.env.ZEN_SCRAPE_API_KEY}&url=${link}`, { waitUntil: 'load', timeout: 60000 })
+
+      // register in our logs, so we keep track of it
+      const registerZenScrapeRequest = new Log({
+        action: `ZENSCRAPE_REQUEST`,
+      })
+      await registerZenScrapeRequest.save()
+
+
+    } else {
+
+      if (BotHelper.chosenProxy) {
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (FreeProxy) Using proxy IP ${BotHelper.chosenProxy.ip} - PORT ${BotHelper.chosenProxy.port}`)
+      } else {
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (None) - 🔥 WARNING - YOU'RE NOT BEHIND A PROXY! 🔥`)
+      }
+      await ScrapperFacebook.page.goto(link, { waitUntil: 'load', timeout: 60000 })
+
+    }
 
 
     // Evaluate page data ========================================

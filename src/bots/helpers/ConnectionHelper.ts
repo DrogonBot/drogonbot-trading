@@ -70,7 +70,7 @@ export class ConnectionHelper {
             createdAt: { "$gte": today }
           })
 
-          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (ZenScrape) - Using ZenScrape Proxy API (${zenScrapeUsedRequests}/${Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)}`)
+          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (ZenScrape) - Using ZenScrape Proxy API (${zenScrapeUsedRequests.length}/${Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)}`)
 
 
 
@@ -91,7 +91,7 @@ export class ConnectionHelper {
           })
           await registerZenScrapeRequest.save()
 
-          return await zenScrapeRequest(`https://app.zenscrape.com/api/v1/get?apikey=${process.env.ZEN_SCRAPE_API_KEY}&url=` + url);
+          return await zenScrapeRequest(`https://app.zenscrape.com/api/v1/get?apikey=${process.env.ZEN_SCRAPE_API_KEY}&url=${url}`);
 
         case ProxyType.None:
           ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (None) - 🔥 WARNING - YOU'RE NOT BEHIND A PROXY! 🔥`)

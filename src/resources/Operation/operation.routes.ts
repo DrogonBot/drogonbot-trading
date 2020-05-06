@@ -10,7 +10,6 @@ import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../../bots/helpers/ScrappingTargetHelper';
 import { PosterFacebook } from '../../bots/posters/PosterFacebook';
 import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
-import { TargetPriority } from '../../bots/types/bots.types';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
@@ -22,6 +21,7 @@ import { Lead } from '../Lead/lead.model';
 import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
 import { IJobReminder } from '../Post/post.routes';
+import { PostSource } from '../Post/post.types';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
 
@@ -369,11 +369,9 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
 
   const { target } = req.query;
 
-  const results = ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, target);
+  const results = ScrappingTargetHelper.getScrappingTargetList(false, true, target, PostSource.Facebook);
 
   await ScrappingTargetHelper.startScrappers(results);
-
-
 
   return res.status(200).send({
     'status': 'ok'

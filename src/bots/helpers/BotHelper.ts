@@ -36,22 +36,24 @@ export class BotHelper {
     switch (process.env.ENV) {
       case EnvType.Production:
 
-        // lets check if our free tier on ZenScrape is already gone. If so, use free proxy for requests
+        // ! Due to high costs, ZenScrape is restricted to Facebook only!
+        if (source === PostSource.Facebook) {
+          // lets check if our free tier on ZenScrape is already gone. If so, use free proxy for requests
+          const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
 
-        const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+          const zenScrapeUsedRequests = await Log.find({
+            action: `ZENSCRAPE_REQUEST`,
+            createdAt: { "$gte": today }
+          })
 
+          // use ZenScrape if we still have credits left
+          zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD) ? BotHelper.proxyType = ProxyType.ZenScrape : BotHelper.proxyType = ProxyType.FreeProxy;
 
-        const zenScrapeUsedRequests = await Log.find({
-          action: `ZENSCRAPE_REQUEST`,
-          createdAt: { "$gte": today }
-        })
-
-        // use ZenScrape if we still have credits left
-        zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD) ? BotHelper.proxyType = ProxyType.ZenScrape : BotHelper.proxyType = ProxyType.FreeProxy;
-
+        } else {
+          BotHelper.proxyType = ProxyType.FreeProxy
+        }
 
         // BotHelper.proxyType = ProxyType.FreeProxy;
-
 
         if (BotHelper.proxyType === ProxyType.FreeProxy) {
           // Let's fetch our proxies list only if we didn't do it before...
@@ -115,6 +117,16 @@ export class BotHelper {
           const links = ScrapperOLX.postLinks.filter((link) => !link.scrapped) // make sure we only scrap unscrapped items
 
           for (const linkItem of links) {
+
+            // check if post exists in our database. Skip if so.
+
+            const isPostScrapped = await Post.exists({ externalUrl: linkItem.link });
+
+            if (isPostScrapped) {
+              console.log(`🤖: Post ${linkItem.link} is already scrapped! Skipping!`);
+              continue;
+            }
+
             await GenericHelper.sleep(BotHelper.postLinkScrappingIntervalMs)
             await BotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride)
           }

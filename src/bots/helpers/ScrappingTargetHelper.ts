@@ -8,10 +8,11 @@ import { BotHelper } from './BotHelper';
 
 export class ScrappingTargetHelper {
 
-  public static getScrappingTargetList = (filterByPriority: TargetPriority, sortByPriority: boolean, stateCode: string) => {
+  public static getScrappingTargetList = (filterByPriority?: TargetPriority | false, sortByPriority?: boolean, stateCode?: string | false, source?: PostSource) => {
 
 
     let results = scrappingTargets;
+
 
 
     if (filterByPriority) {
@@ -23,7 +24,13 @@ export class ScrappingTargetHelper {
     }
 
     if (sortByPriority) {
-      return results.sort((x, y) => x.priority > y.priority ? -1 : 1);
+      results = results.sort((x, y) => x.priority > y.priority ? -1 : 1);
+    }
+
+
+
+    if (source) {
+      results = results.filter((result) => result.source === source)
     }
 
     return results;
