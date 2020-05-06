@@ -151,12 +151,14 @@ export class ConnectionHelper {
       }
       catch (error) {
 
-        ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgBlack, `🤖: Request failed! Rotating proxy! Better luck next time!`)
-        console.log(error);
+        if (BotHelper.proxyType === ProxyType.FreeProxy) {
+          ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgBlack, `🤖: Request failed! Rotating proxy! Better luck next time!`)
+          console.log(error);
 
-        // Change proxy and user agent on every request
-        BotHelper.chosenProxy = ConnectionHelper.rotateProxy(BotHelper.proxyList);
-        BotHelper.userAgent = new UserAgent().random().data.userAgent;
+          // Change proxy and user agent on every request
+          BotHelper.chosenProxy = ConnectionHelper.rotateProxy(BotHelper.proxyList);
+          BotHelper.userAgent = new UserAgent().random().data.userAgent;
+        }
 
         // Close our browser agents to avoid memory leaks
         await ScrapperFacebook.clear(ScrapperFacebook.browser);

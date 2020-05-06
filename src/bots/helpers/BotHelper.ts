@@ -82,6 +82,10 @@ export class BotHelper {
 
   public static finish = async () => {
 
+    if (ScrapperOLX.postLinks && ScrapperOLX.postLinks.length > 0) {
+      ScrapperOLX.postLinks = null
+    }
+
     ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Finished!`)
 
     // Make sure we close any puppeteer open instances, if that's the case
