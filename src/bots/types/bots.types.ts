@@ -1,6 +1,22 @@
+import { PostSource } from '../../resources/Post/post.types';
+
 export interface ICredential {
   login: string,
   password: string
+}
+
+export interface IScrappingTarget {
+  name: string;
+  externalSource: string;
+  dataOverride: any;
+  source: PostSource;
+  priority: TargetPriority
+}
+
+export enum TargetPriority {
+  High = 2,
+  Medium = 1,
+  Low = 0
 }
 
 export enum ProxyType {

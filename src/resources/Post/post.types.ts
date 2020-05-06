@@ -31,7 +31,7 @@ export interface IPostApplication {
   jobRole: string
 }
 
-export enum IPostSource {
+export enum PostSource {
   Blog = "Blog",
   Facebook = "Facebook",
   OLX = "OLX",
@@ -57,7 +57,7 @@ export interface IPost {
   email?: string;
   phone?: string,
   zipCode?: string,
-  source?: IPostSource,
+  source?: PostSource,
   sourceUrl?: string,
   schedule?: string,
   requisites?: string,
