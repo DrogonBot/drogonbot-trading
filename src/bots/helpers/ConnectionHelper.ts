@@ -5,6 +5,7 @@ import rp from 'request-promise';
 import UserAgent from 'user-agents';
 import util from 'util';
 
+import { EnvType } from '../../constants/types/env.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
@@ -28,7 +29,7 @@ export class ConnectionHelper {
     let proxiedRequest;
 
     try {
-      if (BotHelper.chosenProxy) {
+      if (BotHelper.chosenProxy && process.env.ENV === EnvType.Production) {
         console.log(`🤖: Using proxy IP ${BotHelper.chosenProxy.ip} - PORT ${BotHelper.chosenProxy.port}`);
 
         BotHelper.userAgent = new UserAgent().random().data.userAgent;
@@ -53,9 +54,8 @@ export class ConnectionHelper {
 
         return req;
       } else {
-        if (showProxyWarnings) {
-          console.log("🔥 WARNING - YOU'RE NOT USING A PROXY! 🔥");
-        }
+
+        console.log("🔥 WARNING - YOU'RE NOT BEHIND A PROXY! 🔥");
 
         const req = await rp(url);
         return req;
