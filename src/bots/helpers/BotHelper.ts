@@ -40,18 +40,16 @@ export class BotHelper {
 
         const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
 
-        // ! Here we use Zenscrape only for PagePattern.feed (eg. Facebook), since PagePattern.ListAndInternalPosts would consome too much credits for now
+        // ! Here we use ZenScrape only for PagePattern.feed (eg. Facebook), since PagePattern.ListAndInternalPosts would consome too much credits for now
         if (source === PostSource.Facebook) {
           const zenScrapeUsedRequests = await Log.find({
             action: `ZENSCRAPE_REQUEST`,
             createdAt: { "$gte": today }
           })
 
-          if (zenScrapeUsedRequests.length <= BotHelper.ZenScrapeDailyLimit) { // 33 is our current ZenScrape free tier
-            BotHelper.proxyType = ProxyType.ZenScrape;
-          } else {
-            BotHelper.proxyType = ProxyType.FreeProxy;
-          }
+          zenScrapeUsedRequests.length <= BotHelper.ZenScrapeDailyLimit ? BotHelper.proxyType = ProxyType.ZenScrape : BotHelper.proxyType = ProxyType.FreeProxy;
+
+
         } else {
           BotHelper.proxyType = ProxyType.FreeProxy;
         }
