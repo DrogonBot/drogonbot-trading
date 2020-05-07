@@ -330,6 +330,87 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.OLX
   },
 
+  // RJ ========================================
+
+  {
+    name: "OLX => RJ/CAPITAL",
+    externalSource: "https://rj.olx.com.br/vagas-de-emprego",
+    priority: TargetPriority.High,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Rio de Janeiro"
+    },
+    source: PostSource.OLX
+  },
+  {
+    name: "OLX => RJ/Sao Goncalo",
+    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/sao-goncalo/vagas-de-emprego",
+    priority: TargetPriority.High,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "São Gonçalo"
+    },
+    source: PostSource.OLX
+  },
+  {
+    name: "OLX => RJ/Campo Grande",
+    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/zona-oeste/campo-grande/vagas-de-emprego",
+    priority: TargetPriority.High,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Campo Grande"
+    },
+    source: PostSource.OLX
+  },
+  {
+    name: "OLX => RJ/Duque de Caxias",
+    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/baixada-fluminense/duque-de-caxias/vagas-de-emprego",
+    priority: TargetPriority.High,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Duque de Caxias"
+    },
+    source: PostSource.OLX
+  },
+  {
+    name: "OLX => RJ/Nova Iguacu",
+    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/baixada-fluminense/nova-iguacu/vagas-de-emprego",
+    priority: TargetPriority.High,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Nova Iguaçu"
+    },
+    source: PostSource.OLX
+  },
+  {
+    name: "OLX => RJ/Niteroi",
+    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/niteroi/vagas-de-emprego",
+    priority: TargetPriority.Medium,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Niterói"
+    },
+    source: PostSource.OLX
+  },
+  {
+    name: "OLX => RJ/Belford Roxo",
+    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/baixada-fluminense/belford-roxo/vagas-de-emprego",
+    priority: TargetPriority.Medium,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Belford Roxo"
+    },
+    source: PostSource.OLX
+  },
+
+
   // SP ========================================
 
 
