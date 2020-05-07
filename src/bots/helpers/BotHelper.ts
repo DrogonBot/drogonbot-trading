@@ -54,13 +54,7 @@ export class BotHelper {
         }
 
         if (BotHelper.proxyType === ProxyType.FreeProxy) {
-          // Let's fetch our proxies list only if we didn't do it before...
-          if (!BotHelper.proxyList) {
-            const proxyList = await ConnectionHelper.fetchFreeProxyList();
-            BotHelper.proxyList = proxyList;
-          }
-          BotHelper.chosenProxy = ConnectionHelper.rotateProxy(BotHelper.proxyList);
-
+          await BotHelper.initializeFreeProxy()
         } else { // proxyType.None
           BotHelper.proxyList = []
           BotHelper.chosenProxy = null
@@ -149,6 +143,16 @@ export class BotHelper {
     BotHelper.finish();
 
   };
+
+  public static initializeFreeProxy = async () => {
+    // Let's fetch our proxies list only if we didn't do it before...
+    if (!BotHelper.proxyList) {
+      const proxyList = await ConnectionHelper.fetchFreeProxyList();
+      BotHelper.proxyList = proxyList;
+    }
+    BotHelper.chosenProxy = ConnectionHelper.rotateProxy(BotHelper.proxyList);
+
+  }
 
   private static _notifyUsers = async (post: IPost) => {
 

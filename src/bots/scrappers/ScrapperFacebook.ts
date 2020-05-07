@@ -37,6 +37,9 @@ export class ScrapperFacebook extends PuppeteerBot {
           puppeteerOptions = ScrapperFacebook.getOptions({ ip: BotHelper.chosenProxy.ip, port: BotHelper.chosenProxy.port }, BotHelper.userAgent)
         } else {
           console.log('Error! Puppeteer is set to FreeProxy mode but no chosenProxy was found!');
+          console.log('Initializing proxies!');
+
+          await BotHelper.initializeFreeProxy()
         }
 
         break;
