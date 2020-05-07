@@ -216,7 +216,7 @@ export class JobsCron {
   }
 
   public static initializeJobPostSchedulers = () => {
-    cron.schedule("0 */2 * * *", async () => {
+    cron.schedule("0 */4 * * *", async () => {
 
       const randomPostMG = await PuppeteerBot.getRandomPost("MG")
       if (randomPostMG) {
