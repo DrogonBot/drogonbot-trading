@@ -11,6 +11,7 @@ import { ProvinceSelector } from '../../elements/form/ProvinceSelector';
 
 interface IProps {
   provinces: IProvince[];
+  defaultProvince?: string;
 }
 
 export const SearchBar = (props: IProps) => {
@@ -55,7 +56,10 @@ export const SearchBar = (props: IProps) => {
       </SearchBarInputContainer>
 
       <ProvinceContainer>
-        <ProvinceSelector provinces={props.provinces} />
+        <ProvinceSelector
+          provinces={props.provinces}
+          defaultProvince={props.defaultProvince}
+        />
       </ProvinceContainer>
     </FormContainer>
   );

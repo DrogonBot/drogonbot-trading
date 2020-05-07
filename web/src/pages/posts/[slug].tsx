@@ -310,7 +310,7 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
       <SearchContainer>
         <SearchHeader>
           <SearchLogo />
-          <SearchBar provinces={provinces} />
+          <SearchBar provinces={provinces} defaultProvince={post.stateCode} />
         </SearchHeader>
       </SearchContainer>
 

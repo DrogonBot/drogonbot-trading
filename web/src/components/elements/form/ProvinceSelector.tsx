@@ -10,9 +10,10 @@ import { IProvince } from '../../../types/Form.types';
 
 interface IProps {
   provinces: IProvince[];
+  defaultProvince?: string;
 }
 
-export const ProvinceSelector = ({ provinces }: IProps) => {
+export const ProvinceSelector = ({ provinces, defaultProvince }: IProps) => {
   const dispatch = useDispatch();
 
   const router = useRouter();
@@ -48,7 +49,10 @@ export const ProvinceSelector = ({ provinces }: IProps) => {
 
   return (
     <Container>
-      <Select value={searchProvince} onChange={onChangeProvince}>
+      <Select
+        value={defaultProvince || searchProvince}
+        onChange={onChangeProvince}
+      >
         {onRenderProvinces()}
       </Select>
     </Container>
