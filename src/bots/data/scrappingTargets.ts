@@ -86,6 +86,53 @@ export const scrappingTargets: IScrappingTarget[] = [
     },
     source: PostSource.Facebook
   },
+  // RJ ========================================
+
+  {
+    name: "Facebook => Emprego Ja RJ",
+    externalSource: "https://www.facebook.com/groups/469601746456911/",
+    priority: TargetPriority.Medium,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Rio de Janeiro",
+    },
+    source: PostSource.Facebook
+  },
+  {
+    name: "Facebook => Empregos RJ",
+    externalSource: "https://www.facebook.com/groups/275875912532721/",
+    priority: TargetPriority.Medium,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Rio de Janeiro",
+    },
+    source: PostSource.Facebook
+  },
+  {
+    name: "Facebook => Rio Empregos RJ",
+    externalSource: "https://www.facebook.com/groups/329968764389737/",
+    priority: TargetPriority.High,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Rio de Janeiro",
+    },
+    source: PostSource.Facebook
+  },
+  {
+    name: "Facebook => Empregos TI - RJ",
+    externalSource: "https://www.facebook.com/groups/1606191799609992/",
+    priority: TargetPriority.Low,
+    dataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Rio de Janeiro",
+    },
+    source: PostSource.Facebook
+  },
+
 
   // SP ========================================
 
