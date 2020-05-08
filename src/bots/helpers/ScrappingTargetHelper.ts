@@ -20,7 +20,7 @@ export class ScrappingTargetHelper {
     }
 
     if (stateCode) {
-      results = results.filter((result) => result.dataOverride.stateCode === stateCode.toUpperCase())
+      results = results.filter((result) => result.postDataOverride.stateCode === stateCode.toUpperCase())
     }
 
     if (sortByPriority) {
@@ -44,14 +44,14 @@ export class ScrappingTargetHelper {
         case PostSource.Facebook:
           await BotHelper.initScrapper(result.name, result.source, {
             crawlFeedFunction: ScrapperFacebook.crawlPageFeed
-          }, PagePattern.Feed, result.externalSource, result.dataOverride)
+          }, PagePattern.Feed, result.externalSource, result.postDataOverride)
 
           break;
         case PostSource.OLX:
           await BotHelper.initScrapper(result.name, result.source, {
             crawlLinksFunction: ScrapperOLX.crawlLinks,
             crawlPageDataFunction: ScrapperOLX.crawlPageData
-          }, PagePattern.ListAndInternalPosts, result.externalSource, result.dataOverride)
+          }, PagePattern.ListAndInternalPosts, result.externalSource, result.postDataOverride)
           break;
       }
     }

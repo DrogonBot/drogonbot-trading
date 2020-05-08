@@ -8,7 +8,7 @@ export interface ICredential {
 export interface IScrappingTarget {
   name: string;
   externalSource: string;
-  dataOverride: any;
+  postDataOverride: any;
   source: PostSource;
   priority: TargetPriority
 }

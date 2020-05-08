@@ -84,6 +84,8 @@ export class ScrapperOLX {
       ...postDataOverride,
     }
 
+    console.log(jobData);
+
 
     return jobData
 
