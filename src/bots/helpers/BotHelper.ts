@@ -48,7 +48,7 @@ export class BotHelper {
 
           // use ZenScrape if we still have credits left
 
-          if (zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD) + 1) {
+          if (zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)) {
             console.log(`⚙️: Setting ProxyType as ZenScrape`);
             BotHelper.proxyType = ProxyType.ZenScrape
           } else {
