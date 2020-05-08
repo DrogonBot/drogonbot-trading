@@ -275,6 +275,7 @@ export class BotHelper {
         try {
           const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id })
           await newPost.save()
+          console.log(`${newPost.title} - ${newPost.stateCode}/${newPost.city} - ${newPost.externalUrl ? newPost.externalUrl : ''}`);
 
           await BotHelper._notifyUsers(newPost);
 
@@ -285,6 +286,7 @@ export class BotHelper {
 
 
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
+
 
         if (ScrapperOLX.postLinks) {
           ScrapperOLX.postLinks.map((postLink) => {
