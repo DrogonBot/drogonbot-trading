@@ -60,8 +60,7 @@ export class TransactionalEmailManager {
             return
           }
 
-          // insert unsubscribe link
-
+          // insert unsubscribe link into [Unsubscribe Link] tag
           let htmlWithUnsubscribeLink;
 
           if (!to) {

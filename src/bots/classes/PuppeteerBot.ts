@@ -1,4 +1,5 @@
 import child_process from 'child_process';
+import _ from 'lodash';
 import { Browser, Page } from 'puppeteer';
 import { UserAgent } from 'user-agents';
 
@@ -8,7 +9,6 @@ import { IPost } from '../../resources/Post/post.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import botsAccounts from '../data/botsAccounts.json';
 import { IBot, IProxyItem } from '../types/bots.types';
-
 
 
 export class PuppeteerBot {
@@ -132,9 +132,8 @@ export class PuppeteerBot {
       ✔️ Apenas repassamos vagas! Processo de contratação apenas com a empresa do post ✔️`
     ]
 
-    const chosenTitle = titleVariations[Math.floor(Math.random() * titleVariations.length)]
-    const chosenBody = bodyVariations[Math.floor(Math.random() * bodyVariations.length)]
-
+    const chosenTitle = _.sample(titleVariations)
+    const chosenBody = _.sample(bodyVariations)
 
     return `${chosenTitle}
 
