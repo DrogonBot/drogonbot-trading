@@ -13,7 +13,7 @@ export class APIHelper {
     useAuth = true,
     customHeaders: object = {},
     onTimeoutCallback = () => null,
-    timeout = 5000
+    timeout = 2 * 60 * 1000 // 2 min = default http(s) timeout
   ) => {
     let AUTH_HEADERS;
     try {
