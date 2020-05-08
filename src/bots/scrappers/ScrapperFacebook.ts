@@ -25,6 +25,11 @@ export class ScrapperFacebook extends PuppeteerBot {
       await ScrapperFacebook.clear(ScrapperFacebook.browser)
     }
 
+    // initialize FreeProxy if we're on this mode, without a chosenProxy
+    if (ProxyType.FreeProxy && !BotHelper.chosenProxy) {
+      await BotHelper.initializeFreeProxy()
+    }
+
     let puppeteerOptions;
 
     switch (BotHelper.proxyType) {
@@ -38,7 +43,6 @@ export class ScrapperFacebook extends PuppeteerBot {
         } else {
           console.log('Error! Puppeteer is set to FreeProxy mode but no chosenProxy was found!');
           console.log('Initializing proxies!');
-
           await BotHelper.initializeFreeProxy()
         }
 

@@ -47,18 +47,21 @@ export class BotHelper {
           })
 
           // use ZenScrape if we still have credits left
-          zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD) ? BotHelper.proxyType = ProxyType.ZenScrape : BotHelper.proxyType = ProxyType.FreeProxy;
+
+          if (zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD) + 1) {
+            console.log(`⚙️: Setting ProxyType as ZenScrape`);
+            BotHelper.proxyType = ProxyType.ZenScrape
+          } else {
+            console.log(`⚙️: Setting ProxyType as FreeProxy`);
+            BotHelper.proxyType = ProxyType.FreeProxy;
+            await BotHelper.initializeFreeProxy()
+          }
 
         } else { // use FreeProxy as fallback, is ZenScrape is not available anymore
           BotHelper.proxyType = ProxyType.FreeProxy
+          await BotHelper.initializeFreeProxy()
         }
 
-        if (BotHelper.proxyType === ProxyType.FreeProxy) {
-          await BotHelper.initializeFreeProxy()
-        } else { // proxyType.None
-          BotHelper.proxyList = []
-          BotHelper.chosenProxy = null
-        }
 
         break;
       case EnvType.Development:
