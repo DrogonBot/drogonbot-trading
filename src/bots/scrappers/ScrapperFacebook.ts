@@ -21,9 +21,9 @@ export class ScrapperFacebook extends PuppeteerBot {
 
     console.log(`🔥 Starting PUPPETEER BOT 🔥`);
 
-    if (ScrapperFacebook.browser && ScrapperFacebook.browser.isConnected()) {
-      await ScrapperFacebook.clear(ScrapperFacebook.browser)
-    }
+
+    await ScrapperFacebook.clear(ScrapperFacebook.browser)
+
 
     // initialize FreeProxy if we're on this mode, without a chosenProxy
     if (ProxyType.FreeProxy && !BotHelper.chosenProxy) {
