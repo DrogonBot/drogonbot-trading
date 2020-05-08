@@ -31,7 +31,9 @@ export class BotHelper {
 
 
   public static init = async (name: string, source: PostSource) => {
-    console.log(`🤖: Initializing ${name}`);
+
+
+    ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🤖: Initializing ${name}`)
 
     ScrapperOLX.postLinks = null // Since we're initializing a scrapper, set postLinks to null
 
