@@ -20,6 +20,7 @@ web/src/constants/Env.constant.ts
 web/Dockerfile
 web/.next
 web/public/sw.*
+web/public/workbox-*
 
 # Bots
 src/bots/data/zoho_session_data
