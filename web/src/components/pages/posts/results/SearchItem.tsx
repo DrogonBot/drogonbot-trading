@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 import { colors } from '../../../../constants/UI/Colors.constant';
@@ -31,11 +32,11 @@ export const SearchItem = ({
   return (
     <Container>
       <Breadcumb parent={`${stateCode} - ${category}`} child={tags} />
-      <a href={`/posts/${slug}`}>
+      <Link href={`/posts/[slug]`} passHref as={`/posts/${slug}`}>
         <Title>{title}</Title>
-      </a>
+      </Link>
       <MobileDate>{humanDate}</MobileDate>
-      <a href={`/posts/${slug}`}>
+      <Link href={`/posts/[slug]`} passHref as={`/posts/${slug}`}>
         <Description>
           <DesktopDate>
             {humanDate}
@@ -43,7 +44,7 @@ export const SearchItem = ({
           </DesktopDate>
           {description}
         </Description>
-      </a>
+      </Link>
     </Container>
   );
 };
@@ -66,7 +67,9 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.div`
+const Title = styled.a`
+  display: block;
+  margin-bottom: 0.8rem;
   font-size: 18px;
   margin-top: 1rem;
   font-weight: 300;
@@ -78,7 +81,8 @@ const Title = styled.div`
   }
 `;
 
-const Description = styled.div`
+const Description = styled.a`
+  display: block;
   cursor: pointer;
 
   color: ${() => colors.dark};

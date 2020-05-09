@@ -9,7 +9,6 @@ import { SearchLogo } from '../../components/pages/posts/SearchLogo';
 import { SearchTabs } from '../../components/pages/posts/SearchTabs';
 import { NextSEOPosts } from '../../components/seo/NextSEOPosts';
 import { appEnv } from '../../constants/Env.constant';
-import { colors } from '../../constants/UI/Colors.constant';
 import { UI } from '../../constants/UI/UI.constant';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
 import { postReadFeed } from '../../store/actions/post.action';
@@ -149,12 +148,5 @@ export const SearchContainer = styled.div`
   /*DESKTOP ONLY CODE*/
   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
     padding: 0;
-  }
-
-  a {
-    color: ${colors.primary};
-    &:visited {
-      color: ${colors.accent};
-    }
   }
 `;
