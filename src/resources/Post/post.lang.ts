@@ -158,9 +158,17 @@ export const strings = {
     eng: "Hey {{userName}}, how are things going?",
     ptBr: "Ei {{userName}}, tudo certo?"
   },
+  jobsNotificationFirstPhrase2: {
+    eng: "Hello {{userName}}! How are you in your job search.",
+    ptBr: "Ei {{userName}}! Como está sua procura por emprego?"
+  },
   jobsNotificationSecondParagraph: {
     eng: "We've found a job post that may interest you",
     ptBr: "Encontramos uma vaga que pode ser de seu interesse:"
+  },
+  jobsNotificationSecondParagraph2: {
+    eng: "Our system found some interesting job roles for you:",
+    ptBr: "Nosso sistema encontrou uma vaga que provavelmente lhe interessa:"
   },
   jobsNotificationClosing: {
     eng: `We suggest that <strong> apply immediately </strong>,
@@ -181,6 +189,45 @@ Good Luck!
     ptBr: `Sugerimos que <strong>aplique imediatamente</strong>,
     pois geralmente os primeiros candidatos têm maiores
     chances de conseguir uma entrevista.
+
+    <br />
+    <br />
+
+    Boa sorte!
+
+    <br />
+    <br />
+
+    Equipe EmpregoUrgente
+
+
+    `
+  },
+  jobsNotificationClosing2: {
+    eng: `We advice that you <strong> apply immediately </strong>,
+         because generally the first candidates have higher
+         chances of getting an interview.
+
+    <br/><br/>
+    * Note that we only forward on opportunities! All information we have is inside the post.
+    <br />
+    <br />
+
+Good Luck!
+
+<br />
+                        <br />
+
+                       JobAlert Team
+
+
+    `,
+    ptBr: `Sugerimos fortemente que <strong>aplique para esta vaga</strong>,
+    pois geralmente os primeiros candidatos têm maiores
+    chances de conseguir uma entrevista.
+
+    <br/><br/>
+    * Lembrando que apenas repassamos oportunidades! Todas informações que temos encontram-se no post.
 
     <br />
     <br />

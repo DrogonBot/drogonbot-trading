@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import stringSimilarity from 'string-similarity';
 
 import { AccountEmailManager } from '../../emails/account.email';
@@ -11,7 +12,6 @@ import { GenericHelper } from '../../utils/GenericHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IBestMatchAndSector } from '../types/bots.types';
-
 
 
 export class PostScrapperHelper {
@@ -178,13 +178,19 @@ export class PostScrapperHelper {
 
     const accountEmailManager = new AccountEmailManager();
 
+    // Randomize post content: Avoid spam filters thinking that your message is too repetitive. It will create some uniqueness!
+
+    const firstPhraseSample = _.sample(['jobsNotificationFirstPhrase', 'jobsNotificationFirstPhrase2'])
+    const secondPhraseSample = _.sample(['jobsNotificationSecondParagraph', 'jobsNotificationSecondParagraph2'])
+    const closingSample = _.sample(['jobsNotificationClosing', 'jobsNotificationClosing2'])
+
     await accountEmailManager.postEmailNotification(
       user.email,
       LanguageHelper.getLanguageString('post', 'jobsNotificationSubject', { jobRole: post.jobRoles[0] }),
       "job-notification", {
-      jobsNotificationFirstPhrase: LanguageHelper.getLanguageString('post', 'jobsNotificationFirstPhrase', { userName: user.name }),
-      jobsNotificationSecondParagraph: LanguageHelper.getLanguageString('post', 'jobsNotificationSecondParagraph'),
-      jobsNotificationClosing: LanguageHelper.getLanguageString('post', 'jobsNotificationClosing'),
+      jobsNotificationFirstPhrase: LanguageHelper.getLanguageString('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: user.name }),
+      jobsNotificationSecondParagraph: LanguageHelper.getLanguageString('post', secondPhraseSample || 'jobsNotificationSecondParagraph'),
+      jobsNotificationClosing: LanguageHelper.getLanguageString('post', closingSample || 'jobsNotificationClosing'),
 
       postSummary: `
       <tr>

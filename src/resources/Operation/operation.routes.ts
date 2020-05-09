@@ -285,7 +285,7 @@ operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.res
     const user = await User.findOne({ email: "admin@empregourgente.com" })
     const post = await Post.findOne({
       jobRoles: {
-        $in: ['Vendedor']
+        $in: ['Atendente']
       }
     })
 

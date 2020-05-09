@@ -164,12 +164,14 @@ export class BotHelper {
   private static _notifyUsers = async (post: IPost) => {
 
     console.log(`Trying to notify users about post slug ${post.slug}`);
+
+    // PUSH NOTIFICATION ========================================
     // notify users that may be interested on this role, about this position
 
     await PostScrapperHelper.notifyUsersPushNotification(post)
 
+    // EMAIL ========================================
     // notify users and or leads that have this jobRole as position of interest
-
     try {
       const leads = await Lead.find({
         stateCode: post.stateCode,
