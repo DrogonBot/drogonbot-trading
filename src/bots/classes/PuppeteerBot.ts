@@ -154,6 +154,7 @@ export class PuppeteerBot {
 
       const popularJobPosts = await Post.find({
         stateCode,
+        active: true
         // jobRoles: { "$in": ['Atendente', 'Vendedor', 'Recepcionista', 'Auxiliar Administrativo', 'Administrador'] }
       })
 

@@ -26,7 +26,8 @@ export class JobsCron {
 
       // find all posts with pending application status (email not submitted yet!)
       const jobPosts = await Post.find({
-        'applications.status': IPostApplicationStatus.Pending
+        'applications.status': IPostApplicationStatus.Pending,
+        active: true
       });
 
       for (const post of jobPosts) {
@@ -112,7 +113,7 @@ export class JobsCron {
 
       console.log(`🤖: Running job cleaner bot...`);
 
-      const posts = await Post.find({});
+      const posts = await Post.find({ active: true });
 
       // loop through all posts and check with ones are older than 30 days
       for (const post of posts) {
@@ -123,8 +124,10 @@ export class JobsCron {
         const diff = a.diff(b, 'days')
 
         if (diff >= 30) {
-          console.log(`🤖: Cleaning post ${post.title} - diff: ${diff}`);
-          await post.remove() // delete post!
+          console.log(`🤖: Deactivating post ${post.title} - diff: ${diff}`);
+          // this is just a SOFT delete! The post remains on database for research purposes.
+          post.active = false;
+          await post.save();
         }
 
       }
@@ -135,6 +138,7 @@ export class JobsCron {
 
         for (const post of dbPosts) {
           if (PostScrapperHelper.checkForBannedWords(post.title) || PostScrapperHelper.checkForBannedWords(post.content)) {
+            // Post is completely removed, since it's probably garbage.
             console.log(`🤖: Deleting post ${post.title}`);
             await post.remove();
           }

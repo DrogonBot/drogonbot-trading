@@ -41,7 +41,8 @@ postRouter.get('/post', async (req, res) => {
 
 
       const post = await Post.findOne({
-        $or: [postQuery]
+        $or: [postQuery],
+        active: true
       })
 
       if (post) {
@@ -76,7 +77,8 @@ postRouter.get('/post', async (req, res) => {
 
   let rawQuery = {
     ...req.query,
-    _id: id
+    _id: id,
+    active: true
   }
   delete rawQuery.id; // delete this id, since we'll use _id instead
   delete rawQuery.keyword; // remove this key, since we'll pass a specific query below
@@ -137,7 +139,7 @@ postRouter.post('/post/like', userAuthMiddleware, async (req, res) => {
 
   try {
 
-    const post: any = await Post.findOne({ _id: id })
+    const post: any = await Post.findOne({ _id: id, active: true })
 
     if (!post) {
       return res.status(401).send({
@@ -202,7 +204,7 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
 
   try {
 
-    const appliedToPost = await Post.findOne({ _id: postId })
+    const appliedToPost = await Post.findOne({ _id: postId, active: true })
 
     if (!appliedToPost) {
       return res.status(401).send({
@@ -414,7 +416,8 @@ postRouter.delete('/post/:id', userAuthMiddleware, async (req, res) => {
   const { id } = req.params
 
   const post: any = await Post.findOne({
-    _id: id
+    _id: id,
+    active: true
   })
 
 

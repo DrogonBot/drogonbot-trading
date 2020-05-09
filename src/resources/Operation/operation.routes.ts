@@ -41,7 +41,7 @@ const operationRouter = new Router();
 operationRouter.get('/slug', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
   // query posts that does not contain the slug field
-  const posts = await Post.find({ slug: null })
+  const posts = await Post.find({ slug: null, active: true })
 
   for (const post of posts) {
 
@@ -65,7 +65,8 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 
   try {
     const post = await Post.findOne({
-      _id: jobId
+      _id: jobId,
+      active: true
     })
 
     if (post) {
@@ -279,29 +280,6 @@ operationRouter.get('/sendinblue', [userAuthMiddleware, UserMiddleware.restrictU
 
 });
 
-operationRouter.get('/activate-posts', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  try {
-    const posts = await Post.find({})
-
-    for (const post of posts) {
-      post.active = true;
-      await post.save();
-    }
-
-    return res.status(200).send({
-      status: 'ok'
-    })
-
-  }
-  catch (error) {
-    console.error(error);
-
-  }
-
-
-});
-
 
 operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
@@ -309,7 +287,8 @@ operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.res
     const user = await User.findOne({ email: "admin@empregourgente.com" })
     const post = await Post.findOne({
       jobRoles: {
-        $in: ['Atendente']
+        $in: ['Atendente'],
+        active: true
       }
     })
 
@@ -378,31 +357,6 @@ operationRouter.get('/mailjet', [userAuthMiddleware, UserMiddleware.restrictUser
 
 });
 
-operationRouter.get('/garbage-posts-clean', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  try {
-    const posts = await Post.find({})
-
-    for (const post of posts) {
-      if (PostScrapperHelper.checkForBannedWords(post.title) || PostScrapperHelper.checkForBannedWords(post.content)) {
-        console.log(`🤖: Deleting post ${post.title}`);
-        await post.remove();
-      }
-    }
-
-    return res.status(200).send({
-      status: 'ok'
-    })
-
-  }
-  catch (error) {
-    console.error(error);
-
-  }
-
-
-
-})
 
 operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
@@ -433,7 +387,7 @@ operationRouter.get('/admin/test', [userAuthMiddleware, UserMiddleware.restrictU
 
       for (const genericPositionOfInterest of user.genericPositionsOfInterest) {
 
-        const positionsFound = await Post.find({ jobRoles: { "$in": [genericPositionOfInterest] } })
+        const positionsFound = await Post.find({ jobRoles: { "$in": [genericPositionOfInterest] }, active: true })
 
         console.log(`Found some jobs for ${user.name}...`);
 
