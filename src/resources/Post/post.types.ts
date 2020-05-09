@@ -71,5 +71,6 @@ export interface IPost {
   applications: IPostApplication[]
   owner: Object,
   createdAt: string,
-  updatedAt: string
+  updatedAt: string,
+  active: boolean
 }
