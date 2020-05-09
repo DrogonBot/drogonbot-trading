@@ -28,6 +28,7 @@ export const ProvinceSelector = ({ provinces, defaultProvince }: IProps) => {
 
     //  update our redux (we'll need this info for our post requests)
     await dispatch(setSearchKey("searchProvince", selectedProvince));
+    await dispatch(setSearchKey("searchKeyword", ""));
 
     router.push({
       pathname: "/posts",

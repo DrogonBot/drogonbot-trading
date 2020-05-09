@@ -11,10 +11,10 @@ import { ProvinceSelector } from '../../elements/form/ProvinceSelector';
 
 interface IProps {
   provinces: IProvince[];
-  defaultProvince?: string;
+  defaultProvince?: any;
 }
 
-export const SearchBar = (props: IProps) => {
+export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -36,7 +36,7 @@ export const SearchBar = (props: IProps) => {
     router.push({
       pathname: "/posts",
       query: {
-        searchProvince,
+        searchProvince: searchProvince || defaultProvince,
         searchKeyword: hookSearchInput,
         page: 1, // since its a new search, page will be always 1!
       },
@@ -57,8 +57,8 @@ export const SearchBar = (props: IProps) => {
 
       <ProvinceContainer>
         <ProvinceSelector
-          provinces={props.provinces}
-          defaultProvince={props.defaultProvince}
+          provinces={provinces}
+          defaultProvince={defaultProvince}
         />
       </ProvinceContainer>
     </FormContainer>

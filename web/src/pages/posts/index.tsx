@@ -63,7 +63,7 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
       <SearchContainer>
         <SearchHeader>
           <SearchLogo />
-          <SearchBar provinces={provinces} />
+          <SearchBar provinces={provinces} defaultProvince={searchProvince} />
         </SearchHeader>
 
         <SearchMain>
@@ -111,6 +111,7 @@ Posts.getInitialProps = async (ctx) => {
     provinces,
     posts,
     paginationData,
+    searchProvince,
   };
 };
 
