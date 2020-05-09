@@ -75,6 +75,7 @@ class MyDocument extends Document {
 
           {/* ADSENSE */}
           <script
+            crossOrigin="anonymous"
             data-ad-client="ca-pub-6892417234935549"
             async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
