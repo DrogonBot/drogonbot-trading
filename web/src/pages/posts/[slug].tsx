@@ -370,7 +370,7 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
             </Link>
           </TOSContainer>
 
-          {relatedPosts.length ? (
+          {relatedPosts?.length ? (
             <RelatedPosts>
               <H2>{TS.string("post", "postSimilar")}</H2>
               <RelatedPostsContainer>
@@ -432,7 +432,7 @@ IndividualPage.getInitialProps = async (ctx) => {
   const provinces = await ctx.store.getState().formReducer.states;
   const post: IPost = await ctx.store.getState().postReducer.post;
 
-  if (post.jobRoles.length > 0) {
+  if (post?.jobRoles?.length > 0) {
     await ctx.store.dispatch(
       postReadFeed(1, 10, post.stateCode, post.jobRoles[0], false)
     );
