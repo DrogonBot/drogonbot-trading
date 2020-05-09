@@ -32,21 +32,11 @@ export const SearchItem = ({
   return (
     <Container>
       <Breadcumb parent={`${stateCode} - ${category}`} child={tags} />
-      <Link
-        href={`/posts/[slug]`}
-        passHref
-        as={`/posts/${slug}`}
-        prefetch={false}
-      >
+      <Link href={`/posts/[slug]`} passHref as={`/posts/${slug}`}>
         <Title>{title}</Title>
       </Link>
       <MobileDate>{humanDate}</MobileDate>
-      <Link
-        href={`/posts/[slug]`}
-        passHref
-        as={`/posts/${slug}`}
-        prefetch={false}
-      >
+      <Link href={`/posts/[slug]`} passHref as={`/posts/${slug}`}>
         <Description>
           <DesktopDate>
             {humanDate}
