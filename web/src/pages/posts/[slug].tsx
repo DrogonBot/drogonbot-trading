@@ -370,14 +370,14 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
             </Link>
           </TOSContainer>
 
-          {relatedPosts && (
+          {relatedPosts.length ? (
             <RelatedPosts>
               <H2>{TS.string("post", "postSimilar")}</H2>
               <RelatedPostsContainer>
                 {onRenderRelatedPosts()}
               </RelatedPostsContainer>
             </RelatedPosts>
-          )}
+          ) : null}
 
           <H2Block>
             <H2>{TS.string("global", "joinOurCommunity")}</H2>
@@ -432,9 +432,11 @@ IndividualPage.getInitialProps = async (ctx) => {
   const provinces = await ctx.store.getState().formReducer.states;
   const post: IPost = await ctx.store.getState().postReducer.post;
 
-  await ctx.store.dispatch(
-    postReadFeed(1, 10, post.stateCode, post.jobRoles[0], false)
-  );
+  if (post.jobRoles.length > 0) {
+    await ctx.store.dispatch(
+      postReadFeed(1, 10, post.stateCode, post.jobRoles[0], false)
+    );
+  }
 
   // fetch related posts, filter any with same id as current post
   const relatedPosts: IPost[] = await ctx.store
