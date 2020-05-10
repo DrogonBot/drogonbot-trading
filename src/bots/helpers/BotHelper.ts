@@ -27,9 +27,6 @@ export class BotHelper {
   public static postLinkScrappingIntervalMs: number = 3000;
   public static scrapperHelperFinishIntervalMs: number = 1000 * 60 * Math.floor(Math.random() * 2)
 
-
-
-
   public static init = async (name: string, source: PostSource) => {
 
 

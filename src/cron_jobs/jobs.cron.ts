@@ -158,7 +158,7 @@ export class JobsCron {
 
     // HIGH PRIORITY GROUPS
 
-    cron.schedule("0 */6 * * *", async () => {
+    cron.schedule("0 */8 * * *", async () => {
 
       const results = [
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "ES"),
@@ -173,7 +173,7 @@ export class JobsCron {
 
     // MEDIUM PRIORITY GROUPS
 
-    cron.schedule("0 */10 * * *", async () => {
+    cron.schedule("0 */14 * * *", async () => {
 
       const results = [
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "ES"),
