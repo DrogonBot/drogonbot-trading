@@ -10,7 +10,9 @@ export interface IScrappingTarget {
   externalSource: string;
   postDataOverride: any;
   source: PostSource;
-  priority: TargetPriority
+  priority: TargetPriority;
+  pagePattern: PagePattern.Feed | PagePattern.ListAndInternalPosts,
+  scrapperClass: any
 }
 
 export enum TargetPriority {

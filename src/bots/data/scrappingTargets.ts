@@ -1,5 +1,7 @@
 import { PostSource } from '../../resources/Post/post.types';
-import { IScrappingTarget, TargetPriority } from '../types/bots.types';
+import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
+import { ScrapperOLX } from '../scrappers/ScrapperOLX';
+import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
 
 
 
@@ -18,7 +20,10 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Vitória",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook,
+
   },
   {
     name: "Facebook => Emprego ES",
@@ -29,7 +34,10 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Vitória",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook,
+
   },
   {
     name: "Facebook => Emprego Urgente ES",
@@ -40,7 +48,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Vitória",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Vagas e Oportunidades ES",
@@ -51,7 +61,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Vitória",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Gazeta Empregos ES",
@@ -62,7 +74,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Vitória",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos Vila Velha",
@@ -73,7 +87,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Vila Velha",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos Guarapari",
@@ -84,7 +100,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Guarapari",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   // RJ ========================================
 
@@ -97,7 +115,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "Rio de Janeiro",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos RJ",
@@ -108,7 +128,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "Rio de Janeiro",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Rio Empregos RJ",
@@ -119,7 +141,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "Rio de Janeiro",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos TI - RJ",
@@ -130,7 +154,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "Rio de Janeiro",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
 
 
@@ -145,7 +171,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "São Paulo",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos SP",
@@ -156,7 +184,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "São Paulo",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => SP EMPREGO SAO PAULO",
@@ -167,7 +197,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "São Paulo",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Grupo Vagas de Emprego Sao Paulo - SP",
@@ -178,7 +210,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "São Paulo",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos em Osasco",
@@ -189,7 +223,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "Osasco",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos Marilia - SP",
@@ -200,7 +236,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "Marília",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
 
   {
@@ -212,7 +250,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "Ribeirão Preto",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
 
   // MG ========================================
@@ -227,7 +267,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Belo Horizonte",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos BH",
@@ -238,7 +280,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Belo Horizonte",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos em Belo Horizonte",
@@ -249,7 +293,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Belo Horizonte",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos Urgentes BH",
@@ -260,7 +306,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Belo Horizonte",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Emprego BH",
@@ -271,7 +319,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Belo Horizonte",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Melhor Emprego BH",
@@ -282,7 +332,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Belo Horizonte",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Empregos de A&Z Extrema-MG e regiao",
@@ -293,7 +345,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Extrema",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Balcao de empregos - Betim MG",
@@ -304,7 +358,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Betim",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
   {
     name: "Facebook => Cambui - MG",
@@ -315,7 +371,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Cambuí",
     },
-    source: PostSource.Facebook
+    source: PostSource.Facebook,
+    pagePattern: PagePattern.Feed,
+    scrapperClass: ScrapperFacebook
   },
 
   // ! OLX ========================================
@@ -330,7 +388,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       country: "Brazil",
       stateCode: "ES"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => Vitoria",
@@ -341,7 +401,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Vitória"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => Vila Velha",
@@ -352,7 +414,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Vila Velha"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => Serra",
@@ -363,7 +427,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Serra"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => Cariacica",
@@ -374,7 +440,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "ES",
       city: "Cariacica"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
 
   // RJ ========================================
@@ -388,7 +456,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "Rio de Janeiro"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => RJ/Sao Goncalo",
@@ -399,7 +469,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "São Gonçalo"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => RJ/Campo Grande",
@@ -410,7 +482,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "Campo Grande"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => RJ/Duque de Caxias",
@@ -421,7 +495,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "Duque de Caxias"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => RJ/Nova Iguacu",
@@ -432,7 +508,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "Nova Iguaçu"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => RJ/Niteroi",
@@ -443,7 +521,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "Niterói"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => RJ/Belford Roxo",
@@ -454,7 +534,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "RJ",
       city: "Belford Roxo"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
 
 
@@ -470,7 +552,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "São Paulo"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => SP/Guarulhos",
@@ -481,7 +565,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "Guarulhos"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => SP/Campinas",
@@ -492,7 +578,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "Campinas"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => SP/Sao bernardo do campo",
@@ -503,7 +591,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "São Bernardo do Campo"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => SP/Sao jose dos campos",
@@ -514,7 +604,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "São José dos Campos"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => SP/Santo andre",
@@ -525,7 +617,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "Santo André"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => SP/Ribeirao Preto",
@@ -536,7 +630,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "SP",
       city: "Ribeirão Preto"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
 
   // MG ========================================
@@ -550,7 +646,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Belo Horizonte",
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => MG/Uberlandia",
@@ -561,7 +659,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Uberlândia"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => MG/Contagem",
@@ -572,7 +672,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Contagem"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => MG/Juiz de Fora",
@@ -583,7 +685,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Juiz de Fora"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
   {
     name: "OLX => MG/Betim",
@@ -594,7 +698,9 @@ export const scrappingTargets: IScrappingTarget[] = [
       stateCode: "MG",
       city: "Betim"
     },
-    source: PostSource.OLX
+    source: PostSource.OLX,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperOLX
   },
 ]
 

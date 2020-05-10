@@ -77,7 +77,7 @@ export class ScrapperEmpregosSaoPaulo {
       content: rawContent,
       externalUrl: link,
       country: "Brazil",
-      source: PostSource.BlogEmpregosSaoPaulo,
+      source: PostSource.Blog,
       city: rawCity,
       sector,
       jobRoles: [jobRoleBestMatch],

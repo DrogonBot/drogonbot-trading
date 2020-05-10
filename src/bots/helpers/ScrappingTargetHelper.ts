@@ -1,7 +1,5 @@
 import { PostSource } from '../../resources/Post/post.types';
 import { scrappingTargets } from '../data/scrappingTargets';
-import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
-import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
 import { BotHelper } from './BotHelper';
 
@@ -40,17 +38,18 @@ export class ScrappingTargetHelper {
 
 
     for (const result of results) {
-      switch (result.source) {
-        case PostSource.Facebook:
+
+      switch (result.pagePattern) {
+        case PagePattern.Feed:
           await BotHelper.initScrapper(result.name, result.source, {
-            crawlFeedFunction: ScrapperFacebook.crawlPageFeed
+            crawlFeedFunction: result.scrapperClass.crawlPageFeed
           }, PagePattern.Feed, result.externalSource, result.postDataOverride)
 
           break;
-        case PostSource.OLX:
+        case PagePattern.ListAndInternalPosts:
           await BotHelper.initScrapper(result.name, result.source, {
-            crawlLinksFunction: ScrapperOLX.crawlLinks,
-            crawlPageDataFunction: ScrapperOLX.crawlPageData
+            crawlLinksFunction: result.scrapperClass.crawlLinks,
+            crawlPageDataFunction: result.scrapperClass.crawlPageData
           }, PagePattern.ListAndInternalPosts, result.externalSource, result.postDataOverride)
           break;
       }
