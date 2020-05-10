@@ -23,9 +23,9 @@ export class BotHelper {
   public static chosenProxy: IProxyItem | null;
   public static userAgent: string;
   public static owner;
-  public static failedRequestIntervalMs: number = 10000;
-  public static postLinkScrappingIntervalMs: number = 10000;
-  public static scrapperHelperFinishIntervalMs: number = 1000 * 60 * Math.floor(Math.random() * 5)
+  public static failedRequestIntervalMs: number = 2000;
+  public static postLinkScrappingIntervalMs: number = 3000;
+  public static scrapperHelperFinishIntervalMs: number = 1000 * 60 * Math.floor(Math.random() * 2)
 
 
 
