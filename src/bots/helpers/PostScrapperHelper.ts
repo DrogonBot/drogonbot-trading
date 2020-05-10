@@ -215,7 +215,7 @@ export class PostScrapperHelper {
 
     try {
       // find users that have a particular jobRole
-      const users = await User.find({ genericPositionsOfInterest: { "$in": [jobRole] } })
+      const users = await User.find({ genericPositionsOfInterest: { "$in": [jobRole] }, stateCode: post.stateCode })
 
 
       for (const user of users) {
