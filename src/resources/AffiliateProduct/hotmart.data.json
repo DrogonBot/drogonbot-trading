@@ -273,6 +273,23 @@
     ]
   },
   {
+    "name": "Cachorro Quente Gourmet",
+    "sector": "Alimentação & Restaurantes",
+    "link": "https://go.hotmart.com/Q30427787H",
+    "image": "https://static-media.hotmart.com/gUMyL8WvYZFyq4rnPC6csua9aHo=/filters:background_color(white)/hotmart/product_pictures/5dd1a040-8d95-4813-abf9-3789f4881269/CACHORROQUENTE.jpg",
+    "keywords": [
+      "Auxiliar de Cozinha",
+      "Chefe de Cozinha",
+      "Ajudante de Bar",
+      "Cozinheiro",
+      "Cozinheira",
+      "Chef",
+      "Gastrônomo",
+      "Ajudante de Cozinha",
+      "Auxiliar de padaria"
+    ]
+  },
+  {
     "name": "Ebook - Cozinha para Todos",
     "sector": "Alimentação & Restaurantes",
     "link": "https://go.hotmart.com/X30414813Y",
@@ -310,6 +327,15 @@
       "Repositor",
       "Estoquista",
       "Coordenador de Suprimentos"
+    ]
+  },
+  {
+    "name": "Operador de Empilhadeira Formação",
+    "sector": "Logística, Transporte e Operações",
+    "link": "https://go.hotmart.com/S30418207G",
+    "image": "https://static-media.hotmart.com/IwfidxM1u4te9XnaAQwsvy0rt8k=/filters:background_color(white)/hotmart/product_pictures/d2a4e632-a426-47ee-935b-ef849f5884ef/MiniEmpilhadeira.jpg",
+    "keywords": [
+      "Operador de empilhadeira"
     ]
   },
   {
@@ -920,6 +946,183 @@
     "sector": "Veterinária",
     "link": "https://go.hotmart.com/F30416798E",
     "image": "https://static-media.hotmart.com/zDsplDqAKjkjRSKBjQbY-wPbhtI=/filters:background_color(white)/hotmart/product_pictures/b15bad4f-2fd0-4d93-902c-e0da8b34ac67/unipet.png",
+    "keywords": []
+  },
+  {
+    "name": "Bê-A-BÁ DO BANHO E TOSA",
+    "sector": "Veterinária",
+    "link": "https://go.hotmart.com/M30418379L",
+    "image": "https://static-media.hotmart.com/tTee2xaMJeSKiolJ2FaZuJ1qaoQ=/filters:background_color(white)/hotmart/product_pictures/3dab87d2-5b02-45d7-b158-8648cd697647/fabioekadu.png",
+    "keywords": []
+  },
+  {
+    "name": "ClickVET - Assistente de Med. Veterinária",
+    "sector": "Veterinária",
+    "link": "https://go.hotmart.com/R30418590D",
+    "image": "https://static-media.hotmart.com/z0gbVNc4iyeBB-YrBJp3Y3ggb8k=/filters:background_color(white)/hotmart/product_pictures/0d8203e1-2a38-4d9a-ab53-3fc9984571b8/vet.png",
+    "keywords": []
+  },
+  {
+    "name": "Faça e venda Sapatinhos artesanais",
+    "sector": "Moda & Indústria Têxtil",
+    "link": "https://go.hotmart.com/K30425197T",
+    "image": "https://static-media.hotmart.com/mMQkEW7qf9QUJ-68RNy92pXCh58=/filters:background_color(white)/hotmart/product_pictures/e5ea0575-3b2b-4b43-a21e-29183350969c/sapatinhosartesanais.png",
+    "keywords": [
+      "Estilista",
+      "Costureira",
+      "Costura",
+      "Corte",
+      "Confecção"
+    ]
+  },
+  {
+    "name": "500 MOLDES DE COSTURA",
+    "sector": "Moda & Indústria Têxtil",
+    "link": "https://go.hotmart.com/S30425403T",
+    "image": "https://static-media.hotmart.com/ZnnKOrnhQUa13R-zaDaen2XxGjM=/filters:background_color(white)/hotmart/product_pictures/3db88de0-e60e-4a0f-8776-ba190fc4a4ba/3qfe79.jpg",
+    "keywords": [
+      "Estilista",
+      "Costureira",
+      "Costura",
+      "Corte",
+      "Confecção"
+    ]
+  },
+  {
+    "name": "Como Fazer Croche",
+    "sector": "Moda & Indústria Têxtil",
+    "link": "https://go.hotmart.com/T30425649T",
+    "image": "https://static-media.hotmart.com/Gf50XElSxWSaZub2sOSKxbjR2ow=/filters:background_color(white)/hotmart/product_pictures/2f5935fe-f90d-4848-987a-5bfbd65e6450/capa.jpg",
+    "keywords": [
+      "Estilista",
+      "Costureira",
+      "Costura",
+      "Corte",
+      "Confecção"
+    ]
+  },
+  {
+    "name": "Corte e Costura Online",
+    "sector": "Moda & Indústria Têxtil",
+    "link": "https://go.hotmart.com/W30425735I",
+    "image": "https://static-media.hotmart.com/jywIm_z6Item1qAAiDaPttGLap4=/filters:background_color(white)/hotmart/product_pictures/9ebc973e-ac53-42d9-a0b0-280f732dc52d/Capa600x600Hotmartcliente.png",
+    "keywords": [
+      "Estilista",
+      "Costureira",
+      "Costura",
+      "Corte",
+      "Confecção"
+    ]
+  },
+  {
+    "name": "GUIA PARA CUIDAR DE IDOSOS EM CASA",
+    "sector": "Saúde & Cuidados",
+    "link": "https://go.hotmart.com/N30426153I",
+    "image": "https://static-media.hotmart.com/uPILpIoRYgIugeqJKq_IUetekyw=/filters:background_color(white)/hotmart/product_pictures/08d1e7e4-d859-4624-ace2-1aba276d3757/CAPAGUIA2D.jpg",
+    "keywords": [
+      "Cuidador(a)",
+      "Cuidador(a) de idosos"
+    ]
+  },
+  {
+    "name": "GUIA PARA CUIDAR DE IDOSOS EM CASA",
+    "sector": "Saúde & Cuidados",
+    "link": "https://go.hotmart.com/N30426153I",
+    "image": "https://static-media.hotmart.com/uPILpIoRYgIugeqJKq_IUetekyw=/filters:background_color(white)/hotmart/product_pictures/08d1e7e4-d859-4624-ace2-1aba276d3757/CAPAGUIA2D.jpg",
+    "keywords": [
+      "Cuidador(a)",
+      "Cuidador(a) de idosos"
+    ]
+  },
+  {
+    "name": "Baby's Life - Além dos cuidados do seu Bebê",
+    "sector": "Saúde & Cuidados",
+    "link": "https://go.hotmart.com/T30426591Q",
+    "image": "https://static-media.hotmart.com/MO1W4OM-AA_IHJExjDl7y5y680s=/filters:background_color(white)/hotmart/product_pictures/ccb558aa-6271-4641-8602-79dd51ff6506/RedandGreenPreschoolLogo.png",
+    "keywords": [
+      "Babá"
+    ]
+  },
+  {
+    "name": "Novas Competências: conquiste o mercado e ganhe valorização",
+    "sector": "Saúde & Cuidados",
+    "link": "https://go.hotmart.com/H30426745M",
+    "image": "https://static-media.hotmart.com/U-eVvcXMbCSgbn4d3GEgkug33gw=/filters:background_color(white)/hotmart/product_pictures/6b8cd7d8-153e-4a5c-bc73-3e8039a07e35/babdofuturo1.png",
+    "keywords": [
+      "Babá"
+    ]
+  },
+  {
+    "name": "Babás e Baby Sitters , Abra o Seu Negocio E Trabalhe em Casa.",
+    "sector": "Saúde & Cuidados",
+    "link": "https://go.hotmart.com/P30426874V",
+    "image": "https://static-media.hotmart.com/pD9xEiSFjLoP4bD85J6iGHQIpiQ=/filters:background_color(white)/hotmart/product_pictures/d1329630-f474-4b0b-8443-8d8a70f77d79/babasnegocioemcasa.png",
+    "keywords": [
+      "Babá"
+    ]
+  },
+  {
+    "name": "Curso Vendas 10X - Curso Completo de Marketing Digital",
+    "sector": "Vendas & Comércio",
+    "link": "https://go.hotmart.com/X30427462C",
+    "image": "https://static-media.hotmart.com/UkLvSTCy59UI9V8I6CD2ejIyWIg=/filters:background_color(white)/hotmart/product_pictures/202d5cbc-2efd-437b-a5bf-8ce13f51a46b/Vendas10x.png",
+    "keywords": []
+  },
+  {
+    "name": "O Vendedor Rainmaker ON-LINE",
+    "sector": "Vendas & Comércio",
+    "link": "https://go.hotmart.com/V30428086C",
+    "image": "https://static-media.hotmart.com/wIxPc5512hOWIM8cZfAwafpmOiY=/filters:background_color(white)/hotmart/product_pictures/8f19a205-4d27-4ebe-8417-052e259bd6e3/Hotmart.png",
+    "keywords": [],
+    "hotleads": "true"
+  },
+  {
+    "name": "Como Vender Para Empresas: Vendas por Telefone 2.0",
+    "sector": "Vendas & Comércio",
+    "link": "https://go.hotmart.com/H30428413C",
+    "image": "https://static-media.hotmart.com/S8TNbOeotGpdIYB0LR5BODR0cTI=/filters:background_color(white)/hotmart/product_pictures/d959d346-62a3-46c2-8534-a6d032ec2246/CapaCursoComoVenderparaEmpresasVendaportelefoneFinal.png",
+    "keywords": []
+  },
+  {
+    "name": "Vendedor de Alta Performance",
+    "sector": "Vendas & Comércio",
+    "link": "https://go.hotmart.com/X30428519H",
+    "image": "https://static-media.hotmart.com/SU7aiXzQhedt93tv3vrDESAv5EE=/filters:background_color(white)/hotmart/product_pictures/901cdab6-898b-4ba3-9fbf-1547c8a272d8/VendedorAltaPerformance2ThumbHotMart.png",
+    "keywords": []
+  },
+  {
+    "name": "Bata metas todo mês - Vendedor de Sucesso",
+    "sector": "Vendas & Comércio",
+    "link": "https://go.hotmart.com/L30428709V",
+    "image": "https://static-media.hotmart.com/FqSJIBFRd-Rn9sJQHWsjn6YpKRk=/filters:background_color(white)/hotmart/product_pictures/62a9d090-bfd0-4191-99b7-74e7c088716e/cursoonlinevendedor.png",
+    "keywords": []
+  },
+  {
+    "name": "Vendedor em Alta Performance",
+    "sector": "Vendas & Comércio",
+    "link": "https://go.hotmart.com/C30428869L",
+    "image": "https://static-media.hotmart.com/veqKEKN9VbrxKcPUPk0mN0UN3gE=/filters:background_color(white)/hotmart/product_pictures/774dab72-0c82-4d74-9076-a8fab3bebe58/vendedor.png",
+    "keywords": []
+  },
+  {
+    "name": "Vendedor em Alta Performance",
+    "sector": "Limpeza",
+    "link": "https://go.hotmart.com/H30429834Q",
+    "image": "https://static-media.hotmart.com/VBRKwVZEgK2BxEtEV_2l-rEDNZg=/filters:background_color(white)/hotmart/product_pictures/d051d35c-4a2a-40b8-b3bf-216a2bc82cc0/capacurso.jpg",
+    "keywords": []
+  },
+  {
+    "name": "Diarista de Agenda Cheia",
+    "sector": "Limpeza",
+    "link": "https://go.hotmart.com/J30429962T",
+    "image": "https://static-media.hotmart.com/mOeNnWaLBpFCKQWefr2tWzR3jMc=/filters:background_color(white)/hotmart/product_pictures/bf5f831c-35cc-48b1-bb42-e5d1d5b1ff3f/capa.png",
+    "keywords": []
+  },
+  {
+    "name": "Manual da Diarista - Marli Jesus",
+    "sector": "Limpeza",
+    "link": "https://go.hotmart.com/Y30430036I",
+    "image": "https://static-media.hotmart.com/GsABOFkJmxqsSumIC0vM5glZ2Ww=/filters:background_color(white)/hotmart/product_pictures/9f047ae6-9a54-424e-8bc3-09da6ccb3515/50COMISSO.png",
     "keywords": []
   }
 ]

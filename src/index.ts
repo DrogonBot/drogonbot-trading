@@ -13,6 +13,7 @@ import { JobsCron } from './cron_jobs/jobs.cron';
 import { LeadsCron } from './cron_jobs/leads.cron';
 import { RetentionCron } from './cron_jobs/retention.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
+import { AffiliateSeeder } from './resources/AffiliateProduct/affiliate.seeder';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
 import { countryRouter } from './resources/Country/country.routes';
 import { CountrySeeder } from './resources/Country/country.seed';
@@ -199,6 +200,7 @@ const seedDb = async () => {
   await CountrySeeder.seed();
   await PlaceSeeder.seed();
   await SectorSeeder.seed();
+  await AffiliateSeeder.seed();
 }
 seedDb();
 
