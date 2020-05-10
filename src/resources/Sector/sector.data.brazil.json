@@ -366,7 +366,9 @@
     "name": "Farmácia",
     "keywords": [
       "Farmacêutico",
-      "Auxiliar de farmácia"
+      "Auxiliar de farmácia",
+      "Atendente de farmácia",
+      "Balconista de farmácia"
     ]
   },
   {
@@ -474,6 +476,8 @@
       "Analista de P&D",
       "Mecânico",
       "Mecânico Industrial",
+      "Mecânico Automotivo",
+      "Mecânico de Motos",
       "Químico",
       "Técnico em segurança do trabalho"
     ]
