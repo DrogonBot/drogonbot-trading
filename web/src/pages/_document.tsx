@@ -55,7 +55,15 @@ class MyDocument extends Document {
           <script
             type="text/javascript"
             src="//resources.infolinks.com/js/infolinks_main.js"
-          ></script>
+          />
+          {/* Propeller Ads */}
+          <meta name="propeller" content="bea652a84695f42df2693e8cd7b5a5d8" />
+          <script
+            type="text/javascript"
+            src="//ofgogoatan.com/apu.php?zoneid=3290503"
+            async
+            data-cfasync="false"
+          />
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
           {/* PWA TAGS */}
