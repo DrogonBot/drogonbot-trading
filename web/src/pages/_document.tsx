@@ -47,13 +47,17 @@ class MyDocument extends Document {
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
           />
-
-          {/* Propeller Ads */}
-          <meta name="propeller" content="bea652a84695f42df2693e8cd7b5a5d8" />
-
+          {/* InfoLinks Ads */}
+          <script type="text/javascript">
+            {" "}
+            var infolinks_pid = 3258071; var infolinks_wsid = 0;{" "}
+          </script>{" "}
+          <script
+            type="text/javascript"
+            src="//resources.infolinks.com/js/infolinks_main.js"
+          ></script>
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
-
           {/* PWA TAGS */}
           <link rel="manifest" href="/manifest.json" />
           <link
@@ -62,7 +66,6 @@ class MyDocument extends Document {
             type="image/png"
             sizes="16x16"
           />
-
           <link
             href="/images/icons/favicon-32x32.png"
             rel="icon"
@@ -71,7 +74,6 @@ class MyDocument extends Document {
           />
           <link rel="apple-touch-icon" href="/images/icon/apple-icon.png" />
           <meta name="theme-color" content="#317EFB" />
-
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap"
