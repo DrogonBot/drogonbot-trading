@@ -413,7 +413,6 @@ const IndividualPage = ({
         <RightColumn>
           <H2> {TS.string("post", "postImproveSkills")}</H2>
           <Small>{TS.string("post", "postImproveSkillsDescription")}</Small>
-
           <AffiliateProductsContainerDesktop>
             {onRenderAffiliateProducts()}
           </AffiliateProductsContainerDesktop>

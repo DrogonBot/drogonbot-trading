@@ -200,7 +200,7 @@ export const strings = {
   },
   postImproveSkillsDescription: {
     eng: `Want to get ahead of the competition? Here are some courses
-         related (optional):`,
+         that may interest you (optional):`,
     ptBr: `Quer sair na frente da concorrência? Aqui estão alguns cursos
     relacionados (opcional):`,
   },
