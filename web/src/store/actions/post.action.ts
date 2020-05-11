@@ -3,7 +3,7 @@ import { GenericHelper } from '../../helpers/GenericHelper';
 import { IPost } from '../../types/Post.types';
 import { RequestTypes } from '../../types/Request.types';
 import { IPaginationData } from '../../types/UI.types';
-import { POST_CLEAR, POST_READ, POST_READ_ADD, POST_READ_ONE } from '../reducers/post.reducer';
+import { POST_CLEAR, POST_READ, POST_READ_ADD, POST_READ_AFFILIATES, POST_READ_ONE } from '../reducers/post.reducer';
 import { setPaginationKeyValues } from './ui.action';
 
 export const postRead = (
@@ -91,4 +91,18 @@ export const postReadOne = (id?, slug?) => async (dispatch) => {
       payload: data,
     });
   }
+};
+
+export const postReadAffiliatedProducts = (post: IPost) => async (
+  dispatch,
+  getState
+) => {
+  const response = await APIHelper.request(
+    RequestTypes.GET,
+    `/affiliate?slug=${post.slug}`,
+    {},
+    false
+  );
+
+  dispatch({ type: POST_READ_AFFILIATES, payload: response.data });
 };

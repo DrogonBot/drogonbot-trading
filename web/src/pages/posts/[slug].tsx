@@ -23,7 +23,8 @@ import { JobPostingJsonLd } from 'next-seo';
 import Linkify from 'react-linkify';
 import styled from 'styled-components';
 
-import { SearchContainer, SearchHeader, SearchMain } from '.';
+import { SearchContainer, SearchHeader } from '.';
+import { AffiliateProductCard } from '../../components/elements/ui/AffiliateProductCard';
 import { AlertModal } from '../../components/elements/ui/AlertModal';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { InfoTag } from '../../components/elements/ui/InfoTag';
@@ -39,17 +40,23 @@ import { UI } from '../../constants/UI/UI.constant';
 import { DateHelper } from '../../helpers/DateHelper';
 import { TS } from '../../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
-import { postReadFeed, postReadOne } from '../../store/actions/post.action';
+import { postReadAffiliatedProducts, postReadFeed, postReadOne } from '../../store/actions/post.action';
 import { IProvince } from '../../types/Form.types';
-import { IPost, PostBenefits, PostCategory, PostPositionType } from '../../types/Post.types';
+import { IAffiliateProduct, IPost, PostBenefits, PostCategory, PostPositionType } from '../../types/Post.types';
 
 interface IProps {
   post: IPost;
   provinces: IProvince[];
   relatedPosts: IPost[];
+  affiliatedProducts: IAffiliateProduct[];
 }
 
-const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
+const IndividualPage = ({
+  post,
+  provinces,
+  relatedPosts,
+  affiliatedProducts,
+}: IProps) => {
   //  human readable date -
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
 
@@ -270,6 +277,12 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
     }
   };
 
+  const onRenderAffiliateProducts = () => {
+    return affiliatedProducts.map((product) => (
+      <AffiliateProductCard affiliateProduct={product} />
+    ));
+  };
+
   return (
     <>
       <NextSEOPost
@@ -321,8 +334,8 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
           email={post.email}
         />
       </Cover>
-      <SearchContainer>
-        <SearchMain>
+      <MainContainer>
+        <LeftColumn>
           <TitleContainer>
             <H1>{post.title}</H1>{" "}
             <a
@@ -418,8 +431,20 @@ const IndividualPage = ({ post, provinces, relatedPosts }: IProps) => {
           </H2Block>
 
           {onShowWhatsAppLeadCaptureAlert()}
-        </SearchMain>
-      </SearchContainer>
+        </LeftColumn>
+
+        <RightColumn>
+          <H2>Capacite-se!</H2>
+          <Small>
+            Quer sair na frente da concorrência? Aqui estão alguns cursos
+            relacionados (opcional):
+          </Small>
+
+          <AffiliateProductsContainer>
+            {onRenderAffiliateProducts()}
+          </AffiliateProductsContainer>
+        </RightColumn>
+      </MainContainer>
     </>
   );
 };
@@ -431,6 +456,11 @@ IndividualPage.getInitialProps = async (ctx) => {
   await ctx.store.dispatch(postReadOne(null, slug));
   const provinces = await ctx.store.getState().formReducer.states;
   const post: IPost = await ctx.store.getState().postReducer.post;
+
+  await ctx.store.dispatch(postReadAffiliatedProducts(post));
+
+  const affiliatedProducts: IAffiliateProduct[] = await ctx.store.getState()
+    .postReducer.affiliatedProducts;
 
   if (post?.jobRoles?.length > 0) {
     await ctx.store.dispatch(
@@ -447,10 +477,43 @@ IndividualPage.getInitialProps = async (ctx) => {
     post,
     provinces,
     relatedPosts,
+    affiliatedProducts,
   };
 };
 
 export default IndividualPage;
+
+const MainContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const AffiliateProductsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex: 100%;
+`;
+
+const LeftColumn = styled.div`
+  flex: 50%;
+  max-width: 900px;
+  padding: 1.5rem;
+
+  /*DESKTOP ONLY CODE*/
+  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
+    padding: 3rem;
+  }
+`;
+const RightColumn = styled.div`
+  flex: auto;
+  padding: 1.5rem;
+  width: 50%;
+
+  /*MOBILE ONLY CODE*/
+  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
+    display: none;
+  }
+`;
 
 const WhatsAppContainer = styled.div`
   display: flex;

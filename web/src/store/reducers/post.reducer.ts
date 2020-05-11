@@ -1,15 +1,17 @@
 import _ from 'lodash';
 
-import { IPost } from '../../types/Post.types';
+import { IAffiliateProduct, IPost } from '../../types/Post.types';
 
 interface IState {
   posts: IPost[];
   post: IPost | null;
+  affiliatedProducts: IAffiliateProduct[];
 }
 
 const INITIAL_STATE = {
   posts: [],
   post: null, // individual post page
+  affiliatedProducts: [],
 };
 
 export const postReducer = (state: IState = INITIAL_STATE, action) => {
@@ -18,6 +20,11 @@ export const postReducer = (state: IState = INITIAL_STATE, action) => {
       return {
         ...state,
         post: action.payload,
+      };
+    case POST_READ_AFFILIATES:
+      return {
+        ...state,
+        affiliatedProducts: action.payload,
       };
 
     case POST_READ:
@@ -71,3 +78,4 @@ export const POST_UPDATE = "POST_UPDATE";
 export const POST_DELETE = "POST_DELETE";
 export const POST_CLEAR = "POST_CLEAR";
 export const POST_READ_ONE = "POST_READ_ONE";
+export const POST_READ_AFFILIATES = "POST_READ_AFFILIATES";

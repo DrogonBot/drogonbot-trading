@@ -1,5 +1,14 @@
 import { IUser } from './User.types';
 
+export interface IAffiliateProduct {
+  platform: string;
+  name: string;
+  sector: string;
+  link: string;
+  image: string;
+  keywords: string[];
+}
+
 export enum PostCategory {
   Job = "Job",
   Internship = "Internship",
