@@ -395,14 +395,24 @@ const IndividualPage = ({
               {TS.string("terms", "tosAgree")}
             </Link>
           </TOSContainer>
+
+          <ContainerDesktop>
+            {relatedPosts?.length ? (
+              <InternalContainer>
+                <RelatedPosts>
+                  <H2>{TS.string("post", "postSimilar")}</H2>
+                  <RelatedPostsContainer>
+                    {onRenderRelatedPosts()}
+                  </RelatedPostsContainer>
+                </RelatedPosts>
+              </InternalContainer>
+            ) : null}
+          </ContainerDesktop>
         </LeftColumn>
 
         <RightColumn>
-          <H2>Capacite-se!</H2>
-          <Small>
-            Quer sair na frente da concorrência? Aqui estão alguns cursos
-            relacionados (opcional):
-          </Small>
+          <H2> {TS.string("post", "postImproveSkills")}</H2>
+          <Small>{TS.string("post", "postImproveSkillsDescription")}</Small>
 
           <AffiliateProductsContainerDesktop>
             {onRenderAffiliateProducts()}
@@ -412,25 +422,24 @@ const IndividualPage = ({
 
       <AffiliateProductsContainerMobile>
         <InternalContainer>
-          <H2>Capacite-se para esta vaga!</H2>
-          <Small>
-            Saia na frente da concorrencia para ter mais chances de conseguir o
-            emprego!
-          </Small>
+          <H2> {TS.string("post", "postImproveSkills")}</H2>
+          <Small>{TS.string("post", "postImproveSkillsDescription")}</Small>
         </InternalContainer>
         <Slider {...carouselSettings}>{onRenderAffiliateProducts()}</Slider>
       </AffiliateProductsContainerMobile>
 
-      {relatedPosts?.length ? (
-        <InternalContainer>
-          <RelatedPosts>
-            <H2>{TS.string("post", "postSimilar")}</H2>
-            <RelatedPostsContainer>
-              {onRenderRelatedPosts()}
-            </RelatedPostsContainer>
-          </RelatedPosts>
-        </InternalContainer>
-      ) : null}
+      <ContainerMobile>
+        {relatedPosts?.length ? (
+          <InternalContainer>
+            <RelatedPosts>
+              <H2>{TS.string("post", "postSimilar")}</H2>
+              <RelatedPostsContainer>
+                {onRenderRelatedPosts()}
+              </RelatedPostsContainer>
+            </RelatedPosts>
+          </InternalContainer>
+        ) : null}
+      </ContainerMobile>
 
       <InternalContainer>
         <H2Block>
@@ -510,6 +519,17 @@ IndividualPage.getInitialProps = async (ctx) => {
 };
 
 export default IndividualPage;
+
+const ContainerMobile = styled.div`
+  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
+    display: none;
+  }
+`;
+const ContainerDesktop = styled.div`
+  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
+    display: none;
+  }
+`;
 
 const PostContainer = styled.div``;
 

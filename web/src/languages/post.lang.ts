@@ -193,4 +193,15 @@ export const strings = {
     eng: "Flag as Inappropriate",
     ptBr: "Denunciar Vaga",
   },
+
+  postImproveSkills: {
+    eng: "Improve Your Skills!",
+    ptBr: "Capacite-se!",
+  },
+  postImproveSkillsDescription: {
+    eng: `Want to get ahead of the competition? Here are some courses
+         related (optional):`,
+    ptBr: `Quer sair na frente da concorrência? Aqui estão alguns cursos
+    relacionados (opcional):`,
+  },
 };
