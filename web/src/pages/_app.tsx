@@ -1,4 +1,6 @@
 import '../styles/app.scss';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 
 import { ThemeProvider } from '@material-ui/core/styles';
 import withRedux from 'next-redux-wrapper';
@@ -13,6 +15,7 @@ import { MUITheme } from '../constants/UI/Theme.constant';
 import { GAnalyticsHelper } from '../helpers/GAnalyticsHelper';
 import { store } from '../store/reducers/store';
 
+// React slick carousel
 class MyApp extends App {
   public componentDidMount() {
     // @ts-ignore

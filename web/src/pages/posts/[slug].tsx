@@ -21,6 +21,7 @@ import SmartphoneIcon from '@material-ui/icons/Smartphone';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { JobPostingJsonLd } from 'next-seo';
 import Linkify from 'react-linkify';
+import Slider from 'react-slick';
 import styled from 'styled-components';
 
 import { SearchContainer, SearchHeader } from '.';
@@ -50,6 +51,15 @@ interface IProps {
   relatedPosts: IPost[];
   affiliatedProducts: IAffiliateProduct[];
 }
+
+const carouselSettings = {
+  className: "center",
+  centerMode: true,
+  infinite: true,
+  centerPadding: "60px",
+  slidesToShow: 1,
+  speed: 500,
+};
 
 const IndividualPage = ({
   post,
@@ -278,13 +288,15 @@ const IndividualPage = ({
   };
 
   const onRenderAffiliateProducts = () => {
-    return affiliatedProducts.map((product) => (
-      <AffiliateProductCard affiliateProduct={product} />
+    return affiliatedProducts.map((product, i) => (
+      <div key={i}>
+        <AffiliateProductCard affiliateProduct={product} />
+      </div>
     ));
   };
 
   return (
-    <>
+    <PostContainer>
       <NextSEOPost
         jobRole={post.jobRoles[0] || post.title}
         title={post.title}
@@ -334,6 +346,7 @@ const IndividualPage = ({
           email={post.email}
         />
       </Cover>
+
       <MainContainer>
         <LeftColumn>
           <TitleContainer>
@@ -382,55 +395,6 @@ const IndividualPage = ({
               {TS.string("terms", "tosAgree")}
             </Link>
           </TOSContainer>
-
-          {relatedPosts?.length ? (
-            <RelatedPosts>
-              <H2>{TS.string("post", "postSimilar")}</H2>
-              <RelatedPostsContainer>
-                {onRenderRelatedPosts()}
-              </RelatedPostsContainer>
-            </RelatedPosts>
-          ) : null}
-
-          <H2Block>
-            <H2>{TS.string("global", "joinOurCommunity")}</H2>
-            <CommunitiesContainer>
-              <a
-                href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
-                target="_blank"
-              >
-                <Button
-                  variant="outlined"
-                  className="btnWhatsapp"
-                  startIcon={<WhatsAppIcon />}
-                >
-                  WHATSAPP
-                </Button>
-              </a>
-
-              <a href={getFacebookLink(post.stateCode)} target="_blank">
-                <Button
-                  variant="outlined"
-                  className="btnFacebook"
-                  startIcon={<FacebookIcon />}
-                >
-                  FACEBOOK
-                </Button>
-              </a>
-
-              <a href={`https://bit.ly/emprego-urgente-link1`} target="_blank">
-                <Button
-                  variant="outlined"
-                  className="btnEU"
-                  startIcon={<SmartphoneIcon />}
-                >
-                  APP
-                </Button>
-              </a>
-            </CommunitiesContainer>
-          </H2Block>
-
-          {onShowWhatsAppLeadCaptureAlert()}
         </LeftColumn>
 
         <RightColumn>
@@ -440,12 +404,76 @@ const IndividualPage = ({
             relacionados (opcional):
           </Small>
 
-          <AffiliateProductsContainer>
+          <AffiliateProductsContainerDesktop>
             {onRenderAffiliateProducts()}
-          </AffiliateProductsContainer>
+          </AffiliateProductsContainerDesktop>
         </RightColumn>
       </MainContainer>
-    </>
+
+      <AffiliateProductsContainerMobile>
+        <InternalContainer>
+          <H2>Capacite-se para esta vaga!</H2>
+          <Small>
+            Saia na frente da concorrencia para ter mais chances de conseguir o
+            emprego!
+          </Small>
+        </InternalContainer>
+        <Slider {...carouselSettings}>{onRenderAffiliateProducts()}</Slider>
+      </AffiliateProductsContainerMobile>
+
+      {relatedPosts?.length ? (
+        <InternalContainer>
+          <RelatedPosts>
+            <H2>{TS.string("post", "postSimilar")}</H2>
+            <RelatedPostsContainer>
+              {onRenderRelatedPosts()}
+            </RelatedPostsContainer>
+          </RelatedPosts>
+        </InternalContainer>
+      ) : null}
+
+      <InternalContainer>
+        <H2Block>
+          <H2>{TS.string("global", "joinOurCommunity")}</H2>
+          <CommunitiesContainer>
+            <a
+              href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
+              target="_blank"
+            >
+              <Button
+                variant="outlined"
+                className="btnWhatsapp"
+                startIcon={<WhatsAppIcon />}
+              >
+                WHATSAPP
+              </Button>
+            </a>
+
+            <a href={getFacebookLink(post.stateCode)} target="_blank">
+              <Button
+                variant="outlined"
+                className="btnFacebook"
+                startIcon={<FacebookIcon />}
+              >
+                FACEBOOK
+              </Button>
+            </a>
+
+            <a href={`https://bit.ly/emprego-urgente-link1`} target="_blank">
+              <Button
+                variant="outlined"
+                className="btnEU"
+                startIcon={<SmartphoneIcon />}
+              >
+                APP
+              </Button>
+            </a>
+          </CommunitiesContainer>
+        </H2Block>
+      </InternalContainer>
+
+      {onShowWhatsAppLeadCaptureAlert()}
+    </PostContainer>
   );
 };
 
@@ -483,12 +511,28 @@ IndividualPage.getInitialProps = async (ctx) => {
 
 export default IndividualPage;
 
+const PostContainer = styled.div``;
+
+const InternalContainer = styled.div`
+  padding: 1.5rem;
+`;
+
 const MainContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 `;
 
-const AffiliateProductsContainer = styled.div`
+const AffiliateProductsContainerMobile = styled.div`
+  /*DESKTOP ONLY CODE*/
+  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
+    display: none;
+  }
+
+  .slick-arrow {
+    display: none !important;
+  }
+`;
+const AffiliateProductsContainerDesktop = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex: 100%;
