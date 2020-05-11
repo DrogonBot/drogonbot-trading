@@ -287,9 +287,9 @@ operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.res
     const user = await User.findOne({ email: "admin@empregourgente.com" })
     const post = await Post.findOne({
       jobRoles: {
-        $in: ['Atendente'],
-        active: true
-      }
+        $in: ['Atendente']
+      },
+      active: true
     })
 
 
@@ -465,16 +465,9 @@ operationRouter.get('/admin/test', [userAuthMiddleware, UserMiddleware.restrictU
 
   }
 
-
-
-
-
-
   return res.status(200).send({
     status: 'ok'
   })
 })
-
-
 
 export { operationRouter }

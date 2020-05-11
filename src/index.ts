@@ -13,6 +13,7 @@ import { JobsCron } from './cron_jobs/jobs.cron';
 import { LeadsCron } from './cron_jobs/leads.cron';
 import { RetentionCron } from './cron_jobs/retention.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
+import { affiliateRouter } from './resources/AffiliateProduct/affiliate.routes';
 import { AffiliateSeeder } from './resources/AffiliateProduct/affiliate.seeder';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
 import { countryRouter } from './resources/Country/country.routes';
@@ -144,6 +145,7 @@ app.use(sectorRouter)
 app.use(resumeRouter)
 app.use(countryRouter)
 app.use(operationRouter)
+app.use(affiliateRouter)
 
 server.listen(process.env.NODE_API_PORT, async () => {
 
