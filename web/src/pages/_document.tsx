@@ -47,6 +47,10 @@ class MyDocument extends Document {
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
           />
+
+          {/* Propeller Ads */}
+          <meta name="propeller" content="bea652a84695f42df2693e8cd7b5a5d8" />
+
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
 
