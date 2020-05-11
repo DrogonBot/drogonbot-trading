@@ -127,19 +127,10 @@ export class PuppeteerBot {
         `📰 Nova vaga: ${post.title} 📰`,
         `💼 Cargo: ${post.title} 💼`
       ]
-      const bodyVariations = [
-        `✔️ Apenas repassamos vagas! Mais informações no link ou diretamente com anunciante ✔️
-      👇 Se interessou? Aplique através do link abaixo 👇`,
-        `🔗 Clique no link abaixo para mais informações 🔗
-      ✔️ Apenas repassamos vagas! Processo de contratação apenas com a empresa do post ✔️`
-      ]
 
       const chosenTitle = _.sample(titleVariations)
-      const chosenBody = _.sample(bodyVariations)
 
       return `${chosenTitle}
-
-    ${chosenBody}
 
     https://vagasempregourgente.com/posts/${post.slug}
     `
