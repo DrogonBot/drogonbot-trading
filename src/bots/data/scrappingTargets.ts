@@ -3,6 +3,7 @@ import { ScrapperEmpregosSaoPaulo } from '../scrappers/ScrapperEmpregosSaoPaulo'
 import { ScrapperEmpregosSaoPauloRegioes } from '../scrappers/ScrapperEmpregosSaoPauloRegioes';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
+import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
 
 
@@ -566,6 +567,18 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperEmpregosSaoPaulo
+  },
+  {
+    name: "Blog => Parceria Social de Empregos",
+    externalSource: "http://parceriasocialdeempregos.com.br/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperParceriaSocialDeEmpregos
   },
   {
     name: "OLX => SP/CAPITAL",
