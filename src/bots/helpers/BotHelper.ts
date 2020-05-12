@@ -11,7 +11,6 @@ import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
-import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ICrawlerFunctions, IProxyItem, PagePattern, ProxyType } from '../types/bots.types';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
@@ -26,13 +25,14 @@ export class BotHelper {
   public static failedRequestIntervalMs: number = 2000;
   public static postLinkScrappingIntervalMs: number = 3000;
   public static scrapperHelperFinishIntervalMs: number = 1000 * 60 * Math.floor(Math.random() * 2)
+  public static scrapperClass;
 
   public static init = async (name: string, source: PostSource) => {
 
 
     ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🤖: Initializing ${name}`)
 
-    ScrapperOLX.postLinks = null // Since we're initializing a scrapper, set postLinks to null
+
 
     switch (process.env.ENV) {
       case EnvType.Production:
@@ -74,15 +74,14 @@ export class BotHelper {
         break;
     }
 
+    BotHelper.scrapperClass.postLinks = null // Since we're initializing a scrapper, set postLinks to null
     BotHelper.userAgent = new UserAgent().random().data.userAgent;
     BotHelper.owner = await User.findOne({ email: process.env.ADMIN_EMAIL })
   }
 
   public static finish = async () => {
 
-
-
-    ScrapperOLX.postLinks = null
+    BotHelper.scrapperClass.postLinks = null
 
     ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Finished!`)
 
@@ -95,7 +94,9 @@ export class BotHelper {
 
   }
 
-  public static initScrapper = async (name, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object) => {
+  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object) => {
+
+    BotHelper.scrapperClass = scrapperClass;
 
     const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
 
@@ -106,15 +107,15 @@ export class BotHelper {
 
       case PagePattern.ListAndInternalPosts: // used by ScrapperOLX
 
-        if (ScrapperOLX.postLinks === null) { // If no links were scrapped yet
-          ScrapperOLX.postLinks = await ConnectionHelper.tryRequestUntilSucceeds(crawlLinksFunction, [externalSource])
+        if (BotHelper.scrapperClass.postLinks === null) { // If no links were scrapped yet
+          BotHelper.scrapperClass.postLinks = await ConnectionHelper.tryRequestUntilSucceeds(crawlLinksFunction, [externalSource])
           console.log(`🤖: Scrapping external source ${externalSource}`);
         }
         // if we already have scrapped post links, filter the ones who were not scrapped
 
-        if (ScrapperOLX.postLinks) {
+        if (BotHelper.scrapperClass.postLinks) {
 
-          const links = ScrapperOLX.postLinks.filter((link) => !link.scrapped) // make sure we only scrap unscrapped items
+          const links = BotHelper.scrapperClass.postLinks.filter((link) => !link.scrapped) // make sure we only scrap unscrapped items
 
           for (const linkItem of links) {
 
@@ -289,8 +290,8 @@ export class BotHelper {
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Post saved on database!')
 
 
-        if (ScrapperOLX.postLinks) {
-          ScrapperOLX.postLinks.map((postLink) => {
+        if (BotHelper.scrapperClass.postLinks) {
+          BotHelper.scrapperClass.postLinks.map((postLink) => {
             if (postLink.link === link) {
               postLink.scrapped = true
             }

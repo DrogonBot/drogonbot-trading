@@ -56,11 +56,12 @@ export class ScrapperEmpregosSaoPaulo {
 
     const $ = cheerio.load(html);
 
+
     const title = $('meta[property="og:title"]').attr('content')
 
-    const rawCity = title?.match(/-\s.+,/gi)![0].replace(',', '').replace('- ', '') || "São Paulo"
-
     let rawContent = $('meta[property="og:description"]').attr('content') || ""
+
+    const rawCity = await PostScrapperHelper.getCity("SP", `${title} - ${rawContent}`) || "São Paulo"
 
     // remove html tags
     rawContent = GenericHelper.stripHtml(rawContent)
@@ -84,7 +85,6 @@ export class ScrapperEmpregosSaoPaulo {
       ...postDataOverride,
     }
 
-    console.log(jobData);
     return jobData
 
   }

@@ -1,4 +1,5 @@
 import { PostSource } from '../../resources/Post/post.types';
+import { ScrapperEmpregosSaoPaulo } from '../scrappers/ScrapperEmpregosSaoPaulo';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
@@ -541,7 +542,18 @@ export const scrappingTargets: IScrappingTarget[] = [
 
 
   // SP ========================================
-
+  {
+    name: "Blog => Empregos Sao Paulo",
+    externalSource: "https://empregossaopaulo.com.br/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperEmpregosSaoPaulo
+  },
 
   {
     name: "OLX => SP/CAPITAL",

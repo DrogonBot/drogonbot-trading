@@ -41,13 +41,13 @@ export class ScrappingTargetHelper {
 
       switch (result.pagePattern) {
         case PagePattern.Feed:
-          await BotHelper.initScrapper(result.name, result.source, {
+          await BotHelper.initScrapper(result.name, result.scrapperClass, result.source, {
             crawlFeedFunction: result.scrapperClass.crawlPageFeed
           }, PagePattern.Feed, result.externalSource, result.postDataOverride)
 
           break;
         case PagePattern.ListAndInternalPosts:
-          await BotHelper.initScrapper(result.name, result.source, {
+          await BotHelper.initScrapper(result.name, result.scrapperClass, result.source, {
             crawlLinksFunction: result.scrapperClass.crawlLinks,
             crawlPageDataFunction: result.scrapperClass.crawlPageData
           }, PagePattern.ListAndInternalPosts, result.externalSource, result.postDataOverride)
@@ -55,6 +55,7 @@ export class ScrappingTargetHelper {
       }
     }
   }
+
 
 
 }

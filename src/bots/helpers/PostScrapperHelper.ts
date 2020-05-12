@@ -3,6 +3,7 @@ import stringSimilarity from 'string-similarity';
 
 import { AccountEmailManager } from '../../emails/account.email';
 import { ILeadModel } from '../../resources/Lead/lead.model';
+import { Place } from '../../resources/Place/place.model';
 import { Post } from '../../resources/Post/post.model';
 import { IPost } from '../../resources/Post/post.types';
 import { Sector } from '../../resources/Sector/sector.model';
@@ -76,7 +77,35 @@ export class PostScrapperHelper {
     }
   }
 
-  private static getSector = async (jobRole) => {
+  public static getCity = async (stateCode, content) => {
+
+    try {
+      const place = await Place.findOne({ stateCode })
+
+      if (!place) {
+        return false;
+      }
+      // Here we test every city against our post content. If we find it, then that's because this post is probably associated with it
+      for (const city of place.cities) {
+        const cityFound = new RegExp(city.cityName, 'gi').test(content)
+
+        if (cityFound) {
+          return city.cityName;
+        }
+        continue;
+      }
+      // if nothing is found
+      return false;
+    }
+    catch (error) {
+      console.error(error);
+
+    }
+
+
+  }
+
+  private static _getSector = async (jobRole) => {
     // now, based on the jobRoleBestMatch, lets find which sector does this position belongs too
     try {
       const sector = await Sector.findOne({ keywords: { "$in": [jobRole] } })
@@ -101,7 +130,7 @@ export class PostScrapperHelper {
         const verifyTitle2 = preparedTitle.includes(` ${role.toLowerCase()} `)
         if (verifyTitle1 || verifyTitle2) {
 
-          const sectorData = await PostScrapperHelper.getSector(role)
+          const sectorData = await PostScrapperHelper._getSector(role)
           return {
             jobRoleBestMatch: role,
             sector: sectorData
@@ -116,7 +145,7 @@ export class PostScrapperHelper {
 
       if (verifyContent1 || verifyContent2) {
 
-        const sectorData = await PostScrapperHelper.getSector(role)
+        const sectorData = await PostScrapperHelper._getSector(role)
         return {
           jobRoleBestMatch: role,
           sector: sectorData
@@ -166,7 +195,7 @@ export class PostScrapperHelper {
       throw new Error('Position not found!')
     }
 
-    const sector = await PostScrapperHelper.getSector(bestMatchOverall)
+    const sector = await PostScrapperHelper._getSector(bestMatchOverall)
 
     return {
       jobRoleBestMatch: bestMatchOverall,

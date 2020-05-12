@@ -33,6 +33,7 @@ export class ConnectionHelper {
       }
 
 
+
       switch (BotHelper.proxyType) {
         case ProxyType.FreeProxy:
           if (BotHelper.chosenProxy) {
@@ -72,8 +73,6 @@ export class ConnectionHelper {
 
           ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (ZenScrape) - Using ZenScrape Proxy API (${zenScrapeUsedRequests.length}/${Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)})`)
 
-
-
           BotHelper.userAgent = new UserAgent().random().data.userAgent;
 
           console.log(`🤖: User agent: ${BotHelper.userAgent}`);
@@ -94,9 +93,9 @@ export class ConnectionHelper {
           return await zenScrapeRequest(`https://app.zenscrape.com/api/v1/get?apikey=${process.env.ZEN_SCRAPE_API_KEY}&url=${url}`);
 
         case ProxyType.None:
-          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (None) - 🔥 WARNING - YOU'RE NOT BEHIND A PROXY! 🔥`)
-          return await rp(url);
 
+          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (None) - 🔥 WARNING - YOU'RE NOT BEHIND A PROXY! 🔥`)
+          return await rp(url)
       }
     } catch (error) {
 
