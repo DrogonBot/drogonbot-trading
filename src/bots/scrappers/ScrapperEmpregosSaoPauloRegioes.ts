@@ -9,7 +9,7 @@ import { IScrapperLink } from '../types/bots.types';
 
 
 
-export class ScrapperEmpregosSaoPaulo {
+export class ScrapperEmpregosSaoPauloRegioes {
 
   public static postLinks: IScrapperLink[] | null = null
 
@@ -23,7 +23,7 @@ export class ScrapperEmpregosSaoPaulo {
 
     const $ = cheerio.load(html);
 
-    const postList = $('.more-link')
+    const postList = $('.post-bottom a[title]')
 
     let links: string[] = []
 
@@ -34,7 +34,7 @@ export class ScrapperEmpregosSaoPaulo {
       }
     })
 
-    console.log(`🤖: ${links.length} ${ScrapperEmpregosSaoPaulo.name} links crawled successfully!`);
+    console.log(`🤖: ${links.length} ${ScrapperEmpregosSaoPauloRegioes.name} links crawled successfully!`);
     console.log(links);
 
     return links.map((link) => {
@@ -49,27 +49,34 @@ export class ScrapperEmpregosSaoPaulo {
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
 
-
     console.log(`Requesting html from link ${link}`);
     const html = await ConnectionHelper.requestHtml(link)
 
     const $ = cheerio.load(html);
 
 
-    const title = $('meta[property="og:title"]').attr('content')
+    const title = $('h2').text()
 
-    let rawContent = $('meta[property="og:description"]').attr('content') || ""
+    let rawContent = $('.post-body').text() || ""
 
     const rawCity = await PostScrapperHelper.getCity("SP", `${title} - ${rawContent}`) || "São Paulo"
 
     // remove html tags
     rawContent = GenericHelper.stripHtml(rawContent)
 
+
+
+
+    rawContent = rawContent.replace('(adsbygoogle = window.adsbygoogle || []).push({});', '')
+
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(title, rawContent)
 
     rawContent = rawContent.replace(new RegExp('\n', 'g'), " ");
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
+
+    rawContent = rawContent.replace('     Não perca a oportunidade,sua vida vai ser muito melhor com novo emprego Ideal, permita mudanças e largue na frente cadastrando e enviando seu currículo em nosso site Vagas de Empregos São Paulo e Regiões,temos as melhores vagas tanto no site quanto em grupos de whatsapp,facebook ou telegram entre e conquiste seu futuro com um novo emprego,nossas vagas são postadas diariamente totalmente grátis. Leia atentamente os anuncio antes de cadastrar ou enviar seu currículo.    ', '')
+
 
     const jobData = {
       ...complementaryData,
