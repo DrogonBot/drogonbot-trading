@@ -30,6 +30,7 @@ export const SearchResults = ({ posts }: IProps) => {
             description={post.content}
             slug={post.slug}
             stateCode={post.stateCode}
+            city={post.city}
           />
         ))}
       </Container>

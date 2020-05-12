@@ -15,6 +15,7 @@ interface IProps {
   description: string;
   slug: string;
   stateCode: string;
+  city: string;
 }
 
 export const SearchItem = ({
@@ -26,12 +27,13 @@ export const SearchItem = ({
   description,
   slug,
   stateCode,
+  city,
 }: IProps) => {
   const humanDate = DateHelper.displayHumanDate(date);
 
   return (
     <Container>
-      <Breadcumb parent={`${stateCode} - ${category}`} child={tags} />
+      <Breadcumb parent={`${stateCode} › ${city} › ${category}`} child={tags} />
       <Link href={`/posts/[slug]`} passHref as={`/posts/${slug}`}>
         <Title>{title}</Title>
       </Link>
