@@ -173,7 +173,7 @@ export class JobsCron {
 
     // MEDIUM PRIORITY GROUPS
 
-    cron.schedule("0 */14 * * *", async () => {
+    cron.schedule("0 */12 * * *", async () => {
 
       const results = [
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "ES"),
@@ -188,7 +188,7 @@ export class JobsCron {
 
     // LOW PRIORITY GROUPS
 
-    cron.schedule("0 2 * * *", async () => {
+    cron.schedule("0 */18 * * *", async () => {
 
       const results = [
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "ES"),
