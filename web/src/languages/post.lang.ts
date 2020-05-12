@@ -187,7 +187,7 @@ export const strings = {
   },
   postSimilar: {
     eng: "Suggested posts",
-    ptBr: "Veja mais vagas",
+    ptBr: "Veja vagas similares",
   },
   postFlag: {
     eng: "Flag as Inappropriate",

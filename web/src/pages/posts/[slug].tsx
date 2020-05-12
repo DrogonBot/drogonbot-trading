@@ -430,12 +430,8 @@ const IndividualPage = ({
       <ContainerMobile>
         {relatedPosts?.length ? (
           <InternalContainer>
-            <RelatedPosts>
-              <H2>{TS.string("post", "postSimilar")}</H2>
-              <RelatedPostsContainer>
-                {onRenderRelatedPosts()}
-              </RelatedPostsContainer>
-            </RelatedPosts>
+            <H2>{TS.string("post", "postSimilar")}</H2>
+            <Slider {...carouselSettings}> {onRenderRelatedPosts()}</Slider>
           </InternalContainer>
         ) : null}
       </ContainerMobile>
