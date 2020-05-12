@@ -470,7 +470,7 @@ operationRouter.get('/admin/test', [userAuthMiddleware, UserMiddleware.restrictU
   })
 })
 
-operationRouter.get('/posts-clean-forbidden', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+operationRouter.get('/posts/clean/forbidden', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
   // Clean posts with forbidden keywords, that somehow ended up in our database
   try {
     const dbPosts = await Post.find({})
@@ -486,6 +486,10 @@ operationRouter.get('/posts-clean-forbidden', [userAuthMiddleware, UserMiddlewar
   catch (error) {
     console.error(error);
   }
+
+  return res.status(200).send({
+    status: 'ok'
+  })
 })
 
 
