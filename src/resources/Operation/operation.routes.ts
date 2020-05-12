@@ -470,4 +470,23 @@ operationRouter.get('/admin/test', [userAuthMiddleware, UserMiddleware.restrictU
   })
 })
 
+operationRouter.get('/posts-clean-forbidden', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+  // Clean posts with forbidden keywords, that somehow ended up in our database
+  try {
+    const dbPosts = await Post.find({})
+
+    for (const post of dbPosts) {
+      if (PostScrapperHelper.checkForBannedWords(post.title) || PostScrapperHelper.checkForBannedWords(post.content)) {
+        // Post is completely removed, since it's probably garbage.
+        console.log(`🤖: Deleting post ${post.title}`);
+        await post.remove();
+      }
+    }
+  }
+  catch (error) {
+    console.error(error);
+  }
+})
+
+
 export { operationRouter }
