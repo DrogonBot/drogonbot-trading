@@ -3,7 +3,11 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { RevenueHitsDesktopBanner, RevenueHitsMobileBanner } from '../../components/elements/ads/RevenueHitsAds';
+import {
+  RevenueHitsDesktopBanner,
+  RevenueHitsDesktopSlider,
+  RevenueHitsMobileBanner,
+} from '../../components/elements/ads/RevenueHitsAds';
 import { SearchResults } from '../../components/pages/posts/results/SearchResults';
 import { SearchBar } from '../../components/pages/posts/SearchBar';
 import { SearchLogo } from '../../components/pages/posts/SearchLogo';
@@ -71,6 +75,7 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
           <SearchTabs />
           <ContainerDesktop>
             <RevenueHitsDesktopBanner />
+            <RevenueHitsDesktopSlider />
           </ContainerDesktop>
           <ContainerMobile>
             <RevenueHitsMobileBanner />

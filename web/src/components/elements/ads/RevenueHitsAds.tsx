@@ -37,3 +37,15 @@ export const RevenueHitsMobileBanner = () => (
     src="//p396778.clksite.com/adServe/banners?tid=396778_779306_7"
   />
 );
+
+export const RevenueHitsDesktopSlider = () => {
+  return (
+    <>
+      <script
+        data-cfasync="false"
+        type="text/javascript"
+        src="//p396778.clksite.com/adServe/banners?tid=396778_779306_8&type=slider&side=right&size=9&position=center"
+      ></script>
+    </>
+  );
+};
