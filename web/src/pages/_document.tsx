@@ -3,7 +3,7 @@ import Document, { Head, Main, NextScript } from 'next/document';
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
 
-import { RevenueHitsFooterAds, RevenueHitsPopUnderAds } from '../components/elements/ads/RevenueHitsAds';
+import { RevenueHitsFooterAds } from '../components/elements/ads/RevenueHitsAds';
 import { MUITheme as theme } from '../constants/UI/Theme.constant';
 
 // As suggested on: https://stackoverflow.com/questions/55109497/how-to-integrate-nextjs-styled-components-with-material-ui
@@ -76,8 +76,7 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
           {/* RevenueHits */}
-          {/* PopUnder ad */}
-          <RevenueHitsPopUnderAds />
+
           {/* Footer Ad */}
           <RevenueHitsFooterAds />
         </body>
