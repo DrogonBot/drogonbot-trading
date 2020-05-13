@@ -25,7 +25,7 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 
 import { SearchContainer, SearchHeader } from '.';
-import { RevenueHitsButtonBanner } from '../../components/elements/ads/RevenueHitsAds';
+import { RevenueHitsDesktopBanner, RevenueHitsMobileBanner } from '../../components/elements/ads/RevenueHitsAds';
 import { AffiliateProductCard } from '../../components/elements/ui/AffiliateProductCard';
 import { AlertModal } from '../../components/elements/ui/AlertModal';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
@@ -352,10 +352,10 @@ const IndividualPage = ({
         <LeftColumn>
           <TitleContainer>
             <ContainerDesktop>
-              <RevenueHitsButtonBanner />
+              <RevenueHitsDesktopBanner />
             </ContainerDesktop>
             <ContainerMobile>
-              <RevenueHitsButtonBanner />
+              <RevenueHitsMobileBanner />
             </ContainerMobile>
             <H1>{post.title}</H1>{" "}
             <a
