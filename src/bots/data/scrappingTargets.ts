@@ -1,10 +1,10 @@
 import { PostSource } from '../../resources/Post/post.types';
+import { ScrapperEmpregosMG } from '../scrappers/ScrapperEmpregosMG';
 import { ScrapperEmpregosSaoPaulo } from '../scrappers/ScrapperEmpregosSaoPaulo';
 import { ScrapperEmpregosSaoPauloRegioes } from '../scrappers/ScrapperEmpregosSaoPauloRegioes';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
-import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
 
 
@@ -271,7 +271,8 @@ export const scrappingTargets: IScrappingTarget[] = [
   //   },
   //   source: PostSource.Blog,
   //   pagePattern: PagePattern.ListAndInternalPosts,
-  //   scrapperClass: ScrapperVagasUrgentesMG
+  //   scrapperClass: ScrapperVagasUrgentesMG,
+  //   bypassPostContentFilter: true
   // },
   // {
   //   name: "Blog => SociiRH Blog",
@@ -283,7 +284,8 @@ export const scrappingTargets: IScrappingTarget[] = [
   //   },
   //   source: PostSource.Blog,
   //   pagePattern: PagePattern.ListAndInternalPosts,
-  //   scrapperClass: ScrapperSociiRH
+  //   scrapperClass: ScrapperSociiRH,
+  //   bypassPostContentFilter: true
   // },
   // {
   //   name: "Blog => CBDV BH",
@@ -295,11 +297,25 @@ export const scrappingTargets: IScrappingTarget[] = [
   //   },
   //   source: PostSource.Blog,
   //   pagePattern: PagePattern.ListAndInternalPosts,
-  //   scrapperClass: ScrapperCBDVMG
+  //   scrapperClass: ScrapperCBDVMG,
+  //   bypassPostContentFilter: true
+  // },
+  // {
+  //   name: "Blog => Recrutamento Inteligente MG",
+  //   externalSource: "https://vagas.recrutamentointeligente.net/",
+  //   priority: TargetPriority.Medium,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperRecrutamentoInteligenteMG,
+  //   bypassPostContentFilter: true
   // },
   {
-    name: "Blog => Recrutamento Inteligente MG",
-    externalSource: "https://vagas.recrutamentointeligente.net/",
+    name: "Blog => Empregos MG",
+    externalSource: "https://www.empregosmg.com.br/",
     priority: TargetPriority.Medium,
     postDataOverride: {
       country: "Brazil",
@@ -307,7 +323,7 @@ export const scrappingTargets: IScrappingTarget[] = [
     },
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperRecrutamentoInteligenteMG,
+    scrapperClass: ScrapperEmpregosMG,
     bypassPostContentFilter: true
   },
 
@@ -604,7 +620,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     },
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperEmpregosSaoPauloRegioes
+    scrapperClass: ScrapperEmpregosSaoPauloRegioes,
+    bypassPostContentFilter: true
   },
   {
     name: "Blog => Empregos Sao Paulo",
@@ -616,7 +633,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     },
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperEmpregosSaoPaulo
+    scrapperClass: ScrapperEmpregosSaoPaulo,
+    bypassPostContentFilter: true
   },
   {
     name: "Blog => Parceria Social de Empregos",
@@ -628,7 +646,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     },
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperParceriaSocialDeEmpregos
+    scrapperClass: ScrapperParceriaSocialDeEmpregos,
+    bypassPostContentFilter: true
   },
   {
     name: "OLX => SP/CAPITAL",
