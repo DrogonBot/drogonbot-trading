@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { colors } from './Colors.constant';
 import { typography } from './Typography.constant';
+import { UI } from './UI.constant';
 
 export const H1 = styled.h1`
   color: ${colors.primary};
@@ -18,4 +19,15 @@ export const Small = styled.p`
 
 export const P = styled.p`
   color: ${colors.silver};
+`;
+
+export const ContainerMobile = styled.div`
+  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
+    display: none;
+  }
+`;
+export const ContainerDesktop = styled.div`
+  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
+    display: none;
+  }
 `;

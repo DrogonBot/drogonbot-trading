@@ -25,6 +25,7 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 
 import { SearchContainer, SearchHeader } from '.';
+import { RevenueHitsDesktopBanner, RevenueHitsMobileBanner } from '../../components/elements/ads/RevenueHitsAds';
 import { AffiliateProductCard } from '../../components/elements/ui/AffiliateProductCard';
 import { AlertModal } from '../../components/elements/ui/AlertModal';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
@@ -36,7 +37,7 @@ import { SearchLogo } from '../../components/pages/posts/SearchLogo';
 import { NextSEOPost } from '../../components/seo/NextSEOPost';
 import { appEnv } from '../../constants/Env.constant';
 import { colors } from '../../constants/UI/Colors.constant';
-import { H1, H2, Small } from '../../constants/UI/Common.constant';
+import { ContainerDesktop, ContainerMobile, H1, H2, Small } from '../../constants/UI/Common.constant';
 import { UI } from '../../constants/UI/UI.constant';
 import { DateHelper } from '../../helpers/DateHelper';
 import { TS } from '../../helpers/LanguageHelper';
@@ -350,11 +351,12 @@ const IndividualPage = ({
       <MainContainer>
         <LeftColumn>
           <TitleContainer>
-            <script
-              data-cfasync="false"
-              type="text/javascript"
-              src="//p396778.clksite.com/adServe/banners?tid=396778_779306_5&size=7"
-            ></script>
+            <ContainerDesktop>
+              <RevenueHitsDesktopBanner />
+            </ContainerDesktop>
+            <ContainerMobile>
+              <RevenueHitsMobileBanner />
+            </ContainerMobile>
             <H1>{post.title}</H1>{" "}
             <a
               target="_blank"
@@ -519,17 +521,6 @@ IndividualPage.getInitialProps = async (ctx) => {
 };
 
 export default IndividualPage;
-
-const ContainerMobile = styled.div`
-  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
-    display: none;
-  }
-`;
-const ContainerDesktop = styled.div`
-  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
-    display: none;
-  }
-`;
 
 const PostContainer = styled.div``;
 
