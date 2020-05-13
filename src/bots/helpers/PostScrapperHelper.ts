@@ -19,14 +19,14 @@ export class PostScrapperHelper {
 
   public static checkForBannedWords = (content: string) => {
 
-    const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'digitador', 'preciso de um emprego', 'divulgador', 'ganhe dinheiro', "desempregado", "curso de", "mim ajuda", "me ajuda", "pdf", "baixe", "orçamento", "grátis", "multinível", "divulgando", "divulgar", "trabalhe de casa", "procura-se emprego", "meu nome", "patrão", "indicar pessoas", "trabalhe em casa", "sem dinheiro", "desempregada", "preço", "sem sair de casa", "liberdade financeira", "reais por dia", "grupo de emprego", "bem-vindo", "boas-vindas", "mensalidade de", "procuro trabalho", "preciso muito de trabalhar", "culto", "tik tok", "como ganhar dinheiro", "Grátis", "cursos", "afiliados", "Bem-vindos", "sóc", "chat.whatsapp", "infoproduto", "marketing digital", "curso", "home office", "zcu.io", "igvagas", "chat.whatsapp.com", "grupo de vagas", "empregourgente.com", "telegram", "99660-9099", "tiktok", "grupo de whatsapp", "api.whatsapp.com", "atacado", "DONO DO SEU PRÓPRIO NEGÓCIO", "https://empregossaopauloeregioes.blogspot.com//enviar-curr", "https://linkme.bio/empregossp7/", "compra do kit de produtos", "grupo do whatsapp", "proprio lar", "https://rpst.page.link", "vendedor online", "vendas online", "empreendedor", "polishop", "/groups/", "encomenda", "sociedade", "investidor", "agrega", "promoção", "https://linkme.bio/empregossp7/", "< OPORTUNIDADE >"]
+    const bannedWords = ['procuro emprego', 'procuro vaga', 'renda extra', 'marketing multinível', 'grátis', 'compro', 'vendo', 'extra', 'trabalhar em casa', 'digitador', 'preciso de um emprego', 'divulgador', 'ganhe dinheiro', "desempregado", "mim ajuda", "me ajuda", "pdf", "baixe", "orçamento", "grátis", "multinível", "divulgando", "divulgar", "trabalhe de casa", "procura-se emprego", "meu nome", "patrão", "indicar pessoas", "trabalhe em casa", "sem dinheiro", "desempregada", "preço", "sem sair de casa", "liberdade financeira", "reais por dia", "grupo de emprego", "bem-vindo", "boas-vindas", "mensalidade de", "procuro trabalho", "preciso muito de trabalhar", "culto", "tik tok", "como ganhar dinheiro", "Grátis", "afiliados", "Bem-vindos", "sóc", "chat.whatsapp", "infoproduto", "marketing digital", "zcu.io", "igvagas", "chat.whatsapp.com", "grupo de vagas", "empregourgente.com", "telegram", "99660-9099", "tiktok", "grupo de whatsapp", "api.whatsapp.com", "atacado", "DONO DO SEU PRÓPRIO NEGÓCIO", "https://empregossaopauloeregioes.blogspot.com//enviar-curr", "https://linkme.bio/empregossp7/", "compra do kit de produtos", "grupo do whatsapp", "proprio lar", "https://rpst.page.link", "vendedor online", "vendas online", "empreendedor", "polishop", "/groups/", "encomenda", "sociedade", "investidor", "agrega", "promoção", "https://linkme.bio/empregossp7/", "< OPORTUNIDADE >"]
 
     const lowerCaseContent = content.toLowerCase();
 
     for (const word of bannedWords) {
 
 
-      const bannedKeywordFound = new RegExp(word, 'gi').test(lowerCaseContent)
+      const bannedKeywordFound = new RegExp(`\\b${word}\\b`, 'gi').test(lowerCaseContent)
 
       if (bannedKeywordFound) {
         console.log(`Forbidden word found: ${word}`);

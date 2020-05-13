@@ -4,6 +4,7 @@ import { ScrapperEmpregosSaoPauloRegioes } from '../scrappers/ScrapperEmpregosSa
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
+import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
 
 
@@ -260,6 +261,55 @@ export const scrappingTargets: IScrappingTarget[] = [
 
   // MG ========================================
 
+  // {
+  //   name: "Blog => Vagas Urgentes MG",
+  //   externalSource: "https://www.vagasurgentesmg.com.br/",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperVagasUrgentesMG
+  // },
+  // {
+  //   name: "Blog => SociiRH Blog",
+  //   externalSource: "https://sociisrh.doubt.com.br/",
+  //   priority: TargetPriority.Medium,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperSociiRH
+  // },
+  // {
+  //   name: "Blog => CBDV BH",
+  //   externalSource: "https://cbdv.com.br/",
+  //   priority: TargetPriority.Medium,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperCBDVMG
+  // },
+  {
+    name: "Blog => Recrutamento Inteligente MG",
+    externalSource: "https://vagas.recrutamentointeligente.net/",
+    priority: TargetPriority.Medium,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG",
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperRecrutamentoInteligenteMG,
+    bypassPostContentFilter: true
+  },
 
   {
     name: "Facebook => Vagas de Empregos BH",

@@ -94,7 +94,7 @@ export class BotHelper {
 
   }
 
-  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object) => {
+  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object, bypassPostContentFilter?: boolean) => {
 
     BotHelper.scrapperClass = scrapperClass;
 
@@ -129,7 +129,7 @@ export class BotHelper {
             }
 
             await GenericHelper.sleep(BotHelper.postLinkScrappingIntervalMs)
-            await BotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride)
+            await BotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride, bypassPostContentFilter)
           }
         }
 
@@ -138,7 +138,7 @@ export class BotHelper {
       case PagePattern.Feed: // used by ScrapperFacebook
 
         if (externalSource) {
-          await BotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride)
+          await BotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride, bypassPostContentFilter)
         } else {
           console.log(`🤖: Warning! You should define an external source page for scrapping on OnePageAllPosts PagePattern!`);
         }
@@ -211,7 +211,7 @@ export class BotHelper {
     }
   }
 
-  private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object) => {
+  private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object, bypassPostContentFilter?: boolean) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
 
     const args = postDataOverride ? [link, postDataOverride] : [link]
@@ -230,10 +230,13 @@ export class BotHelper {
       for (const post of postsData) {
 
         // check if post already exists
-
-        if (await PostScrapperHelper.isPostInvalid(post)) {
-          continue
+        // if theres no bypass, lets check if the post content is valid!
+        if (!bypassPostContentFilter) {
+          if (await PostScrapperHelper.isPostInvalid(post)) {
+            continue
+          }
         }
+
 
 
 
@@ -256,7 +259,7 @@ export class BotHelper {
 
   }
 
-  private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?) => {
+  private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?, bypassPostContentFilter?: boolean) => {
     try {
       console.log(`🤖: Scrapping data from ...${link}`);
 
@@ -267,9 +270,13 @@ export class BotHelper {
       const postData = await ConnectionHelper.tryRequestUntilSucceeds(crawlPageDataFunction, args)
 
 
-      if (await PostScrapperHelper.isPostInvalid(postData)) {
-        return false
+      // if theres no bypass, lets check if the post content is valid!
+      if (!bypassPostContentFilter) {
+        if (await PostScrapperHelper.isPostInvalid(postData)) {
+          return false
+        }
       }
+
 
       if (BotHelper.owner) {
         // create a new post and save with post data!
