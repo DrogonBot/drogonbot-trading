@@ -67,6 +67,8 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
 
         <SearchMain>
           <SearchTabs />
+          {/* RevenueHits Ads - Banner */}
+
           <SearchResults posts={posts} />
 
           <PaginationContainer>

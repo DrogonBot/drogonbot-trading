@@ -350,6 +350,11 @@ const IndividualPage = ({
       <MainContainer>
         <LeftColumn>
           <TitleContainer>
+            <script
+              data-cfasync="false"
+              type="text/javascript"
+              src="//p396778.clksite.com/adServe/banners?tid=396778_779306_5&size=7"
+            ></script>
             <H1>{post.title}</H1>{" "}
             <a
               target="_blank"
@@ -658,7 +663,7 @@ const ContentArea = styled.p`
 
 const CommunitiesContainer = styled.div`
   margin-top: 3rem;
-  margin-bottom: 3rem;
+  margin-bottom: 8rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

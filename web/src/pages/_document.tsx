@@ -74,6 +74,22 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+
+          {/* RevenueHits */}
+
+          {/* PopUnder ad */}
+          <script
+            data-cfasync="false"
+            type="text/javascript"
+            src="//p396778.clksite.com/adServe/banners?tid=396778_779306_3&tagid=2"
+          />
+
+          {/* Footer Ad */}
+          <script
+            data-cfasync="false"
+            type="text/javascript"
+            src="//p396778.clksite.com/adServe/banners?tid=396778_779306_2&type=footer&size=37"
+          />
         </body>
       </html>
     );
