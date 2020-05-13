@@ -3,14 +3,12 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { RevenueHitsDesktopBanner, RevenueHitsMobileBanner } from '../../components/elements/ads/RevenueHitsAds';
 import { SearchResults } from '../../components/pages/posts/results/SearchResults';
 import { SearchBar } from '../../components/pages/posts/SearchBar';
 import { SearchLogo } from '../../components/pages/posts/SearchLogo';
 import { SearchTabs } from '../../components/pages/posts/SearchTabs';
 import { NextSEOPosts } from '../../components/seo/NextSEOPosts';
 import { appEnv } from '../../constants/Env.constant';
-import { ContainerDesktop, ContainerMobile } from '../../constants/UI/Common.constant';
 import { UI } from '../../constants/UI/UI.constant';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
 import { postReadFeed } from '../../store/actions/post.action';
@@ -69,12 +67,6 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
 
         <SearchMain>
           <SearchTabs />
-          <ContainerDesktop>
-            <RevenueHitsDesktopBanner />
-          </ContainerDesktop>
-          <ContainerMobile>
-            <RevenueHitsMobileBanner />
-          </ContainerMobile>
 
           <SearchResults posts={posts} />
 
