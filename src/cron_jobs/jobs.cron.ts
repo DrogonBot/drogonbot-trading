@@ -2,7 +2,7 @@ import moment from 'moment';
 import cron from 'node-cron';
 
 import { PuppeteerBot } from '../bots/classes/PuppeteerBot';
-import { RECURPOST_CREDENTIALS_ES, RECURPOST_CREDENTIALS_MG, RECURPOST_CREDENTIALS_SP } from '../bots/data/loginCredentials';
+import { RECURPOST_CREDENTIALS_MG, RECURPOST_CREDENTIALS_SP } from '../bots/data/loginCredentials';
 import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
 import { RecurPostSocialSchedulerBot } from '../bots/schedulers/RecurPostSocialSchedulerBot';
@@ -234,12 +234,12 @@ export class JobsCron {
       }
 
 
-      await GenericHelper.sleep(60 * 1000 * 3)
+      // await GenericHelper.sleep(60 * 1000 * 3)
 
-      const randomPostES = await PuppeteerBot.getRandomPost("ES")
-      if (randomPostES) {
-        await RecurPostSocialSchedulerBot.schedulePost("ES", RECURPOST_CREDENTIALS_ES, randomPostES);
-      }
+      // const randomPostES = await PuppeteerBot.getRandomPost("ES")
+      // if (randomPostES) {
+      //   await RecurPostSocialSchedulerBot.schedulePost("ES", RECURPOST_CREDENTIALS_ES, randomPostES);
+      // }
 
 
     })
