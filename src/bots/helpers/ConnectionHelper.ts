@@ -30,7 +30,7 @@ export class ConnectionHelper {
 
       if (noProxy) {
         return await rp(url, {
-          encoding: 'latin1'
+
         });
       }
 
@@ -53,7 +53,7 @@ export class ConnectionHelper {
               headers: {
                 'User-Agent': BotHelper.userAgent
               },
-              encoding: 'latin1'
+
             });
 
 
@@ -86,7 +86,7 @@ export class ConnectionHelper {
             headers: {
               'User-Agent': BotHelper.userAgent
             },
-            encoding: 'latin1'
+
 
           });
 
@@ -100,7 +100,7 @@ export class ConnectionHelper {
         case ProxyType.None:
 
           ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (None) - 🔥 WARNING - YOU'RE NOT BEHIND A PROXY! 🔥`)
-          return await rp(url, { encoding: 'latin1' })
+          return await rp(url, {})
       }
     } catch (error) {
 

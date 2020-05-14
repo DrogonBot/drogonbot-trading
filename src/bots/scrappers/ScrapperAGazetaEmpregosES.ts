@@ -8,8 +8,7 @@ import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 import { IScrapperLink } from '../types/bots.types';
 
 
-
-export class ScrapperSociiRH {
+export class ScrapperAGazetaEmpregosES {
 
   public static postLinks: IScrapperLink[] | null = null
 
@@ -23,7 +22,7 @@ export class ScrapperSociiRH {
 
     const $ = cheerio.load(html);
 
-    const postList = $('.job-item a')
+    const postList = $('.item-title a')
 
     let links: string[] = []
 
@@ -39,7 +38,7 @@ export class ScrapperSociiRH {
       }
     })
 
-    console.log(`🤖: ${links.length} ${ScrapperSociiRH.name} links crawled successfully!`);
+    console.log(`🤖: ${links.length} ${ScrapperAGazetaEmpregosES.name} links crawled successfully!`);
     console.log(links);
 
     return links.map((link) => {
@@ -60,17 +59,15 @@ export class ScrapperSociiRH {
     const $ = cheerio.load(html);
 
 
-    const title = $('.page-title').text().trim()
-
-    let rawContent = $('.job-meta').text() + $('.job-details').text() || ""
-
-    rawContent = rawContent.replace(RegExp(`Código Vaga: .+`, 'g'), "");
+    const title = $(`meta[property="og:title"]`).attr('content')
 
 
-    rawContent = rawContent.trim()
+    let rawContent = $(`meta[property="og:description"]`).attr('content') || ""
 
+    console.log(title);
+    console.log(rawContent);
 
-    const rawCity = await PostScrapperHelper.getCity("MG", `${title} - ${rawContent}`) || "Belo Horizonte"
+    const rawCity = await PostScrapperHelper.getCity("ES", `${title} - ${rawContent}`) || "Vitória"
 
     // remove html tags
     rawContent = GenericHelper.stripHtml(rawContent)

@@ -1,11 +1,11 @@
 import { PostSource } from '../../resources/Post/post.types';
+import { ScrapperAGazetaEmpregosES } from '../scrappers/ScrapperAGazetaEmpregosES';
 import { ScrapperCaptativaSP } from '../scrappers/ScrapperCaptativaSP';
 import { ScrapperCBDVMG } from '../scrappers/ScrapperCBDVMG';
 import { ScrapperEmpregosMG } from '../scrappers/ScrapperEmpregosMG';
 import { ScrapperEmpregosSaoPaulo } from '../scrappers/ScrapperEmpregosSaoPaulo';
 import { ScrapperEmpregosSaoPauloRegioes } from '../scrappers/ScrapperEmpregosSaoPauloRegioes';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
-import { ScrapperGrupoResolveSP } from '../scrappers/ScrapperGrupoResolveSP';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
 import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
@@ -455,7 +455,19 @@ export const scrappingTargets: IScrappingTarget[] = [
   // ! OLX ========================================
 
   // ES ========================================
-
+  {
+    name: "A Gazeta Empregos ES",
+    externalSource: "https://www.agazetaempregos.com.br/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "ES"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperAGazetaEmpregosES,
+    bypassPostContentFilter: true
+  },
   {
     name: "OLX => ES",
     externalSource: "https://es.olx.com.br/vagas-de-emprego?sf=1",
@@ -630,19 +642,20 @@ export const scrappingTargets: IScrappingTarget[] = [
     scrapperClass: ScrapperCaptativaSP,
     bypassPostContentFilter: true
   },
-  {
-    name: "Blog => Grupo Resolve RH",
-    externalSource: "https://www.gruporesolve.com.br/consultarvagas_2.asp",
-    priority: TargetPriority.Medium,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperGrupoResolveSP,
-    bypassPostContentFilter: true
-  },
+  // !Encoding issues
+  // {
+  //   name: "Blog => Grupo Resolve RH",
+  //   externalSource: "https://www.gruporesolve.com.br/consultarvagas_2.asp",
+  //   priority: TargetPriority.Medium,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperGrupoResolveSP,
+  //   bypassPostContentFilter: true
+  // },
   {
     name: "Blog => Empregos Sao Paulo e Regioes",
     externalSource: "http://empregossaopauloeregioes.blogspot.com/",
