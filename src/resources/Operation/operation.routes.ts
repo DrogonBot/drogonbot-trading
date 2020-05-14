@@ -360,9 +360,9 @@ operationRouter.get('/mailjet', [userAuthMiddleware, UserMiddleware.restrictUser
 
 operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  const { target, source } = req.query;
+  const { target, source, name } = req.query;
 
-  const results = ScrappingTargetHelper.getScrappingTargetList(false, true, target, source);
+  const results = ScrappingTargetHelper.getScrappingTargetList(false, true, target, source, name);
 
   await ScrappingTargetHelper.startScrappers(results);
 

@@ -29,7 +29,9 @@ export class ConnectionHelper {
     try {
 
       if (noProxy) {
-        return await rp(url);
+        return await rp(url, {
+          encoding: 'latin1'
+        });
       }
 
 
@@ -50,7 +52,8 @@ export class ConnectionHelper {
               timeout: 15000,
               headers: {
                 'User-Agent': BotHelper.userAgent
-              }
+              },
+              encoding: 'latin1'
             });
 
 
@@ -82,7 +85,9 @@ export class ConnectionHelper {
             timeout: 15000,
             headers: {
               'User-Agent': BotHelper.userAgent
-            }
+            },
+            encoding: 'latin1'
+
           });
 
           const registerZenScrapeRequest = new Log({
@@ -95,7 +100,7 @@ export class ConnectionHelper {
         case ProxyType.None:
 
           ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (None) - 🔥 WARNING - YOU'RE NOT BEHIND A PROXY! 🔥`)
-          return await rp(url)
+          return await rp(url, { encoding: 'latin1' })
       }
     } catch (error) {
 

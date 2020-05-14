@@ -6,7 +6,7 @@ import { BotHelper } from './BotHelper';
 
 export class ScrappingTargetHelper {
 
-  public static getScrappingTargetList = (filterByPriority?: TargetPriority | false, sortByPriority?: boolean, stateCode?: string | false, source?: PostSource) => {
+  public static getScrappingTargetList = (filterByPriority?: TargetPriority | false, sortByPriority?: boolean, stateCode?: string | false, source?: PostSource, name?: string) => {
 
 
     let results = scrappingTargets;
@@ -23,6 +23,10 @@ export class ScrappingTargetHelper {
 
     if (sortByPriority) {
       results = results.sort((x, y) => x.priority > y.priority ? -1 : 1);
+    }
+
+    if (name) {
+      results = results.filter((result) => result.name === name)
     }
 
 

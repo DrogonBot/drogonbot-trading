@@ -5,6 +5,7 @@ import { ScrapperEmpregosMG } from '../scrappers/ScrapperEmpregosMG';
 import { ScrapperEmpregosSaoPaulo } from '../scrappers/ScrapperEmpregosSaoPaulo';
 import { ScrapperEmpregosSaoPauloRegioes } from '../scrappers/ScrapperEmpregosSaoPauloRegioes';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
+import { ScrapperGrupoResolveSP } from '../scrappers/ScrapperGrupoResolveSP';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
 import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
@@ -627,6 +628,19 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperCaptativaSP,
+    bypassPostContentFilter: true
+  },
+  {
+    name: "Blog => Grupo Resolve RH",
+    externalSource: "https://www.gruporesolve.com.br/consultarvagas_2.asp",
+    priority: TargetPriority.Medium,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperGrupoResolveSP,
     bypassPostContentFilter: true
   },
   {
