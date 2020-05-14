@@ -9,6 +9,7 @@ import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
 import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
+import { ScrapperRJEmpregosNet } from '../scrappers/ScrapperRJEmpregosNet';
 import { ScrapperSociiRH } from '../scrappers/ScrapperSociiRH';
 import { ScrapperVagasUrgentesMG } from '../scrappers/ScrapperVagasUrgentesMG';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
@@ -535,6 +536,19 @@ export const scrappingTargets: IScrappingTarget[] = [
 
   // RJ ========================================
 
+  {
+    name: "Blog => Rj Empregos Net",
+    externalSource: "https://rjempregos.net/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperRJEmpregosNet,
+    bypassPostContentFilter: true
+  },
   {
     name: "OLX => RJ/CAPITAL",
     externalSource: "https://rj.olx.com.br/vagas-de-emprego",

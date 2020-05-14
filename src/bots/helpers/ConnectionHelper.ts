@@ -30,7 +30,11 @@ export class ConnectionHelper {
 
       if (noProxy) {
         return await rp(url, {
-
+          strictSSL: false,
+          timeout: 15000,
+          headers: {
+            'User-Agent': BotHelper.userAgent
+          }
         });
       }
 
@@ -100,7 +104,13 @@ export class ConnectionHelper {
         case ProxyType.None:
 
           ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: (None) - 🔥 WARNING - YOU'RE NOT BEHIND A PROXY! 🔥`)
-          return await rp(url, {})
+          return await rp(url, {
+            strictSSL: false,
+            timeout: 15000,
+            headers: {
+              'User-Agent': BotHelper.userAgent
+            }
+          })
       }
     } catch (error) {
 
