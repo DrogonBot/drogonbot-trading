@@ -91,7 +91,13 @@ const Description = styled.a`
   font-size: 14px;
   margin-top: 0.5rem;
   line-height: 1.4;
-  white-space: pre-wrap;
+  white-space: pre;
+  display: block;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 7.3em;
+  line-height: 1.8em;
 
   &:hover {
     text-decoration: underline;
