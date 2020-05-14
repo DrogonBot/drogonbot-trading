@@ -132,6 +132,8 @@ export class PuppeteerBot {
 
       return `${chosenTitle}
 
+      ${post.content}
+
     https://vagasempregourgente.com/posts/${post.slug}
     `
     }
