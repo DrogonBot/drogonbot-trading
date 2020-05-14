@@ -305,19 +305,6 @@ export const scrappingTargets: IScrappingTarget[] = [
     bypassPostContentFilter: true
   },
   {
-    name: "Blog => Recrutamento Inteligente MG",
-    externalSource: "https://vagas.recrutamentointeligente.net/",
-    priority: TargetPriority.Medium,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "MG",
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperRecrutamentoInteligenteMG,
-    bypassPostContentFilter: true
-  },
-  {
     name: "Blog => Empregos MG",
     externalSource: "https://www.empregosmg.com.br/",
     priority: TargetPriority.Medium,
@@ -330,6 +317,20 @@ export const scrappingTargets: IScrappingTarget[] = [
     scrapperClass: ScrapperEmpregosMG,
     bypassPostContentFilter: true
   },
+  {
+    name: "Blog => Recrutamento Inteligente MG",
+    externalSource: "https://vagas.recrutamentointeligente.net/",
+    priority: TargetPriority.Medium,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG",
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperRecrutamentoInteligenteMG,
+    bypassPostContentFilter: true
+  },
+
 
   {
     name: "Facebook => Vagas de Empregos BH",

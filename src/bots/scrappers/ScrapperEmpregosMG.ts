@@ -65,7 +65,7 @@ export class ScrapperEmpregosMG {
     const contentPs = $(".entry p");
     let rawContent = ""
     $(contentPs).each(function (i, p) {
-      let element = $(p)
+      const element = $(p)
 
       rawContent += element.text() + '\n'
 
@@ -98,7 +98,7 @@ export class ScrapperEmpregosMG {
       ...postDataOverride,
     }
 
-    console.log(jobData);
+
 
 
     return jobData

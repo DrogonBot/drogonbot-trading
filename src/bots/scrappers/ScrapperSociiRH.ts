@@ -94,7 +94,7 @@ export class ScrapperSociiRH {
       ...postDataOverride,
     }
 
-    console.log(jobData);
+
 
 
     return jobData

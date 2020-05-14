@@ -62,18 +62,14 @@ export class ScrapperRecrutamentoInteligenteMG {
 
     const title = $('#nomeVaga h1').text().trim()
 
-    let rawContent = $('.detalhesVagaTexto').text().trim() + $('#informacoesBasicasVagas').text().trim() || ""
+    let rawContent = ""
 
-    rawContent = rawContent.replace('Não encontrou nenhuma vaga? Deixe o seu CV em nosso banco de talentos.', '')
-    rawContent = rawContent.replace('Outras Oportunidades', '')
-    rawContent = rawContent.replace('Clique aqui', '')
-    rawContent = rawContent.replace('Candidatar-se para essa vaga', '')
-    rawContent = rawContent.replace(`Sobre Grupo Selpe
-    Hoje há muito além do que soluções em gestão de pessoas, recrutamento e seleção. Nós acreditamos no desenvolvimento de pessoas e em um processo seletivo que seja simples, extremamente eficiente e executado com o máximo de qualidade.
+    $('.text-empresa + p').each(function (i, p) {
+      const element = $(p)
 
-Entregamos profissionais com capacidades e habilidades de evoluírem dentro das companhias, agregando valor e desenvolvendo todo o negócio de nossos clientes.
+      rawContent += element.text() + '\n'
+    });
 
-Para isso, investimos nossos esforços em adquirir e desenvolver em novas tecnologias, conquistar parcerias estratégicas e desenvolver um ambiente que permita surgir o principal: inovação. Todo este trabalho alinhado ao fato de sermos um dos pioneiros no Brasil na terceirização de serviços de Recrutamento e Seleção nos permitiram conquistar mais de 50 anos de experiência acumulada.`, '')
 
     rawContent = rawContent.trim()
 
@@ -102,7 +98,6 @@ Para isso, investimos nossos esforços em adquirir e desenvolver em novas tecnol
       ...postDataOverride,
     }
 
-    console.log(jobData);
 
 
     return jobData
