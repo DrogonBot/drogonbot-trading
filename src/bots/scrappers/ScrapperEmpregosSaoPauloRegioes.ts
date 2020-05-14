@@ -55,7 +55,9 @@ export class ScrapperEmpregosSaoPauloRegioes {
     const $ = cheerio.load(html);
 
 
-    const title = $('h2').text()
+    let title = $('h2').text()
+
+    title = title.replace('SeguidoresBlog Archive', '')
 
     let rawContent = $('.post-body').text() || ""
 
@@ -63,9 +65,6 @@ export class ScrapperEmpregosSaoPauloRegioes {
 
     // remove html tags
     rawContent = GenericHelper.stripHtml(rawContent)
-
-
-
 
     rawContent = rawContent.replace('(adsbygoogle = window.adsbygoogle || []).push({});', '')
 
