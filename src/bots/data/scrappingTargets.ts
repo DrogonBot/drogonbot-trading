@@ -11,6 +11,7 @@ import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaS
 import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
 import { ScrapperRJEmpregosNet } from '../scrappers/ScrapperRJEmpregosNet';
 import { ScrapperSociiRH } from '../scrappers/ScrapperSociiRH';
+import { ScrapperVagasDeEmpregoGV } from '../scrappers/ScrapperVagasDeEmpregoGV';
 import { ScrapperVagasUrgentesMG } from '../scrappers/ScrapperVagasUrgentesMG';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
 
@@ -467,6 +468,19 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperAGazetaEmpregosES,
+    bypassPostContentFilter: true
+  },
+  {
+    name: "Vagas de Emprego GV",
+    externalSource: "https://vagasdeempregogv.com.br/categoria/vagas/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "ES"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperVagasDeEmpregoGV,
     bypassPostContentFilter: true
   },
   {

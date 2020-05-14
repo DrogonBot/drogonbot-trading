@@ -1,8 +1,9 @@
+import _ from 'lodash';
+
 import { PostSource } from '../../resources/Post/post.types';
 import { scrappingTargets } from '../data/scrappingTargets';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
 import { BotHelper } from './BotHelper';
-
 
 export class ScrappingTargetHelper {
 
@@ -35,7 +36,8 @@ export class ScrappingTargetHelper {
       results = results.filter((result) => result.source === source)
     }
 
-    return results;
+    // return shuffled results
+    return _.shuffle(results);
   }
 
   public static startScrappers = async (results: IScrappingTarget[]) => {
