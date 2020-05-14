@@ -1,4 +1,5 @@
 import { PostSource } from '../../resources/Post/post.types';
+import { ScrapperCaptativaSP } from '../scrappers/ScrapperCaptativaSP';
 import { ScrapperCBDVMG } from '../scrappers/ScrapperCBDVMG';
 import { ScrapperEmpregosMG } from '../scrappers/ScrapperEmpregosMG';
 import { ScrapperEmpregosSaoPaulo } from '../scrappers/ScrapperEmpregosSaoPaulo';
@@ -615,6 +616,19 @@ export const scrappingTargets: IScrappingTarget[] = [
 
 
   // SP ========================================
+  {
+    name: "Blog => Captativa RH",
+    externalSource: "https://jobs.quickin.io/captativa/jobs/",
+    priority: TargetPriority.Low,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperCaptativaSP,
+    bypassPostContentFilter: true
+  },
   {
     name: "Blog => Empregos Sao Paulo e Regioes",
     externalSource: "http://empregossaopauloeregioes.blogspot.com/",
