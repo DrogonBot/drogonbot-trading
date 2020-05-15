@@ -132,7 +132,7 @@ export class PuppeteerBot {
 
       return `${chosenTitle}
 
-      ${post.content.substring(0, 140)}...
+      ${post.content.substring(0, 100)}...
 
     https://vagasempregourgente.com/posts/${post.slug}
     `
