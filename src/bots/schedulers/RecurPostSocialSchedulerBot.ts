@@ -83,7 +83,7 @@ export class RecurPostSocialSchedulerBot extends PuppeteerBot {
 
       console.log('🤖: Typing post content...');
 
-      await page.type('.newpost_content_textarea', postContent)
+      await page.type('.emojionearea-editor', postContent)
 
 
       await page.waitFor(10000) // wait for a while, to fb scrap image
