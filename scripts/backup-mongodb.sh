@@ -62,3 +62,6 @@ SENDGRID_CURL=$( curl -X POST \
 )
  
 echo $SENDGRID_CURL
+
+# Finish by removing our dump file
+rm -f ${BACKUP_FILE}
