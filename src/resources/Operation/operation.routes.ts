@@ -5,7 +5,7 @@ import mailjet from 'node-mailjet';
 import SibApiV3Sdk from 'sib-api-v3-sdk';
 
 import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
-import { RECURPOST_CREDENTIALS_MG, RECURPOST_CREDENTIALS_SP } from '../../bots/data/loginCredentials';
+import { RECURPOST_CREDENTIALS_ES, RECURPOST_CREDENTIALS_SP } from '../../bots/data/loginCredentials';
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../../bots/helpers/ScrappingTargetHelper';
 import { PosterFacebook } from '../../bots/posters/PosterFacebook';
@@ -193,11 +193,17 @@ operationRouter.get('/scheduler', [userAuthMiddleware, UserMiddleware.restrictUs
 
   await GenericHelper.sleep(60 * 1000 * 3)
 
-  const randomPostMG = await PuppeteerBot.getRandomPost("MG")
-  if (randomPostMG) {
-    await RecurPostSocialSchedulerBot.schedulePost("MG", RECURPOST_CREDENTIALS_MG, randomPostMG);
+  // const randomPostMG = await PuppeteerBot.getRandomPost("MG")
+  // if (randomPostMG) {
+  //   await RecurPostSocialSchedulerBot.schedulePost("MG", RECURPOST_CREDENTIALS_MG, randomPostMG);
+  // }
+
+  const randomPostES = await PuppeteerBot.getRandomPost("ES")
+  if (randomPostES) {
+    await RecurPostSocialSchedulerBot.schedulePost("ES", RECURPOST_CREDENTIALS_ES, randomPostES);
   }
 
+  // await GenericHelper.sleep(60 * 1000 * 3)
 
 
   return res.status(200).send({
