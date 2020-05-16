@@ -563,6 +563,7 @@ const WhatsAppLogoContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  max-height: 100px;
 `;
 
 const WhatsAppLogo = styled.img`
