@@ -1,4 +1,4 @@
-import { SwipeableDrawer } from '@material-ui/core';
+import { Divider, SwipeableDrawer } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -52,9 +52,10 @@ export default function MobileNav({ navOptions }: IProps) {
     setState({ ...state, [anchor]: open });
   };
 
-  const onRenderSideListItems = () => {
+  const onRenderSideListItems = (primary?: boolean) => {
     const filteredOptions = navOptions.filter(
-      (option) => !option.desktopOnly || option.mobileOnly
+      (option) =>
+        (!option.desktopOnly || option.mobileOnly) && option.primary === primary
     );
 
     return filteredOptions.map((navOption, index) => {
@@ -76,8 +77,10 @@ export default function MobileNav({ navOptions }: IProps) {
       onClick={toggleDrawer(side, false)}
       onKeyDown={toggleDrawer(side, false)}
     >
-      <List>{onRenderSideListItems()}</List>
-      {/* <Divider /> */}
+      <List>{onRenderSideListItems(true)}</List>
+      <Divider />
+      <List>{onRenderSideListItems(false)}</List>
+
       {/* <List>
         {["All mail", "Trash", "Spam"].map((text, index) => (
           <ListItem button key={text}>

@@ -1,4 +1,3 @@
-import CopyrightIcon from '@material-ui/icons/Copyright';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import SubjectIcon from '@material-ui/icons/Subject';
@@ -20,29 +19,34 @@ export const Header = () => {
       href: "/index",
       text: TS.string("global", "genericHome"),
       icon: <HomeIcon />,
+      primary: true,
     },
     {
       href: "/posts",
       text: TS.string("post", "postGenericJobRolesText"),
       icon: <WorkIcon />,
+      primary: true,
     },
 
     // {
     //   href: "/register",
     //   text: TS.string("account", "registerButtonText"),
     //   icon: <AccountCircleIcon />,
+    //   primary: true
     // },
     {
       href: "/terms?language=" + appEnv.language,
       text: TS.string("account", "genericTermsOfUse"),
       icon: <SubjectIcon />,
       mobileOnly: true,
+      primary: false,
     },
     {
       href: "/privacy?language=" + appEnv.language,
       text: TS.string("global", "genericPrivacyPolicy"),
       icon: <VpnLockIcon />,
       mobileOnly: true,
+      primary: false,
     },
     {
       href: "/about?language=" + appEnv.language,
@@ -50,12 +54,12 @@ export const Header = () => {
       icon: <InfoIcon />,
       mobileOnly: true,
     },
-    {
-      href: "/dmca?language=" + appEnv.language,
-      text: "DMCA",
-      icon: <CopyrightIcon />,
-      mobileOnly: true,
-    },
+    // {
+    //   href: "/dmca?language=" + appEnv.language,
+    //   text: "DMCA",
+    //   icon: <CopyrightIcon />,
+    //   mobileOnly: true,
+    // },
   ];
 
   return (

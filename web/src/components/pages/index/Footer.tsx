@@ -20,9 +20,9 @@ export const Footer = () => {
           <Link href={"/about?language=" + appEnv.language} passHref>
             <a>{TS.string("global", "genericAbout")}</a>
           </Link>
-          <Link href={"/dmca?language=" + appEnv.language} passHref>
+          {/* <Link href={"/dmca?language=" + appEnv.language} passHref>
             <a>DMCA</a>
-          </Link>
+          </Link> */}
         </FooterLeft>
 
         {/* <FooterRight className="footer-right">

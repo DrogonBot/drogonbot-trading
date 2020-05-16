@@ -240,7 +240,7 @@ const IndividualPage = ({
             alertKey="whatsapp-modal"
             title="Grupo de Vagas no WhatsApp"
             content={
-              <WhatsAppContainer>
+              <>
                 <a
                   href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
                   target="_blank"
@@ -275,7 +275,7 @@ const IndividualPage = ({
                     </Button>
                   </a>
                 </AlertModalContainer>
-              </WhatsAppContainer>
+              </>
             }
             showDontShowAgain={true}
           />
@@ -563,15 +563,6 @@ const WhatsAppLogoContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-`;
-
-const WhatsAppContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  max-height: 40vh;
-  max-width: 50vh;
 `;
 
 const WhatsAppLogo = styled.img`
