@@ -21,6 +21,7 @@ export const colors = {
   backgroundGmail: "#D44638",
   backgroundFacebook: "#4267B2",
   silver: "#808a8b",
+  lightSilver: "#F2F2F2",
   secondaryGray: "rgba(0,0,0,0.14)",
   whatsappGreen: "#25D366",
   facebookBlue: "#4064AD",

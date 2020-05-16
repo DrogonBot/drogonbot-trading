@@ -15,4 +15,6 @@ export interface INavOption {
   href: string;
   text: string;
   icon: JSX.Element;
+  mobileOnly?: boolean;
+  desktopOnly?: boolean;
 }

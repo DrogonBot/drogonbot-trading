@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { ProvinceSelector } from '../components/elements/form/ProvinceSelector';
-import { Header } from '../components/pages/index/Header/Header';
 import { Logo } from '../components/pages/index/Logo';
 import { NextSEOIndex } from '../components/seo/NextSEOIndex';
 import { appEnv } from '../constants/Env.constant';
@@ -57,7 +56,7 @@ const Home = (props: IProps) => {
   return (
     <>
       <NextSEOIndex />
-      <Header />
+
       <MainContainer>
         <Logo />
 
@@ -110,13 +109,13 @@ Home.getInitialProps = async (ctx) => {
 };
 
 const MainContainer = styled.main`
-  margin-top: 75px;
+  min-height: 67.7vh;
 
   i {
     color: white;
   }
 
-  @media screen and (min-width: 750px) {
+  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
     margin-top: 150px;
   }
 `;

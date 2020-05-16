@@ -53,7 +53,11 @@ export default function MobileNav({ navOptions }: IProps) {
   };
 
   const onRenderSideListItems = () => {
-    return navOptions.map((navOption, index) => {
+    const filteredOptions = navOptions.filter(
+      (option) => !option.desktopOnly || option.mobileOnly
+    );
+
+    return filteredOptions.map((navOption, index) => {
       return (
         <Link href={navOption.href} key={navOption.text}>
           <ListItem button>

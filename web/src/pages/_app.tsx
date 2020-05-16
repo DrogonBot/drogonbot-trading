@@ -10,6 +10,8 @@ import { Provider } from 'react-redux';
 
 import { LinearLoadingTop } from '../components/elements/ui/LinearLoadingTop';
 import { RouterEventsWatcher } from '../components/elements/ui/RouterEvents';
+import { Footer } from '../components/pages/index/Footer';
+import { Header } from '../components/pages/index/Header/Header';
 import { NextSEOApp } from '../components/seo/NextSEOApp';
 import { MUITheme } from '../constants/UI/Theme.constant';
 import { GAnalyticsHelper } from '../helpers/GAnalyticsHelper';
@@ -47,8 +49,9 @@ class MyApp extends App {
         <RouterEventsWatcher />
         <ThemeProvider theme={MUITheme}>
           <LinearLoadingTop />
-
+          <Header />
           <Component {...pageProps} />
+          <Footer />
         </ThemeProvider>
       </Provider>
     );

@@ -34,11 +34,13 @@ export const Header = () => {
       href: "/terms?language=" + appEnv.language,
       text: TS.string("account", "genericTermsOfUse"),
       icon: <SubjectIcon />,
+      mobileOnly: true,
     },
     {
       href: "/privacy?language=" + appEnv.language,
       text: TS.string("global", "genericPrivacyPolicy"),
       icon: <VpnLockIcon />,
+      mobileOnly: true,
     },
   ];
 

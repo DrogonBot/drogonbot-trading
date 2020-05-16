@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { PageBody, PageContainer } from '../../components/elements/common/layout';
-import { Header } from '../../components/pages/index/Header/Header';
 import { SearchResults } from '../../components/pages/posts/results/SearchResults';
 import { SearchTabs } from '../../components/pages/posts/SearchTabs';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
@@ -59,7 +58,7 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
           stateCode={searchProvince}
         />
       )}
-      <Header />
+
       <PageContainer>
         <SearchTop provinces={provinces} defaultProvince={searchProvince} />
 

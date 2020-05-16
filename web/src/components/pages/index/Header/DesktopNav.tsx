@@ -25,7 +25,11 @@ export const DesktopNav = ({ navOptions }: IProps) => {
   };
 
   const onRenderOptions = () => {
-    return navOptions.map((navOption) =>
+    const filteredOptions = navOptions.filter(
+      (option) => !option.mobileOnly || option.desktopOnly
+    );
+
+    return filteredOptions.map((navOption) =>
       renderLink(navOption.href, navOption.text)
     );
   };

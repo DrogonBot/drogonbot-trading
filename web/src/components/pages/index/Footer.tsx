@@ -1,59 +1,62 @@
+import Link from 'next/link';
 import styled from 'styled-components';
+
+import { appEnv } from '../../../constants/Env.constant';
+import { colors } from '../../../constants/UI/Colors.constant';
+import { ContainerDesktop } from '../../../constants/UI/Common.constant';
 
 export const Footer = () => {
   return (
-    <FooterContainer>
-      <div>
+    <ContainerDesktop>
+      <FooterContainer>
         <FooterLeft>
-          <a href="#">Advertising</a>
-          <a href="#">Business</a>
+          <Link href={"/privacy?language=" + appEnv.language} passHref>
+            <a>Privacy</a>
+          </Link>
+          <Link href={"/terms?language=" + appEnv.language} passHref>
+            <a>Terms</a>
+          </Link>
+
           <a href="#">About</a>
         </FooterLeft>
 
-        <FooterRight className="footer-right">
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Setting</a>
-        </FooterRight>
-      </div>
-    </FooterContainer>
+        {/* <FooterRight className="footer-right">
+      <a href="#">Advertising</a>
+        <a href="#">Business</a>
+        <a href="#">Setting</a>
+      </FooterRight> */}
+      </FooterContainer>
+    </ContainerDesktop>
   );
 };
 
 const FooterLeft = styled.div`
-  width: 50%;
+  flex: 50%;
   padding: 0.5em;
   display: flex;
   justify-content: flex-start;
 `;
 
-const FooterRight = styled.div`
-  width: 50%;
-  padding: 0.5em;
-  display: flex;
-  justify-content: flex-end;
-`;
+// const FooterRight = styled.div`
+//   flex: auto;
+//   padding: 0.5em;
+//   display: flex;
+//   justify-content: flex-end;
+// `;
 
 const FooterContainer = styled.footer`
-  position: fixed;
   width: 100%;
   max-width: 100%;
-  bottom: 0;
-  background-color: #e4e4e4;
+  margin-top: 2rem;
 
-  div {
-    display: flex;
-    justify-content: space-between;
-  }
+  background-color: ${colors.lightSilver};
+  display: flex;
+  flex-wrap: wrap;
 
   a {
     padding: 0.7em;
     text-decoration: none;
     color: #666;
     margin: auto 0;
-  }
-
-  @media screen and (max-width: 400px), screen and (max-height: 410px) {
-    display: none;
   }
 `;
