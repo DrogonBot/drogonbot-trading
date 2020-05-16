@@ -1,4 +1,4 @@
-import Drawer from '@material-ui/core/Drawer';
+import { SwipeableDrawer } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -35,10 +35,13 @@ export default function MobileNav({ navOptions }: IProps) {
   });
 
   type DrawerSide = "top" | "left" | "bottom" | "right";
-  const toggleDrawer = (side: DrawerSide, open: boolean) => (
+  type Anchor = "top" | "left" | "bottom" | "right";
+
+  const toggleDrawer = (anchor: Anchor, open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent
   ) => {
     if (
+      event &&
       event.type === "keydown" &&
       ((event as React.KeyboardEvent).key === "Tab" ||
         (event as React.KeyboardEvent).key === "Shift")
@@ -46,7 +49,7 @@ export default function MobileNav({ navOptions }: IProps) {
       return;
     }
 
-    setState({ ...state, [side]: open });
+    setState({ ...state, [anchor]: open });
   };
 
   const onRenderSideListItems = () => {
@@ -85,15 +88,20 @@ export default function MobileNav({ navOptions }: IProps) {
   );
 
   return (
-    <>
+    <React.Fragment key={"left"}>
       <HamburgerIcon>
         <MenuIcon onClick={toggleDrawer("left", true)} />
       </HamburgerIcon>
 
-      <Drawer open={state.left} onClose={toggleDrawer("left", false)}>
+      <SwipeableDrawer
+        anchor={"left"}
+        open={state.left}
+        onClose={toggleDrawer("left", false)}
+        onOpen={toggleDrawer("left", true)}
+      >
         {sideList("left")}
-      </Drawer>
-    </>
+      </SwipeableDrawer>
+    </React.Fragment>
   );
 }
 
