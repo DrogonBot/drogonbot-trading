@@ -114,4 +114,9 @@ export const globalStrings = {
     eng: "Don't Show Again",
     ptBr: "Não Mostrar Novamente",
   },
+
+  genericHome: {
+    eng: "Home",
+    ptBr: "Home",
+  },
 };

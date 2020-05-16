@@ -29,8 +29,9 @@ export const strings = {
   },
   registerButtonText: {
     eng: "Sign Up",
-    ptBr: "Registrar",
+    ptBr: "Criar Conta",
   },
+
   registerInputName: {
     eng: "Name",
     ptBr: "Nome",

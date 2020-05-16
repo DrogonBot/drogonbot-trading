@@ -1,4 +1,5 @@
 import { PageBody, PageContainer } from '../../components/elements/common/layout';
+import { Header } from '../../components/pages/index/Header/Header';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { appEnv } from '../../constants/Env.constant';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
@@ -11,6 +12,7 @@ interface IProps {
 const Register = ({ provinces }: IProps) => {
   return (
     <>
+      <Header />
       <PageContainer>
         <SearchTop provinces={provinces} />
       </PageContainer>

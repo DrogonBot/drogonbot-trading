@@ -71,6 +71,7 @@ const FormContainer = styled.form`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row-reverse;
+  max-width: 100%;
 
   /*DESKTOP ONLY CODE*/
   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {

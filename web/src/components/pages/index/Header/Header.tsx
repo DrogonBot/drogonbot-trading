@@ -1,4 +1,4 @@
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import HomeIcon from '@material-ui/icons/Home';
 import SubjectIcon from '@material-ui/icons/Subject';
 import WorkIcon from '@material-ui/icons/Work';
 import styled from 'styled-components';
@@ -14,16 +14,21 @@ export const Header = () => {
   // options that will be displayed on both navlinks (desktop) and leftDrawer (mobile)
   const navOptions: INavOption[] = [
     {
-      href: "/",
-      text: TS.string("ui", "tabJobs"),
+      href: "/index",
+      text: TS.string("global", "genericHome"),
+      icon: <HomeIcon />,
+    },
+    {
+      href: "/posts",
+      text: TS.string("post", "postGenericJobRolesText"),
       icon: <WorkIcon />,
     },
 
-    {
-      href: "/register",
-      text: TS.string("account", "registerButtonText"),
-      icon: <AccountCircleIcon />,
-    },
+    // {
+    //   href: "/register",
+    //   text: TS.string("account", "registerButtonText"),
+    //   icon: <AccountCircleIcon />,
+    // },
     {
       href: "/terms?language=" + appEnv.language,
       text: TS.string("account", "genericTermsOfUse"),

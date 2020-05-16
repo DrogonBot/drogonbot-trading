@@ -204,4 +204,8 @@ export const strings = {
     ptBr: `Quer sair na frente da concorrência? Aqui estão alguns cursos
     relacionados (opcional):`,
   },
+  postGenericJobRolesText: {
+    eng: "Jobs",
+    ptBr: "Vagas",
+  },
 };

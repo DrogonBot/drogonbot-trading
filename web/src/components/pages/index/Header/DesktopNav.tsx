@@ -10,10 +10,10 @@ interface IProps {
 }
 
 export const DesktopNav = ({ navOptions }: IProps) => {
-  const { pathname } = useRouter();
+  const { asPath } = useRouter();
 
   const renderLink = (href: string, text: string) => {
-    return pathname === href ? (
+    return asPath.includes(href) || (asPath === "/" && href === "/") ? (
       <LinkActive href={href} passHref key={href}>
         <LinkActiveText>{text.toUpperCase()}</LinkActiveText>
       </LinkActive>
@@ -71,7 +71,8 @@ const NavLeft = styled.div`
   a {
     text-decoration: none;
     color: #757575;
-    font-weight: bold;
+    font-weight: 500;
+    font-size: 1rem;
     margin-right: 1em;
     padding: 1em 1em 0.5em 0.5em;
   }
