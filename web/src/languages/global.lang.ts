@@ -119,4 +119,8 @@ export const globalStrings = {
     eng: "Home",
     ptBr: "Home",
   },
+  genericPrivacyPolicy: {
+    eng: "Privacy",
+    ptBr: "Privacidade",
+  },
 };

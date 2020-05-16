@@ -1,5 +1,6 @@
 import HomeIcon from '@material-ui/icons/Home';
 import SubjectIcon from '@material-ui/icons/Subject';
+import VpnLockIcon from '@material-ui/icons/VpnLock';
 import WorkIcon from '@material-ui/icons/Work';
 import styled from 'styled-components';
 
@@ -33,6 +34,11 @@ export const Header = () => {
       href: "/terms?language=" + appEnv.language,
       text: TS.string("account", "genericTermsOfUse"),
       icon: <SubjectIcon />,
+    },
+    {
+      href: "/privacy?language=" + appEnv.language,
+      text: TS.string("global", "genericPrivacyPolicy"),
+      icon: <VpnLockIcon />,
     },
   ];
 
