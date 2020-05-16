@@ -109,7 +109,7 @@ Home.getInitialProps = async (ctx) => {
 };
 
 const MainContainer = styled.main`
-  min-height: 67.7vh;
+  min-height: 68.3vh;
 
   i {
     color: white;
@@ -125,6 +125,7 @@ const SearchBarContainer = styled.div`
   flex-wrap: wrap;
   flex-direction: row;
   position: relative;
+  max-width: 100%;
 
   flex: 10;
 
@@ -195,11 +196,11 @@ const BlueSearchButton = styled.button`
 `;
 
 const CTAButtonsContainer = styled.div`
-  @media screen and (max-width: 749px) {
+  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
     display: none;
   }
 
-  @media screen and (min-width: 750px) {
+  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
     font-family: arial, sans-serif;
     position: absolute;
     top: 70px;

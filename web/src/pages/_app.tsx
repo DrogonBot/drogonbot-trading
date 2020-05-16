@@ -50,6 +50,7 @@ class MyApp extends App {
         <ThemeProvider theme={MUITheme}>
           <LinearLoadingTop />
           <Header />
+
           <Component {...pageProps} />
           <Footer />
         </ThemeProvider>

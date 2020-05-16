@@ -27,6 +27,11 @@ export const globalStrings = {
     ptBr: "Oops!",
   },
 
+  genericAbout: {
+    eng: "About",
+    ptBr: "Sobre Nós",
+  },
+
   genericOptional: {
     eng: "Optional",
     ptBr: "Opcional",

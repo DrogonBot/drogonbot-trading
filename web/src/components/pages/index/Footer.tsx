@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { appEnv } from '../../../constants/Env.constant';
 import { colors } from '../../../constants/UI/Colors.constant';
 import { ContainerDesktop } from '../../../constants/UI/Common.constant';
+import { TS } from '../../../helpers/LanguageHelper';
 
 export const Footer = () => {
   return (
@@ -11,13 +12,17 @@ export const Footer = () => {
       <FooterContainer>
         <FooterLeft>
           <Link href={"/privacy?language=" + appEnv.language} passHref>
-            <a>Privacy</a>
+            <a>{TS.string("global", "genericPrivacyPolicy")}</a>
           </Link>
           <Link href={"/terms?language=" + appEnv.language} passHref>
-            <a>Terms</a>
+            <a>{TS.string("account", "genericTermsOfUse")}</a>
           </Link>
-
-          <a href="#">About</a>
+          <Link href={"/about?language=" + appEnv.language} passHref>
+            <a>{TS.string("global", "genericAbout")}</a>
+          </Link>
+          <Link href={"/dmca?language=" + appEnv.language} passHref>
+            <a>DMCA</a>
+          </Link>
         </FooterLeft>
 
         {/* <FooterRight className="footer-right">
