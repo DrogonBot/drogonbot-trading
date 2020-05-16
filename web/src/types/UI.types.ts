@@ -10,3 +10,9 @@ export interface IPaginationData {
   prevPage?: number;
   nextPage?: number;
 }
+
+export interface INavOption {
+  href: string;
+  text: string;
+  icon: JSX.Element;
+}

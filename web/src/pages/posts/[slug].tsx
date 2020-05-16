@@ -24,15 +24,14 @@ import Linkify from 'react-linkify';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 
-import { SearchContainer, SearchHeader } from '.';
+import { PageContainer } from '../../components/elements/common/layout';
 import { AffiliateProductCard } from '../../components/elements/ui/AffiliateProductCard';
 import { AlertModal } from '../../components/elements/ui/AlertModal';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { InfoTag } from '../../components/elements/ui/InfoTag';
 import { PostCard } from '../../components/pages/posts/PostCard';
 import { PostCTA } from '../../components/pages/posts/PostCTA';
-import { SearchBar } from '../../components/pages/posts/SearchBar';
-import { SearchLogo } from '../../components/pages/posts/SearchLogo';
+import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { NextSEOPost } from '../../components/seo/NextSEOPost';
 import { appEnv } from '../../constants/Env.constant';
 import { colors } from '../../constants/UI/Colors.constant';
@@ -332,12 +331,9 @@ const IndividualPage = ({
         validThrough={null}
         applicantLocationRequirements={null}
       />
-      <SearchContainer>
-        <SearchHeader>
-          <SearchLogo />
-          <SearchBar provinces={provinces} defaultProvince={post.stateCode} />
-        </SearchHeader>
-      </SearchContainer>
+      <PageContainer>
+        <SearchTop provinces={provinces} defaultProvince={post.stateCode} />
+      </PageContainer>
 
       <Cover backgroundImagePath={`/images/seo/${post.sector}.jpg`}>
         <PostCTA

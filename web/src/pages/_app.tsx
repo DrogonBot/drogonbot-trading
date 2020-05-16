@@ -47,6 +47,7 @@ class MyApp extends App {
         <RouterEventsWatcher />
         <ThemeProvider theme={MUITheme}>
           <LinearLoadingTop />
+
           <Component {...pageProps} />
         </ThemeProvider>
       </Provider>

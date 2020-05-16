@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { ProvinceSelector } from '../components/elements/form/ProvinceSelector';
-import { Header } from '../components/pages/index/Header';
+import { Header } from '../components/pages/index/Header/Header';
 import { Logo } from '../components/pages/index/Logo';
 import { NextSEOIndex } from '../components/seo/NextSEOIndex';
 import { appEnv } from '../constants/Env.constant';
