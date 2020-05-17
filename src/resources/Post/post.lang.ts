@@ -147,8 +147,8 @@ export const strings = {
   // Jobs notification email ========================================
 
   jobsNotificationSubject: {
-    eng: "New position for {{jobRole}}",
-    ptBr: "Nova vaga para {{jobRole}}"
+    eng: "New position for {{jobRole}} ({{postTitle}})",
+    ptBr: "Nova vaga para {{jobRole}} ({{postTitle}})"
   },
   jobsNotificationPostCTA: {
     eng: "See Post",
