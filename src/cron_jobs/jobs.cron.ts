@@ -2,10 +2,10 @@ import moment from 'moment';
 import cron from 'node-cron';
 
 import { PuppeteerBot } from '../bots/classes/PuppeteerBot';
-import { RECURPOST_CREDENTIALS_ES, RECURPOST_CREDENTIALS_SP } from '../bots/data/loginCredentials';
+import { ZOHO_SOCIAL_ES_CREDENTIALS, ZOHO_SOCIAL_SP_CREDENTIALS } from '../bots/data/loginCredentials';
 import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
-import { RecurPostSocialSchedulerBot } from '../bots/schedulers/RecurPostSocialSchedulerBot';
+import { ZohoSocialSchedulerBot } from '../bots/schedulers/ZohoSocialSchedulerBot';
 import { TargetPriority } from '../bots/types/bots.types';
 import { JobsEmailManager } from '../emails/jobs.email';
 import { Post } from '../resources/Post/post.model';
@@ -227,19 +227,36 @@ export class JobsCron {
 
       // await GenericHelper.sleep(60 * 1000 * 3)
 
+      // RECURPOST SP
+
+      // const randomPostSP = await PuppeteerBot.getRandomPost("SP")
+      // if (randomPostSP) {
+      //   await RecurPostSocialSchedulerBot.schedulePost("SP", RECURPOST_CREDENTIALS_SP, randomPostSP);
+      // }
+
+      // ZOHOSOCIAL SP
 
       const randomPostSP = await PuppeteerBot.getRandomPost("SP")
       if (randomPostSP) {
-        await RecurPostSocialSchedulerBot.schedulePost("SP", RECURPOST_CREDENTIALS_SP, randomPostSP);
+        await ZohoSocialSchedulerBot.schedulePost("SP", ZOHO_SOCIAL_SP_CREDENTIALS, randomPostSP);
       }
+
 
 
       await GenericHelper.sleep(60 * 1000 * 3)
 
+      // ZOHOSOCIAL ES
+
       const randomPostES = await PuppeteerBot.getRandomPost("ES")
       if (randomPostES) {
-        await RecurPostSocialSchedulerBot.schedulePost("ES", RECURPOST_CREDENTIALS_ES, randomPostES);
+        await ZohoSocialSchedulerBot.schedulePost("ES", ZOHO_SOCIAL_ES_CREDENTIALS, randomPostES);
       }
+
+      // RECURPOST ES
+      // const randomPostES = await PuppeteerBot.getRandomPost("ES")
+      // if (randomPostES) {
+      //   await RecurPostSocialSchedulerBot.schedulePost("ES", RECURPOST_CREDENTIALS_ES, randomPostES);
+      // }
 
 
     })
