@@ -1,7 +1,7 @@
 export const strings = {
   indexSearchInput: {
     eng: "Search for a job...",
-    ptBr: "Digite uma vaga...",
+    ptBr: "Busque uma vaga (ex. Atendente)...",
   },
   birthdayInputLabel: {
     eng: "Birthday",

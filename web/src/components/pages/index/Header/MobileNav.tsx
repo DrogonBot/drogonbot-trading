@@ -118,5 +118,6 @@ const HamburgerIcon = styled.div`
 
   svg {
     font-size: 2rem;
+    cursor: pointer;
   }
 `;

@@ -128,4 +128,8 @@ export const globalStrings = {
     eng: "Privacy",
     ptBr: "Privacidade",
   },
+  genericAdvertise: {
+    eng: "Post Job",
+    ptBr: "Anunciar Vaga",
+  },
 };

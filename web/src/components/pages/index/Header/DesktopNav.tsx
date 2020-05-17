@@ -12,14 +12,24 @@ interface IProps {
 export const DesktopNav = ({ navOptions }: IProps) => {
   const { asPath } = useRouter();
 
-  const renderLink = (href: string, text: string) => {
-    return asPath.includes(href) || (asPath === "/" && href === "/") ? (
-      <LinkActive href={href} passHref key={href}>
-        <LinkActiveText>{text.toUpperCase()}</LinkActiveText>
+  const renderLink = (navOption: INavOption) => {
+    return asPath.includes(navOption.href) ||
+      (asPath === "/" && navOption.href === "/") ? (
+      <LinkActive
+        customColor={navOption.customColor}
+        href={navOption.href}
+        passHref
+        key={navOption.href}
+      >
+        <LinkActiveText customColor={navOption.customColor}>
+          {navOption.text.toUpperCase()}
+        </LinkActiveText>
       </LinkActive>
     ) : (
-      <Link href={href} passHref key={href}>
-        <LinkNotActive>{text.toUpperCase()}</LinkNotActive>
+      <Link href={navOption.href} passHref key={navOption.href}>
+        <LinkNotActive customColor={navOption.customColor}>
+          {navOption.text.toUpperCase()}
+        </LinkNotActive>
       </Link>
     );
   };
@@ -29,9 +39,7 @@ export const DesktopNav = ({ navOptions }: IProps) => {
       (option) => !option.mobileOnly || option.desktopOnly
     );
 
-    return filteredOptions.map((navOption) =>
-      renderLink(navOption.href, navOption.text)
-    );
+    return filteredOptions.map((navOption) => renderLink(navOption));
   };
 
   return (
@@ -116,12 +124,13 @@ const NavLeft = styled.div`
 // `;
 
 const LinkActive = styled.a`
-  color: ${colors.primary};
-  border-bottom: 2px solid ${colors.primary};
+  color: ${(props) => (props.customColor ? props.customColor : colors.primary)};
+  border-bottom: 2px solid
+    ${(props) => (props.customColor ? props.customColor : colors.primary)};
 `;
 
 const LinkActiveText = styled.span`
-  color: ${colors.primary};
+  color: ${(props) => (props.customColor ? props.customColor : colors.primary)};
   position: relative;
   top: -0.6em;
   left: 0.2em;
@@ -131,4 +140,6 @@ const LinkNotActive = styled.a`
   position: relative;
   top: -0.6em;
   left: 0.2em;
+  color: ${(props) =>
+    props.customColor ? props.customColor : colors.textGray};
 `;

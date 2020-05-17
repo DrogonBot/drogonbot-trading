@@ -17,4 +17,5 @@ const LogoContainer = styled.div`
   width: 15rem;
   margin: auto;
   margin-bottom: 2rem;
+  margin-top: 8rem;
 `;

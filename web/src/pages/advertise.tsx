@@ -17,19 +17,26 @@ const Advertise = ({ provinces }: IProps) => {
         <SearchTop provinces={provinces} />
       </PageContainer>
 
-      <PageContainer>
-        <PageBody>
-          <h1>Anuncie sua Vaga</h1>
+      <Body>
+        <PageContainer>
+          <PageBody>
+            <h1>Anuncie sua Vaga</h1>
 
-          <p>Por que anunciar com o Emprego Urgente?</p>
+            <p>
+              Assine nosso plano empresa por R$59.90/mes e anuncie quantas vagas
+              quiser, em destaque! Divulgamos para você, em todos nossos canais
+              (WhatsApp, redes sociais e e-mail).
+            </p>
 
-          <BenefitsContainer>
-            <BenefitItem>
-              <BenefitTitle />
-            </BenefitItem>
-          </BenefitsContainer>
-        </PageBody>
-      </PageContainer>
+            <p>
+              Se interessou? Envie um e-mail para{" "}
+              <a href="mailto:admin@empregourgente.com">
+                admin@empregourgente.com
+              </a>
+            </p>
+          </PageBody>
+        </PageContainer>
+      </Body>
     </>
   );
 };
@@ -45,20 +52,6 @@ Advertise.getInitialProps = async (ctx) => {
 
 export default Advertise;
 
-const BenefitsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  border: 1px solid red;
-`;
-
-const BenefitItem = styled.div`
-  background-color: hotpink;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const BenefitTitle = styled.div`
-  flex: 100%;
-  font-size: 1.3rem;
-  font-weight: bold;
+export const Body = styled.div`
+  min-height: 68.4vh;
 `;
