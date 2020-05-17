@@ -19,8 +19,8 @@ export const RECURPOST_CREDENTIALS_SP: ICredential = {
 // ! ZohoSocial is inactive until further notice
 
 export const ZOHO_SOCIAL_ES_CREDENTIALS: ICredential = {
-  login: "admin@empregourgente.com",
-  password: "cQBNY2SC)Wi,amT"
+  login: "empregourgente.sp2@yahoo.com",
+  password: "abc32258190"
 }
 
 export const ZOHO_SOCIAL_SP_CREDENTIALS: ICredential = {
