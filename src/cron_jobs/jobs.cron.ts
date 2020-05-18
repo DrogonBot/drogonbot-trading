@@ -158,48 +158,34 @@ export class JobsCron {
 
     // HIGH PRIORITY GROUPS
 
-    cron.schedule("0 */8 * * *", async () => {
+    cron.schedule("0 22 * * *", async () => {
 
-      const results = [
+      await ScrappingTargetHelper.startScrappers([
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "ES"),
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "SP"),
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "MG"),
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "RJ"),
-      ];
+      ]);
 
-      await ScrappingTargetHelper.startScrappers(results);
-
-    });
-
-    // MEDIUM PRIORITY GROUPS
-
-    cron.schedule("0 */12 * * *", async () => {
-
-      const results = [
+      await ScrappingTargetHelper.startScrappers([
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "ES"),
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "SP"),
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "MG"),
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "RJ"),
-      ];
+      ]);
 
-      await ScrappingTargetHelper.startScrappers(results);
 
-    });
-
-    // LOW PRIORITY GROUPS
-
-    cron.schedule("0 */18 * * *", async () => {
-
-      const results = [
+      await ScrappingTargetHelper.startScrappers([
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "ES"),
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "SP"),
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "MG"),
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "RJ"),
-      ];
+      ]);
 
-      await ScrappingTargetHelper.startScrappers(results);
 
     });
+
+
 
 
 
