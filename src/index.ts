@@ -92,7 +92,8 @@ switch (process.env.ENV) {
     // JobsCron.initializeJobPoster();
 
     // Job post Schedulers
-    JobsCron.initializeJobPostSchedulers()
+    // ! Schedulers inactivated temporarely
+    // JobsCron.initializeJobPostSchedulers()
 
     break;
 }

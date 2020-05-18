@@ -5,15 +5,15 @@ import mailjet from 'node-mailjet';
 import SibApiV3Sdk from 'sib-api-v3-sdk';
 
 import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
-import { ZOHO_SOCIAL_ES_CREDENTIALS, ZOHO_SOCIAL_SP_CREDENTIALS } from '../../bots/data/loginCredentials';
+import { RECURPOST_CREDENTIALS_SP, ZOHO_SOCIAL_ES_CREDENTIALS } from '../../bots/data/loginCredentials';
 import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../../bots/helpers/ScrappingTargetHelper';
 import { PosterFacebook } from '../../bots/posters/PosterFacebook';
+import { RecurPostSocialSchedulerBot } from '../../bots/schedulers/RecurPostSocialSchedulerBot';
 import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
@@ -182,19 +182,19 @@ operationRouter.get('/scheduler', [userAuthMiddleware, UserMiddleware.restrictUs
   // await GenericHelper.sleep(60 * 1000 * 3)
 
 
-  // const randomPostSP = await PuppeteerBot.getRandomPost("SP")
-  // if (randomPostSP) {
-  //   await RecurPostSocialSchedulerBot.schedulePost("SP", RECURPOST_CREDENTIALS_SP, randomPostSP);
-  // }
+  const randomPostSP = await PuppeteerBot.getRandomPost("SP")
+  if (randomPostSP) {
+    await RecurPostSocialSchedulerBot.schedulePost("SP", RECURPOST_CREDENTIALS_SP, randomPostSP);
+  }
 
   // await GenericHelper.sleep(60 * 1000 * 3)
 
-  const randomPostSP = await PuppeteerBot.getRandomPost("SP")
-  if (randomPostSP) {
-    await ZohoSocialSchedulerBot.schedulePost("SP", ZOHO_SOCIAL_SP_CREDENTIALS, randomPostSP);
-  }
+  // const randomPostSP = await PuppeteerBot.getRandomPost("SP")
+  // if (randomPostSP) {
+  //   await ZohoSocialSchedulerBot.schedulePost("SP", ZOHO_SOCIAL_SP_CREDENTIALS, randomPostSP);
+  // }
 
-  await GenericHelper.sleep(60 * 1000 * 3)
+  // await GenericHelper.sleep(60 * 1000 * 3)
 
   // const randomPostMG = await PuppeteerBot.getRandomPost("MG")
   // if (randomPostMG) {

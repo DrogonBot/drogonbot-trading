@@ -1,18 +1,14 @@
 import moment from 'moment';
 import cron from 'node-cron';
 
-import { PuppeteerBot } from '../bots/classes/PuppeteerBot';
-import { ZOHO_SOCIAL_ES_CREDENTIALS } from '../bots/data/loginCredentials';
 import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
-import { ZohoSocialSchedulerBot } from '../bots/schedulers/ZohoSocialSchedulerBot';
 import { TargetPriority } from '../bots/types/bots.types';
 import { JobsEmailManager } from '../emails/jobs.email';
 import { Post } from '../resources/Post/post.model';
 import { IPostApplication, IPostApplicationStatus } from '../resources/Post/post.types';
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
-import { GenericHelper } from '../utils/GenericHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';
 
 
@@ -203,49 +199,49 @@ export class JobsCron {
 
   }
 
-  public static initializeJobPostSchedulers = () => {
-    cron.schedule("0 */4 * * *", async () => {
+  // public static initializeJobPostSchedulers = () => {
+  //   cron.schedule("0 */4 * * *", async () => {
 
-      // const randomPostMG = await PuppeteerBot.getRandomPost("MG")
-      // if (randomPostMG) {
-      //   await RecurPostSocialSchedulerBot.schedulePost("MG", RECURPOST_CREDENTIALS_MG, randomPostMG);
-      // }
+  //     // const randomPostMG = await PuppeteerBot.getRandomPost("MG")
+  //     // if (randomPostMG) {
+  //     //   await RecurPostSocialSchedulerBot.schedulePost("MG", RECURPOST_CREDENTIALS_MG, randomPostMG);
+  //     // }
 
-      // await GenericHelper.sleep(60 * 1000 * 3)
+  //     // await GenericHelper.sleep(60 * 1000 * 3)
 
-      // RECURPOST SP
+  //     // RECURPOST SP
 
-      // const randomPostSP = await PuppeteerBot.getRandomPost("SP")
-      // if (randomPostSP) {
-      //   await RecurPostSocialSchedulerBot.schedulePost("SP", RECURPOST_CREDENTIALS_SP, randomPostSP);
-      // }
+  //     const randomPostSP = await PuppeteerBot.getRandomPost("SP")
+  //     if (randomPostSP) {
+  //       await RecurPostSocialSchedulerBot.schedulePost("SP", RECURPOST_CREDENTIALS_SP, randomPostSP);
+  //     }
 
-      // ZOHOSOCIAL SP
+  //     // ZOHOSOCIAL SP
 
-      // const randomPostSP = await PuppeteerBot.getRandomPost("SP")
-      // if (randomPostSP) {
-      //   await ZohoSocialSchedulerBot.schedulePost("SP", ZOHO_SOCIAL_SP_CREDENTIALS, randomPostSP);
-      // }
-
-
-
-      await GenericHelper.sleep(60 * 1000 * 3)
-
-      // ZOHOSOCIAL ES
-
-      const randomPostES = await PuppeteerBot.getRandomPost("ES")
-      if (randomPostES) {
-        await ZohoSocialSchedulerBot.schedulePost("ES", ZOHO_SOCIAL_ES_CREDENTIALS, randomPostES);
-      }
-
-      // RECURPOST ES
-      // const randomPostES = await PuppeteerBot.getRandomPost("ES")
-      // if (randomPostES) {
-      //   await RecurPostSocialSchedulerBot.schedulePost("ES", RECURPOST_CREDENTIALS_ES, randomPostES);
-      // }
+  //     // const randomPostSP = await PuppeteerBot.getRandomPost("SP")
+  //     // if (randomPostSP) {
+  //     //   await ZohoSocialSchedulerBot.schedulePost("SP", ZOHO_SOCIAL_SP_CREDENTIALS, randomPostSP);
+  //     // }
 
 
-    })
-  }
+
+  //     await GenericHelper.sleep(60 * 1000 * 3)
+
+  //     // ZOHOSOCIAL ES
+
+  //     const randomPostES = await PuppeteerBot.getRandomPost("ES")
+  //     if (randomPostES) {
+  //       await ZohoSocialSchedulerBot.schedulePost("ES", ZOHO_SOCIAL_ES_CREDENTIALS, randomPostES);
+  //     }
+
+  //     // RECURPOST ES
+  //     // const randomPostES = await PuppeteerBot.getRandomPost("ES")
+  //     // if (randomPostES) {
+  //     //   await RecurPostSocialSchedulerBot.schedulePost("ES", RECURPOST_CREDENTIALS_ES, randomPostES);
+  //     // }
+
+
+  //   })
+  // }
 
 }
