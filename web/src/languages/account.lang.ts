@@ -192,4 +192,32 @@ export const strings = {
     eng: "Terms of Use",
     ptBr: "Termos de Uso",
   },
+  wizardAllStepsCompleted: {
+    eng: "All steps completed - you're finished",
+    ptBr: "Pronto! Tudo certo!",
+  },
+  wizardReset: {
+    eng: "Reset",
+    ptBr: "Resetar",
+  },
+  wizardBack: {
+    eng: "Back",
+    ptBr: "Voltar",
+  },
+  wizardNext: {
+    eng: "Next",
+    ptBr: "Próximo",
+  },
+  wizardSkip: {
+    eng: "Skip",
+    ptBr: "Pular",
+  },
+  wizardFinish: {
+    eng: "Finish",
+    ptBr: "Finalizar",
+  },
+  wizardBasicInfo: {
+    eng: "Basic Account Info",
+    ptBr: "Informações Básicas",
+  },
 };
