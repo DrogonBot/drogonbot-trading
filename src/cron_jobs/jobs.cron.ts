@@ -2,7 +2,7 @@ import moment from 'moment';
 import cron from 'node-cron';
 
 import { PuppeteerBot } from '../bots/classes/PuppeteerBot';
-import { ZOHO_SOCIAL_ES_CREDENTIALS, ZOHO_SOCIAL_SP_CREDENTIALS } from '../bots/data/loginCredentials';
+import { ZOHO_SOCIAL_ES_CREDENTIALS } from '../bots/data/loginCredentials';
 import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
 import { ZohoSocialSchedulerBot } from '../bots/schedulers/ZohoSocialSchedulerBot';
@@ -236,10 +236,10 @@ export class JobsCron {
 
       // ZOHOSOCIAL SP
 
-      const randomPostSP = await PuppeteerBot.getRandomPost("SP")
-      if (randomPostSP) {
-        await ZohoSocialSchedulerBot.schedulePost("SP", ZOHO_SOCIAL_SP_CREDENTIALS, randomPostSP);
-      }
+      // const randomPostSP = await PuppeteerBot.getRandomPost("SP")
+      // if (randomPostSP) {
+      //   await ZohoSocialSchedulerBot.schedulePost("SP", ZOHO_SOCIAL_SP_CREDENTIALS, randomPostSP);
+      // }
 
 
 
