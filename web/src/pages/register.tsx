@@ -9,6 +9,7 @@ import styled from 'styled-components';
 
 import { PageBody, PageContainer } from '../components/elements/common/layout';
 import { SearchTop } from '../components/pages/posts/SearchTop';
+import { WizardBasicInfoStep } from '../components/pages/register/WizardBasicInfoStep';
 import { appEnv } from '../constants/Env.constant';
 import { TS } from '../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../store/actions/form.actions';
@@ -34,13 +35,16 @@ interface IProps {
 }
 
 function getSteps() {
-  return [TS.string("account", "wizardBasicInfo"), "Create an ad"];
+  return [
+    TS.string("account", "wizardBasicInfo"),
+    TS.string("account", "wizardSettings"),
+  ];
 }
 
 function getStepContent(step: number) {
   switch (step) {
     case 0:
-      return "Select campaign settings...";
+      return <WizardBasicInfoStep />;
 
     case 1:
       return "This is the bit I really care about!";
@@ -108,7 +112,7 @@ const Register = ({ provinces }: IProps) => {
           <PageBody>
             <h1>{TS.string("account", "registerCreateYourAccount")}</h1>
 
-            <div className={classes.root}>
+            <WizardContainer className={classes.root}>
               <Stepper activeStep={activeStep}>
                 {steps.map((label, index) => {
                   const stepProps: { completed?: boolean } = {};
@@ -130,22 +134,23 @@ const Register = ({ provinces }: IProps) => {
                   );
                 })}
               </Stepper>
-              <div>
+              <>
                 {activeStep === steps.length ? (
-                  <div>
+                  <>
                     <Typography className={classes.instructions}>
                       {TS.string("account", "wizardAllStepsCompleted")}
                     </Typography>
                     <Button onClick={handleReset} className={classes.button}>
                       {TS.string("account", "wizardReset")}
                     </Button>
-                  </div>
+                  </>
                 ) : (
-                  <div>
-                    <Typography className={classes.instructions}>
+                  <>
+                    <WizardContentContainer>
                       {getStepContent(activeStep)}
-                    </Typography>
-                    <div>
+                    </WizardContentContainer>
+
+                    <WizardActionsContainer>
                       <Button
                         disabled={activeStep === 0}
                         onClick={handleBack}
@@ -173,11 +178,11 @@ const Register = ({ provinces }: IProps) => {
                           ? TS.string("account", "wizardFinish")
                           : TS.string("account", "wizardNext")}
                       </Button>
-                    </div>
-                  </div>
+                    </WizardActionsContainer>
+                  </>
                 )}
-              </div>
-            </div>
+              </>
+            </WizardContainer>
           </PageBody>
         </PageContainer>
       </Body>
@@ -196,6 +201,37 @@ Register.getInitialProps = async (ctx) => {
 
 export default Register;
 
-export const Body = styled.div`
+const Body = styled.div`
   min-height: 68.4vh;
+`;
+
+const WizardContainer = styled.div`
+  min-height: 68.4vh;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .MuiStepper-horizontal {
+    align-items: center;
+    flex: 100%;
+    max-height: 99px;
+  }
+`;
+
+const WizardActionsContainer = styled.div`
+  padding-left: 2.5rem;
+  margin-top: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
+const WizardContentContainer = styled.div`
+  min-height: 46vh;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-start;
 `;

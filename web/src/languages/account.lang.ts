@@ -220,4 +220,8 @@ export const strings = {
     eng: "Basic Account Info",
     ptBr: "Informações Básicas",
   },
+  wizardSettings: {
+    eng: "Settings",
+    ptBr: "Preferências",
+  },
 };
