@@ -119,7 +119,7 @@ export class JobsCron {
 
         const diff = a.diff(b, 'days')
 
-        if (diff >= 30) {
+        if (diff >= 40) {
           console.log(`🤖: Deactivating post ${post.title} - diff: ${diff}`);
           // this is just a SOFT delete! The post remains on database for research purposes.
           post.active = false;
@@ -133,9 +133,10 @@ export class JobsCron {
         const dbPosts = await Post.find({})
 
         for (const post of dbPosts) {
-          if (PostScrapperHelper.checkForBannedWords(post.title) || PostScrapperHelper.checkForBannedWords(post.content)) {
+          if (PostScrapperHelper.checkForBannedWords(`${post.title} ${post.content}`)) {
             // Post is completely removed, since it's probably garbage.
             console.log(`🤖: Deleting post ${post.title}`);
+            console.log(post.content);
             await post.remove();
           }
         }
@@ -154,7 +155,7 @@ export class JobsCron {
 
     // HIGH PRIORITY GROUPS
 
-    cron.schedule("0 22 * * *", async () => {
+    cron.schedule("0 8 * * *", async () => {
 
       await ScrappingTargetHelper.startScrappers([
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "ES"),
