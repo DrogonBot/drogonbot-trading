@@ -2,6 +2,7 @@ import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
 import { GenericHelper } from '../../utils/GenericHelper';
+import { BotHelper } from '../helpers/BotHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -21,7 +22,7 @@ export class ScrapperGrupoResolveSP {
       externalSource
     );
 
-    const $ = cheerio.load(html, { decodeEntities: false });
+    const $ = cheerio.load(html, { decodeEntities: BotHelper.fixEncoding ? false : true });
 
     const postList = $('a[href*=consultarvagas]')
 
