@@ -35,4 +35,7 @@ export const PageBody = styled.div`
   h4 {
     color: ${colors.dark};
   }
+
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
 `;

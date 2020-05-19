@@ -17,3 +17,10 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
 }
+
+export enum UserType {
+  JobSeeker = "JobSeeker",
+  Company = "Company",
+  Staff = "Staff",
+  Admin = "Admin",
+}

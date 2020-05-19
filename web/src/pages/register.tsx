@@ -161,7 +161,7 @@ const Register = ({ provinces }: IProps) => {
                       {isStepOptional(activeStep) && (
                         <Button
                           variant="contained"
-                          color="primary"
+                          color="secondary"
                           onClick={handleSkip}
                           className={classes.button}
                         >
@@ -170,7 +170,7 @@ const Register = ({ provinces }: IProps) => {
                       )}
                       <Button
                         variant="contained"
-                        color="primary"
+                        color="secondary"
                         onClick={handleNext}
                         className={classes.button}
                       >
@@ -206,7 +206,6 @@ const Body = styled.div`
 `;
 
 const WizardContainer = styled.div`
-  min-height: 68.4vh;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -216,11 +215,12 @@ const WizardContainer = styled.div`
     align-items: center;
     flex: 100%;
     max-height: 99px;
+    padding-left: 0;
+    padding-right: 0;
   }
 `;
 
 const WizardActionsContainer = styled.div`
-  padding-left: 2.5rem;
   margin-top: 3rem;
   display: flex;
   flex-wrap: wrap;
@@ -229,7 +229,6 @@ const WizardActionsContainer = styled.div`
 `;
 
 const WizardContentContainer = styled.div`
-  min-height: 46vh;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;

@@ -20,7 +20,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   width: 120px;
   height: 70px;
 
