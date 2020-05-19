@@ -39,3 +39,9 @@ export const PageBody = styled.div`
   padding-left: 0.8rem;
   padding-right: 0.8rem;
 `;
+
+export const InputContainer = styled.div`
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+`;

@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import { TS } from '../../../helpers/LanguageHelper';
 import { UserType } from '../../../types/User.types';
+import { InputContainer } from '../../elements/common/layout';
+import { LocationDropdown } from '../../elements/form/LocationDropdown';
 
 interface IProps {}
 
@@ -33,23 +35,30 @@ export const WizardBasicInfoStep = (props: IProps) => {
   return (
     <Container>
       <Form>
-        <TextContainer>
+        <InputContainer>
           <TextField
             fullWidth
             label={TS.string("account", "registerInputName")}
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
           />
-        </TextContainer>
-        <TextContainer>
+        </InputContainer>
+
+        <LocationDropdown
+          initialCountry={TS.string("resume", "resumeSelectedCountry")}
+          showCountry={false}
+          onChange={(e) => console.log(e)}
+        />
+
+        <InputContainer>
           <TextField
             fullWidth
             label={TS.string("account", "registerInputEmail")}
             value={userEmail}
             onChange={(e) => setUserEmail(e.target.value)}
           />
-        </TextContainer>
-        <TextContainer>
+        </InputContainer>
+        <InputContainer>
           <TextField
             fullWidth
             type="password"
@@ -57,8 +66,8 @@ export const WizardBasicInfoStep = (props: IProps) => {
             value={userPassword}
             onChange={(e) => setUserPassword(e.target.value)}
           />
-        </TextContainer>
-        <TextContainer>
+        </InputContainer>
+        <InputContainer>
           <TextField
             fullWidth
             type="password"
@@ -66,14 +75,14 @@ export const WizardBasicInfoStep = (props: IProps) => {
             value={userPasswordConfirmation}
             onChange={(e) => setUserPasswordConfirmation(e.target.value)}
           />
-        </TextContainer>
-        <TextContainer>
+        </InputContainer>
+        <InputContainer>
           <TextField
             select
-            label="Select"
             value={userAccountType}
             onChange={handleUserAccountTypeChange}
             fullWidth
+            label={TS.string("account", "loginSelectAccountTypeTitle")}
           >
             {userAccountTypeOptions.map((option) => (
               <MenuItem key={option} value={option}>
@@ -81,7 +90,7 @@ export const WizardBasicInfoStep = (props: IProps) => {
               </MenuItem>
             ))}
           </TextField>
-        </TextContainer>
+        </InputContainer>
       </Form>
     </Container>
   );
@@ -90,9 +99,3 @@ export const WizardBasicInfoStep = (props: IProps) => {
 const Container = styled.div``;
 
 const Form = styled.form``;
-
-const TextContainer = styled.div`
-  margin-bottom: 1rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-`;

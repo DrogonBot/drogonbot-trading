@@ -42,11 +42,11 @@ export const strings = {
   },
   accountJobSeeker: {
     eng: "Job Seeker",
-    ptBr: "Procuro Emprego",
+    ptBr: "Candidato",
   },
   accountCompany: {
-    eng: "Company",
-    ptBr: "Empresa",
+    eng: "Company hiring",
+    ptBr: "Sou Empresa",
   },
   registerInputPassword: {
     eng: "Password",

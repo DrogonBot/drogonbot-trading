@@ -31,4 +31,16 @@ export const strings = {
     eng: "Please, select your province and city",
     ptBr: "Por favor, selecione seu estado e cidade",
   },
+  genericCountry: {
+    eng: "Country",
+    ptBr: "País",
+  },
+  genericCity: {
+    eng: "City",
+    ptBr: "Cidade",
+  },
+  genericProvince: {
+    eng: "Province",
+    ptBr: "Estado",
+  },
 };
