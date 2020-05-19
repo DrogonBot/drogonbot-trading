@@ -34,7 +34,8 @@ export class ConnectionHelper {
           timeout: 15000,
           headers: {
             'User-Agent': BotHelper.userAgent
-          }
+          },
+          encoding: BotHelper.fixEncoding ? 'latin1' : null
         });
       }
 
@@ -57,7 +58,7 @@ export class ConnectionHelper {
               headers: {
                 'User-Agent': BotHelper.userAgent
               },
-
+              encoding: BotHelper.fixEncoding ? 'latin1' : null
             });
 
 
@@ -90,7 +91,7 @@ export class ConnectionHelper {
             headers: {
               'User-Agent': BotHelper.userAgent
             },
-
+            encoding: BotHelper.fixEncoding ? 'latin1' : null
 
           });
 
@@ -109,7 +110,8 @@ export class ConnectionHelper {
             timeout: 15000,
             headers: {
               'User-Agent': BotHelper.userAgent
-            }
+            },
+            encoding: BotHelper.fixEncoding ? 'latin1' : null
           })
       }
     } catch (error) {

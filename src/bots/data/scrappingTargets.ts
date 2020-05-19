@@ -6,6 +6,7 @@ import { ScrapperEmpregosMG } from '../scrappers/ScrapperEmpregosMG';
 import { ScrapperEmpregosSaoPaulo } from '../scrappers/ScrapperEmpregosSaoPaulo';
 import { ScrapperEmpregosSaoPauloRegioes } from '../scrappers/ScrapperEmpregosSaoPauloRegioes';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
+import { ScrapperGlobalEmpregosSP } from '../scrappers/ScrapperGlobalEmpregosSP';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
 import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
@@ -669,6 +670,20 @@ export const scrappingTargets: IScrappingTarget[] = [
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperCaptativaSP,
     bypassPostContentFilter: true
+  },
+  {
+    name: "Global Empregos - SP",
+    externalSource: "https://www.globalempregos.com.br/vagas-de-emprego/sao-paulo/",
+    priority: TargetPriority.Medium,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperGlobalEmpregosSP,
+    bypassPostContentFilter: true,
+    fixEncoding: true
   },
   // !Encoding issues
   // {

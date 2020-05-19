@@ -26,6 +26,7 @@ export class BotHelper {
   public static postLinkScrappingIntervalMs: number = 3000;
   public static scrapperHelperFinishIntervalMs: number = 1000 * 60 * Math.floor(Math.random() * 2)
   public static scrapperClass;
+  public static fixEncoding: boolean = false
 
   public static init = async (name: string, source: PostSource) => {
 
@@ -94,9 +95,10 @@ export class BotHelper {
 
   }
 
-  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object, bypassPostContentFilter?: boolean) => {
+  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object, bypassPostContentFilter?: boolean, fixEncoding?: boolean) => {
 
     BotHelper.scrapperClass = scrapperClass;
+    BotHelper.fixEncoding = fixEncoding || false;
 
     const { crawlLinksFunction, crawlPageDataFunction, crawlFeedFunction } = crawlerFunctions
 

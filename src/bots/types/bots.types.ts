@@ -13,7 +13,8 @@ export interface IScrappingTarget {
   priority: TargetPriority;
   pagePattern: PagePattern.Feed | PagePattern.ListAndInternalPosts,
   scrapperClass: any,
-  bypassPostContentFilter?: boolean
+  bypassPostContentFilter?: boolean,
+  fixEncoding?: boolean
 }
 
 export enum TargetPriority {
