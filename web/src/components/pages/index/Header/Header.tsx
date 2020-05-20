@@ -1,3 +1,4 @@
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import PostAddIcon from '@material-ui/icons/PostAdd';
@@ -27,6 +28,12 @@ export const Header = () => {
       href: "/posts",
       text: TS.string("post", "postGenericJobRolesText"),
       icon: <WorkIcon />,
+      primary: true,
+    },
+    {
+      href: "/register",
+      text: TS.string("account", "registerButtonText"),
+      icon: <AccountCircleIcon />,
       primary: true,
     },
     {
