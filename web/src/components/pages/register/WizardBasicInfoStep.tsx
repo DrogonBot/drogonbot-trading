@@ -1,5 +1,7 @@
-import { MenuItem } from '@material-ui/core';
+import { FormControl, IconButton, Input, InputAdornment, InputLabel, MenuItem } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -8,12 +10,15 @@ import { UserType } from '../../../types/User.types';
 import { InputContainer } from '../../elements/common/layout';
 import { LocationDropdown } from '../../elements/form/LocationDropdown';
 
-interface IProps {}
-
-export const WizardBasicInfoStep = (props: IProps) => {
+export const WizardBasicInfoStep = () => {
   const [userName, setUserName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
+  const [userShowPassword, setUserShowPassword] = useState<boolean>(false);
+  const [
+    userShowPasswordConfirmation,
+    setUserShowPasswordConfirmation,
+  ] = useState<boolean>(false);
   const [userPasswordConfirmation, setUserPasswordConfirmation] = useState<
     string
   >("");
@@ -31,6 +36,26 @@ export const WizardBasicInfoStep = (props: IProps) => {
       console.log("User finished this step! Saving on redux!");
     };
   }, []);
+
+  const handleClickShowPassword = () => {
+    setUserShowPassword(!userShowPassword);
+  };
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleClickShowPasswordConfirmation = () => {
+    setUserShowPasswordConfirmation(!userShowPasswordConfirmation);
+  };
+
+  const handleMouseDownPasswordConfirmation = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
 
   return (
     <Container>
@@ -59,22 +84,63 @@ export const WizardBasicInfoStep = (props: IProps) => {
           />
         </InputContainer>
         <InputContainer>
-          <TextField
-            fullWidth
-            type="password"
-            label={TS.string("account", "registerInputPassword")}
-            value={userPassword}
-            onChange={(e) => setUserPassword(e.target.value)}
-          />
+          <FormControl fullWidth>
+            <InputLabel htmlFor="standard-adornment-password">
+              {TS.string("account", "registerInputPassword")}
+            </InputLabel>
+            <Input
+              type={userShowPassword ? "text" : "password"}
+              value={userPassword}
+              onChange={(e) => setUserPassword(e.target.value)}
+              fullWidth
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {userShowPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
         </InputContainer>
         <InputContainer>
-          <TextField
+          {/* <TextField
             fullWidth
             type="password"
             label={TS.string("account", "registerInputPasswordConfirmation")}
             value={userPasswordConfirmation}
             onChange={(e) => setUserPasswordConfirmation(e.target.value)}
-          />
+          /> */}
+          <FormControl fullWidth>
+            <InputLabel htmlFor="standard-adornment-password">
+              {TS.string("account", "registerInputPasswordConfirmation")}
+            </InputLabel>
+            <Input
+              type={userShowPasswordConfirmation ? "text" : "password"}
+              value={userPasswordConfirmation}
+              onChange={(e) => setUserPasswordConfirmation(e.target.value)}
+              fullWidth
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPasswordConfirmation}
+                    onMouseDown={handleMouseDownPasswordConfirmation}
+                  >
+                    {userShowPasswordConfirmation ? (
+                      <Visibility />
+                    ) : (
+                      <VisibilityOff />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
         </InputContainer>
         <InputContainer>
           <TextField
