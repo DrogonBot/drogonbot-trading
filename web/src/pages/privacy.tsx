@@ -1,14 +1,13 @@
 import { useRouter } from 'next/router';
 
 import { PageBody, PageContainer } from '../components/elements/common/layout';
+import { Footer } from '../components/pages/index/Footer';
+import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
 import { appEnv } from '../constants/Env.constant';
-import { colors } from '../constants/UI/Colors.constant';
 import { loadCountryProvinces } from '../store/actions/form.actions';
 import { IProvince } from '../types/Form.types';
 import { AvailableLanguages } from '../types/Global.types';
-
-colors;
 
 interface IProps {
   provinces: IProvince[];
@@ -308,6 +307,7 @@ const Privacy = ({ provinces }: IProps) => {
 
   return (
     <>
+      <Header />
       <PageContainer>
         <SearchTop provinces={provinces} />
       </PageContainer>
@@ -315,6 +315,7 @@ const Privacy = ({ provinces }: IProps) => {
       <PageContainer>
         <PageBody>{onRenderPrivacyText()}</PageBody>
       </PageContainer>
+      <Footer />
     </>
   );
 };

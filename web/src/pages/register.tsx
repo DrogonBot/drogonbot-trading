@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { PageBody, PageContainer } from '../components/elements/common/layout';
+import { Footer } from '../components/pages/index/Footer';
+import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
 import { WizardBasicInfoStep } from '../components/pages/register/WizardBasicInfoStep';
 import { WizardSettingsStep } from '../components/pages/register/WizardSettingsStep';
@@ -162,6 +164,7 @@ const Register = ({ provinces, jobRoles }: IProps) => {
 
   return (
     <>
+      <Header />
       <PageContainer>
         <SearchTop provinces={provinces} />
       </PageContainer>
@@ -238,6 +241,7 @@ const Register = ({ provinces, jobRoles }: IProps) => {
           </PageBody>
         </PageContainer>
       </Body>
+      <Footer />
     </>
   );
 };

@@ -38,14 +38,14 @@ export const Header = () => {
       text: TS.string("account", "registerButtonText"),
       icon: <AddCircleIcon />,
       primary: true,
-      position: NavPosition.NavRight,
+      position: NavPosition.NavLeft,
     },
     {
       href: "/login",
       text: TS.string("account", "loginButtonText"),
       icon: <AccountCircleIcon />,
       primary: true,
-      position: NavPosition.NavRight,
+      position: NavPosition.NavLeft,
     },
     {
       href: "/advertise",
@@ -53,7 +53,7 @@ export const Header = () => {
       icon: <PostAddIcon />,
       primary: true,
       customColor: colors.accent,
-      position: NavPosition.NavLeft,
+      position: NavPosition.NavRight,
     },
 
     // {

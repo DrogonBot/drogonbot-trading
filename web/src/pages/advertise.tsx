@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 import { PageBody, PageContainer } from '../components/elements/common/layout';
+import { Footer } from '../components/pages/index/Footer';
+import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
 import { appEnv } from '../constants/Env.constant';
 import { loadCountryProvinces } from '../store/actions/form.actions';
@@ -13,6 +15,7 @@ interface IProps {
 const Advertise = ({ provinces }: IProps) => {
   return (
     <>
+      <Header />
       <PageContainer>
         <SearchTop provinces={provinces} />
       </PageContainer>
@@ -23,7 +26,7 @@ const Advertise = ({ provinces }: IProps) => {
             <h1>Anuncie sua Vaga</h1>
 
             <p>
-              Assine nosso plano empresa por R$59.90/mes e anuncie quantas vagas
+              Assine nosso plano empresa por R$59.90/mês e anuncie quantas vagas
               quiser, em destaque! Divulgamos para você, em todos nossos canais
               (WhatsApp, redes sociais e e-mail).
             </p>
@@ -37,6 +40,7 @@ const Advertise = ({ provinces }: IProps) => {
           </PageBody>
         </PageContainer>
       </Body>
+      <Footer />
     </>
   );
 };

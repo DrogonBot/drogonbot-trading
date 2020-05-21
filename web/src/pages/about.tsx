@@ -2,6 +2,8 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { PageBody, PageContainer } from '../components/elements/common/layout';
+import { Footer } from '../components/pages/index/Footer';
+import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
 import { appEnv } from '../constants/Env.constant';
 import { loadCountryProvinces } from '../store/actions/form.actions';
@@ -51,6 +53,7 @@ const About = ({ provinces }: IProps) => {
   };
   return (
     <>
+      <Header />
       <PageContainer>
         <SearchTop provinces={provinces} />
       </PageContainer>
@@ -60,6 +63,7 @@ const About = ({ provinces }: IProps) => {
           <PageBody>{onRenderAboutUsPage()}</PageBody>
         </PageContainer>
       </Body>
+      <Footer />
     </>
   );
 };

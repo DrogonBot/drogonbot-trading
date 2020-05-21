@@ -29,6 +29,8 @@ import { AffiliateProductCard } from '../../components/elements/ui/AffiliateProd
 import { AlertModal } from '../../components/elements/ui/AlertModal';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { InfoTag } from '../../components/elements/ui/InfoTag';
+import { Footer } from '../../components/pages/index/Footer';
+import { Header } from '../../components/pages/index/Header/Header';
 import { PostCard } from '../../components/pages/posts/PostCard';
 import { PostCTA } from '../../components/pages/posts/PostCTA';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
@@ -295,185 +297,191 @@ const IndividualPage = ({
   };
 
   return (
-    <PostContainer>
-      <NextSEOPost
-        jobRole={post.jobRoles[0] || post.title}
-        title={post.title}
-        description={post.content}
-        link={appEnv.appUrl + post.slug}
-        city={post.city}
-        stateCode={post.stateCode}
-        sector={post.sector}
-      />
-
-      <JobPostingJsonLd
-        datePosted={post.createdAt}
-        description={post.content}
-        hiringOrganization={{
-          name: post.companyName,
-          sameAs: null,
-        }}
-        jobLocation={{
-          streetAddress: post.neighborhood,
-          addressLocality: post.city,
-          addressRegion: post.stateCode,
-          postalCode: post.zipCode,
-          addressCountry: "Brasil",
-        }}
-        title={post.title}
-        baseSalary={{
-          currency: "BRL",
-          value: post.monthlySalary,
-          unitText: "MONTH",
-        }}
-        employmentType={getJobJsonLDType()}
-        jobLocationType={null}
-        validThrough={null}
-        applicantLocationRequirements={null}
-      />
-      <PageContainer>
-        <SearchTop provinces={provinces} defaultProvince={post.stateCode} />
-      </PageContainer>
-
-      <Cover backgroundImagePath={`/images/seo/${post.sector}.jpg`}>
-        <PostCTA
-          phone={post.phone}
-          externalUrl={post.externalUrl}
-          email={post.email}
+    <>
+      <Header />
+      <PostContainer>
+        <NextSEOPost
+          jobRole={post.jobRoles[0] || post.title}
+          title={post.title}
+          description={post.content}
+          link={appEnv.appUrl + post.slug}
+          city={post.city}
+          stateCode={post.stateCode}
+          sector={post.sector}
         />
-      </Cover>
 
-      <MainContainer>
-        <LeftColumn>
-          <TitleContainer>
-            <H1>{post.title}</H1>{" "}
-            <a
-              target="_blank"
-              href={`mailto:${appEnv.appEmail}?subject=Denuncia%20de%20Vaga&body=Bom+dia%21+Venho+por+meio+desta+mensagem+denunciar+a+vaga+https://vagasempregourgente.com/posts/${post.slug}%0D%0A%0D%0AMotivos: %0D%0A - DIGITE AQUI O MOTIVO %0D%0A%0D%0AObrigado`}
-            >
-              <Button
-                startIcon={<FlagIcon />}
-                variant="outlined"
-                color="secondary"
+        <JobPostingJsonLd
+          datePosted={post.createdAt}
+          description={post.content}
+          hiringOrganization={{
+            name: post.companyName,
+            sameAs: null,
+          }}
+          jobLocation={{
+            streetAddress: post.neighborhood,
+            addressLocality: post.city,
+            addressRegion: post.stateCode,
+            postalCode: post.zipCode,
+            addressCountry: "Brasil",
+          }}
+          title={post.title}
+          baseSalary={{
+            currency: "BRL",
+            value: post.monthlySalary,
+            unitText: "MONTH",
+          }}
+          employmentType={getJobJsonLDType()}
+          jobLocationType={null}
+          validThrough={null}
+          applicantLocationRequirements={null}
+        />
+        <PageContainer>
+          <SearchTop provinces={provinces} defaultProvince={post.stateCode} />
+        </PageContainer>
+
+        <Cover backgroundImagePath={`/images/seo/${post.sector}.jpg`}>
+          <PostCTA
+            phone={post.phone}
+            externalUrl={post.externalUrl}
+            email={post.email}
+          />
+        </Cover>
+
+        <MainContainer>
+          <LeftColumn>
+            <TitleContainer>
+              <H1>{post.title}</H1>{" "}
+              <a
+                target="_blank"
+                href={`mailto:${appEnv.appEmail}?subject=Denuncia%20de%20Vaga&body=Bom+dia%21+Venho+por+meio+desta+mensagem+denunciar+a+vaga+https://vagasempregourgente.com/posts/${post.slug}%0D%0A%0D%0AMotivos: %0D%0A - DIGITE AQUI O MOTIVO %0D%0A%0D%0AObrigado`}
               >
-                {TS.string("post", "postFlag")}
-              </Button>
-            </a>
-          </TitleContainer>
-          <Breadcumb parent={post.sector} child={post.jobRoles.join(", ")} />
-          <Small>{humanDate}</Small>
-          <ContentArea>
-            <Linkify properties={{ target: "_blank" }}>{post.content}</Linkify>
-          </ContentArea>
+                <Button
+                  startIcon={<FlagIcon />}
+                  variant="outlined"
+                  color="secondary"
+                >
+                  {TS.string("post", "postFlag")}
+                </Button>
+              </a>
+            </TitleContainer>
+            <Breadcumb parent={post.sector} child={post.jobRoles.join(", ")} />
+            <Small>{humanDate}</Small>
+            <ContentArea>
+              <Linkify properties={{ target: "_blank" }}>
+                {post.content}
+              </Linkify>
+            </ContentArea>
 
-          <InfoTagsContainer>
-            <InfoTag
-              icon={<FontAwesomeIcon icon={faMapMarkedAlt} />}
-              text={`${post.city}, ${post.stateCode}`}
-            />
-            {onRenderPositionType()}
-            {onRenderExperienceRequired()}
-            {onRenderCategory()}
-            {onRenderBenefits()}
-            {onRenderSalary()}
-          </InfoTagsContainer>
+            <InfoTagsContainer>
+              <InfoTag
+                icon={<FontAwesomeIcon icon={faMapMarkedAlt} />}
+                text={`${post.city}, ${post.stateCode}`}
+              />
+              {onRenderPositionType()}
+              {onRenderExperienceRequired()}
+              {onRenderCategory()}
+              {onRenderBenefits()}
+              {onRenderSalary()}
+            </InfoTagsContainer>
 
-          <MainCTAContainer>
-            <PostCTA
-              phone={post.phone}
-              externalUrl={post.externalUrl}
-              email={post.email}
-            />
-          </MainCTAContainer>
+            <MainCTAContainer>
+              <PostCTA
+                phone={post.phone}
+                externalUrl={post.externalUrl}
+                email={post.email}
+              />
+            </MainCTAContainer>
 
-          <TOSContainer>
-            <Link href={`/terms?language=${appEnv.language}`}>
-              {TS.string("terms", "tosAgree")}
-            </Link>
-          </TOSContainer>
+            <TOSContainer>
+              <Link href={`/terms?language=${appEnv.language}`}>
+                {TS.string("terms", "tosAgree")}
+              </Link>
+            </TOSContainer>
 
-          <ContainerDesktop>
-            {relatedPosts?.length ? (
-              <InternalContainer>
-                <RelatedPosts>
-                  <H2>{TS.string("post", "postSimilar")}</H2>
-                  <RelatedPostsContainer>
-                    {onRenderRelatedPosts()}
-                  </RelatedPostsContainer>
-                </RelatedPosts>
-              </InternalContainer>
-            ) : null}
-          </ContainerDesktop>
-        </LeftColumn>
+            <ContainerDesktop>
+              {relatedPosts?.length ? (
+                <InternalContainer>
+                  <RelatedPosts>
+                    <H2>{TS.string("post", "postSimilar")}</H2>
+                    <RelatedPostsContainer>
+                      {onRenderRelatedPosts()}
+                    </RelatedPostsContainer>
+                  </RelatedPosts>
+                </InternalContainer>
+              ) : null}
+            </ContainerDesktop>
+          </LeftColumn>
 
-        <RightColumn>
-          <H2> {TS.string("post", "postImproveSkills")}</H2>
-          <Small>{TS.string("post", "postImproveSkillsDescription")}</Small>
-          <AffiliateProductsContainerDesktop>
-            {onRenderAffiliateProducts()}
-          </AffiliateProductsContainerDesktop>
-        </RightColumn>
-      </MainContainer>
+          <RightColumn>
+            <H2> {TS.string("post", "postImproveSkills")}</H2>
+            <Small>{TS.string("post", "postImproveSkillsDescription")}</Small>
+            <AffiliateProductsContainerDesktop>
+              {onRenderAffiliateProducts()}
+            </AffiliateProductsContainerDesktop>
+          </RightColumn>
+        </MainContainer>
 
-      <AffiliateProductsContainerMobile>
-        <InternalContainer>
-          <H2> {TS.string("post", "postImproveSkills")}</H2>
-          <Small>{TS.string("post", "postImproveSkillsDescription")}</Small>
-        </InternalContainer>
-        <Slider {...carouselSettings}>{onRenderAffiliateProducts()}</Slider>
-      </AffiliateProductsContainerMobile>
-
-      <ContainerMobile>
-        {relatedPosts?.length ? (
+        <AffiliateProductsContainerMobile>
           <InternalContainer>
-            <H2>{TS.string("post", "postSimilar")}</H2>
-            <Slider {...carouselSettings}> {onRenderRelatedPosts()}</Slider>
+            <H2> {TS.string("post", "postImproveSkills")}</H2>
+            <Small>{TS.string("post", "postImproveSkillsDescription")}</Small>
           </InternalContainer>
-        ) : null}
-      </ContainerMobile>
+          <Slider {...carouselSettings}>{onRenderAffiliateProducts()}</Slider>
+        </AffiliateProductsContainerMobile>
 
-      <InternalContainer>
-        <H2Block>
-          <H2>{TS.string("global", "joinOurCommunity")}</H2>
-          <CommunitiesContainer>
-            <a
-              href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
-              target="_blank"
-            >
-              <Button
-                variant="outlined"
-                className="btnWhatsapp"
-                startIcon={<WhatsAppIcon />}
+        <ContainerMobile>
+          {relatedPosts?.length ? (
+            <InternalContainer>
+              <H2>{TS.string("post", "postSimilar")}</H2>
+              <Slider {...carouselSettings}> {onRenderRelatedPosts()}</Slider>
+            </InternalContainer>
+          ) : null}
+        </ContainerMobile>
+
+        <InternalContainer>
+          <H2Block>
+            <H2>{TS.string("global", "joinOurCommunity")}</H2>
+            <CommunitiesContainer>
+              <a
+                href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
+                target="_blank"
               >
-                WHATSAPP
-              </Button>
-            </a>
+                <Button
+                  variant="outlined"
+                  className="btnWhatsapp"
+                  startIcon={<WhatsAppIcon />}
+                >
+                  WHATSAPP
+                </Button>
+              </a>
 
-            <a href={getFacebookLink(post.stateCode)} target="_blank">
-              <Button
-                variant="outlined"
-                className="btnFacebook"
-                startIcon={<FacebookIcon />}
-              >
-                FACEBOOK
-              </Button>
-            </a>
+              <a href={getFacebookLink(post.stateCode)} target="_blank">
+                <Button
+                  variant="outlined"
+                  className="btnFacebook"
+                  startIcon={<FacebookIcon />}
+                >
+                  FACEBOOK
+                </Button>
+              </a>
 
-            <a href={`https://bit.ly/emprego-urgente-link1`} target="_blank">
-              <Button
-                variant="outlined"
-                className="btnEU"
-                startIcon={<SmartphoneIcon />}
-              >
-                APP
-              </Button>
-            </a>
-          </CommunitiesContainer>
-        </H2Block>
-      </InternalContainer>
+              <a href={`https://bit.ly/emprego-urgente-link1`} target="_blank">
+                <Button
+                  variant="outlined"
+                  className="btnEU"
+                  startIcon={<SmartphoneIcon />}
+                >
+                  APP
+                </Button>
+              </a>
+            </CommunitiesContainer>
+          </H2Block>
+        </InternalContainer>
 
-      {onShowWhatsAppLeadCaptureAlert()}
-    </PostContainer>
+        {onShowWhatsAppLeadCaptureAlert()}
+      </PostContainer>
+      <Footer />
+    </>
   );
 };
 

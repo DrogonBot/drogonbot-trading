@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { PageBody, PageContainer } from '../../components/elements/common/layout';
+import { Footer } from '../../components/pages/index/Footer';
+import { Header } from '../../components/pages/index/Header/Header';
 import { SearchResults } from '../../components/pages/posts/results/SearchResults';
 import { SearchTabs } from '../../components/pages/posts/SearchTabs';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
@@ -50,6 +52,7 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
 
   return (
     <>
+      <Header />
       {posts && (
         <NextSEOPosts
           jobRole={jobRole}
@@ -83,6 +86,7 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
           </PaginationContainer>
         </PageBody>
       </PageContainer>
+      <Footer />
     </>
   );
 };

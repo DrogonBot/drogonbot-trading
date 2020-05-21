@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { ProvinceSelector } from '../components/elements/form/ProvinceSelector';
+import { Footer } from '../components/pages/index/Footer';
+import { Header } from '../components/pages/index/Header/Header';
 import { Logo } from '../components/pages/index/Logo';
 import { NextSEOIndex } from '../components/seo/NextSEOIndex';
 import { appEnv } from '../constants/Env.constant';
@@ -55,6 +57,7 @@ const Home = (props: IProps) => {
 
   return (
     <>
+      <Header />
       <NextSEOIndex />
 
       <MainContainer>
@@ -92,6 +95,7 @@ const Home = (props: IProps) => {
           </CTAButtonsContainer>
         </Form>
       </MainContainer>
+      <Footer />
     </>
   );
 };
