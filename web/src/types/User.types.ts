@@ -1,5 +1,8 @@
 export interface IUser {
   _id: string;
+  stateCode: string;
+  country: string;
+  city: string;
   name: string;
   language: string;
   givenName: string;
@@ -35,4 +38,40 @@ export enum UserType {
   Company = "Company",
   Staff = "Staff",
   Admin = "Admin",
+}
+
+export enum AuthType {
+  EmailPassword = "EmailPassword",
+  GoogleOAuth = "GoogleOAuth",
+  FacebookOAuth = "FacebookOAuth",
+}
+
+export interface ICredentials {
+  email: string;
+  password: string;
+  language?: string;
+}
+
+export interface IGoogleAuthPayload {
+  idToken?: string | null;
+  appClientId?: string;
+  cancelled?: boolean;
+  error?: boolean;
+  language?: string;
+  type?: string;
+}
+
+export interface IFacebookAuthPayload {
+  accessToken: string;
+  language?: string;
+  type?: string;
+}
+
+export interface IRegisterCredentials {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+  language: string;
+  type: string;
 }
