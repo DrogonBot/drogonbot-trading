@@ -12,8 +12,8 @@ export const strings = {
     ptBr: "Logout",
   },
   emailInput: {
-    eng: "Email",
-    ptBr: "Email",
+    eng: "E-mail",
+    ptBr: "E-mail",
   },
   passwordInput: {
     eng: "Password",
@@ -81,13 +81,17 @@ export const strings = {
     eng: "Please, insert an e-mail address",
     ptBr: "Por favor, insira seu endereço de email",
   },
+  loginRememberMe: {
+    eng: "Remember me",
+    ptBr: "Me mantenha logado",
+  },
   loginNoPassword: {
     eng: "Please, insert a password",
     ptBr: "Por favor, insira sua senha",
   },
   loginDontHaveAccount: {
-    eng: "Don't have an account?",
-    ptBr: "Ainda não possui uma conta?",
+    eng: "Don't have an account? Sign Up!",
+    ptBr: "Ainda não possui uma conta? Cadastre-se!",
   },
   loginSignupHere: {
     eng: "Create Account",

@@ -1,37 +1,161 @@
-import Avatar from '@material-ui/core/Avatar';
+import { Link as LinkMaterial } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import React from 'react';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
-function Copyright() {
+import { Copyright } from '../components/pages/login/Copyright';
+import { appEnv } from '../constants/Env.constant';
+import { colors } from '../constants/UI/Colors.constant';
+import { TS } from '../helpers/LanguageHelper';
+import { ICredentials } from '../types/User.types';
+
+const Login = () => {
+  const [userCredentials, setUserCredentials] = useState<ICredentials>({
+    email: "",
+    password: "",
+  });
+
+  const classes = useStyles();
+
+  const onHandleLogin = (e) => {
+    e.preventDefault();
+    console.log(userCredentials);
+  };
+
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
+    <Container>
+      <Grid container component="main" className={classes.root}>
+        <CssBaseline />
+
+        <Grid item xs={false} sm={4} md={7} className={classes.image}>
+          <ImageOverlay />
+        </Grid>
+
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <div className={classes.paper}>
+            <LogoContainer>
+              <img
+                src={`/images/logos/logo-${appEnv.language}.svg`}
+                alt="Emprego Urgente Logo"
+              />
+            </LogoContainer>
+            <h1>{TS.string("account", "loginButtonText")}</h1>
+            <form className={classes.form} noValidate>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label={TS.string("account", "emailInput")}
+                name="email"
+                autoComplete="email"
+                autoFocus
+                value={userCredentials.email}
+                onChange={(e) =>
+                  setUserCredentials({
+                    ...userCredentials,
+                    email: e.target.value,
+                  })
+                }
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label={TS.string("account", "passwordInput")}
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={userCredentials.password}
+                onChange={(e) =>
+                  setUserCredentials({
+                    ...userCredentials,
+                    password: e.target.value,
+                  })
+                }
+              />
+              {/* <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label={TS.string("account", "loginRememberMe")}
+            /> */}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={onHandleLogin}
+              >
+                {TS.string("account", "loginButtonText")}
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  {/* <Link href="#" variant="body2">
+                    {TS.string("account", "forgotPasswordLoginText")}
+                  </Link> */}
+                </Grid>
+                <Grid item>
+                  <Link href={"/register"}>
+                    <LinkMaterial href="#" variant="body2">
+                      {TS.string("account", "loginDontHaveAccount")}
+                    </LinkMaterial>
+                  </Link>
+                </Grid>
+              </Grid>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+            </form>
+          </div>
+        </Grid>
+      </Grid>
+    </Container>
   );
-}
+};
+export default Login;
+
+const Container = styled.div`
+  h1 {
+    color: ${colors.dark};
+  }
+
+  a {
+    &:visited {
+      color: inherit;
+    }
+  }
+`;
+
+const LogoContainer = styled.div`
+  img {
+    width: 170px;
+    height: 90px;
+  }
+`;
+
+const ImageOverlay = styled.div`
+  background-color: ${colors.primary};
+  opacity: 0.3;
+  width: 100%;
+  height: 100%;
+`;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage: "url(https://source.unsplash.com/1600x900/?jobs)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -39,6 +163,7 @@ const useStyles = makeStyles((theme) => ({
         : theme.palette.grey[900],
     backgroundSize: "cover",
     backgroundPosition: "center",
+    backgroundBlendMode: "luminosity",
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -58,77 +183,3 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-
-const Login = () => {
-  const classes = useStyles();
-
-  return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
-      </Grid>
-    </Grid>
-  );
-};
-export default Login;
