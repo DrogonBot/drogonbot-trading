@@ -9,7 +9,7 @@ export interface IProvince {
   stateCode: string;
 }
 
-export interface ICityResponse {
+export interface ICity {
   name: string;
 }
 

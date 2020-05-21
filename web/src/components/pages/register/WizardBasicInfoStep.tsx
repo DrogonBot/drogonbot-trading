@@ -2,8 +2,8 @@ import { FormControl, IconButton, Input, InputAdornment, InputLabel, MenuItem } 
 import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { TS } from '../../../helpers/LanguageHelper';
@@ -13,9 +13,16 @@ import { InputContainer } from '../../elements/common/layout';
 
 export const WizardBasicInfoStep = () => {
   const dispatch = useDispatch();
-  const [userName, setUserName] = useState<string>("");
-  const [userEmail, setUserEmail] = useState<string>("");
-  const [userPassword, setUserPassword] = useState<string>("");
+
+  // Fetch data from redux (this will repopulate fields even if we go next and then go back again)
+  const { name, email, password, passwordConfirmation, type } = useSelector<
+    any,
+    any
+  >((state) => state.formReducer.newAccount);
+
+  const [userName, setUserName] = useState<string>(name);
+  const [userEmail, setUserEmail] = useState<string>(email);
+  const [userPassword, setUserPassword] = useState<string>(password);
   const [userShowPassword, setUserShowPassword] = useState<boolean>(false);
   const [
     userShowPasswordConfirmation,
@@ -23,37 +30,10 @@ export const WizardBasicInfoStep = () => {
   ] = useState<boolean>(false);
   const [userPasswordConfirmation, setUserPasswordConfirmation] = useState<
     string
-  >("");
-  const [userAccountType, setUserAccountType] = useState<string>("JobSeeker");
+  >(passwordConfirmation);
+  const [userAccountType, setUserAccountType] = useState<string>(type);
 
   const userAccountTypeOptions = [UserType.JobSeeker, UserType.Company];
-
-  const handleUserAccountTypeChange = (e) => {
-    setUserAccountType(e.target.value);
-  };
-
-  useEffect(() => {
-    // Here we detect when the component is unmounting (basically, becoming hidden on user screen). This happens when the user click NEXT or PREVIOUS and it should save its content on redux, so we can create a payload from all steps that's going to be submitted to the server to register this user
-    return async () => {
-      console.log("User finished this step! Saving on redux!");
-
-      const newAccountData = {
-        name: userName,
-        email: userEmail,
-        password: userPassword,
-        passwordConfirmation: userPasswordConfirmation,
-        type: userAccountType,
-      };
-
-      await dispatch(updateNewAccount(newAccountData));
-    };
-  }, [
-    userName,
-    userEmail,
-    userPassword,
-    userPasswordConfirmation,
-    userAccountType,
-  ]);
 
   const handleClickShowPassword = () => {
     setUserShowPassword(!userShowPassword);
@@ -82,7 +62,10 @@ export const WizardBasicInfoStep = () => {
           <TextField
             select
             value={userAccountType}
-            onChange={handleUserAccountTypeChange}
+            onChange={(e) => {
+              dispatch(updateNewAccount("type", e.target.value));
+              setUserAccountType(e.target.value);
+            }}
             fullWidth
             label={TS.string("account", "loginSelectAccountTypeTitle")}
           >
@@ -98,7 +81,10 @@ export const WizardBasicInfoStep = () => {
             fullWidth
             label={TS.string("account", "registerInputName")}
             value={userName}
-            onChange={(e) => setUserName(e.target.value)}
+            onChange={(e) => {
+              dispatch(updateNewAccount("name", e.target.value));
+              setUserName(e.target.value);
+            }}
           />
         </InputContainer>
 
@@ -107,7 +93,10 @@ export const WizardBasicInfoStep = () => {
             fullWidth
             label={TS.string("account", "registerInputEmail")}
             value={userEmail}
-            onChange={(e) => setUserEmail(e.target.value)}
+            onChange={(e) => {
+              dispatch(updateNewAccount("email", e.target.value));
+              setUserEmail(e.target.value);
+            }}
           />
         </InputContainer>
         <InputContainer>
@@ -118,7 +107,10 @@ export const WizardBasicInfoStep = () => {
             <Input
               type={userShowPassword ? "text" : "password"}
               value={userPassword}
-              onChange={(e) => setUserPassword(e.target.value)}
+              onChange={(e) => {
+                dispatch(updateNewAccount("password", e.target.value));
+                setUserPassword(e.target.value);
+              }}
               fullWidth
               endAdornment={
                 <InputAdornment position="end">
@@ -142,7 +134,12 @@ export const WizardBasicInfoStep = () => {
             <Input
               type={userShowPasswordConfirmation ? "text" : "password"}
               value={userPasswordConfirmation}
-              onChange={(e) => setUserPasswordConfirmation(e.target.value)}
+              onChange={(e) => {
+                dispatch(
+                  updateNewAccount("passwordConfirmation", e.target.value)
+                );
+                setUserPasswordConfirmation(e.target.value);
+              }}
               fullWidth
               endAdornment={
                 <InputAdornment position="end">

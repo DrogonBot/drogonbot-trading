@@ -1,7 +1,7 @@
 import { APIHelper } from '../../helpers/APIHelper';
 import { GenericHelper } from '../../helpers/GenericHelper';
 import { TS } from '../../helpers/LanguageHelper';
-import { ICityResponse, ICountry, IJobRole, IProvince, ISector } from '../../types/Form.types';
+import { ICity, ICountry, IJobRole, IProvince, ISector } from '../../types/Form.types';
 import { RequestTypes } from '../../types/Request.types';
 import {
   CLEAR_JOB_ROLES,
@@ -79,7 +79,7 @@ export const loadProvinceCities = (
   );
 
   if (response) {
-    const data: ICityResponse[] = response.data;
+    const data: ICity[] = response.data;
 
     await dispatch(setLoading(false, "loadingLocation"));
 
@@ -110,10 +110,14 @@ export const readSectors = (country: string) => async (dispatch) => {
   }
 };
 
-export const updateNewAccount = (newAccount) => (dispatch) => {
-  console.log("updating account...");
-  console.log(newAccount);
-  dispatch({ type: UPDATE_NEW_ACCOUNT, payload: newAccount });
+export const updateNewAccount = (key: string, value: string) => (dispatch) => {
+  dispatch({
+    type: UPDATE_NEW_ACCOUNT,
+    payload: {
+      key,
+      value,
+    },
+  });
 };
 
 export const loadAllJobRoles = () => async (dispatch) => {

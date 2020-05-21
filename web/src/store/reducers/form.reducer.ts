@@ -1,4 +1,14 @@
-import { UserType } from '../../types/User.types';
+import { ICity, ICountry, IProvince, ISector } from '../../types/Form.types';
+import { INewAccount, UserType } from '../../types/User.types';
+
+interface IState {
+  countries: ICountry[];
+  states: IProvince[];
+  cities: ICity[];
+  jobRoles: string[];
+  sectors: ISector[];
+  newAccount: INewAccount;
+}
 
 const INITIAL_STATE = {
   countries: [],
@@ -7,22 +17,26 @@ const INITIAL_STATE = {
   jobRoles: [],
   sectors: [],
   newAccount: {
-    name: null,
-    email: null,
-    password: null,
-    passwordConfirmation: null,
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
     type: UserType.JobSeeker,
+    country: "",
+    province: "",
+    city: "",
   },
 };
 
-export const formReducer = (state = INITIAL_STATE, action) => {
+export const formReducer = (state: IState = INITIAL_STATE, action) => {
   switch (action.type) {
     case UPDATE_NEW_ACCOUNT:
-      console.log("action payload");
-      console.log(action.payload);
       return {
         ...state,
-        newAccount: { ...action.payload },
+        newAccount: {
+          ...state.newAccount,
+          [action.payload.key]: action.payload.value,
+        },
       };
 
     case READ_COUNTRIES:

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TS } from '../../../helpers/LanguageHelper';
 import { loadCountryProvinces, loadProvinceCities } from '../../../store/actions/form.actions';
 import { setLoading } from '../../../store/actions/ui.action';
-import { ICityResponse, IProvince } from '../../../types/Form.types';
+import { ICity, IProvince } from '../../../types/Form.types';
 import { InputContainer } from '../common/layout';
 
 export interface ILocation {
@@ -126,7 +126,7 @@ export const LocationDropdown = ({
   const onRenderCityList = () => {
     return (
       cities &&
-      cities.map((cityData: ICityResponse, index: number) => {
+      cities.map((cityData: ICity, index: number) => {
         return (
           <MenuItem key={`${cityData.name}_${index}`} value={cityData.name}>
             {cityData.name}

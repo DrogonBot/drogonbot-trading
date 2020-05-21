@@ -18,6 +18,18 @@ export interface IUser {
   updatedAt: string;
 }
 
+export interface INewAccount {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+  type: UserType;
+  country: string;
+  province: string;
+  city: string;
+  jobRoles?: string[];
+}
+
 export enum UserType {
   JobSeeker = "JobSeeker",
   Company = "Company",
