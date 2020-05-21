@@ -8,15 +8,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { Copyright } from '../components/pages/login/Copyright';
 import { appEnv } from '../constants/Env.constant';
 import { colors } from '../constants/UI/Colors.constant';
 import { TS } from '../helpers/LanguageHelper';
-import { ICredentials } from '../types/User.types';
+import { userLogin } from '../store/actions/user.actions';
+import { AuthType, ICredentials } from '../types/User.types';
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const [userCredentials, setUserCredentials] = useState<ICredentials>({
     email: "",
     password: "",
@@ -24,9 +28,10 @@ const Login = () => {
 
   const classes = useStyles();
 
-  const onHandleLogin = (e) => {
+  const onHandleLogin = async (e) => {
     e.preventDefault();
     console.log(userCredentials);
+    await dispatch(userLogin(userCredentials, AuthType.EmailPassword));
   };
 
   return (
