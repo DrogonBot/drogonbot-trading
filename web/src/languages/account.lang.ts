@@ -7,6 +7,10 @@ export const strings = {
     eng: "Login",
     ptBr: "Login",
   },
+  loginAccessYourAccount: {
+    eng: "Access Your Account",
+    ptBr: "Acesse sua Conta",
+  },
   logoutButtonText: {
     eng: "Logout",
     ptBr: "Logout",

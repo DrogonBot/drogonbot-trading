@@ -46,7 +46,7 @@ const Login = () => {
                 alt="Emprego Urgente Logo"
               />
             </LogoContainer>
-            <h1>{TS.string("account", "loginButtonText")}</h1>
+            <h1>{TS.string("account", "loginAccessYourAccount")}</h1>
             <form className={classes.form} noValidate>
               <TextField
                 variant="outlined"
