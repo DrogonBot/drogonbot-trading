@@ -76,15 +76,13 @@ export const userLogin = (
 
         return false;
       }
+
       if (response.data.token) {
         // refresh push token
 
         // const user = response.data.user;
 
         await dispatch({ type: USER_LOGIN, payload: response.data });
-
-        // TODO: User login redirect
-        console.log("USER LOGGED IN!! DO SOMETHING HERE!");
       }
     }
   } catch (error) {
@@ -148,12 +146,14 @@ export const userRegister = (registerCredentials: INewAccount) => async (
           password: registerCredentials.password,
         })
       );
+      return true;
     } else {
       const error: IRequestDefaultError = response.data;
 
       if (process.browser) {
         window.alert(error.message);
       }
+      return false;
     }
   } catch (error) {
     console.error(error);

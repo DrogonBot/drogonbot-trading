@@ -4,6 +4,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -53,6 +54,7 @@ const Register = ({ provinces, jobRoles }: IProps) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const steps = getSteps();
+  const router = useRouter();
 
   const newAccount = useSelector<AppState, INewAccount>(
     (state) => state.formReducer.newAccount
@@ -82,7 +84,17 @@ const Register = ({ provinces, jobRoles }: IProps) => {
     console.log("Finished!");
     console.log(newAccount);
 
-    await dispatch(userRegister(newAccount));
+    const userRegisterSuccess = await dispatch(userRegister(newAccount));
+
+    // if we registered our user successfully, lets redirect him to posts page
+    if (userRegisterSuccess) {
+      router.push({
+        pathname: "/posts",
+        query: {
+          searchProvince: newAccount.stateCode,
+        },
+      });
+    }
   };
 
   const handleNext = () => {
