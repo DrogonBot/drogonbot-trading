@@ -1,4 +1,5 @@
 import express from 'express';
+import _ from 'lodash';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
@@ -31,12 +32,33 @@ sectorRouter.get("/sectors/:country", userAuthMiddleware, async (req, res) => {
   }
 });
 
+sectorRouter.get("/sectors/keywords/all", async (req, res) => {
+
+  try {
+    const sectors = await Sector.find({})
+
+    const keywords = sectors.map((sector) => _.flatten(sector.keywords))
+
+    const flattenedKeywords = _.flatten(keywords)
+
+    return res.status(200).send({
+      keywords: flattenedKeywords
+    })
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(400).send({
+      status: 'error',
+      message: LanguageHelper.getLanguageString('sector', 'sectorKeywordAllError')
+    })
+  }
+
+})
 
 
 sectorRouter.get("/sectors/search/:keyword", userAuthMiddleware, async (req, res) => {
 
   const { keyword } = req.params;
-
 
   try {
     // find all sectors that has a keyword thats similar than the one the user has passed to us

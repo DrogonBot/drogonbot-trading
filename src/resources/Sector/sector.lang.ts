@@ -8,6 +8,10 @@ export const strings = {
     eng: 'Error while searching through our sectors.',
     ptBr: "Erro ao pesquisar nossos setores."
   },
+  sectorKeywordAllError: {
+    eng: 'Error while returning all sector keywords.',
+    ptBr: "Erro ao pesquisar todas as palavras-chaves dos setores."
+  },
 
 
 
