@@ -7,7 +7,7 @@ import {
   ICredentials,
   IFacebookAuthPayload,
   IGoogleAuthPayload,
-  IRegisterCredentials,
+  INewAccount,
   IUser,
 } from '../../types/User.types';
 import { USER_LOGIN, USER_LOGOUT, USER_REFRESH_INFO, USER_SET_ONBOARDING, USER_UPDATE } from '../reducers/user.reducer';
@@ -123,10 +123,9 @@ export const userLogout = () => async (dispatch) => {
   }
 };
 
-export const userRegister = (
-  registerCredentials: IRegisterCredentials,
-  navigation: any
-) => async (dispatch: any) => {
+export const userRegister = (registerCredentials: INewAccount) => async (
+  dispatch: any
+) => {
   try {
     const response: any = await APIHelper.request(
       RequestTypes.POST,
@@ -144,13 +143,10 @@ export const userRegister = (
       }
 
       await dispatch(
-        userLogin(
-          {
-            email: user.email,
-            password: registerCredentials.password,
-          },
-          navigation
-        )
+        userLogin({
+          email: user.email,
+          password: registerCredentials.password,
+        })
       );
     } else {
       const error: IRequestDefaultError = response.data;

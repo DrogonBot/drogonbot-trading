@@ -25,12 +25,12 @@ export const WizardSettingsStep = ({ jobRoles }: IProps) => {
       {newAccount.type === UserType.JobSeeker && (
         <InputContainer>
           <PositionsOfInterest
-            value={newAccount.jobRoles}
+            value={newAccount.genericPositionsOfInterest}
             jobRoles={jobRoles}
             onChange={(values) => {
               dispatch(
                 updateNewAccount({
-                  jobRoles: values,
+                  genericPositionsOfInterest: values,
                 })
               );
             }}
@@ -40,14 +40,14 @@ export const WizardSettingsStep = ({ jobRoles }: IProps) => {
       <Form>
         <LocationDropdown
           initialCountry={TS.string("resume", "resumeSelectedCountry")}
-          initialProvince={newAccount.province || null}
-          initialCity={newAccount.city || null}
+          initialProvince={newAccount.stateCode || "default"}
+          initialCity={newAccount.city || "default"}
           showCountry={false}
           onChange={(e: ILocation) => {
             dispatch(
               updateNewAccount({
                 country: e.country,
-                province: e.province,
+                stateCode: e.province,
                 city: e.city,
               })
             );

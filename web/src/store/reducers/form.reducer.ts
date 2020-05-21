@@ -23,7 +23,7 @@ const INITIAL_STATE = {
     passwordConfirmation: "",
     type: UserType.JobSeeker,
     country: "",
-    province: "",
+    stateCode: "",
     city: "",
   },
 };

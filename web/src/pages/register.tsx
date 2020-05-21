@@ -5,7 +5,7 @@ import Stepper from '@material-ui/core/Stepper';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { PageBody, PageContainer } from '../components/elements/common/layout';
@@ -15,6 +15,7 @@ import { WizardSettingsStep } from '../components/pages/register/WizardSettingsS
 import { appEnv } from '../constants/Env.constant';
 import { TS } from '../helpers/LanguageHelper';
 import { loadAllJobRoles, loadCountryProvinces } from '../store/actions/form.actions';
+import { userRegister } from '../store/actions/user.actions';
 import { AppState } from '../store/reducers/index.reducers';
 import { IProvince } from '../types/Form.types';
 import { INewAccount } from '../types/User.types';
@@ -47,6 +48,7 @@ interface IProps {
 }
 
 const Register = ({ provinces, jobRoles }: IProps) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
@@ -76,9 +78,11 @@ const Register = ({ provinces, jobRoles }: IProps) => {
     return skipped.has(step);
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     console.log("Finished!");
     console.log(newAccount);
+
+    await dispatch(userRegister(newAccount));
   };
 
   const handleNext = () => {

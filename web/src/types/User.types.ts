@@ -28,9 +28,9 @@ export interface INewAccount {
   passwordConfirmation: string;
   type: string;
   country?: string;
-  province?: string;
+  stateCode?: string;
   city?: string;
-  jobRoles?: string[];
+  genericPositionsOfInterest?: string[];
 }
 
 export enum UserType {
@@ -65,13 +65,4 @@ export interface IFacebookAuthPayload {
   accessToken: string;
   language?: string;
   type?: string;
-}
-
-export interface IRegisterCredentials {
-  name: string;
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-  language: string;
-  type: string;
 }
