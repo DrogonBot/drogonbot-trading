@@ -25,6 +25,7 @@ const INITIAL_STATE = {
     country: "",
     stateCode: "",
     city: "",
+    genericPositionsOfInterest: [],
   },
 };
 

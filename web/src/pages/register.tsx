@@ -15,6 +15,7 @@ import { WizardBasicInfoStep } from '../components/pages/register/WizardBasicInf
 import { WizardSettingsStep } from '../components/pages/register/WizardSettingsStep';
 import { appEnv } from '../constants/Env.constant';
 import { TS } from '../helpers/LanguageHelper';
+import { ValidationHelper } from '../helpers/ValidationHelper';
 import { loadAllJobRoles, loadCountryProvinces } from '../store/actions/form.actions';
 import { userRegister } from '../store/actions/user.actions';
 import { AppState } from '../store/reducers/index.reducers';
@@ -83,6 +84,37 @@ const Register = ({ provinces, jobRoles }: IProps) => {
   const handleFinish = async () => {
     console.log("Finished!");
     console.log(newAccount);
+
+    // CLIENT-SIDE VALIDATION ========================================
+
+    const invalidFields = ValidationHelper.validateKeyValue(newAccount, {
+      optionalFields: [],
+      fieldLabels: {
+        city: TS.string("form", "genericCity"),
+        country: TS.string("form", "genericCountry"),
+        email: TS.string("account", "emailInput"),
+        genericPositionsOfInterest: TS.string("resume", "resumeJobRoles"),
+        name: TS.string("account", "registerInputName"),
+        password: TS.string("account", "passwordInput"),
+        passwordConfirmation: TS.string("account", "passwordConfirmInput"),
+        stateCode: TS.string("form", "genericProvince"),
+        type: TS.string("account", "loginSelectAccountTypeTitle"),
+      },
+    });
+
+    if (invalidFields) {
+      if (process.browser) {
+        window.alert(
+          `${TS.string(
+            "global",
+            "genericFollowingFieldsInvalid"
+          )} ${invalidFields}`
+        );
+      }
+      return;
+    }
+
+    // SAVE ACCOUNT ========================================
 
     const userRegisterSuccess = await dispatch(userRegister(newAccount));
 

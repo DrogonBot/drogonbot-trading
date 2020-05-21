@@ -12,11 +12,9 @@ export const userReducer = (state: IUserState = INITIAL_STATE, action) => {
     case USER_LOGIN:
       // Store token on async storage as well (some classes cannot access redux, so we'll have to use async storage to store the token)
 
-      console.log("SAVING TOKEN TO LOCALSTORAGE!!");
-      window.localStorage.setItem("token", action.payload.token);
-      // if (process.browser) {
-
-      // }
+      if (process.browser) {
+        window.localStorage.setItem("token", action.payload.token);
+      }
 
       return {
         ...state,
