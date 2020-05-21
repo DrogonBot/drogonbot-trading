@@ -11,10 +11,16 @@ export interface IPaginationData {
   nextPage?: number;
 }
 
+export enum NavPosition {
+  NavLeft,
+  NavRight,
+}
+
 export interface INavOption {
   href: string;
   text: string;
   icon: JSX.Element;
+  position?: NavPosition;
   customColor?: string;
   primary?: boolean;
   mobileOnly?: boolean;

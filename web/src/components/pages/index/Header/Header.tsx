@@ -1,4 +1,5 @@
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import PostAddIcon from '@material-ui/icons/PostAdd';
@@ -11,7 +12,7 @@ import { appEnv } from '../../../../constants/Env.constant';
 import { colors } from '../../../../constants/UI/Colors.constant';
 import { ContainerDesktop, ContainerMobile } from '../../../../constants/UI/Common.constant';
 import { TS } from '../../../../helpers/LanguageHelper';
-import { INavOption } from '../../../../types/UI.types';
+import { INavOption, NavPosition } from '../../../../types/UI.types';
 import { DesktopNav } from './DesktopNav';
 import MobileNav from './MobileNav';
 
@@ -23,18 +24,28 @@ export const Header = () => {
       text: TS.string("global", "genericHome"),
       icon: <HomeIcon />,
       primary: true,
+      position: NavPosition.NavLeft,
     },
     {
       href: "/posts",
       text: TS.string("post", "postGenericJobRolesText"),
       icon: <WorkIcon />,
       primary: true,
+      position: NavPosition.NavLeft,
     },
     {
       href: "/register",
       text: TS.string("account", "registerButtonText"),
+      icon: <AddCircleIcon />,
+      primary: true,
+      position: NavPosition.NavRight,
+    },
+    {
+      href: "/login",
+      text: TS.string("account", "loginButtonText"),
       icon: <AccountCircleIcon />,
       primary: true,
+      position: NavPosition.NavRight,
     },
     {
       href: "/advertise",
@@ -42,6 +53,7 @@ export const Header = () => {
       icon: <PostAddIcon />,
       primary: true,
       customColor: colors.accent,
+      position: NavPosition.NavLeft,
     },
 
     // {
