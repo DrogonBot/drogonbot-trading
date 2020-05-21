@@ -10,6 +10,7 @@ import sharp from 'sharp';
 
 import { GenericEmailManager } from '../../emails/generic.email';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
+import { RequestMiddleware } from '../../middlewares/request.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { EncryptionHelper } from '../../utils/EncryptionHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
@@ -19,7 +20,7 @@ import { TextHelper } from '../../utils/TextHelper';
 import { Lead } from '../Lead/lead.model';
 import { Log } from '../Log/log.model';
 import { User } from './user.model';
-import { AuthType, UserType } from './user.types';
+import { AuthType, ILoginData, UserType } from './user.types';
 
 
 // @ts-ignore
@@ -136,10 +137,7 @@ userRouter.get("/users/log/test", userAuthMiddleware, async (req, res) => {
 
 // User => Login (default email/password route)
 
-interface ILoginData {
-  email: string;
-  password: string;
-}
+
 
 userRouter.post("/users/login", async (req, res) => {
   const { email, password }: ILoginData = req.body;
@@ -479,105 +477,80 @@ userRouter.get("/users/reset-password/link", async (req, res) => {
 });
 
 // User => Sign Up
-userRouter.post("/users", async (req, res) => {
-  const { name, email, password, passwordConfirmation, language, type } = req.body;
+userRouter.post("/users",
+  RequestMiddleware.allowedRequestKeys(['name', 'email', 'password', 'passwordConfirmation', 'type', 'language', 'stateCode', 'country', 'city', 'genericPositionsOfInterest']), async (req, res) => {
 
-  try {
-    if (password !== passwordConfirmation) {
+    const { name, email, password, passwordConfirmation, language, type, stateCode, city } = req.body;
+
+    if (stateCode && stateCode === "default") {
       return res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
-          "user",
-          "userPasswordConfirmationDontMatch"
-        )
-      });
+        message: LanguageHelper.getLanguageString(null, "globalInvalidValueForField", {
+          invalidField: LanguageHelper.getLanguageString("resume", 'genericProvince')
+        })
+      })
+    }
+
+    if (city && city === "default") {
+      return res.status(400).send({
+        status: "error",
+        message: LanguageHelper.getLanguageString(null, "globalInvalidValueForField", {
+          invalidField: LanguageHelper.getLanguageString("resume", 'genericCity')
+        })
+      })
     }
 
 
-    // force lowercase and trim
-    const preparedEmail = TextHelper.stringPrepare(email);
+    try {
+      if (password !== passwordConfirmation) {
+        return res.status(400).send({
+          status: "error",
+          message: LanguageHelper.getLanguageString(
+            "user",
+            "userPasswordConfirmationDontMatch"
+          )
+        });
+      }
 
-    const emailAlreadyExists = await User.findOne({ email: preparedEmail })
 
-    if (emailAlreadyExists) {
-      console.log('Email already exists');
+      // force lowercase and trim
+      const preparedEmail = TextHelper.stringPrepare(email);
 
-      return res.status(400).send({
+      const emailAlreadyExists = await User.findOne({ email: preparedEmail })
+
+      if (emailAlreadyExists) {
+        console.log('Email already exists');
+
+        return res.status(400).send({
+          status: "error",
+          message: LanguageHelper.getLanguageString(
+            "user",
+            "userEmailAlreadyRegistered"
+          )
+        });
+      }
+
+      const user = new User({
+        ...req.body,
+        email: preparedEmail,
+      });
+
+      await user.save();
+
+      const { token } = await user.registerUser(req);
+
+      return res.status(201).send({
+        user,
+        token
+      });
+    } catch (error) {
+      res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
-          "user",
-          "userEmailAlreadyRegistered"
-        )
+        message: LanguageHelper.getLanguageString("user", "userCreationError"),
+        details: error.message
       });
     }
-
-
-    const user = new User({
-      name,
-      email: preparedEmail,
-      password,
-      language, type
-    });
-
-    await user.save();
-
-    const { token } = await user.registerUser(req);
-
-    return res.status(201).send({
-      user,
-      token
-    });
-  } catch (error) {
-    res.status(400).send({
-      status: "error",
-      message: LanguageHelper.getLanguageString("user", "userCreationError"),
-      details: error.message
-    });
-  }
-});
-
-/*#############################################################|
-|  >>> PROTECTED ROUTES
-*##############################################################*/
-
-// Push notification => test ========================================
-
-// userRouter.get(
-//   "/users/push-notification/test",
-//   userAuthMiddleware,
-//   async (req, res) => {
-//     const { user } = req;
-
-//     try {
-//       PushNotificationHelper.sendPush([user.pushToken], {
-//         sound: "default",
-//         body: "This is a test notification",
-//         data: { withSome: "data" }
-//       });
-
-//       return res.status(200).send({
-//         status: "success",
-//         message: LanguageHelper.getLanguageString(
-//           "user",
-//           "userPushNotificationSubmitted"
-//         )
-//       });
-//     } catch (error) {
-//       console.error(error);
-
-//       return res.status(400).send({
-//         status: "error",
-//         message: LanguageHelper.getLanguageString(
-//           "user",
-//           "userPushNotificationSubmissionError"
-//         ),
-//         details: error.message
-//       });
-//     }
-//   }
-// );
-
-// Push notification => save push token ========================================
+  });
 
 userRouter.post(
   "/users/push-notification",
@@ -944,7 +917,7 @@ userRouter.patch("/users/me", [userAuthMiddleware], async (req, res) => {
 
   // check if keys are allowed to be updated
   if (
-    !RouterHelper.isAllowedKey(req.body, ["genericPositionsOfInterest", "type", "lastNotification", "stateCode", "country", "city"])
+    !RouterHelper.checkRequestKeysAllowed(req.body, ["genericPositionsOfInterest", "type", "lastNotification", "stateCode", "country", "city"])
   ) {
     return res.status(400).send({
       status: "error",
@@ -980,7 +953,7 @@ userRouter.patch("/users/:id", [userAuthMiddleware, (req, res, next) => {
   const updates = Object.keys(req.body);
 
   if (
-    !RouterHelper.isAllowedKey(req.body, ["name", "email"])
+    !RouterHelper.checkRequestKeysAllowed(req.body, ["name", "email"])
   ) {
     return res.status(400).send({
       status: "error",

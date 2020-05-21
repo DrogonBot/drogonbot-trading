@@ -1,6 +1,11 @@
 import { Binary } from 'mongodb';
 import { Document } from 'mongoose';
 
+export interface ILoginData {
+  email: string;
+  password: string;
+}
+
 export enum AuthType {
   EmailPassword = "EmailPassword",
   GoogleOAuth = "GoogleOAuth",

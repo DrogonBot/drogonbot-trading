@@ -35,6 +35,18 @@ export const strings = {
   resumePatchForbiddenKeys: {
     eng: "Error: You're trying to patch some keys that are not allowed.",
     ptBr: "Erro: você está tentando atualizar algumas chaves que não são permitidas."
-  }
+  },
+  genericCountry: {
+    eng: "Country",
+    ptBr: "País",
+  },
+  genericCity: {
+    eng: "City",
+    ptBr: "Cidade",
+  },
+  genericProvince: {
+    eng: "Province",
+    ptBr: "Estado",
+  },
 
 };

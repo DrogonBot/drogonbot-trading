@@ -23,4 +23,6 @@ export class GlobalMiddleware {
       message: LanguageHelper.getLanguageString(null, "appMaintenanceMode")
     });
   };
+
+
 }

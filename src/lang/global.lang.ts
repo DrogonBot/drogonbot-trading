@@ -35,5 +35,14 @@ export const globalStrings = {
     ptBr: `<br/><br/><p style="text-align: center; display: block; font-size: 12px;">
     <a style="color: rgb(168,170,175)" href='{{unsubscribeUrl}}'> Se você quer parar de receber esses e-mails, clique aqui</a>
     </p>`
+  },
+
+  globalInvalidKeys: {
+    eng: "This request does not accept the following keys: {{forbiddenKeys}}",
+    ptBr: "Esta solicitação não aceita as seguintes chaves: {{forbiddenKeys}}"
+  },
+  globalInvalidValueForField: {
+    eng: "Invalid value for the field: {{invalidField}}",
+    ptBr: "Valor inválido para o campo: {{invalidField}}"
   }
 };

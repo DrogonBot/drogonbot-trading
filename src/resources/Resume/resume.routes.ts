@@ -107,7 +107,7 @@ resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => 
 
 
     if (
-      !RouterHelper.isAllowedKey(req.body, ["positionsOfInterest", "highlights", "address", "phone", "linkedInUrl", "educations", "attachments", "experiences", "awards", "additionalInfos", "stateCode", "city", "country"])
+      !RouterHelper.checkRequestKeysAllowed(req.body, ["positionsOfInterest", "highlights", "address", "phone", "linkedInUrl", "educations", "attachments", "experiences", "awards", "additionalInfos", "stateCode", "city", "country"])
     ) {
       return res.status(400).send({
         status: "error",
