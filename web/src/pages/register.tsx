@@ -5,6 +5,7 @@ import Stepper from '@material-ui/core/Stepper';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { PageBody, PageContainer } from '../components/elements/common/layout';
@@ -14,7 +15,9 @@ import { WizardSettingsStep } from '../components/pages/register/WizardSettingsS
 import { appEnv } from '../constants/Env.constant';
 import { TS } from '../helpers/LanguageHelper';
 import { loadAllJobRoles, loadCountryProvinces } from '../store/actions/form.actions';
+import { AppState } from '../store/reducers/index.reducers';
 import { IProvince } from '../types/Form.types';
+import { INewAccount } from '../types/User.types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,6 +52,10 @@ const Register = ({ provinces, jobRoles }: IProps) => {
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const steps = getSteps();
 
+  const newAccount = useSelector<AppState, INewAccount>(
+    (state) => state.formReducer.newAccount
+  );
+
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
@@ -69,8 +76,14 @@ const Register = ({ provinces, jobRoles }: IProps) => {
     return skipped.has(step);
   };
 
+  const handleFinish = () => {
+    console.log("Finished!");
+    console.log(newAccount);
+  };
+
   const handleNext = () => {
     let newSkipped = skipped;
+
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
@@ -97,10 +110,6 @@ const Register = ({ provinces, jobRoles }: IProps) => {
       newSkipped.add(activeStep);
       return newSkipped;
     });
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   return (
@@ -139,52 +148,43 @@ const Register = ({ provinces, jobRoles }: IProps) => {
                 </Stepper>
               </StepperContainer>
               <>
-                {activeStep === steps.length ? (
-                  <>
-                    <Typography className={classes.instructions}>
-                      {TS.string("account", "wizardAllStepsCompleted")}
-                    </Typography>
-                    <Button onClick={handleReset} className={classes.button}>
-                      {TS.string("account", "wizardReset")}
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <WizardContentContainer>
-                      {getStepContent(activeStep)}
-                    </WizardContentContainer>
+                <WizardContentContainer>
+                  {getStepContent(activeStep)}
+                </WizardContentContainer>
 
-                    <WizardActionsContainer>
-                      <Button
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        className={classes.button}
-                      >
-                        {TS.string("account", "wizardBack")}
-                      </Button>
-                      {isStepOptional(activeStep) && (
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={handleSkip}
-                          className={classes.button}
-                        >
-                          {TS.string("account", "wizardSkip")}
-                        </Button>
-                      )}
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={handleNext}
-                        className={classes.button}
-                      >
-                        {activeStep === steps.length - 1
-                          ? TS.string("account", "wizardFinish")
-                          : TS.string("account", "wizardNext")}
-                      </Button>
-                    </WizardActionsContainer>
-                  </>
-                )}
+                <WizardActionsContainer>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.button}
+                  >
+                    {TS.string("account", "wizardBack")}
+                  </Button>
+                  {isStepOptional(activeStep) && (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={handleSkip}
+                      className={classes.button}
+                    >
+                      {TS.string("account", "wizardSkip")}
+                    </Button>
+                  )}
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={
+                      activeStep === steps.length - 1
+                        ? handleFinish
+                        : handleNext
+                    }
+                    className={classes.button}
+                  >
+                    {activeStep === steps.length - 1
+                      ? TS.string("account", "wizardFinish")
+                      : TS.string("account", "wizardNext")}
+                  </Button>
+                </WizardActionsContainer>
               </>
             </WizardContainer>
           </PageBody>
