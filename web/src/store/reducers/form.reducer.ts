@@ -35,7 +35,7 @@ export const formReducer = (state: IState = INITIAL_STATE, action) => {
         ...state,
         newAccount: {
           ...state.newAccount,
-          [action.payload.key]: action.payload.value,
+          ...action.payload,
         },
       };
 

@@ -16,8 +16,8 @@ export const WizardBasicInfoStep = () => {
   const dispatch = useDispatch();
 
   // Fetch data from redux (this will repopulate fields even if we go next and then go back again)
-  const reduxNewAccount: INewAccount = useSelector(
-    (state: AppState) => state.formReducer.newAccount
+  const reduxNewAccount = useSelector<AppState, INewAccount>(
+    (state) => state.formReducer.newAccount
   );
 
   const [newAccount, setNewAccount] = useState<INewAccount>({
@@ -64,7 +64,9 @@ export const WizardBasicInfoStep = () => {
             select
             value={newAccount.type}
             onChange={(e) => {
-              dispatch(updateNewAccount("type", e.target.value));
+              dispatch(updateNewAccount({
+                type: e.target.value 
+              }));
               setNewAccount({
                 ...newAccount,
                 type: e.target.value,
@@ -86,7 +88,9 @@ export const WizardBasicInfoStep = () => {
             label={TS.string("account", "registerInputName")}
             value={newAccount.name}
             onChange={(e) => {
-              dispatch(updateNewAccount("name", e.target.value));
+              dispatch(updateNewAccount({
+                name: e.target.value
+              }));
               setNewAccount({
                 ...newAccount,
                 name: e.target.value,
@@ -103,7 +107,9 @@ export const WizardBasicInfoStep = () => {
             label={TS.string("account", "registerInputEmail")}
             value={newAccount.email}
             onChange={(e) => {
-              dispatch(updateNewAccount("email", e.target.value));
+              dispatch(updateNewAccount({
+                email: e.target.value
+              }));
               setNewAccount({
                 ...newAccount,
                 email: e.target.value,
@@ -120,7 +126,9 @@ export const WizardBasicInfoStep = () => {
               type={userShowPassword ? "text" : "password"}
               value={newAccount.password}
               onChange={(e) => {
-                dispatch(updateNewAccount("password", e.target.value));
+                dispatch(updateNewAccount({
+                  password: e.target.value
+                }));
                 setNewAccount({
                   ...newAccount,
                   password: e.target.value,
@@ -151,7 +159,9 @@ export const WizardBasicInfoStep = () => {
               value={newAccount.passwordConfirmation}
               onChange={(e) => {
                 dispatch(
-                  updateNewAccount("passwordConfirmation", e.target.value)
+                  updateNewAccount({
+                    passwordConfirmation: e.target.value
+                  })
                 );
                 setNewAccount({
                   ...newAccount,

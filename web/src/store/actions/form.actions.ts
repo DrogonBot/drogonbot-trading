@@ -110,13 +110,10 @@ export const readSectors = (country: string) => async (dispatch) => {
   }
 };
 
-export const updateNewAccount = (key: string, value: string) => (dispatch) => {
+export const updateNewAccount = (keyValues) => (dispatch) => {
   dispatch({
     type: UPDATE_NEW_ACCOUNT,
-    payload: {
-      key,
-      value,
-    },
+    payload: keyValues,
   });
 };
 
