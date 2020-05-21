@@ -10,9 +10,10 @@ import styled from 'styled-components';
 import { PageBody, PageContainer } from '../components/elements/common/layout';
 import { SearchTop } from '../components/pages/posts/SearchTop';
 import { WizardBasicInfoStep } from '../components/pages/register/WizardBasicInfoStep';
+import { WizardSettingsStep } from '../components/pages/register/WizardSettingsStep';
 import { appEnv } from '../constants/Env.constant';
 import { TS } from '../helpers/LanguageHelper';
-import { loadCountryProvinces } from '../store/actions/form.actions';
+import { loadAllJobRoles, loadCountryProvinces } from '../store/actions/form.actions';
 import { IProvince } from '../types/Form.types';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,10 +31,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface IProps {
-  provinces: IProvince[];
-}
-
 function getSteps() {
   return [
     TS.string("account", "wizardBasicInfo"),
@@ -41,23 +38,28 @@ function getSteps() {
   ];
 }
 
-function getStepContent(step: number) {
-  switch (step) {
-    case 0:
-      return <WizardBasicInfoStep />;
-
-    case 1:
-      return "This is the bit I really care about!";
-    default:
-      return "Unknown step";
-  }
+interface IProps {
+  provinces: IProvince[];
+  jobRoles: string[];
 }
 
-const Register = ({ provinces }: IProps) => {
+const Register = ({ provinces, jobRoles }: IProps) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const steps = getSteps();
+
+  const getStepContent = (step: number) => {
+    switch (step) {
+      case 0:
+        return <WizardBasicInfoStep />;
+
+      case 1:
+        return <WizardSettingsStep jobRoles={jobRoles} />;
+      default:
+        return "Unknown step";
+    }
+  };
 
   const isStepOptional = (step: number) => {
     return step === null;
@@ -113,27 +115,29 @@ const Register = ({ provinces }: IProps) => {
             <h1>{TS.string("account", "registerCreateYourAccount")}</h1>
 
             <WizardContainer className={classes.root}>
-              <Stepper activeStep={activeStep}>
-                {steps.map((label, index) => {
-                  const stepProps: { completed?: boolean } = {};
-                  const labelProps: { optional?: React.ReactNode } = {};
-                  if (isStepOptional(index)) {
-                    labelProps.optional = (
-                      <Typography variant="caption">
-                        {TS.string("global", "genericOptional")}
-                      </Typography>
+              <StepperContainer>
+                <Stepper activeStep={activeStep}>
+                  {steps.map((label, index) => {
+                    const stepProps: { completed?: boolean } = {};
+                    const labelProps: { optional?: React.ReactNode } = {};
+                    if (isStepOptional(index)) {
+                      labelProps.optional = (
+                        <Typography variant="caption">
+                          {TS.string("global", "genericOptional")}
+                        </Typography>
+                      );
+                    }
+                    if (isStepSkipped(index)) {
+                      stepProps.completed = false;
+                    }
+                    return (
+                      <Step key={label} {...stepProps}>
+                        <StepLabel {...labelProps}>{label}</StepLabel>
+                      </Step>
                     );
-                  }
-                  if (isStepSkipped(index)) {
-                    stepProps.completed = false;
-                  }
-                  return (
-                    <Step key={label} {...stepProps}>
-                      <StepLabel {...labelProps}>{label}</StepLabel>
-                    </Step>
-                  );
-                })}
-              </Stepper>
+                  })}
+                </Stepper>
+              </StepperContainer>
               <>
                 {activeStep === steps.length ? (
                   <>
@@ -192,10 +196,15 @@ const Register = ({ provinces }: IProps) => {
 
 Register.getInitialProps = async (ctx) => {
   await ctx.store.dispatch(loadCountryProvinces(appEnv.appCountry));
+
+  await ctx.store.dispatch(loadAllJobRoles());
+
   const provinces = ctx.store.getState().formReducer.states;
+  const jobRoles = ctx.store.getState().formReducer.jobRoles;
 
   return {
     provinces,
+    jobRoles,
   };
 };
 
@@ -233,4 +242,8 @@ const WizardContentContainer = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: flex-start;
+`;
+
+const StepperContainer = styled.div`
+  margin-bottom: 2rem;
 `;

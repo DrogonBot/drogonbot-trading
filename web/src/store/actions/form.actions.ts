@@ -10,8 +10,7 @@ import {
   READ_JOB_ROLES,
   READ_SECTORS,
   READ_STATES,
-  WIZARD_FORM_UPDATE_CURRENT_STEP,
-  WIZARD_FORM_UPDATE_TOTAL_STEPS,
+  UPDATE_NEW_ACCOUNT,
 } from '../reducers/form.reducer';
 import { setLoading } from './ui.action';
 
@@ -92,25 +91,6 @@ export const loadProvinceCities = (
   }
 };
 
-export const loadJobRoles = (keyword: string) => async (dispatch) => {
-  const response = await APIHelper.request(
-    RequestTypes.GET,
-    `/sectors/search/${keyword}`,
-    {},
-    false
-  );
-
-  if (response) {
-    const data: IJobRole[] = response.data;
-
-    if (response.status !== 200) {
-      GenericHelper.clientAlert(response.data.message);
-    }
-
-    dispatch({ type: READ_JOB_ROLES, payload: data });
-  }
-};
-
 export const readSectors = (country: string) => async (dispatch) => {
   const response = await APIHelper.request(
     RequestTypes.GET,
@@ -130,31 +110,50 @@ export const readSectors = (country: string) => async (dispatch) => {
   }
 };
 
-export const clearJobRoles = () => (dispatch) => {
-  dispatch({ type: CLEAR_JOB_ROLES });
+export const updateNewAccount = (newAccount) => (dispatch) => {
+  console.log("updating account...");
+  console.log(newAccount);
+  dispatch({ type: UPDATE_NEW_ACCOUNT, payload: newAccount });
 };
 
-export const wizardFormUpdateCurrentStep = (
-  key: string,
-  currentStep: number
-) => async (dispatch) => {
-  dispatch({
-    type: WIZARD_FORM_UPDATE_CURRENT_STEP,
-    payload: {
-      key,
-      currentStep,
-    },
-  });
+export const loadAllJobRoles = () => async (dispatch) => {
+  const response = await APIHelper.request(
+    RequestTypes.GET,
+    `/sectors/keywords/all`,
+    {},
+    false
+  );
+
+  if (response) {
+    const data: string[] = response.data.keywords;
+
+    if (response.status !== 200) {
+      GenericHelper.clientAlert(response.data.message);
+    }
+
+    dispatch({ type: READ_JOB_ROLES, payload: data });
+  }
 };
-export const wizardFormUpdateTotalSteps = (
-  key: string,
-  totalSteps: number
-) => async (dispatch) => {
-  dispatch({
-    type: WIZARD_FORM_UPDATE_TOTAL_STEPS,
-    payload: {
-      key,
-      totalSteps,
-    },
-  });
+
+export const loadJobRole = (keyword: string) => async (dispatch) => {
+  const response = await APIHelper.request(
+    RequestTypes.GET,
+    `/sectors/search/${keyword}`,
+    {},
+    false
+  );
+
+  if (response) {
+    const data: IJobRole[] = response.data;
+
+    if (response.status !== 200) {
+      GenericHelper.clientAlert(response.data.message);
+    }
+
+    dispatch({ type: READ_JOB_ROLES, payload: data });
+  }
+};
+
+export const clearJobRoles = () => (dispatch) => {
+  dispatch({ type: CLEAR_JOB_ROLES });
 };

@@ -66,6 +66,10 @@ export const strings = {
     eng: "Positions of Interest",
     ptBr: "Vagas de Interesse",
   },
+  resumeTypeJobRoles: {
+    eng: "Fill the vacancies that interest you...",
+    ptBr: "Preencha suas vagas de interesse...",
+  },
   resumeValidationPositionOfInterest: {
     eng: "Please, fill your positions of interest before proceeding.",
     ptBr: "Por favor, preecha suas vagas de interesse antes de prosseguir.",

@@ -1,18 +1,30 @@
+import { UserType } from '../../types/User.types';
+
 const INITIAL_STATE = {
   countries: [],
   states: [],
   cities: [],
   jobRoles: [],
-  wizardForm: {
-    resumeWizardForm: {
-      currentStep: 0,
-    },
-  },
   sectors: [],
+  newAccount: {
+    name: null,
+    email: null,
+    password: null,
+    passwordConfirmation: null,
+    type: UserType.JobSeeker,
+  },
 };
 
 export const formReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case UPDATE_NEW_ACCOUNT:
+      console.log("action payload");
+      console.log(action.payload);
+      return {
+        ...state,
+        newAccount: { ...action.payload },
+      };
+
     case READ_COUNTRIES:
       return { ...state, countries: action.payload };
     case READ_STATES:
@@ -21,35 +33,12 @@ export const formReducer = (state = INITIAL_STATE, action) => {
       return { ...state, cities: action.payload };
     case READ_JOB_ROLES:
       return { ...state, jobRoles: action.payload };
-
     case READ_SECTORS:
       return { ...state, sectors: action.payload };
-
     case CLEAR_JOB_ROLES:
       return {
         ...state,
         jobRoles: INITIAL_STATE.jobRoles,
-      };
-
-    case WIZARD_FORM_UPDATE_CURRENT_STEP:
-      return {
-        ...state,
-        wizardForm: {
-          [action.payload.key]: {
-            ...state.wizardForm[action.payload.key],
-            currentStep: action.payload.currentStep,
-          },
-        },
-      };
-    case WIZARD_FORM_UPDATE_TOTAL_STEPS:
-      return {
-        ...state,
-        wizardForm: {
-          [action.payload.key]: {
-            ...state.wizardForm[action.payload.key],
-            totalSteps: action.payload.totalSteps,
-          },
-        },
       };
 
     default:
@@ -57,13 +46,10 @@ export const formReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
+export const UPDATE_NEW_ACCOUNT = "UPDATE_NEW_ACCOUNT";
 export const READ_COUNTRIES = "READ_COUNTRIES";
 export const READ_STATES = "READ_STATES";
 export const READ_CITIES = "READ_CITIES";
 export const READ_JOB_ROLES = "READ_JOB_ROLES";
 export const CLEAR_JOB_ROLES = "CLEAR_JOB_ROLES";
 export const READ_SECTORS = "READ_SECTORS";
-
-export const WIZARD_FORM_UPDATE_CURRENT_STEP =
-  "WIZARD_FORM_UPDATE_CURRENT_STEP";
-export const WIZARD_FORM_UPDATE_TOTAL_STEPS = "WIZARD_FORM_UPDATE_TOTAL_STEPS";

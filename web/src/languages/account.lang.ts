@@ -25,11 +25,11 @@ export const strings = {
   },
   registerCreateYourAccount: {
     eng: "Create your Account",
-    ptBr: "Crie sua Conta",
+    ptBr: "Cadastro",
   },
   registerButtonText: {
     eng: "Sign Up",
-    ptBr: "Criar Conta",
+    ptBr: "Cadastro",
   },
 
   registerInputName: {
@@ -223,5 +223,9 @@ export const strings = {
   wizardSettings: {
     eng: "Settings",
     ptBr: "Preferências",
+  },
+  wizardLocationContact: {
+    eng: "Location & Contact",
+    ptBr: "Localização e Contato",
   },
 };

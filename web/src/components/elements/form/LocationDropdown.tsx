@@ -47,11 +47,7 @@ export const LocationDropdown = ({
   // Load provinces data on country selector change
   useEffect(() => {
     const fnLoadCountryProvinces = async () => {
-      if (initialProvince === "default") {
-        dispatch(loadCountryProvinces(country, true));
-      } else {
-        dispatch(loadCountryProvinces(country));
-      }
+      dispatch(loadCountryProvinces(country));
     };
     fnLoadCountryProvinces();
   }, [country]); // should be "countries", if multiple countries are active!
@@ -119,14 +115,6 @@ export const LocationDropdown = ({
 
   const onRenderProvincesList = () => {
     return provinces.map((provinceData: IProvince, index: number) => {
-      if (index === 0) {
-        return (
-          <MenuItem key={"default"} value={"default"}>
-            {TS.string("form", "selectProvinceText")}
-          </MenuItem>
-        );
-      }
-
       return (
         <MenuItem key={provinceData.stateName} value={provinceData.stateCode}>
           {provinceData.stateCode}
@@ -174,14 +162,12 @@ export const LocationDropdown = ({
           select
           label={TS.string("form", "genericProvince")}
           onChange={onHandleProvinceChange}
-          value={province}
+          value={province || TS.string("form", "selectProvinceText")}
           fullWidth
         >
-          {!initialProvince && (
-            <MenuItem key={"default"} value={"default"}>
-              {TS.string("form", "selectProvinceText")}
-            </MenuItem>
-          )}
+          <MenuItem key={"default"} value={"default"}>
+            {TS.string("form", "selectProvinceText")}
+          </MenuItem>
 
           {onRenderProvincesList()}
         </TextField>
@@ -195,13 +181,11 @@ export const LocationDropdown = ({
           onChange={onHandleChangeCity}
           fullWidth
         >
-          {province === "default" ? (
-            <MenuItem key="default" value={"default"}>
-              {TS.string("form", "selectCityText")}
-            </MenuItem>
-          ) : (
-            onRenderCityList()
-          )}
+          <MenuItem key="default" value={"default"}>
+            {TS.string("form", "selectCityText")}
+          </MenuItem>
+
+          {onRenderCityList()}
         </TextField>
       </InputContainer>
     </>

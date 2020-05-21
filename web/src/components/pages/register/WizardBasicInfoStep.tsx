@@ -3,14 +3,16 @@ import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { TS } from '../../../helpers/LanguageHelper';
+import { updateNewAccount } from '../../../store/actions/form.actions';
 import { UserType } from '../../../types/User.types';
 import { InputContainer } from '../../elements/common/layout';
-import { LocationDropdown } from '../../elements/form/LocationDropdown';
 
 export const WizardBasicInfoStep = () => {
+  const dispatch = useDispatch();
   const [userName, setUserName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
@@ -32,10 +34,26 @@ export const WizardBasicInfoStep = () => {
 
   useEffect(() => {
     // Here we detect when the component is unmounting (basically, becoming hidden on user screen). This happens when the user click NEXT or PREVIOUS and it should save its content on redux, so we can create a payload from all steps that's going to be submitted to the server to register this user
-    return () => {
+    return async () => {
       console.log("User finished this step! Saving on redux!");
+
+      const newAccountData = {
+        name: userName,
+        email: userEmail,
+        password: userPassword,
+        passwordConfirmation: userPasswordConfirmation,
+        type: userAccountType,
+      };
+
+      await dispatch(updateNewAccount(newAccountData));
     };
-  }, []);
+  }, [
+    userName,
+    userEmail,
+    userPassword,
+    userPasswordConfirmation,
+    userAccountType,
+  ]);
 
   const handleClickShowPassword = () => {
     setUserShowPassword(!userShowPassword);
@@ -62,18 +80,27 @@ export const WizardBasicInfoStep = () => {
       <Form>
         <InputContainer>
           <TextField
+            select
+            value={userAccountType}
+            onChange={handleUserAccountTypeChange}
+            fullWidth
+            label={TS.string("account", "loginSelectAccountTypeTitle")}
+          >
+            {userAccountTypeOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {TS.string("account", `account${option}`)}
+              </MenuItem>
+            ))}
+          </TextField>
+        </InputContainer>
+        <InputContainer>
+          <TextField
             fullWidth
             label={TS.string("account", "registerInputName")}
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
           />
         </InputContainer>
-
-        <LocationDropdown
-          initialCountry={TS.string("resume", "resumeSelectedCountry")}
-          showCountry={false}
-          onChange={(e) => console.log(e)}
-        />
 
         <InputContainer>
           <TextField
@@ -108,13 +135,6 @@ export const WizardBasicInfoStep = () => {
           </FormControl>
         </InputContainer>
         <InputContainer>
-          {/* <TextField
-            fullWidth
-            type="password"
-            label={TS.string("account", "registerInputPasswordConfirmation")}
-            value={userPasswordConfirmation}
-            onChange={(e) => setUserPasswordConfirmation(e.target.value)}
-          /> */}
           <FormControl fullWidth>
             <InputLabel htmlFor="standard-adornment-password">
               {TS.string("account", "registerInputPasswordConfirmation")}
@@ -141,21 +161,6 @@ export const WizardBasicInfoStep = () => {
               }
             />
           </FormControl>
-        </InputContainer>
-        <InputContainer>
-          <TextField
-            select
-            value={userAccountType}
-            onChange={handleUserAccountTypeChange}
-            fullWidth
-            label={TS.string("account", "loginSelectAccountTypeTitle")}
-          >
-            {userAccountTypeOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                {TS.string("account", `account${option}`)}
-              </MenuItem>
-            ))}
-          </TextField>
         </InputContainer>
       </Form>
     </Container>
