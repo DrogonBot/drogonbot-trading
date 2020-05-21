@@ -8,30 +8,31 @@ import styled from 'styled-components';
 
 import { TS } from '../../../helpers/LanguageHelper';
 import { updateNewAccount } from '../../../store/actions/form.actions';
-import { UserType } from '../../../types/User.types';
+import { AppState } from '../../../store/reducers/index.reducers';
+import { INewAccount, UserType } from '../../../types/User.types';
 import { InputContainer } from '../../elements/common/layout';
 
 export const WizardBasicInfoStep = () => {
   const dispatch = useDispatch();
 
   // Fetch data from redux (this will repopulate fields even if we go next and then go back again)
-  const { name, email, password, passwordConfirmation, type } = useSelector<
-    any,
-    any
-  >((state) => state.formReducer.newAccount);
+  const reduxNewAccount: INewAccount = useSelector(
+    (state: AppState) => state.formReducer.newAccount
+  );
 
-  const [userName, setUserName] = useState<string>(name);
-  const [userEmail, setUserEmail] = useState<string>(email);
-  const [userPassword, setUserPassword] = useState<string>(password);
+  const [newAccount, setNewAccount] = useState<INewAccount>({
+    name: reduxNewAccount.name,
+    email: reduxNewAccount.email,
+    password: reduxNewAccount.password,
+    passwordConfirmation: reduxNewAccount.passwordConfirmation,
+    type: reduxNewAccount.type,
+  });
+
   const [userShowPassword, setUserShowPassword] = useState<boolean>(false);
   const [
     userShowPasswordConfirmation,
     setUserShowPasswordConfirmation,
   ] = useState<boolean>(false);
-  const [userPasswordConfirmation, setUserPasswordConfirmation] = useState<
-    string
-  >(passwordConfirmation);
-  const [userAccountType, setUserAccountType] = useState<string>(type);
 
   const userAccountTypeOptions = [UserType.JobSeeker, UserType.Company];
 
@@ -61,10 +62,13 @@ export const WizardBasicInfoStep = () => {
         <InputContainer>
           <TextField
             select
-            value={userAccountType}
+            value={newAccount.type}
             onChange={(e) => {
               dispatch(updateNewAccount("type", e.target.value));
-              setUserAccountType(e.target.value);
+              setNewAccount({
+                ...newAccount,
+                type: e.target.value,
+              });
             }}
             fullWidth
             label={TS.string("account", "loginSelectAccountTypeTitle")}
@@ -80,10 +84,15 @@ export const WizardBasicInfoStep = () => {
           <TextField
             fullWidth
             label={TS.string("account", "registerInputName")}
-            value={userName}
+            value={newAccount.name}
             onChange={(e) => {
               dispatch(updateNewAccount("name", e.target.value));
-              setUserName(e.target.value);
+              setNewAccount({
+                ...newAccount,
+                name: e.target.value,
+              });
+
+              console.log(newAccount);
             }}
           />
         </InputContainer>
@@ -92,10 +101,13 @@ export const WizardBasicInfoStep = () => {
           <TextField
             fullWidth
             label={TS.string("account", "registerInputEmail")}
-            value={userEmail}
+            value={newAccount.email}
             onChange={(e) => {
               dispatch(updateNewAccount("email", e.target.value));
-              setUserEmail(e.target.value);
+              setNewAccount({
+                ...newAccount,
+                email: e.target.value,
+              });
             }}
           />
         </InputContainer>
@@ -106,10 +118,13 @@ export const WizardBasicInfoStep = () => {
             </InputLabel>
             <Input
               type={userShowPassword ? "text" : "password"}
-              value={userPassword}
+              value={newAccount.password}
               onChange={(e) => {
                 dispatch(updateNewAccount("password", e.target.value));
-                setUserPassword(e.target.value);
+                setNewAccount({
+                  ...newAccount,
+                  password: e.target.value,
+                });
               }}
               fullWidth
               endAdornment={
@@ -133,12 +148,15 @@ export const WizardBasicInfoStep = () => {
             </InputLabel>
             <Input
               type={userShowPasswordConfirmation ? "text" : "password"}
-              value={userPasswordConfirmation}
+              value={newAccount.passwordConfirmation}
               onChange={(e) => {
                 dispatch(
                   updateNewAccount("passwordConfirmation", e.target.value)
                 );
-                setUserPasswordConfirmation(e.target.value);
+                setNewAccount({
+                  ...newAccount,
+                  passwordConfirmation: e.target.value,
+                });
               }}
               fullWidth
               endAdornment={

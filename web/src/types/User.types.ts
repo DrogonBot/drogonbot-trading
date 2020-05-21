@@ -23,10 +23,10 @@ export interface INewAccount {
   email: string;
   password: string;
   passwordConfirmation: string;
-  type: UserType;
-  country: string;
-  province: string;
-  city: string;
+  type: string;
+  country?: string;
+  province?: string;
+  city?: string;
   jobRoles?: string[];
 }
 
