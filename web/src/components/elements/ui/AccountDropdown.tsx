@@ -5,13 +5,19 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import { useRouter } from 'next/router';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { colors } from '../../../constants/UI/Colors.constant';
 import { TS } from '../../../helpers/LanguageHelper';
+import { userLogout } from '../../../store/actions/user.actions';
 
 export const AccountDropdown = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -22,8 +28,22 @@ export const AccountDropdown = () => {
     setAnchorEl(null);
   };
 
-  const renderMenuItem = (icon: JSX.Element, text: JSX.Element) => (
-    <StyledMenuItem>
+  const onHandleLogout = async () => {
+    console.log("logout");
+
+    await dispatch(userLogout());
+
+    router.push({
+      pathname: "/login",
+    });
+  };
+
+  const renderMenuItem = (
+    icon: JSX.Element,
+    text: JSX.Element,
+    handleItemAction: () => any
+  ) => (
+    <StyledMenuItem onClick={handleItemAction}>
       <ListItemIcon>{icon}</ListItemIcon>
       {text}
     </StyledMenuItem>
@@ -55,7 +75,8 @@ export const AccountDropdown = () => {
       >
         {renderMenuItem(
           <MeetingRoomIcon fontSize="small" />,
-          <ListItemText primary={TS.string("account", "logoutButtonText")} />
+          <ListItemText primary={TS.string("account", "logoutButtonText")} />,
+          onHandleLogout
         )}
         {/* {renderMenuItem(
           <DraftsIcon fontSize="small" />,

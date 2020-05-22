@@ -16,7 +16,7 @@ import { setSearchKey } from './ui.action';
 export const userLogin = (
   payload: ICredentials | IGoogleAuthPayload | IFacebookAuthPayload,
   type: AuthType = AuthType.EmailPassword
-) => async (dispatch: any) => {
+) => async (dispatch) => {
   try {
     let response;
 
@@ -60,9 +60,6 @@ export const userLogin = (
         //     message: response.data.error
         //   })
         // );
-
-        console.log(response.data.error);
-        return false;
       }
 
       if (response.status === 400) {
@@ -73,8 +70,6 @@ export const userLogin = (
         //     message: response.data.message
         //   })
         // );
-
-        return false;
       }
 
       if (response.data.token) {
@@ -83,6 +78,10 @@ export const userLogin = (
         // const user = response.data.user;
 
         await dispatch({ type: USER_LOGIN, payload: response.data });
+
+        if (process.browser) {
+          window.location.pathname = "/";
+        }
       }
     }
   } catch (error) {

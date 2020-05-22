@@ -30,7 +30,6 @@ const Login = () => {
 
   const onHandleLogin = async (e) => {
     e.preventDefault();
-    console.log(userCredentials);
     await dispatch(userLogin(userCredentials, AuthType.EmailPassword));
   };
 
