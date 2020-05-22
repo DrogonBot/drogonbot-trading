@@ -26,13 +26,15 @@ export const DesktopNav = ({ navOptions }: IProps) => {
         key={navOption.href}
       >
         <LinkActiveText customColor={navOption.customColor}>
-          {navOption.text.toUpperCase()}
+          {navOption.showIconOnDesktop && navOption.icon}
+          <div>{navOption.text.toUpperCase()}</div>
         </LinkActiveText>
       </LinkActive>
     ) : (
       <Link href={navOption.href} passHref key={navOption.href}>
         <LinkNotActive customColor={navOption.customColor}>
-          {navOption.text.toUpperCase()}
+          {navOption.showIconOnDesktop && navOption.icon}
+          <div>{navOption.text.toUpperCase()}</div>
         </LinkNotActive>
       </Link>
     );
@@ -93,6 +95,14 @@ const NavLeft = styled.div`
     font-size: 1rem;
     margin-right: 1em;
     padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      color: ${colors.menuGray};
+      font-size: 2rem;
+      margin-right: 0.4rem;
+    }
   }
 `;
 
@@ -106,6 +116,14 @@ const NavRight = styled.div`
     font-size: 1rem;
     margin-right: 1em;
     padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      color: ${colors.menuGray};
+      font-size: 2rem;
+      margin-right: 0.4rem;
+    }
   }
 `;
 

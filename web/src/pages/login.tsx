@@ -44,12 +44,14 @@ const Login = () => {
 
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <div className={classes.paper}>
-            <LogoContainer>
-              <img
-                src={`/images/logos/logo-${appEnv.language}.svg`}
-                alt="Emprego Urgente Logo"
-              />
-            </LogoContainer>
+            <Link href="/" passHref>
+              <LogoContainer>
+                <img
+                  src={`/images/logos/logo-${appEnv.language}.svg`}
+                  alt="Emprego Urgente Logo"
+                />
+              </LogoContainer>
+            </Link>
             <h1>{TS.string("account", "loginAccessYourAccount")}</h1>
             <form className={classes.form} noValidate>
               <TextField
@@ -141,6 +143,7 @@ const Container = styled.div`
 `;
 
 const LogoContainer = styled.div`
+  cursor: pointer;
   img {
     width: 170px;
     height: 90px;

@@ -20,6 +20,7 @@ export interface INavOption {
   href: string;
   text?: string;
   icon?: JSX.Element;
+  showIconOnDesktop?: boolean;
   customComponent?: JSX.Element;
   position?: NavPosition;
   customColor?: string;

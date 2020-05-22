@@ -39,19 +39,22 @@ export const Header = () => {
       primary: true,
       position: NavPosition.NavLeft,
     },
-    {
+    !user && {
+      // show only to logged out users
       href: "/register",
       text: TS.string("account", "registerButtonText"),
       icon: <AddCircleIcon />,
       primary: true,
-      position: NavPosition.NavLeft,
+      showIconOnDesktop: true,
+      position: NavPosition.NavRight,
     },
-    {
+    !user && {
       href: "/login",
       text: TS.string("account", "loginButtonText"),
       icon: <AccountCircleIcon />,
       primary: true,
-      position: NavPosition.NavLeft,
+      showIconOnDesktop: true,
+      position: NavPosition.NavRight,
     },
     {
       href: "/advertise",
@@ -59,7 +62,7 @@ export const Header = () => {
       icon: <PostAddIcon />,
       primary: true,
       customColor: colors.accent,
-      position: NavPosition.NavRight,
+      position: NavPosition.NavLeft,
     },
     user && {
       // Only show this option on logged in users
