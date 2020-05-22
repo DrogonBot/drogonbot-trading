@@ -7,13 +7,14 @@ import withRedux from 'next-redux-wrapper';
 import App from 'next/app';
 import React from 'react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import { LinearLoadingTop } from '../components/elements/ui/LinearLoadingTop';
 import { RouterEventsWatcher } from '../components/elements/ui/RouterEvents';
 import { NextSEOApp } from '../components/seo/NextSEOApp';
 import { MUITheme } from '../constants/UI/Theme.constant';
 import { GAnalyticsHelper } from '../helpers/GAnalyticsHelper';
-import { store } from '../store/reducers/store';
+import { persistor, store } from '../store/reducers/store';
 
 // React slick carousel
 class MyApp extends App {
@@ -36,20 +37,35 @@ class MyApp extends App {
     return { pageProps };
   }
 
-  public render() {
-    // pageProps that were returned  from 'getInitialProps' are stored in the props i.e. pageprops
-    // @ts-ignore
-    const { Component, pageProps, store: initialStore } = this.props;
-
+  private _renderRootComponents(Component: JSX.Element) {
     return (
-      <Provider store={initialStore}>
+      <>
         <NextSEOApp />
         <RouterEventsWatcher />
         <ThemeProvider theme={MUITheme}>
           <LinearLoadingTop />
 
-          <Component {...pageProps} />
+          {Component}
         </ThemeProvider>
+      </>
+    );
+  }
+
+  public render() {
+    // pageProps that were returned  from 'getInitialProps' are stored in the props i.e. pageprops
+    // @ts-ignore
+    const { Component, pageProps, store: initialStore } = this.props;
+
+    // Here we load redux persist only if we are in a browser! If not, we dont need to run it!
+    return (
+      <Provider store={initialStore}>
+        {process.browser ? (
+          <PersistGate loading={null} persistor={persistor}>
+            {this._renderRootComponents(<Component {...pageProps} />)}
+          </PersistGate>
+        ) : (
+          <>{this._renderRootComponents(<Component {...pageProps} />)}</>
+        )}
       </Provider>
     );
   }
