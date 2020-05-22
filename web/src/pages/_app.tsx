@@ -64,7 +64,7 @@ class MyApp extends App {
             {this._renderRootComponents(<Component {...pageProps} />)}
           </PersistGate>
         ) : (
-          <>{this._renderRootComponents(<Component {...pageProps} />)}</>
+          this._renderRootComponents(<Component {...pageProps} />)
         )}
       </Provider>
     );
