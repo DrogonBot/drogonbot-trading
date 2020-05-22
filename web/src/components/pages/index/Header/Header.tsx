@@ -6,13 +6,16 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import SubjectIcon from '@material-ui/icons/Subject';
 import VpnLockIcon from '@material-ui/icons/VpnLock';
 import WorkIcon from '@material-ui/icons/Work';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { appEnv } from '../../../../constants/Env.constant';
 import { colors } from '../../../../constants/UI/Colors.constant';
 import { ContainerDesktop, ContainerMobile } from '../../../../constants/UI/Common.constant';
 import { TS } from '../../../../helpers/LanguageHelper';
+import { AppState } from '../../../../store/reducers/index.reducers';
 import { INavOption, NavPosition } from '../../../../types/UI.types';
+import { IUser } from '../../../../types/User.types';
 import { DesktopNav } from './DesktopNav';
 import MobileNav from './MobileNav';
 
@@ -90,8 +93,11 @@ export const Header = () => {
     // },
   ];
 
+  const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
+
   return (
     <Container>
+      <span>User name: {user?.name}</span>
       <ContainerDesktop>
         <DesktopNav navOptions={navOptions} />
       </ContainerDesktop>

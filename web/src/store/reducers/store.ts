@@ -6,23 +6,37 @@ import thunk from 'redux-thunk';
 
 import rootReducer from './index.reducers';
 
-const persistConfig = {
-  key: "root",
-  storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 const middlewares = [thunk];
 
-const store = createStore(
-  persistedReducer,
-  composeWithDevTools(
-    applyMiddleware(...middlewares)
-    // other store enhancers if any
-  )
-);
+const isClient = process.browser;
 
-const persistor = persistStore(store);
+let store;
 
-export { store, persistor };
+if (isClient) {
+  const persistConfig = {
+    key: "root",
+    storage,
+  };
+
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+  store = createStore(
+    persistedReducer,
+    composeWithDevTools(
+      applyMiddleware(...middlewares)
+      // other store enhancers if any
+    )
+  );
+
+  store.__PERSISTOR = persistStore(store);
+} else {
+  store = createStore(
+    rootReducer,
+    composeWithDevTools(
+      applyMiddleware(...middlewares)
+      // other store enhancers if any
+    )
+  );
+}
+
+export { store };

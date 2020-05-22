@@ -14,9 +14,8 @@ import { RouterEventsWatcher } from '../components/elements/ui/RouterEvents';
 import { NextSEOApp } from '../components/seo/NextSEOApp';
 import { MUITheme } from '../constants/UI/Theme.constant';
 import { GAnalyticsHelper } from '../helpers/GAnalyticsHelper';
-import { persistor, store } from '../store/reducers/store';
+import { store } from '../store/reducers/store';
 
-// React slick carousel
 class MyApp extends App {
   public componentDidMount() {
     // @ts-ignore
@@ -37,14 +36,13 @@ class MyApp extends App {
     return { pageProps };
   }
 
-  private _renderRootComponents(Component: JSX.Element) {
+  private _renderRootComponent(Component: JSX.Element) {
     return (
       <>
         <NextSEOApp />
         <RouterEventsWatcher />
         <ThemeProvider theme={MUITheme}>
           <LinearLoadingTop />
-
           {Component}
         </ThemeProvider>
       </>
@@ -56,17 +54,19 @@ class MyApp extends App {
     // @ts-ignore
     const { Component, pageProps, store: initialStore } = this.props;
 
-    // Here we load redux persist only if we are in a browser! If not, we dont need to run it!
+    // Here we load redux PersistGate only if we are in a browser! If not, we dont need to run it!
     return (
-      <Provider store={initialStore}>
-        {process.browser ? (
-          <PersistGate loading={null} persistor={persistor}>
-            {this._renderRootComponents(<Component {...pageProps} />)}
-          </PersistGate>
-        ) : (
-          this._renderRootComponents(<Component {...pageProps} />)
-        )}
-      </Provider>
+      <div suppressHydrationWarning={true}>
+        <Provider store={initialStore}>
+          {process.browser ? (
+            <PersistGate loading={null} persistor={store.__PERSISTOR}>
+              {this._renderRootComponent(<Component {...pageProps} />)}
+            </PersistGate>
+          ) : (
+            this._renderRootComponent(<Component {...pageProps} />)
+          )}
+        </Provider>
+      </div>
     );
   }
 }
