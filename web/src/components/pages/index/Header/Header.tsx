@@ -61,7 +61,7 @@ export const Header = () => {
       text: TS.string("global", "genericAdvertise"),
       icon: <PostAddIcon />,
       primary: true,
-      customColor: colors.accent,
+      // customColor: colors.accent,
       position: NavPosition.NavLeft,
     },
     user && {

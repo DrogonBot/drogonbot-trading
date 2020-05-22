@@ -25,8 +25,8 @@ export const DesktopNav = ({ navOptions }: IProps) => {
         passHref
         key={navOption.href}
       >
+        {navOption.showIconOnDesktop && navOption.icon}
         <LinkActiveText customColor={navOption.customColor}>
-          {navOption.showIconOnDesktop && navOption.icon}
           <div>{navOption.text.toUpperCase()}</div>
         </LinkActiveText>
       </LinkActive>
@@ -90,7 +90,7 @@ const NavLeft = styled.div`
   display: flex;
   a {
     text-decoration: none;
-    color: ${colors.menuGray};
+
     font-weight: 500;
     font-size: 1rem;
     margin-right: 1em;
@@ -99,7 +99,6 @@ const NavLeft = styled.div`
     justify-content: center;
     align-items: center;
     svg {
-      color: ${colors.menuGray};
       font-size: 2rem;
       margin-right: 0.4rem;
     }
@@ -111,7 +110,7 @@ const NavRight = styled.div`
   justify-content: flex-end;
   a {
     text-decoration: none;
-    color: ${colors.menuGray};
+
     font-weight: 500;
     font-size: 1rem;
     margin-right: 1em;
@@ -120,7 +119,6 @@ const NavRight = styled.div`
     justify-content: center;
     align-items: center;
     svg {
-      color: ${colors.menuGray};
       font-size: 2rem;
       margin-right: 0.4rem;
     }
