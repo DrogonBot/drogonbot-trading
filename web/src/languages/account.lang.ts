@@ -44,6 +44,10 @@ export const strings = {
     eng: "Email",
     ptBr: "Email",
   },
+  accountMyAccount: {
+    eng: "My Account",
+    ptBr: "Minha Conta",
+  },
   accountJobSeeker: {
     eng: "Job Seeker",
     ptBr: "Candidato",

@@ -1,0 +1,112 @@
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Menu, { MenuProps } from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import React from 'react';
+import styled from 'styled-components';
+
+import { colors } from '../../../constants/UI/Colors.constant';
+import { TS } from '../../../helpers/LanguageHelper';
+
+export const AccountDropdown = () => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const renderMenuItem = (icon: JSX.Element, text: JSX.Element) => (
+    <StyledMenuItem>
+      <ListItemIcon>{icon}</ListItemIcon>
+      {text}
+    </StyledMenuItem>
+  );
+
+  return (
+    <>
+      <AccountButton onClick={handleClick}>
+        <AccountCircleIcon />
+        <AccountButtonText>
+          {TS.string("account", "accountMyAccount").toUpperCase()}
+        </AccountButtonText>
+      </AccountButton>
+      {/* <Button
+        aria-controls="customized-menu"
+        aria-haspopup="true"
+        variant="contained"
+        color="primary"
+        onClick={handleClick}
+      >
+        Open Menu
+      </Button> */}
+      <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        {renderMenuItem(
+          <MeetingRoomIcon fontSize="small" />,
+          <ListItemText primary={TS.string("account", "logoutButtonText")} />
+        )}
+        {/* {renderMenuItem(
+          <DraftsIcon fontSize="small" />,
+          <ListItemText primary="Drafts" />
+        )} */}
+      </StyledMenu>
+    </>
+  );
+};
+
+const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #d3d4d5",
+  },
+})((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "center",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "center",
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {},
+}))(MenuItem);
+
+const AccountButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    color: ${colors.menuGray};
+    font-size: 2rem;
+    margin-right: 0.4rem;
+  }
+`;
+
+const AccountButtonText = styled.div`
+  color: ${colors.menuGray};
+  text-align: center;
+  font-weight: 500;
+  font-size: 1rem;
+`;

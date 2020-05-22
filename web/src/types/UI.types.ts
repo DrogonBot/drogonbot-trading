@@ -18,8 +18,9 @@ export enum NavPosition {
 
 export interface INavOption {
   href: string;
-  text: string;
-  icon: JSX.Element;
+  text?: string;
+  icon?: JSX.Element;
+  customComponent?: JSX.Element;
   position?: NavPosition;
   customColor?: string;
   primary?: boolean;

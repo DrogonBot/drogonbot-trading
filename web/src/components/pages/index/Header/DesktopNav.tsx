@@ -12,7 +12,11 @@ interface IProps {
 export const DesktopNav = ({ navOptions }: IProps) => {
   const { asPath } = useRouter();
 
-  const renderLink = (navOption: INavOption) => {
+  const renderComponent = (navOption: INavOption) => {
+    if (navOption.customComponent) {
+      return navOption.customComponent;
+    }
+
     return asPath.includes(navOption.href) ||
       (asPath === "/" && navOption.href === "/") ? (
       <LinkActive
@@ -37,21 +41,21 @@ export const DesktopNav = ({ navOptions }: IProps) => {
   const onRenderOptions = (navPosition: NavPosition) => {
     const filteredOptions = navOptions.filter(
       (option) =>
-        (!option.mobileOnly || option.desktopOnly) &&
-        option.position === navPosition
+        (!option?.mobileOnly || option?.desktopOnly) &&
+        option?.position === navPosition
     );
 
     switch (navPosition) {
       case NavPosition.NavLeft:
         return (
           <NavLeft>
-            {filteredOptions.map((navOption) => renderLink(navOption))}
+            {filteredOptions.map((navOption) => renderComponent(navOption))}
           </NavLeft>
         );
       case NavPosition.NavRight:
         return (
           <NavRight>
-            {filteredOptions.map((navOption) => renderLink(navOption))}
+            {filteredOptions.map((navOption) => renderComponent(navOption))}
           </NavRight>
         );
     }
@@ -64,22 +68,6 @@ export const DesktopNav = ({ navOptions }: IProps) => {
       <Nav>
         {onRenderOptions(NavPosition.NavLeft)}
         {onRenderOptions(NavPosition.NavRight)}
-
-        {/* <NavRight>
-          <a href="#">
-            <i className="fa fa-th" aria-hidden="true" />
-          </a>
-          <a href="#">
-            <i className="fa fa-bell" aria-hidden="true" />
-          </a>
-          <a href="#">
-            <img
-              src="images/rsz_google-profile-picture.jpg"
-              id="profile-picture"
-              alt="Sample google profile picture"
-            />
-          </a>
-        </NavRight> */}
       </Nav>
     </HeaderContainer>
   );
@@ -100,11 +88,11 @@ const NavLeft = styled.div`
   display: flex;
   a {
     text-decoration: none;
-    color: #757575;
+    color: ${colors.menuGray};
     font-weight: 500;
     font-size: 1rem;
     margin-right: 1em;
-    padding: 1em 1em 0.5em 0.5em;
+    padding: 1rem;
   }
 `;
 
@@ -113,11 +101,11 @@ const NavRight = styled.div`
   justify-content: flex-end;
   a {
     text-decoration: none;
-    color: #757575;
+    color: ${colors.menuGray};
     font-weight: 500;
     font-size: 1rem;
     margin-right: 1em;
-    padding: 1em 1em 0.5em 0.5em;
+    padding: 1rem;
   }
 `;
 
@@ -129,15 +117,9 @@ const LinkActive = styled.a`
 
 const LinkActiveText = styled.span`
   color: ${(props) => (props.customColor ? props.customColor : colors.primary)};
-  position: relative;
-  top: -0.6em;
-  left: 0.2em;
 `;
 
 const LinkNotActive = styled.a`
-  position: relative;
-  top: -0.6em;
-  left: 0.2em;
   color: ${(props) =>
-    props.customColor ? props.customColor : colors.textGray};
+    props.customColor ? props.customColor : colors.menuGray};
 `;

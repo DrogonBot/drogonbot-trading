@@ -16,10 +16,13 @@ import { TS } from '../../../../helpers/LanguageHelper';
 import { AppState } from '../../../../store/reducers/index.reducers';
 import { INavOption, NavPosition } from '../../../../types/UI.types';
 import { IUser } from '../../../../types/User.types';
+import { AccountDropdown } from '../../../elements/ui/AccountDropdown';
 import { DesktopNav } from './DesktopNav';
 import MobileNav from './MobileNav';
 
 export const Header = () => {
+  const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
+
   // options that will be displayed on both navlinks (desktop) and leftDrawer (mobile)
   const navOptions: INavOption[] = [
     {
@@ -58,6 +61,15 @@ export const Header = () => {
       customColor: colors.accent,
       position: NavPosition.NavRight,
     },
+    user && {
+      // Only show this option on logged in users
+      href: "/account",
+      customComponent: <AccountDropdown key="account-dropdown" />,
+      primary: true,
+      customColor: colors.accent,
+      position: NavPosition.NavRight,
+      desktopOnly: true,
+    },
 
     // {
     //   href: "/register",
@@ -93,11 +105,8 @@ export const Header = () => {
     // },
   ];
 
-  const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
-
   return (
     <Container>
-      <span>User name: {user?.name}</span>
       <ContainerDesktop>
         <DesktopNav navOptions={navOptions} />
       </ContainerDesktop>

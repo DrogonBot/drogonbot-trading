@@ -55,7 +55,8 @@ export default function MobileNav({ navOptions }: IProps) {
   const onRenderSideListItems = (primary?: boolean) => {
     const filteredOptions = navOptions.filter(
       (option) =>
-        (!option.desktopOnly || option.mobileOnly) && option.primary === primary
+        (!option?.desktopOnly || option?.mobileOnly) &&
+        option?.primary === primary
     );
 
     return filteredOptions.map((navOption, index) => {

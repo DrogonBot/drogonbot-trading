@@ -25,4 +25,5 @@ export const colors = {
   secondaryGray: "rgba(0,0,0,0.14)",
   whatsappGreen: "#25D366",
   facebookBlue: "#4064AD",
+  menuGray: "#757575",
 };
