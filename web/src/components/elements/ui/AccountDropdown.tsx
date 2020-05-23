@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { colors } from '../../../constants/UI/Colors.constant';
+import { ContainerDesktop } from '../../../constants/UI/Common.constant';
 import { TS } from '../../../helpers/LanguageHelper';
 import { userLogout } from '../../../store/actions/user.actions';
 
@@ -53,9 +54,11 @@ export const AccountDropdown = () => {
     <>
       <AccountButton onClick={handleClick}>
         <AccountCircleIcon />
-        <AccountButtonText>
-          {TS.string("account", "accountMyAccount").toUpperCase()}
-        </AccountButtonText>
+        <ContainerDesktop>
+          <AccountButtonText>
+            {TS.string("account", "accountMyAccount").toUpperCase()}
+          </AccountButtonText>
+        </ContainerDesktop>
       </AccountButton>
       {/* <Button
         aria-controls="customized-menu"

@@ -11,6 +11,7 @@ import styled from 'styled-components';
 
 import { colors } from '../../../../constants/UI/Colors.constant';
 import { INavOption } from '../../../../types/UI.types';
+import { AccountDropdown } from '../../../elements/ui/AccountDropdown';
 
 const useStyles = makeStyles({
   list: {
@@ -96,7 +97,7 @@ export default function MobileNav({ navOptions }: IProps) {
   );
 
   return (
-    <React.Fragment key={"left"}>
+    <Container key={"left"}>
       <HamburgerIcon>
         <MenuIcon onClick={toggleDrawer("left", true)} />
       </HamburgerIcon>
@@ -109,9 +110,20 @@ export default function MobileNav({ navOptions }: IProps) {
       >
         {sideList("left")}
       </SwipeableDrawer>
-    </React.Fragment>
+
+      <AccountDropdownContainer>
+        <AccountDropdown />
+      </AccountDropdownContainer>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
 const HamburgerIcon = styled.div`
   padding: 1rem;
@@ -121,4 +133,12 @@ const HamburgerIcon = styled.div`
     font-size: 2rem;
     cursor: pointer;
   }
+`;
+
+const AccountDropdownContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding-right: 0.5rem;
 `;
