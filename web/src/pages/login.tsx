@@ -15,6 +15,7 @@ import { Copyright } from '../components/pages/login/Copyright';
 import { appEnv } from '../constants/Env.constant';
 import { colors } from '../constants/UI/Colors.constant';
 import { TS } from '../helpers/LanguageHelper';
+import { ValidationHelper } from '../helpers/ValidationHelper';
 import { userLogin } from '../store/actions/user.actions';
 import { AuthType, ICredentials } from '../types/User.types';
 
@@ -30,6 +31,31 @@ const Login = () => {
 
   const onHandleLogin = async (e) => {
     e.preventDefault();
+
+    // CLIENT-SIDE VALIDATION ========================================
+
+    const invalidFields = ValidationHelper.validateKeyValue(userCredentials, {
+      optionalFields: [],
+      fieldLabels: {
+        email: TS.string("account", "registerInputEmail"),
+        password: TS.string("account", "passwordInput"),
+      },
+    });
+
+    if (invalidFields) {
+      if (process.browser) {
+        window.alert(
+          `${TS.string(
+            "global",
+            "genericFollowingFieldsInvalid"
+          )} ${invalidFields}`
+        );
+      }
+      return;
+    }
+
+    // Login user
+
     await dispatch(userLogin(userCredentials, AuthType.EmailPassword));
   };
 
