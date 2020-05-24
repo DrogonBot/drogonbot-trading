@@ -13,7 +13,6 @@ const rootReducerPersistConfig = {
   whitelist: ["userReducer"],
 };
 
-// # Todo: comment in
 // const resumePersistConfig = {
 //   key: "resumeReducer",
 //   storage,

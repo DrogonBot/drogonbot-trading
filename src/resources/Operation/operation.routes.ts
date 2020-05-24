@@ -286,28 +286,6 @@ operationRouter.get('/sendinblue', [userAuthMiddleware, UserMiddleware.restrictU
 });
 
 
-operationRouter.get('/set-post-views', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  try {
-    const posts = await Post.find({});
-
-    for (const post of posts) {
-      post.views = 0;
-      await post.save();
-    }
-    return res.status(200).send({
-      status: 'ok'
-    })
-  }
-  catch (error) {
-    console.error(error);
-
-  }
-
-
-});
-
-
 operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
   try {
