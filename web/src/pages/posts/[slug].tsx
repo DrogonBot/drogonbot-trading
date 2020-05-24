@@ -24,7 +24,7 @@ import Linkify from 'react-linkify';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 
-import { PageContainer } from '../../components/elements/common/layout';
+import { Body, PageContainer } from '../../components/elements/common/layout';
 import { AffiliateProductCard } from '../../components/elements/ui/AffiliateProductCard';
 import { AlertModal } from '../../components/elements/ui/AlertModal';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
@@ -299,7 +299,7 @@ const IndividualPage = ({
   return (
     <>
       <Header />
-      <PostContainer>
+      <Body>
         <NextSEOPost
           jobRole={post.jobRoles[0] || post.title}
           title={post.title}
@@ -479,7 +479,7 @@ const IndividualPage = ({
         </InternalContainer>
 
         {onShowWhatsAppLeadCaptureAlert()}
-      </PostContainer>
+      </Body>
       <Footer />
     </>
   );
@@ -518,8 +518,6 @@ IndividualPage.getInitialProps = async (ctx) => {
 };
 
 export default IndividualPage;
-
-const PostContainer = styled.div``;
 
 const InternalContainer = styled.div`
   padding: 1.5rem;

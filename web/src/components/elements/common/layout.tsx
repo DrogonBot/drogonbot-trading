@@ -16,6 +16,7 @@ export const PageContainer = styled.div`
 export const Body = styled.main`
   flex: 100%;
   min-height: 80%;
+  max-width: 100%;
 `;
 
 export const PageContent = styled.div`
