@@ -171,7 +171,7 @@ export const strings = {
     ptBr: "Nosso sistema encontrou uma vaga que provavelmente lhe interessa:"
   },
   jobsNotificationClosing: {
-    eng: `We suggest that you <a href="{{postUrl}}">apply immediately through the <strong>RED BUTTON</strong> at the top of the post.</a>,
+    eng: `We suggest that you <a href="{{postUrl}}">apply immediately through the <strong>red button</strong> at the top of the post.</a>,
          because generally the first candidates have higher
          chances of getting an interview.
     <br />
@@ -187,7 +187,7 @@ Good Luck!
 
     `,
     ptBr: `Sugerimos que <a href="{{postUrl}}">aplique imediatamente através do <strong>
-    BOTÃO VERMELHO no topo do post</strong></a>,
+    botão vermelho</strong>no topo do post</a>,
     pois geralmente os primeiros candidatos têm maiores
     chances de conseguir uma entrevista.
 
@@ -205,7 +205,7 @@ Good Luck!
     `
   },
   jobsNotificationClosing2: {
-    eng: `We advice that you <a href="{{postUrl}}">apply immediately through the <strong>RED BUTTON</strong> at the top of the post.</a>,
+    eng: `We advice that you <a href="{{postUrl}}">apply immediately through the <strong>red button</strong> at the top of the post.</a>,
          because generally the first candidates have higher
          chances of getting an interview.
 
@@ -224,7 +224,7 @@ Good Luck!
 
     `,
     ptBr: `Sugerimos fortemente que <a href="{{postUrl}}">aplique imediatamente através do <strong>
-    BOTÃO VERMELHO no topo do post</strong></a>,
+    botão vermelho</strong>no topo do post</a>,
     pois geralmente os primeiros candidatos têm maiores
     chances de conseguir uma entrevista.
 
