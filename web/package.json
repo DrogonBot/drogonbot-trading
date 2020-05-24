@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm rebuild node-sass && next -p 3003",
+    "dev": "next -p 3003",
     "build": "next build",
-    "start": "npm rebuild node-sass && next start -p 3003",
+    "start": "next start -p 3003",
     "lint": "tslint './src/**/*.{ts,tsx}' --fix",
     "tslint-check": "tslint-config-prettier-check ./tslint.json"
   },
@@ -39,7 +39,6 @@
     "next-redux-wrapper": "^5.0.0",
     "next-seo": "^4.4.0",
     "nextjs-sitemap-generator": "^0.5.0",
-    "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-ga": "^2.7.0",

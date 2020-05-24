@@ -1,4 +1,6 @@
-import '../styles/app.scss';
+import '../styles/animations.css';
+import '../styles/index.css';
+import '../styles/normalize.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
