@@ -32,6 +32,7 @@ const uiPersistConfig = {
 //   userReducer,
 // });
 
+// combine reducers
 const rootReducer = combineReducers({
   uiReducer: persistReducer(uiPersistConfig, uiReducer),
   userReducer,
