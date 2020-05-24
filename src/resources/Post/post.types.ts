@@ -72,5 +72,6 @@ export interface IPost {
   owner: Object,
   createdAt: string,
   updatedAt: string,
-  active: boolean
+  active: boolean,
+  views: number
 }

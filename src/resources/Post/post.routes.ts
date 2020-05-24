@@ -25,10 +25,7 @@ postRouter.get('/post', async (req, res) => {
   // Fetching one post only ========================================
 
   if (id || slug) {
-
-
     try {
-
 
       const prePostQuery = {
         _id: req.query.id,
@@ -46,6 +43,11 @@ postRouter.get('/post', async (req, res) => {
       })
 
       if (post) {
+
+        // add new view to this post
+        post.views += 1;
+        await post.save();
+
         return res.status(200).send(post)
       } else {
         return res.status(401).send({
