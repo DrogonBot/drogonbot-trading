@@ -8,8 +8,8 @@ import { TS } from '../../../helpers/LanguageHelper';
 
 export const Footer = () => {
   return (
-    <ContainerDesktop>
-      <FooterContainer>
+    <FooterContainer>
+      <ContainerDesktop>
         <FooterLeft>
           <Link href={"/privacy?language=" + appEnv.language} passHref>
             <a>{TS.string("global", "genericPrivacyPolicy")}</a>
@@ -20,9 +20,9 @@ export const Footer = () => {
           <Link href={"/about?language=" + appEnv.language} passHref>
             <a>{TS.string("global", "genericAbout")}</a>
           </Link>
-          {/* <Link href={"/dmca?language=" + appEnv.language} passHref>
+          <Link href={"/dmca?language=" + appEnv.language} passHref>
             <a>DMCA</a>
-          </Link> */}
+          </Link>
         </FooterLeft>
 
         {/* <FooterRight className="footer-right">
@@ -30,8 +30,8 @@ export const Footer = () => {
         <a href="#">Business</a>
         <a href="#">Setting</a>
       </FooterRight> */}
-      </FooterContainer>
-    </ContainerDesktop>
+      </ContainerDesktop>
+    </FooterContainer>
   );
 };
 
@@ -40,6 +40,7 @@ const FooterLeft = styled.div`
   padding: 0.5em;
   display: flex;
   justify-content: flex-start;
+  margin-top: 0.7rem;
 `;
 
 // const FooterRight = styled.div`
@@ -50,7 +51,7 @@ const FooterLeft = styled.div`
 // `;
 
 const FooterContainer = styled.footer`
-  width: 100%;
+  flex: 100%;
   max-width: 100%;
   margin-top: 2rem;
 

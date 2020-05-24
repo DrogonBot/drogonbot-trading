@@ -1,6 +1,4 @@
-import styled from 'styled-components';
-
-import { PageBody, PageContainer } from '../components/elements/common/layout';
+import { Body, PageContainer, PageContent } from '../components/elements/common/layout';
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
@@ -16,29 +14,28 @@ const Advertise = ({ provinces }: IProps) => {
   return (
     <>
       <Header />
-      <PageContainer>
-        <SearchTop provinces={provinces} />
-      </PageContainer>
 
       <Body>
         <PageContainer>
-          <PageBody>
-            <h1>Anuncie sua Vaga</h1>
-
-            <p>
-              Assine nosso plano empresa por R$59.90/mês e anuncie quantas vagas
-              quiser, em destaque! Divulgamos para você, em todos nossos canais
-              (WhatsApp, redes sociais e e-mail).
-            </p>
-
-            <p>
-              Se interessou? Envie um e-mail para{" "}
-              <a href="mailto:admin@empregourgente.com">
-                admin@empregourgente.com
-              </a>
-            </p>
-          </PageBody>
+          <SearchTop provinces={provinces} />
         </PageContainer>
+
+        <PageContent>
+          <h1>Anuncie sua Vaga</h1>
+
+          <p>
+            Assine nosso plano empresa por R$59.90/mês e anuncie quantas vagas
+            quiser, em destaque! Divulgamos para você, em todos nossos canais
+            (WhatsApp, redes sociais e e-mail).
+          </p>
+
+          <p>
+            Se interessou? Envie um e-mail para{" "}
+            <a href="mailto:admin@empregourgente.com">
+              admin@empregourgente.com
+            </a>
+          </p>
+        </PageContent>
       </Body>
       <Footer />
     </>
@@ -55,7 +52,3 @@ Advertise.getInitialProps = async (ctx) => {
 };
 
 export default Advertise;
-
-export const Body = styled.div`
-  min-height: 68.4vh;
-`;

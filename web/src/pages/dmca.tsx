@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
-import { PageBody, PageContainer } from '../components/elements/common/layout';
+import { Body, PageContainer, PageContent } from '../components/elements/common/layout';
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
@@ -189,17 +189,16 @@ const About = ({ provinces }: IProps) => {
         );
     }
   };
+
   return (
     <>
       <Header />
-      <PageContainer>
-        <SearchTop provinces={provinces} />
-      </PageContainer>
 
       <Body>
         <PageContainer>
-          <PageBody>{onRenderAboutUsPage()}</PageBody>
+          <SearchTop provinces={provinces} />
         </PageContainer>
+        <PageContent>{onRenderAboutUsPage()}</PageContent>
       </Body>
       <Footer />
     </>
@@ -216,10 +215,6 @@ About.getInitialProps = async (ctx) => {
 };
 
 export default About;
-
-export const Body = styled.div`
-  min-height: 68.4vh;
-`;
 
 const Li = styled.li`
   line-height: 1.6;

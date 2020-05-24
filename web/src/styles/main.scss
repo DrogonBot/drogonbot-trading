@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-html {
+html{
   font-size: small;
 }
 
@@ -20,6 +20,9 @@ body {
   padding: 0;
 }
 
+html, body, #__next  {
+  height: 100%;
+}
 
 h3 {
 margin-top: 20px;

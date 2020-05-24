@@ -157,6 +157,7 @@ const Login = () => {
 export default Login;
 
 const Container = styled.div`
+  flex: 100%;
   h1 {
     color: ${colors.dark};
   }
@@ -185,7 +186,7 @@ const ImageOverlay = styled.div`
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: "100%",
   },
   image: {
     backgroundImage: "url(https://source.unsplash.com/1600x900/?jobs)",

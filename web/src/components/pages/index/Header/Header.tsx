@@ -120,4 +120,6 @@ export const Header = () => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  flex: 100%;
+`;

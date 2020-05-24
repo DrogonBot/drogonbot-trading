@@ -1,16 +1,13 @@
 import { useRouter } from 'next/router';
 
-import { PageBody, PageContainer } from '../components/elements/common/layout';
+import { Body, PageContainer, PageContent } from '../components/elements/common/layout';
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
 import { appEnv } from '../constants/Env.constant';
-import { colors } from '../constants/UI/Colors.constant';
 import { loadCountryProvinces } from '../store/actions/form.actions';
 import { IProvince } from '../types/Form.types';
 import { AvailableLanguages } from '../types/Global.types';
-
-colors;
 
 interface IProps {
   provinces: IProvince[];
@@ -986,13 +983,13 @@ const Terms = ({ provinces }: IProps) => {
   return (
     <>
       <Header />
-      <PageContainer>
-        <SearchTop provinces={provinces} />
-      </PageContainer>
 
-      <PageContainer>
-        <PageBody>{onRenderTermsText()}</PageBody>
-      </PageContainer>
+      <Body>
+        <PageContainer>
+          <SearchTop provinces={provinces} />
+        </PageContainer>
+        <PageContent>{onRenderTermsText()}</PageContent>
+      </Body>
       <Footer />
     </>
   );

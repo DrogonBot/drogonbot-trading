@@ -9,7 +9,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { PageBody, PageContainer } from '../components/elements/common/layout';
+import { Body, PageContainer, PageContent } from '../components/elements/common/layout';
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
@@ -165,81 +165,77 @@ const Register = ({ provinces, jobRoles }: IProps) => {
   return (
     <>
       <Header />
-      <PageContainer>
-        <SearchTop provinces={provinces} />
-      </PageContainer>
 
       <Body>
         <PageContainer>
-          <PageBody>
-            <h1>{TS.string("account", "registerCreateYourAccount")}</h1>
+          <SearchTop provinces={provinces} />
+        </PageContainer>
+        <PageContent>
+          <h1>{TS.string("account", "registerCreateYourAccount")}</h1>
 
-            <WizardContainer className={classes.root}>
-              <StepperContainer>
-                <Stepper activeStep={activeStep}>
-                  {steps.map((label, index) => {
-                    const stepProps: { completed?: boolean } = {};
-                    const labelProps: { optional?: React.ReactNode } = {};
-                    if (isStepOptional(index)) {
-                      labelProps.optional = (
-                        <Typography variant="caption">
-                          {TS.string("global", "genericOptional")}
-                        </Typography>
-                      );
-                    }
-                    if (isStepSkipped(index)) {
-                      stepProps.completed = false;
-                    }
-                    return (
-                      <Step key={label} {...stepProps}>
-                        <StepLabel {...labelProps}>{label}</StepLabel>
-                      </Step>
+          <WizardContainer className={classes.root}>
+            <StepperContainer>
+              <Stepper activeStep={activeStep}>
+                {steps.map((label, index) => {
+                  const stepProps: { completed?: boolean } = {};
+                  const labelProps: { optional?: React.ReactNode } = {};
+                  if (isStepOptional(index)) {
+                    labelProps.optional = (
+                      <Typography variant="caption">
+                        {TS.string("global", "genericOptional")}
+                      </Typography>
                     );
-                  })}
-                </Stepper>
-              </StepperContainer>
-              <>
-                <WizardContentContainer>
-                  {getStepContent(activeStep)}
-                </WizardContentContainer>
+                  }
+                  if (isStepSkipped(index)) {
+                    stepProps.completed = false;
+                  }
+                  return (
+                    <Step key={label} {...stepProps}>
+                      <StepLabel {...labelProps}>{label}</StepLabel>
+                    </Step>
+                  );
+                })}
+              </Stepper>
+            </StepperContainer>
+            <>
+              <WizardContentContainer>
+                {getStepContent(activeStep)}
+              </WizardContentContainer>
 
-                <WizardActionsContainer>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    className={classes.button}
-                  >
-                    {TS.string("account", "wizardBack")}
-                  </Button>
-                  {isStepOptional(activeStep) && (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={handleSkip}
-                      className={classes.button}
-                    >
-                      {TS.string("account", "wizardSkip")}
-                    </Button>
-                  )}
+              <WizardActionsContainer>
+                <Button
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  className={classes.button}
+                >
+                  {TS.string("account", "wizardBack")}
+                </Button>
+                {isStepOptional(activeStep) && (
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={
-                      activeStep === steps.length - 1
-                        ? handleFinish
-                        : handleNext
-                    }
+                    onClick={handleSkip}
                     className={classes.button}
                   >
-                    {activeStep === steps.length - 1
-                      ? TS.string("account", "wizardFinish")
-                      : TS.string("account", "wizardNext")}
+                    {TS.string("account", "wizardSkip")}
                   </Button>
-                </WizardActionsContainer>
-              </>
-            </WizardContainer>
-          </PageBody>
-        </PageContainer>
+                )}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={
+                    activeStep === steps.length - 1 ? handleFinish : handleNext
+                  }
+                  className={classes.button}
+                >
+                  {activeStep === steps.length - 1
+                    ? TS.string("account", "wizardFinish")
+                    : TS.string("account", "wizardNext")}
+                </Button>
+              </WizardActionsContainer>
+            </>
+          </WizardContainer>
+        </PageContent>
       </Body>
       <Footer />
     </>
@@ -261,10 +257,6 @@ Register.getInitialProps = async (ctx) => {
 };
 
 export default Register;
-
-const Body = styled.div`
-  min-height: 68.4vh;
-`;
 
 const WizardContainer = styled.div`
   display: flex;

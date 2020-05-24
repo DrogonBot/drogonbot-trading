@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { PageBody, PageContainer } from '../components/elements/common/layout';
+import { Body, PageContainer, PageContent } from '../components/elements/common/layout';
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
@@ -312,9 +312,9 @@ const Privacy = ({ provinces }: IProps) => {
         <SearchTop provinces={provinces} />
       </PageContainer>
 
-      <PageContainer>
-        <PageBody>{onRenderPrivacyText()}</PageBody>
-      </PageContainer>
+      <Body>
+        <PageContent>{onRenderPrivacyText()}</PageContent>
+      </Body>
       <Footer />
     </>
   );

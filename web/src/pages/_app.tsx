@@ -8,6 +8,7 @@ import App from 'next/app';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import styled from 'styled-components';
 
 import { LinearLoadingTop } from '../components/elements/ui/LinearLoadingTop';
 import { RouterEventsWatcher } from '../components/elements/ui/RouterEvents';
@@ -56,7 +57,7 @@ class MyApp extends App {
 
     // Here we load redux PersistGate only if we are in a browser! If not, we dont need to run it!
     return (
-      <div suppressHydrationWarning={true}>
+      <RootContainer suppressHydrationWarning={true}>
         <Provider store={initialStore}>
           {process.browser ? (
             <PersistGate loading={null} persistor={store.__PERSISTOR}>
@@ -66,7 +67,7 @@ class MyApp extends App {
             this._renderRootComponent(<Component {...pageProps} />)
           )}
         </Provider>
-      </div>
+      </RootContainer>
     );
   }
 }
@@ -76,3 +77,10 @@ const makeStore = () => store;
 
 // withRedux wrapper that passes the store to the App Component
 export default withRedux(makeStore)(MyApp);
+
+const RootContainer = styled.div`
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: white;
+`;

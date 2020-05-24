@@ -1,10 +1,11 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Router from 'next/router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import { Body } from '../components/elements/common/layout';
 import { ProvinceSelector } from '../components/elements/form/ProvinceSelector';
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
@@ -60,7 +61,7 @@ const Home = (props: IProps) => {
       <Header />
       <NextSEOIndex />
 
-      <MainContainer>
+      <Body>
         <Logo />
 
         <Form id="search-form" onSubmit={onSubmit}>
@@ -94,7 +95,7 @@ const Home = (props: IProps) => {
             </SearchLargeDeviceButton>
           </CTAButtonsContainer>
         </Form>
-      </MainContainer>
+      </Body>
       <Footer />
     </>
   );
@@ -111,18 +112,6 @@ Home.getInitialProps = async (ctx) => {
     provinces,
   };
 };
-
-const MainContainer = styled.main`
-  min-height: 68.3vh;
-
-  i {
-    color: white;
-  }
-
-  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
-    margin-top: 150px;
-  }
-`;
 
 const SearchBarContainer = styled.div`
   display: flex;

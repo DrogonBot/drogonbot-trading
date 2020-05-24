@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { PageBody, PageContainer } from '../../components/elements/common/layout';
+import { PageContainer, PageContent } from '../../components/elements/common/layout';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
 import { SearchResults } from '../../components/pages/posts/results/SearchResults';
@@ -65,7 +65,7 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
       <PageContainer>
         <SearchTop provinces={provinces} defaultProvince={searchProvince} />
 
-        <PageBody>
+        <PageContent>
           <SearchTabs />
 
           <SearchResults posts={posts} />
@@ -84,7 +84,7 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
               hidePrevButton={!paginationData.hasPrevPage}
             />
           </PaginationContainer>
-        </PageBody>
+        </PageContent>
       </PageContainer>
       <Footer />
     </>
