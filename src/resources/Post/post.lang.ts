@@ -187,7 +187,7 @@ Good Luck!
 
     `,
     ptBr: `Sugerimos que <a href="{{postUrl}}">aplique imediatamente através do <strong>
-    botão vermelho</strong>no topo do post</a>,
+    botão vermelho</strong> no topo do post</a>,
     pois geralmente os primeiros candidatos têm maiores
     chances de conseguir uma entrevista.
 
@@ -224,7 +224,7 @@ Good Luck!
 
     `,
     ptBr: `Sugerimos fortemente que <a href="{{postUrl}}">aplique imediatamente através do <strong>
-    botão vermelho</strong>no topo do post</a>,
+    botão vermelho</strong> no topo do post</a>,
     pois geralmente os primeiros candidatos têm maiores
     chances de conseguir uma entrevista.
 
