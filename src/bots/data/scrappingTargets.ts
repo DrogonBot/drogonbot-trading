@@ -10,6 +10,7 @@ import { ScrapperGlobalEmpregosSP } from '../scrappers/ScrapperGlobalEmpregosSP'
 import { ScrapperGrupoResolveSP } from '../scrappers/ScrapperGrupoResolveSP';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
+import { ScrapperQuatreMG } from '../scrappers/ScrapperQuatreMG';
 import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
 import { ScrapperRJEmpregosNet } from '../scrappers/ScrapperRJEmpregosNet';
 import { ScrapperSociiRH } from '../scrappers/ScrapperSociiRH';
@@ -334,6 +335,19 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperRecrutamentoInteligenteMG,
+    bypassPostContentFilter: true
+  },
+  {
+    name: "Quattre RH - MG",
+    externalSource: "https://www.quatre.com.br/oportunidades/",
+    priority: TargetPriority.Medium,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG",
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperQuatreMG,
     bypassPostContentFilter: true
   },
 
