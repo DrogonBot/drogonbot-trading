@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { colors } from '../../../constants/UI/Colors.constant';
 import { TS } from '../../../helpers/LanguageHelper';
 
-const Transition = React.forwardRef(function Transition(
+const Transition = React.forwardRef(function handleTransition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
   ref: React.Ref<unknown>
 ) {
@@ -36,13 +36,13 @@ const styles = (theme: Theme) =>
     },
   });
 
-export interface DialogTitleProps extends WithStyles<typeof styles> {
+export interface IDialogTitleProps extends WithStyles<typeof styles> {
   id: string;
   children: React.ReactNode;
   onClose: () => void;
 }
 
-const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
+const DialogTitle = withStyles(styles)((props: IDialogTitleProps) => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
