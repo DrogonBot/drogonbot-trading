@@ -219,7 +219,9 @@ export class PostScrapperHelper {
       "job-notification", {
       jobsNotificationFirstPhrase: LanguageHelper.getLanguageString('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: user.name }),
       jobsNotificationSecondParagraph: LanguageHelper.getLanguageString('post', secondPhraseSample || 'jobsNotificationSecondParagraph'),
-      jobsNotificationClosing: LanguageHelper.getLanguageString('post', closingSample || 'jobsNotificationClosing'),
+      jobsNotificationClosing: LanguageHelper.getLanguageString('post', closingSample || 'jobsNotificationClosing', {
+        postUrl: `https://vagasempregourgente.com/posts/${post.slug}`
+      }),
 
       postSummary: `
       <tr>

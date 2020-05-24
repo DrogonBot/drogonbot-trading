@@ -297,6 +297,13 @@ operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.res
       active: true
     })
 
+    if (!post) {
+      return res.status(200).send({
+        status: 'error',
+        message: 'Post not found! Please, double check the post slug.'
+      })
+    }
+
 
 
     if (user && post) {
