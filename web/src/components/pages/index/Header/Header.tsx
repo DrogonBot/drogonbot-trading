@@ -18,7 +18,7 @@ import { INavOption, NavPosition } from '../../../../types/UI.types';
 import { IUser } from '../../../../types/User.types';
 import { AccountDropdown } from '../../../elements/ui/AccountDropdown';
 import { DesktopNav } from './DesktopNav';
-import MobileNav from './MobileNav';
+import { MobileNav } from './MobileNav';
 
 export const Header = () => {
   const user = useSelector<AppState, IUser>((state) => state.userReducer.user);

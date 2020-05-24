@@ -22,8 +22,8 @@ export const Body = styled.main`
 export const PageContent = styled.div`
   /*DESKTOP ONLY CODE*/
   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
-    margin-left: 13rem;
-    margin-right: 7.7rem;
+    margin-left: 10%;
+    margin-right: 10%;
     max-width: 700px;
     margin-top: 4rem;
   }

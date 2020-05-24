@@ -82,6 +82,7 @@ export default withRedux(makeStore)(MyApp);
 
 const RootContainer = styled.div`
   height: 100%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   background-color: white;

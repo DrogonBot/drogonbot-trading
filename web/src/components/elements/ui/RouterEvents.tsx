@@ -14,6 +14,10 @@ export const RouterEventsWatcher = () => {
       GAnalyticsHelper.logPageView();
       await dispatch(setLoading(false, "loadingRequest")); // stop all loading requests
     });
+    Router.events.on("routeChangeError", async () => {
+      GAnalyticsHelper.logPageView();
+      await dispatch(setLoading(false, "loadingRequest")); // stop all loading requests
+    });
 
     Router.events.on("routeChangeStart", async () => {
       await dispatch(setLoading(true, "loadingRequest"));

@@ -7,10 +7,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { colors } from '../../../../constants/UI/Colors.constant';
+import { AppState } from '../../../../store/reducers/index.reducers';
 import { INavOption } from '../../../../types/UI.types';
+import { IUser } from '../../../../types/User.types';
 import { AccountDropdown } from '../../../elements/ui/AccountDropdown';
 
 const useStyles = makeStyles({
@@ -26,8 +29,13 @@ interface IProps {
   navOptions: INavOption[];
 }
 
-export default function MobileNav({ navOptions }: IProps) {
+export const MobileNav = ({ navOptions }: IProps) => {
+  const user: IUser = useSelector<AppState, IUser>(
+    (state) => state.userReducer.user
+  );
+
   const classes = useStyles();
+
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -111,12 +119,14 @@ export default function MobileNav({ navOptions }: IProps) {
         {sideList("left")}
       </SwipeableDrawer>
 
-      <AccountDropdownContainer>
-        <AccountDropdown />
-      </AccountDropdownContainer>
+      {user && (
+        <AccountDropdownContainer>
+          <AccountDropdown />
+        </AccountDropdownContainer>
+      )}
     </Container>
   );
-}
+};
 
 const Container = styled.div`
   display: flex;
