@@ -31,7 +31,7 @@ interface IProps {
 
 export const MobileNav = ({ navOptions }: IProps) => {
   const user: IUser = useSelector<AppState, IUser>(
-    (state) => state.userReducer.user
+    (reduxState) => reduxState.userReducer.user
   );
 
   const classes = useStyles();
