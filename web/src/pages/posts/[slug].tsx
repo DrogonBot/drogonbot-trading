@@ -350,8 +350,8 @@ const IndividualPage = ({
         </Cover>
 
         <MainContainer>
-          {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
           <LeftColumn>
+            {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
             <TitleContainer>
               <H1>{post.title}</H1>{" "}
               <a
