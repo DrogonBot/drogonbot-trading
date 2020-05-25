@@ -5,7 +5,7 @@ import { AccountEmailManager } from '../../emails/account.email';
 import { ILeadModel } from '../../resources/Lead/lead.model';
 import { Place } from '../../resources/Place/place.model';
 import { Post } from '../../resources/Post/post.model';
-import { IPost } from '../../resources/Post/post.types';
+import { IPost, ISimilarityMatch } from '../../resources/Post/post.types';
 import { Sector } from '../../resources/Sector/sector.model';
 import { ISector } from '../../resources/Sector/sector.types';
 import { IUser, User } from '../../resources/User/user.model';
@@ -121,86 +121,107 @@ export class PostScrapperHelper {
     return "Outros"
   }
 
-  private static _tryRoleMatch = async (sectors, content, title?) => {
-    for (const role of sectors) {
+  private static _tryRoleMatch = async (title, content, keywords): Promise<IBestMatchAndSector> => {
 
-      if (title) {
-        const preparedTitle = title.replace('\n', ' ').toLowerCase()
-        const verifyTitle1 = preparedTitle.includes(` ${role.toLowerCase()}`)
-        const verifyTitle2 = preparedTitle.includes(` ${role.toLowerCase()} `)
-        if (verifyTitle1 || verifyTitle2) {
+    keywords = keywords.sort();
 
-          const sectorData = await PostScrapperHelper._getSector(role)
-          return {
-            jobRoleBestMatch: role,
-            sector: sectorData
-          }
+    // first, replace \n with spaces
+    title = title.replace(new RegExp('\n', 'g'), " ");
+    content = content.replace(new RegExp('\n', 'g'), " ");
+
+    // tries exact and partial matches
+    for (const keyword of keywords) {
+
+      const titleMatchExact = new RegExp(`\\b${keyword}\\b`, 'gi').test(title)
+      if (titleMatchExact) {
+        const keywordSector = await PostScrapperHelper._getSector(keyword);
+        return {
+          jobRoleBestMatch: keyword,
+          sector: keywordSector
         }
-
       }
 
-      const preparedContent = content.replace('\n', ' ').toLowerCase()
-      const verifyContent1 = preparedContent.includes(` ${role.toLowerCase()}`)
-      const verifyContent2 = preparedContent.includes(` ${role.toLowerCase()} `)
+      const titleMatchPartial = title.includes(keyword)
 
-      if (verifyContent1 || verifyContent2) {
-
-        const sectorData = await PostScrapperHelper._getSector(role)
+      if (titleMatchPartial) {
+        const keywordSector = await PostScrapperHelper._getSector(keyword);
         return {
-          jobRoleBestMatch: role,
-          sector: sectorData
+          jobRoleBestMatch: keyword,
+          sector: keywordSector
         }
       }
     }
-    return false
+
+
+    for (const keyword of keywords) {
+      const contentMatchExact = new RegExp(`\\b${keyword}\\b`, 'gi').test(content)
+      if (contentMatchExact) {
+        const keywordSector = await PostScrapperHelper._getSector(keyword);
+        return {
+          jobRoleBestMatch: keyword,
+          sector: keywordSector
+        }
+      }
+
+      const contentMatchPartial = content.includes(keyword)
+
+      if (contentMatchPartial) {
+        const keywordSector = await PostScrapperHelper._getSector(keyword);
+        return {
+          jobRoleBestMatch: keyword,
+          sector: keywordSector
+        }
+      }
+    }
+
+
+    // if nothing is found so far, lets use our string similarity module. For this, lets split the string every 4 spaces
+
+
+    const splitString = `${title} ${content}`.match(/(.*?\s){3}/g);
+
+
+
+    let similarityMatches: ISimilarityMatch[] = [];
+
+    for (const similarKeyword of splitString!) {
+      const similarMatches = stringSimilarity.findBestMatch(similarKeyword, keywords);
+      similarityMatches = [
+        ...similarityMatches,
+        similarMatches.bestMatch
+      ]
+    }
+
+    const sortedBestMatches = similarityMatches.sort((x, y) => x.rating > y.rating ? -1 : 1);
+
+    const bestMatch = sortedBestMatches[0];
+    const sector = await PostScrapperHelper._getSector(bestMatch.target);
+    return {
+      jobRoleBestMatch: bestMatch.target,
+      sector
+    }
+
+
   }
 
   public static findJobRolesAndSector = async (content, title?): Promise<IBestMatchAndSector> => {
-    let bestMatchOverall;
+
+    if (!title) {
+      title = content;
+    }
 
     const sectorsData = await Sector.find({})
     const sectorRolesRaw = sectorsData.map((sectorEl: ISector) => sectorEl.keywords)
-    const sectors = GenericHelper.arrayFlatten(sectorRolesRaw)
-
-    try {
-      // First step: Let's try a full match
-
-      const roleMatch = await PostScrapperHelper._tryRoleMatch(sectors, content, title)
-      if (roleMatch) {
-        return roleMatch // if we got a match, just stop the script execution
-      }
-
-      // Second step: If a full match is not possible, let's analyze the post content
-      const uppercaseMatches = content.match(/[A-Z]+\W/g) ? content.match(/[A-Z]+\W/g).join(' ').toLowerCase() : [];
-
-      const bestTitleMatches = title ? stringSimilarity.findBestMatch(title, sectors).bestMatch : []
-      const bestContentMatches = stringSimilarity.findBestMatch(content, sectors).bestMatch
-      const bestUppercaseMatches = (uppercaseMatches.length >= 1 ? stringSimilarity.findBestMatch(uppercaseMatches, sectors).bestMatch : [])   // sometimes companies leave the position name in uppercase
-
-
-      const bestMatches = [bestTitleMatches, bestContentMatches, bestUppercaseMatches].sort((x, y) => x.rating > y.rating ? -1 : 1).filter((match) => {
-        if (match.target) { // we do this to avoid empty matches
-          return match
-        }
-      });
+    const jobRoles = GenericHelper.arrayFlatten(sectorRolesRaw)
 
 
 
-      bestMatchOverall = bestMatches[0].target
+    const result = await PostScrapperHelper._tryRoleMatch(title, content, jobRoles)
 
-    }
-    catch (error) {
-      // if not found, throw an error
-      console.log(error);
-      throw new Error('Position not found!')
-    }
+    return result;
 
-    const sector = await PostScrapperHelper._getSector(bestMatchOverall)
 
-    return {
-      jobRoleBestMatch: bestMatchOverall,
-      sector
-    }
+
   }
 
   public static notifyUsersEmail = async (user: IUser | ILeadModel, post: IPost) => {

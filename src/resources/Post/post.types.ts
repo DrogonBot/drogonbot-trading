@@ -75,3 +75,8 @@ export interface IPost {
   active: boolean,
   views: number
 }
+
+export interface ISimilarityMatch {
+  target: string,
+  rating: Float32Array;
+}
