@@ -7,7 +7,11 @@ import { AdsenseAdsTypes } from '../../types/Ads.types';
 import { EnvironmentTypes } from '../../types/Global.types';
 
 export class AdsenseHelper {
-  public static showAds = (type: AdsenseAdsTypes, customStyles?: Object) => {
+  public static showAds = (
+    type: AdsenseAdsTypes,
+    customStyles?: Object,
+    layoutKey?: string
+  ) => {
     if (ENV === EnvironmentTypes.Development) {
       return (
         <DevelopmentAdsContainer style={customStyles}>
@@ -51,7 +55,7 @@ export class AdsenseHelper {
             style={{ display: "block" }}
             format="auto"
             responsive="true"
-            layoutKey="-gw-1+2a-9x+5c"
+            layoutKey={layoutKey}
           />
         );
     }
