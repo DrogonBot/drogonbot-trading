@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import AdSense from 'react-adsense';
 import styled from 'styled-components';
 
@@ -12,6 +13,13 @@ export class AdsenseHelper {
     customStyles?: Object,
     layoutKey?: string
   ) => {
+    useEffect(() => {
+      if (ENV === EnvironmentTypes.Production) {
+        // @ts-ignore
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    }, []);
+
     if (ENV === EnvironmentTypes.Development) {
       return (
         <DevelopmentAdsContainer style={customStyles}>
@@ -23,12 +31,13 @@ export class AdsenseHelper {
     switch (type) {
       case AdsenseAdsTypes.ResponsiveAndNative:
         return (
-          <AdSense.Google
-            client={appEnv.adsense.adClient}
-            slot={appEnv.adsense.adSlot}
-            style={{ display: "block", minWidth: 251 }}
-            layout="in-article"
-            format="fluid"
+          <ins
+            className="adsbygoogle"
+            style={{ display: "block" }}
+            data-ad-format="fluid"
+            data-ad-layout-key={layoutKey}
+            data-ad-client={appEnv.adsense.adClient}
+            data-ad-slot={appEnv.adsense.adSlot}
           />
         );
       case AdsenseAdsTypes.NoSetup:

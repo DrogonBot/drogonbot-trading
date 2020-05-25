@@ -350,7 +350,11 @@ const IndividualPage = ({
         </Cover>
 
         <MainContainer>
-          {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
+          {AdsenseHelper.showAds(
+            AdsenseAdsTypes.ResponsiveAndNative,
+            null,
+            "-fb+5w+4e-db+86"
+          )}
           <LeftColumn>
             <TitleContainer>
               <H1>{post.title}</H1>{" "}
@@ -401,7 +405,11 @@ const IndividualPage = ({
               </Link>
             </TOSContainer>
 
-            {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
+            {AdsenseHelper.showAds(
+              AdsenseAdsTypes.ResponsiveAndNative,
+              null,
+              "-fb+5w+4e-db+86"
+            )}
 
             <ContainerDesktop>
               {relatedPosts?.length ? (

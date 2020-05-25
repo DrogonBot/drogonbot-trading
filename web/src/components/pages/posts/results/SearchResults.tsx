@@ -24,7 +24,11 @@ export const SearchResults = ({ posts }: IProps) => {
         {filteredPosts?.map((post: IPost, index: number) => {
           return index % 3 === 0 ? (
             <>
-              {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
+              {AdsenseHelper.showAds(
+                AdsenseAdsTypes.ResponsiveAndNative,
+                null,
+                "-fb+5w+4e-db+86"
+              )}
               <SearchItem
                 id={post._id}
                 key={post._id}
