@@ -14,16 +14,14 @@ export class AdsenseHelper {
     layoutKey?: string
   ) => {
     useEffect(() => {
-      if (ENV === EnvironmentTypes.Production) {
-        // @ts-ignore
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      }
+      // @ts-ignore
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
     }, []);
 
     if (ENV === EnvironmentTypes.Development) {
       return (
         <DevelopmentAdsContainer style={customStyles}>
-          <span>Ads Here</span>
+          <span>Ads are not displayed in Development mode!</span>
         </DevelopmentAdsContainer>
       );
     }
@@ -31,13 +29,12 @@ export class AdsenseHelper {
     switch (type) {
       case AdsenseAdsTypes.ResponsiveAndNative:
         return (
-          <ins
-            className="adsbygoogle"
-            style={{ display: "block" }}
-            data-ad-format="fluid"
-            data-ad-layout-key={layoutKey}
-            data-ad-client={appEnv.adsense.adClient}
-            data-ad-slot={appEnv.adsense.adSlot}
+          <AdSense.Google
+            client={appEnv.adsense.adClient}
+            slot={appEnv.adsense.adSlot}
+            style={{ display: "block", minWidth: 251 }}
+            layout="in-article"
+            format="fluid"
           />
         );
       case AdsenseAdsTypes.NoSetup:
