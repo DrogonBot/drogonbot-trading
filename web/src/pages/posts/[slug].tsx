@@ -401,10 +401,7 @@ const IndividualPage = ({
               </Link>
             </TOSContainer>
 
-            {AdsenseHelper.showAds(AdsenseAdsTypes.CustomFormat, {
-              width: "100%",
-              height: 300,
-            })}
+            {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
 
             <ContainerDesktop>
               {relatedPosts?.length ? (
