@@ -24,7 +24,6 @@ import Linkify from 'react-linkify';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 
-import { AdsenseHelper } from '../../components/ads/AdsenseAds';
 import { Body, PageContainer } from '../../components/elements/common/layout';
 import { AffiliateProductCard } from '../../components/elements/ui/AffiliateProductCard';
 import { AlertModal } from '../../components/elements/ui/AlertModal';
@@ -44,7 +43,6 @@ import { DateHelper } from '../../helpers/DateHelper';
 import { TS } from '../../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
 import { postReadAffiliatedProducts, postReadFeed, postReadOne } from '../../store/actions/post.action';
-import { AdsenseAdsTypes } from '../../types/Ads.types';
 import { IProvince } from '../../types/Form.types';
 import { IAffiliateProduct, IPost, PostBenefits, PostCategory, PostPositionType } from '../../types/Post.types';
 
@@ -350,7 +348,7 @@ const IndividualPage = ({
         </Cover>
 
         <MainContainer>
-          {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
+          {/* {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)} */}
           <LeftColumn>
             <TitleContainer>
               <H1>{post.title}</H1>{" "}
@@ -401,7 +399,7 @@ const IndividualPage = ({
               </Link>
             </TOSContainer>
 
-            {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
+            {/* {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)} */}
 
             <ContainerDesktop>
               {relatedPosts?.length ? (
