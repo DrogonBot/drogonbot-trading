@@ -40,6 +40,7 @@
     "next-seo": "^4.4.0",
     "nextjs-sitemap-generator": "^0.5.0",
     "react": "^16.13.1",
+    "react-adsense": "^0.1.0",
     "react-dom": "^16.13.1",
     "react-ga": "^2.7.0",
     "react-linkify": "^1.0.0-alpha",
