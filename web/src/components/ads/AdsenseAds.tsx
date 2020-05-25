@@ -26,7 +26,7 @@ export class AdsenseHelper {
           <AdSense.Google
             client={appEnv.adsense.adClient}
             slot={appEnv.adsense.adSlot}
-            style={{ display: "block" }}
+            style={{ display: "block", minWidth: 251 }}
             layout="in-article"
             format="fluid"
           />
