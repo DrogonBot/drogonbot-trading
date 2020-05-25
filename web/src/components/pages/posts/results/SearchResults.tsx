@@ -23,15 +23,10 @@ export const SearchResults = ({ posts }: IProps) => {
       <Container>
         {filteredPosts?.map((post: IPost, index: number) => {
           return index % 3 === 0 ? (
-            <>
-              {AdsenseHelper.showAds(
-                AdsenseAdsTypes.ResponsiveAndNative,
-                null,
-                "-fb+5w+4e-db+86"
-              )}
+            <div key={post._id}>
+              {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
               <SearchItem
                 id={post._id}
-                key={post._id}
                 category={post.sector}
                 tags={post.jobRoles.join(",")}
                 title={post.title}
@@ -41,7 +36,7 @@ export const SearchResults = ({ posts }: IProps) => {
                 stateCode={post.stateCode}
                 city={post.city}
               />
-            </>
+            </div>
           ) : (
             <SearchItem
               id={post._id}

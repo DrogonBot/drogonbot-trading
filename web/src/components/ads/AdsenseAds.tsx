@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import AdSense from 'react-adsense';
 import styled from 'styled-components';
 
@@ -13,11 +12,6 @@ export class AdsenseHelper {
     customStyles?: Object,
     layoutKey?: string
   ) => {
-    useEffect(() => {
-      // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }, []);
-
     if (ENV === EnvironmentTypes.Development) {
       return (
         <DevelopmentAdsContainer style={customStyles}>
@@ -53,7 +47,7 @@ export class AdsenseHelper {
             format=""
           />
         );
-      case AdsenseAdsTypes.FullWith:
+      case AdsenseAdsTypes.FullWidth:
         return (
           <AdSense.Google
             client={appEnv.adsense.adClient}
