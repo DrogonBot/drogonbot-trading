@@ -3,7 +3,6 @@
     "country": "Brazil",
     "name": "Administração",
     "keywords": [
-      "Administrador",
       "Assistente Administrativo",
       "Gerente",
       "Auxiliar Administrativo",
@@ -23,8 +22,18 @@
       "Auxiliar operacional",
       "Coordenador",
       "Assistente de Eventos",
+      "Técnico em Eventos",
       "Auxiliar de Eventos",
-      "Técnico em Administração"
+      "Técnico em Administração",
+      "Administrador de Contratos",
+      "Administrador de Dados",
+      "Administrador de E-commerce",
+      "Administrador de Empresas",
+      "Administrador Financeiro",
+      "Administrador Hospitalar",
+      "Administrador Predial",
+      "Administrativo de Obras",
+      "Administrador",
     ]
   },
   {
@@ -45,6 +54,20 @@
     "country": "Brazil",
     "name": "Advocacia & Direito",
     "keywords": [
+      "Advogado Administrativo",
+      "Advogado Ambientalista",
+      "Advogado Cível",
+      "Advogado Consumerista",
+      "Advogado Criminalista",
+      "Advogado de Contratos",
+      "Advogado de Propriedade Intelectual",
+      "Advogado Eleitoral",
+      "Advogado Empresarial",
+      "Advogado Imobiliário",
+      "Advogado Securitário",
+      "Advogado Societário",
+      "Advogado Trabalhista",
+      "Advogado Tributarista",
       "Advogado"
     ]
   },
@@ -57,7 +80,9 @@
       "Zootecnista",
       "Pecuária",
       "Tratador de animais",
-      "Caseiro"
+      "Caseiro",
+      "Adestrador",
+      "Agricultor"
     ]
   },
   {
@@ -73,6 +98,7 @@
       "Chapeiro",
       "Auxiliar de Chapeiro",
       "Auxiliar de Cozinha",
+      "Técnico em Cozinha",
       "Chefe de Cozinha",
       "Ajudante de Bar",
       "Bartender",
@@ -81,6 +107,7 @@
       "Cozinheira",
       "Chef",
       "Gastrônomo",
+      "Técnico em Gastronomia",
       "Padeiro",
       "Salgadeiro",
       "Confeiteiro",
@@ -101,7 +128,9 @@
     "name": "Artes Cênicas",
     "keywords": [
       "Ator",
-      "Modelo"
+      "Modelo",
+      "Técnico em Arte Dramática",
+      "Aderecista"
     ]
   },
   {
@@ -157,7 +186,8 @@
     "name": "Ciências Aeronáuticas",
     "keywords": [
       "Piloto de avião",
-      "Técnico em Manutenção de Aeronaves"
+      "Técnico em Manutenção de Aeronaves",
+      "Agente de Aeroporto"
     ]
   },
   {
@@ -279,7 +309,8 @@
       "Técnico em Rádio e Televisão",
       "Apresentador",
       "Telemarketing",
-      "Assistente de Marketing Digital"
+      "Assistente de Marketing Digital",
+      "Técnico em Marketing"
     ]
   },
   {
@@ -296,8 +327,8 @@
       "Programador Mobile",
       "Analista de sistemas",
       "Help Desk",
-      "Front-end",
-      "Back-end",
+      "Front-end developer",
+      "Back-end developer",
       "Devops",
       "Business Inteligence",
       "Professor de Informática",
@@ -305,8 +336,26 @@
       "Analista de TI",
       "Técnico em eletrônica",
       "Técnico em eletrotécnica",
+      "Técnico em eletroeletrônica",
       "Técnico em Redes de Computadores",
-      "Técnico em Jogos Digitais"
+      "Técnico em Jogos Digitais",
+      "Técnico em Computação Gráfica",
+      "Administrador de banco de dados",
+      "Administrador de rede",
+      "Administrador de sistemas",
+      "Analista de suporte",
+      "Analista programador",
+      "Arquiteto de sistemas",
+      "Análise de sistemas",
+      "Designer digital",
+      "Engenheiro de testes",
+      "Monitor de informática",
+      "Técnico de suporte",
+      "Webmaster",
+      "Analista de Business Intelligence",
+      "Cientista de dados",
+      "Desenvolvedor de banco de dados",
+      "Administrador de segurança de dados"
     ]
   },
   {
@@ -466,18 +515,28 @@
       "Assistente de Reservas",
       "Anfitrião",
       "Técnico em Guia de Turismo",
-      "Assistente de A&B"
+      "Assistente de A&B",
+      "Técnico em Hospedagem",
+      "Agente de Viagens"
     ]
   },
   {
     "country": "Brazil",
     "name": "Construção Civil",
     "keywords": [
+      "Técnico em Desenho de Construção Civil",
       "Coordenador Obras",
       "Assistente de Obras",
       "Gerente de Projetos",
       "Projetista",
       "Pedreiro",
+      "Ajudante de Carpinteiro",
+      "Ajudante de Encanador",
+      "Ajudante de Marceneiro",
+      "Ajudante de Obras",
+      "Ajudante de Serralheiro",
+      "Ajudante de Tapeceiro",
+      "Ajudante de Vidraceiro",
       "Marteleiro",
       "Demolidor",
       "Laminador",
@@ -502,7 +561,9 @@
       "Calceteiro",
       "Ladrilheiro",
       "Marmorista",
-      "Paisagista"
+      "Paisagista",
+      "Acrilista",
+      "Afiador de Ferramentas"
     ]
   },
   {
@@ -511,6 +572,7 @@
     "keywords": [
       "Aplicador de Insulfilm",
       "Soldador",
+      "Técnico de Informática Industrial",
       "Encarregado de Limpeza Industrial",
       "Técnico de linha branca",
       "Técnico em instrumentação",
@@ -540,7 +602,9 @@
       "Técnico em Mecânica Automotiva",
       "Técnico em Mecânica",
       "Técnico em mecatrônica",
-      "Técnico em Qualidade"
+      "Técnico em Qualidade",
+      "Técnico em Portos",
+      "Técnico em Construção Naval"
     ]
   },
   {
@@ -578,6 +642,21 @@
       "Analista de Qualidade",
       "Auxiliar de Almoxarifado",
       "Auxiliar de Armazém",
+      "Ajudante de Caldeiraria",
+      "Ajudante de Carga e Descarga",
+      "Ajudante de Churrasqueiro",
+      "Ajudante de Despachante Aduaneiro",
+      "Ajudante de Estamparia",
+      "Ajudante de Fundição",
+      "Ajudante de Funilaria",
+      "Ajudante de Instalação",
+      "Ajudante de Lubrificação",
+      "Ajudante de Metalúrgico",
+      "Ajudante de Motorista",
+      "Ajudante de Off-set",
+      "Ajudante de Pizzaiolo",
+      "Ajudante Operacional",
+      "Ajustador Mecânico",
       "Ajudante",
       "Armador",
       "Auxiliar de Expedição",
@@ -621,7 +700,11 @@
       "Coordenador de Suprimentos",
       "Motorista Executivo",
       "Controller logístico",
-      "Analista de logística"
+      "Analista de logística",
+      "Abastecedor",
+      "Acabador de Embalagens",
+      "Adesivador",
+      "Agente de Cargas"
     ]
   },
   {
@@ -674,7 +757,8 @@
       "Piano",
       "Violão",
       "Cavaquinho",
-      "Cavaco"
+      "Cavaco",
+      "Técnico em Instrumento Musical"
     ]
   },
   {
@@ -695,12 +779,8 @@
     "country": "Brazil",
     "name": "Pedagogia",
     "keywords": [
-      "Pedagogo",
-      "Pedagoga",
       "Pedagogo(a)",
-      "Professor",
       "Professor(a)",
-      "Professora",
       "Assistente Educacional",
       "Professor(a) de Educação Infantil",
       "Assistente de Berçário",
@@ -708,8 +788,8 @@
       "Assistente de Creche",
       "Merendeira",
       "Recreacionista",
-      "Acadêmico",
-      "E-learning"
+      "Assistente Acadêmico",
+      "Técnico em Secretaria Escolar"
     ]
   },
   {
@@ -742,8 +822,10 @@
       "Nutrólogo",
       "Cuidador(a)",
       "Cuidador(a) de idosos",
+      "Técnico em Cuidados de Idosos",
       "Babá",
       "Fisioterapeuta",
+      "Acupunturista",
       "Técnico em Massoterapia",
       "Fonoaudiólogo",
       "Enfermeiro",
@@ -752,6 +834,7 @@
       "Médico",
       "Técnico em radiologia",
       "Biomédico",
+      "Técnico em Biotecnologia",
       "Auxiliar de laboratório",
       "Laboratorista",
       "Coletor",
@@ -759,7 +842,8 @@
       "Auxiliar de Saúde Bucal",
       "Técnico em Saúde Bucal",
       "Técnico em Prótese Dentária",
-      "Psicólogo"
+      "Psicólogo",
+      "Agente Funerário"
     ]
   },
   {
@@ -775,6 +859,7 @@
     "name": "Segurança & Patrimônio",
     "keywords": [
       "Porteiro",
+      "Agente de Segurança",
       "Segurança",
       "Patrimonial",
       "Vigia",
