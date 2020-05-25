@@ -78,5 +78,5 @@ export interface IPost {
 
 export interface ISimilarityMatch {
   target: string,
-  rating: Float32Array;
+  rating: number;
 }

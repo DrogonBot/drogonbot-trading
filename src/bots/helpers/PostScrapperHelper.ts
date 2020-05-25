@@ -121,100 +121,89 @@ export class PostScrapperHelper {
     return "Outros"
   }
 
-  private static _tryRoleMatch = async (title, content, keywords): Promise<IBestMatchAndSector> => {
+  private static _tryRoleMatch = async (title: string, content: string, keywords: string[]): Promise<IBestMatchAndSector> => {
 
-    keywords = keywords.sort();
+    try {
+      const lowerCaseKeywords = keywords.map((keyword) => keyword.toLowerCase())
 
-    // first, replace \n with spaces
-    title = title.replace(new RegExp('\n', 'g'), " ");
-    content = content.replace(new RegExp('\n', 'g'), " ");
+      // first, replace \n with spaces
 
-    // tries exact and partial matches
-    for (const keyword of keywords) {
+      content = content.replace(new RegExp('\n', 'g'), " ");
 
-      const titleMatchExact = new RegExp(`\\b${keyword}\\b`, 'gi').test(title)
-      if (titleMatchExact) {
-        const keywordSector = await PostScrapperHelper._getSector(keyword);
-        return {
-          jobRoleBestMatch: keyword,
-          sector: keywordSector
+      if (title) {
+        console.log(`Title: ${title}`);
+        title = title.replace(new RegExp('\n', 'g'), " ");
+        // tries exact title match
+        for (const keyword of keywords) {
+
+          const titleMatchExact = new RegExp(`\\b${keyword}\\b`, 'gi').test(title)
+          if (titleMatchExact) {
+            const keywordSector = await PostScrapperHelper._getSector(keyword);
+            console.log(`Title EXACT match: [${keyword}]`);
+
+            return {
+              jobRoleBestMatch: keyword,
+              sector: keywordSector
+            }
+          }
+        }
+
+        // Try through similarity on title only
+        const similarTitle: ISimilarityMatch = stringSimilarity.findBestMatch(title.toLowerCase(), lowerCaseKeywords).bestMatch;
+        console.log(similarTitle);
+        if (similarTitle.rating > 0.5) {
+          console.log('SIMILAR TITLE');
+          console.log(`${title} => ${similarTitle.target}`);
+          const sectorKeyword = await PostScrapperHelper._getSector(similarTitle.target);
+          console.log(`Title SIMILARITY match: [${similarTitle.target}]`);
+          return {
+            jobRoleBestMatch: similarTitle.target,
+            sector: sectorKeyword
+          }
         }
       }
 
-      const titleMatchPartial = title.includes(keyword)
-
-      if (titleMatchPartial) {
-        const keywordSector = await PostScrapperHelper._getSector(keyword);
-        return {
-          jobRoleBestMatch: keyword,
-          sector: keywordSector
-        }
-      }
-    }
 
 
-    for (const keyword of keywords) {
-      const contentMatchExact = new RegExp(`\\b${keyword}\\b`, 'gi').test(content)
-      if (contentMatchExact) {
-        const keywordSector = await PostScrapperHelper._getSector(keyword);
-        return {
-          jobRoleBestMatch: keyword,
-          sector: keywordSector
+      // exact content match
+      for (const keyword of keywords) {
+        const contentMatchExact = new RegExp(`\\b${keyword}\\b`, 'gi').test(content)
+        if (contentMatchExact) {
+          const keywordSector = await PostScrapperHelper._getSector(keyword);
+          console.log(`Content EXACT match: [${keyword}]`);
+          return {
+            jobRoleBestMatch: keyword,
+            sector: keywordSector
+          }
         }
       }
 
-      const contentMatchPartial = content.includes(keyword)
 
-      if (contentMatchPartial) {
-        const keywordSector = await PostScrapperHelper._getSector(keyword);
-        return {
-          jobRoleBestMatch: keyword,
-          sector: keywordSector
-        }
+      console.log(`NO MATCH: [Outros]`);
+      const sector = await PostScrapperHelper._getSector("Outros");
+      return {
+        jobRoleBestMatch: "Outros",
+        sector
       }
     }
-
-
-    // if nothing is found so far, lets use our string similarity module. For this, lets split the string every 4 spaces
-
-
-    const splitString = `${title} ${content}`.match(/(.*?\s){3}/g);
-
-
-
-    let similarityMatches: ISimilarityMatch[] = [];
-
-    for (const similarKeyword of splitString!) {
-      const similarMatches = stringSimilarity.findBestMatch(similarKeyword, keywords);
-      similarityMatches = [
-        ...similarityMatches,
-        similarMatches.bestMatch
-      ]
+    catch (error) {
+      console.error(error);
+      console.log(`ERROR MATCH: [Outros]`);
+      const sector = await PostScrapperHelper._getSector("Outros");
+      return {
+        jobRoleBestMatch: "Outros",
+        sector
+      }
     }
-
-    const sortedBestMatches = similarityMatches.sort((x, y) => x.rating > y.rating ? -1 : 1);
-
-    const bestMatch = sortedBestMatches[0];
-    const sector = await PostScrapperHelper._getSector(bestMatch.target);
-    return {
-      jobRoleBestMatch: bestMatch.target,
-      sector
-    }
-
 
   }
 
   public static findJobRolesAndSector = async (content, title?): Promise<IBestMatchAndSector> => {
 
-    if (!title) {
-      title = content;
-    }
 
     const sectorsData = await Sector.find({})
     const sectorRolesRaw = sectorsData.map((sectorEl: ISector) => sectorEl.keywords)
     const jobRoles = GenericHelper.arrayFlatten(sectorRolesRaw)
-
-
 
     const result = await PostScrapperHelper._tryRoleMatch(title, content, jobRoles)
 

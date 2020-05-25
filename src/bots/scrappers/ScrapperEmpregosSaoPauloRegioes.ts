@@ -68,7 +68,7 @@ export class ScrapperEmpregosSaoPauloRegioes {
 
     rawContent = rawContent.replace('(adsbygoogle = window.adsbygoogle || []).push({});', '')
 
-    const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(title, rawContent)
+    const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 
     rawContent = rawContent.replace(new RegExp('\n', 'g'), " ");
 

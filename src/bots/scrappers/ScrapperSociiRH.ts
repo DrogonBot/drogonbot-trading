@@ -76,7 +76,7 @@ export class ScrapperSociiRH {
     rawContent = GenericHelper.stripHtml(rawContent)
 
 
-    const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(title, rawContent)
+    const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)

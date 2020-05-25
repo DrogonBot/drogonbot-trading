@@ -84,7 +84,7 @@ export class BotHelper {
 
     BotHelper.scrapperClass.postLinks = null
 
-    ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Finished!`)
+    ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🤖: Finished!`)
 
     // Make sure we close any puppeteer open instances, if that's the case
     await ScrapperFacebook.clear(ScrapperFacebook.browser)

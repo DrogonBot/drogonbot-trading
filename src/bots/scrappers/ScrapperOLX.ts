@@ -63,7 +63,7 @@ export class ScrapperOLX {
     rawContent = GenericHelper.stripHtml(rawContent)
 
 
-    const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(title, rawContent)
+    const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 
     rawContent = rawContent.replace(new RegExp('\n', 'g'), " ");
 

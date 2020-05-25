@@ -107,7 +107,7 @@ Cursos 24 horas São cursos reconhecidos pelo MEC, online e com ótimos preços
     rawContent = GenericHelper.stripHtml(rawContent)
 
 
-    const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(title, rawContent)
+    const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)

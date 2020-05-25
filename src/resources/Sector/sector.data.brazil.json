@@ -9,6 +9,7 @@
       "Auxiliar Administrativo",
       "Auxiliar de escritório",
       "Secretária",
+      "Técnico em Secretariado",
       "Governante",
       "Governança",
       "Supervisor",
@@ -22,7 +23,8 @@
       "Auxiliar operacional",
       "Coordenador",
       "Assistente de Eventos",
-      "Auxiliar de Eventos"
+      "Auxiliar de Eventos",
+      "Técnico em Administração"
     ]
   },
   {
@@ -35,15 +37,15 @@
       "BackOffice",
       "Assistente de Relacionamento",
       "Agente de Atendimento",
-      "Balconista"
+      "Balconista",
+      "Analista de Atendimento"
     ]
   },
   {
     "country": "Brazil",
     "name": "Advocacia & Direito",
     "keywords": [
-      "Advogado",
-      "Direito"
+      "Advogado"
     ]
   },
   {
@@ -54,7 +56,8 @@
       "Agrônomo",
       "Zootecnista",
       "Pecuária",
-      "Tratador de animais"
+      "Tratador de animais",
+      "Caseiro"
     ]
   },
   {
@@ -65,9 +68,8 @@
       "Açougueiro",
       "Churrasqueiro",
       "Copeiro(a)",
-      "garçom",
+      "Garçom",
       "Garçonete",
-      "Garçon",
       "Chapeiro",
       "Auxiliar de Chapeiro",
       "Auxiliar de Cozinha",
@@ -91,8 +93,7 @@
     "country": "Brazil",
     "name": "Arquitetura",
     "keywords": [
-      "Arquiteto",
-      "Arquitetura"
+      "Arquiteto"
     ]
   },
   {
@@ -136,12 +137,13 @@
       "Designer de Unhas",
       "Designer de Unhas em Gel",
       "Podólogo(a)",
+      "Técnico em Podologia",
+      "Técnico em Estética",
       "Pedicure",
       "Maquiador",
       "Auxiliar de Estética",
       "Esteticista",
       "Depiladora",
-      "Laser",
       "Consultora de Beleza",
       "Capilar",
       "Fotodepiladora",
@@ -154,7 +156,8 @@
     "country": "Brazil",
     "name": "Ciências Aeronáuticas",
     "keywords": [
-      "Piloto de avião"
+      "Piloto de avião",
+      "Técnico em Manutenção de Aeronaves"
     ]
   },
   {
@@ -175,6 +178,7 @@
     "keywords": [
       "Biólogo",
       "Analista de Meio ambiente",
+      "Técnico em Meio ambiente",
       "Analista de Sustentabilidade",
       "Analista Ambiental",
       "Oceanógrafo"
@@ -208,7 +212,9 @@
       "Assistente de Crédito",
       "Analista de Risco",
       "Analista de Prevenção a Fraude",
-      "Matemático"
+      "Matemático",
+      "Técnico em Finanças",
+      "Técnico em Contabilidade"
     ]
   },
   {
@@ -246,7 +252,8 @@
       "Estágio em Importação",
       "Relações Internacionais",
       "Aduaneiro",
-      "Despachante"
+      "Despachante",
+      "Coordenador de comércio exterior"
     ]
   },
   {
@@ -255,11 +262,11 @@
     "keywords": [
       "Analista de Redes Sociais",
       "Analista de Mídias Sociais",
+      "Analista de Marketing",
       "Panfleteiro",
       "Panfletador",
       "Copywriter",
-      "Merchandising",
-      "Analista de Comunicação",
+      "Analista de Merchandising",
       "Analista de Comunicação",
       "Analista de Demanda",
       "Analista de Canais",
@@ -269,6 +276,7 @@
       "Assistente de Telemarketing",
       "Publicitário",
       "Radialista",
+      "Técnico em Rádio e Televisão",
       "Apresentador",
       "Telemarketing",
       "Assistente de Marketing Digital"
@@ -284,14 +292,21 @@
       "Técnico em celulares",
       "Técnico em tablets",
       "Desenvolvedor",
-      "Mobile",
+      "Desenvolvedor Mobile",
+      "Programador Mobile",
       "Analista de sistemas",
       "Help Desk",
       "Front-end",
       "Back-end",
       "Devops",
       "Business Inteligence",
-      "Telefonia"
+      "Professor de Informática",
+      "Técnico em Informática",
+      "Analista de TI",
+      "Técnico em eletrônica",
+      "Técnico em eletrotécnica",
+      "Técnico em Redes de Computadores",
+      "Técnico em Jogos Digitais"
     ]
   },
   {
@@ -306,7 +321,8 @@
     "name": "Decoração",
     "keywords": [
       "Designer de interiores",
-      "Decorador"
+      "Decorador",
+      "Técnico em Design de Interiores"
     ]
   },
   {
@@ -325,7 +341,8 @@
       "Desenhista",
       "UX designer",
       "Designer de Interface",
-      "Tatuador"
+      "Tatuador",
+      "Técnico em Design"
     ]
   },
   {
@@ -361,6 +378,7 @@
       "Engenheiro da Computação",
       "Engenheiro de Controle e Automação",
       "Engenheiro de Telecomunicações",
+      "Técnico em telecomunicações",
       "Engenheiro Elétrico",
       "Engenheiro Eletrônico",
       "Engenheiro Florestal",
@@ -374,7 +392,8 @@
       "Engenheiro de Produção",
       "Engenheiro Químico",
       "Engenheiro Sanitário",
-      "Engenheiro Têxtil"
+      "Engenheiro Têxtil",
+      "Engenheiro"
     ]
   },
   {
@@ -384,7 +403,8 @@
       "Farmacêutico",
       "Auxiliar de farmácia",
       "Atendente de farmácia",
-      "Balconista de farmácia"
+      "Balconista de farmácia",
+      "Técnico em farmácia"
     ]
   },
   {
@@ -424,7 +444,8 @@
     "name": "Geologia",
     "keywords": [
       "Auxiliar de Topografia",
-      "Geólogo"
+      "Geólogo",
+      "Topógrafo"
     ]
   },
   {
@@ -444,6 +465,7 @@
       "Assistente de Hospedagem",
       "Assistente de Reservas",
       "Anfitrião",
+      "Técnico em Guia de Turismo",
       "Assistente de A&B"
     ]
   },
@@ -456,6 +478,8 @@
       "Gerente de Projetos",
       "Projetista",
       "Pedreiro",
+      "Marteleiro",
+      "Demolidor",
       "Laminador",
       "Marceneiro",
       "Meio oficial em marcenaria",
@@ -472,7 +496,13 @@
       "Encarregado de obras",
       "Manutentor Civil",
       "Auxiliar de Pedreiro",
-      "Técnico de Edificação"
+      "Técnico em edificações",
+      "Mestre de Obras",
+      "Encarregado",
+      "Calceteiro",
+      "Ladrilheiro",
+      "Marmorista",
+      "Paisagista"
     ]
   },
   {
@@ -483,6 +513,9 @@
       "Soldador",
       "Encarregado de Limpeza Industrial",
       "Técnico de linha branca",
+      "Técnico em instrumentação",
+      "Técnico em automação",
+      "Técnico em automação industrial",
       "Caldeireiro",
       "Técnico de segurança do trabalho",
       "Offshore",
@@ -502,7 +535,12 @@
       "Mecânico de Motos",
       "Mecânico de Refrigeração",
       "Químico",
-      "Técnico em segurança do trabalho"
+      "Técnico em Química",
+      "Técnico em segurança do trabalho",
+      "Técnico em Mecânica Automotiva",
+      "Técnico em Mecânica",
+      "Técnico em mecatrônica",
+      "Técnico em Qualidade"
     ]
   },
   {
@@ -544,7 +582,11 @@
       "Armador",
       "Auxiliar de Expedição",
       "Auxiliar Logístico",
-      "Auxiliar Lologística",
+      "Diretor de supply chain",
+      "Gerente de Logística",
+      "Gerente de Compras",
+      "Gerente de Planejamento",
+      "Auxiliar Logística",
       "Auxiliar de Produção",
       "Embalador / Empacotador",
       "Repositor",
@@ -577,7 +619,9 @@
       "Estoquista",
       "Supply Chain",
       "Coordenador de Suprimentos",
-      "Motorista Executivo"
+      "Motorista Executivo",
+      "Controller logístico",
+      "Analista de logística"
     ]
   },
   {
@@ -585,8 +629,9 @@
     "name": "Veterinária",
     "keywords": [
       "Veterinário",
+      "Técnico em Medicina Veterinária",
       "Auxiliar de veterinária",
-      "Pet",
+      "Assistente de Pet",
       "Tosador"
     ]
   },
@@ -609,6 +654,7 @@
       "Modelista",
       "Estilo",
       "Consultor de Moda",
+      "Técnico em Moda",
       "Corte",
       "Confecção"
     ]
@@ -640,7 +686,9 @@
       "Temporário",
       "Estágio",
       "Jovem Aprendiz",
-      "Primeiro emprego"
+      "Primeiro emprego",
+      "Estagiário",
+      "Analista"
     ]
   },
   {
@@ -680,33 +728,37 @@
       "Head Hunter",
       "Auxiliar de Dpto Pessoal",
       "Auxiliar de Departamento Pessoal",
-      "Assistente de Departamento Pessoal"
+      "Assistente de Departamento Pessoal",
+      "Técnico em Recursos Humanos"
     ]
   },
   {
     "country": "Brazil",
     "name": "Saúde & Cuidados",
     "keywords": [
-      "Técnico de Nutrição",
+      "Técnico em Nutrição",
+      "Técnico em Análises Clínicas",
       "Nutricionistas",
       "Nutrólogo",
       "Cuidador(a)",
       "Cuidador(a) de idosos",
       "Babá",
-      "Fisoterapeuta",
+      "Fisioterapeuta",
+      "Técnico em Massoterapia",
       "Fonoaudiólogo",
       "Enfermeiro",
       "Técnico em Enfermagem",
       "Socorrista",
       "Médico",
       "Técnico em radiologia",
-      "Biomedicina",
       "Biomédico",
       "Auxiliar de laboratório",
       "Laboratorista",
       "Coletor",
       "Dentista",
       "Auxiliar de Saúde Bucal",
+      "Técnico em Saúde Bucal",
+      "Técnico em Prótese Dentária",
       "Psicólogo"
     ]
   },
@@ -747,10 +799,12 @@
       "Consultor de Vendas",
       "Supervisor de Vendas",
       "Assistente Comercial",
+      "Técnico em Comércio",
       "Representante",
       "Estagiário Comercial",
       "Corretor",
-      "Corretor de imóveis"
+      "Corretor de imóveis",
+      "Técnico em Transações Imobiliárias"
     ]
   },
   {
@@ -766,7 +820,8 @@
       "Passadeira",
       "Servente de Limpeza",
       "Ajudante Geral",
-      "Zelador"
+      "Zelador",
+      "Servente"
     ]
   }
 ]
