@@ -6,8 +6,8 @@ import { IEmailProvider } from '../TransactionalEmailManager';
 
 export const emailProviders: IEmailProvider[] = [
   {
-    // TODO: Adjust free tier to 100 oncetrial expires
-    key: "SENDGRID", freeTierThreshold: 1300, emailSendingFunction: async (to, from, subject, html, text) => {
+    // TODO: SENDGRID Free tier is 100 only
+    key: "SENDGRID", freeTierThreshold: 100, emailSendingFunction: async (to, from, subject, html, text) => {
       // @ts-ignore
       sgMail.setApiKey(process.env.SENDGRID_API_KEY)
       sgMail.send({
@@ -21,7 +21,7 @@ export const emailProviders: IEmailProvider[] = [
   },
   {
     key: "SENDINBLUE",
-    freeTierThreshold: 400,
+    freeTierThreshold: 300,
     emailSendingFunction: async (to, from, subject, html, text) => {
       const defaultClient = SibApiV3Sdk.ApiClient.instance;
 
