@@ -6,6 +6,7 @@ import { Body, PageContainer, PageContent } from '../components/elements/common/
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
+import { NextSEOIndex } from '../components/seo/NextSEOIndex';
 import { appEnv } from '../constants/Env.constant';
 import { colors } from '../constants/UI/Colors.constant';
 import { loadCountryProvinces } from '../store/actions/form.actions';
@@ -195,7 +196,12 @@ const About = ({ provinces }: IProps) => {
     <>
       <Head>
         <title>{`${appEnv.appName} | DMCA`}</title>
+        <meta
+          property="description"
+          content="Acesse o formulários de DMCA do Emprego Urgente, notificando-nos caso necessite remover algum conteúdo com infrações de copyright."
+        />
       </Head>
+      <NextSEOIndex />
       <Header />
 
       <Body>

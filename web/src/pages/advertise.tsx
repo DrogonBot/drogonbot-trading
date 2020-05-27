@@ -21,6 +21,10 @@ const Advertise = ({ provinces }: IProps) => {
           "account",
           "genericAdvertise"
         )}`}</title>
+        <meta
+          property="description"
+          content="Anuncie no Emprego Urgente e tenha acesso aos melhores candidatos de sua região"
+        />
       </Head>
       <Header />
 

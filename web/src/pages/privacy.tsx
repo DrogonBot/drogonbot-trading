@@ -5,6 +5,7 @@ import { Body, PageContainer, PageContent } from '../components/elements/common/
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
+import { NextSEOIndex } from '../components/seo/NextSEOIndex';
 import { appEnv } from '../constants/Env.constant';
 import { TS } from '../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../store/actions/form.actions';
@@ -314,7 +315,12 @@ const Privacy = ({ provinces }: IProps) => {
           "global",
           "genericPrivacyPolicy"
         )}}`}</title>
+        <meta
+          property="description"
+          content="Nossas políticas de privacidade regem as regras que adotamos ao lidar com dados de usuário no sistema do Emprego Urgente"
+        />
       </Head>
+      <NextSEOIndex />
       <Header />
       <PageContainer>
         <SearchTop provinces={provinces} />

@@ -16,6 +16,7 @@ import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
 import { WizardBasicInfoStep } from '../components/pages/register/WizardBasicInfoStep';
 import { WizardSettingsStep } from '../components/pages/register/WizardSettingsStep';
+import { NextSEOIndex } from '../components/seo/NextSEOIndex';
 import { appEnv } from '../constants/Env.constant';
 import { TS } from '../helpers/LanguageHelper';
 import { ValidationHelper } from '../helpers/ValidationHelper';
@@ -170,7 +171,12 @@ const Register = ({ provinces, jobRoles }: IProps) => {
           "account",
           "registerButtonText"
         )}`}</title>
+        <meta
+          property="description"
+          content="Registre-se gratuitamente no Emprego Urgente e tenha acesso a milhares de vagas em sua região"
+        />
       </Head>
+      <NextSEOIndex />
       <Header />
 
       <Body>

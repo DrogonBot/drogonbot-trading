@@ -58,7 +58,11 @@ const About = ({ provinces }: IProps) => {
         <title>{`${appEnv.appName} | ${TS.string(
           "global",
           "genericAbout"
-        )}}`}</title>
+        )}`}</title>
+        <meta
+          property="description"
+          content="Entenda um pouco mais sobre a história do Emprego Urgente, e porque a nossa empresa vem revolucionando o mercado de recrutamento brasileiro!"
+        />
       </Head>
       <Header />
 

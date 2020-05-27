@@ -5,6 +5,7 @@ import { Body, PageContainer, PageContent } from '../components/elements/common/
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
+import { NextSEOIndex } from '../components/seo/NextSEOIndex';
 import { appEnv } from '../constants/Env.constant';
 import { TS } from '../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../store/actions/form.actions';
@@ -989,7 +990,12 @@ const Terms = ({ provinces }: IProps) => {
           "account",
           "genericTermsOfUse"
         )}}`}</title>
+        <meta
+          property="description"
+          content="Entenda sobre os termos de uso do Emprego Urgente."
+        />
       </Head>
+      <NextSEOIndex />
       <Header />
 
       <Body>

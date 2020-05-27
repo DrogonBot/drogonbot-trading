@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { Copyright } from '../components/pages/login/Copyright';
+import { NextSEOIndex } from '../components/seo/NextSEOIndex';
 import { appEnv } from '../constants/Env.constant';
 import { colors } from '../constants/UI/Colors.constant';
 import { TS } from '../helpers/LanguageHelper';
@@ -67,7 +68,12 @@ const Login = () => {
           "account",
           "loginButtonText"
         )}`}</title>
+        <meta
+          property="description"
+          content="Acesse sua conta no Emprego Urgente e comece a se candidatar para diversas vagas!"
+        />
       </Head>
+      <NextSEOIndex />
       <Container>
         <Grid container component="main" className={classes.root}>
           <CssBaseline />
