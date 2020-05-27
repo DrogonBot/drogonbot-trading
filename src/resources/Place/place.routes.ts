@@ -77,6 +77,9 @@ placeRouter.get("/places/:country", async (req, res) => {
       const states = places.map((place) => {
         return { stateName: place.stateName, stateCode: place.stateCode }
       })
+
+      const sortedStates = states.sort((x, y) => x.stateName > y.stateName ? 1 : -1);
+
       return res.status(200).send(states)
     }
 
