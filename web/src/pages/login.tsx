@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Head from 'next/head';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -60,98 +61,114 @@ const Login = () => {
   };
 
   return (
-    <Container>
-      <Grid container component="main" className={classes.root}>
-        <CssBaseline />
+    <>
+      <Head>
+        <title>{`${appEnv.appName} | ${TS.string(
+          "account",
+          "loginButtonText"
+        )}`}</title>
+      </Head>
+      <Container>
+        <Grid container component="main" className={classes.root}>
+          <CssBaseline />
 
-        <Grid item xs={false} sm={4} md={7} className={classes.image}>
-          <ImageOverlay />
-        </Grid>
+          <Grid item xs={false} sm={4} md={7} className={classes.image}>
+            <ImageOverlay />
+          </Grid>
 
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <div className={classes.paper}>
-            <Link href="/" passHref>
-              <LogoContainer>
-                <img
-                  src={`/images/logos/logo-${appEnv.language}.svg`}
-                  alt="Emprego Urgente Logo"
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={5}
+            component={Paper}
+            elevation={6}
+            square
+          >
+            <div className={classes.paper}>
+              <Link href="/" passHref>
+                <LogoContainer>
+                  <img
+                    src={`/images/logos/logo-${appEnv.language}.svg`}
+                    alt="Emprego Urgente Logo"
+                  />
+                </LogoContainer>
+              </Link>
+              <h1>{TS.string("account", "loginAccessYourAccount")}</h1>
+              <form className={classes.form} noValidate>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label={TS.string("account", "emailInput")}
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  value={userCredentials.email}
+                  onChange={(e) =>
+                    setUserCredentials({
+                      ...userCredentials,
+                      email: e.target.value,
+                    })
+                  }
                 />
-              </LogoContainer>
-            </Link>
-            <h1>{TS.string("account", "loginAccessYourAccount")}</h1>
-            <form className={classes.form} noValidate>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label={TS.string("account", "emailInput")}
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={userCredentials.email}
-                onChange={(e) =>
-                  setUserCredentials({
-                    ...userCredentials,
-                    email: e.target.value,
-                  })
-                }
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label={TS.string("account", "passwordInput")}
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={userCredentials.password}
-                onChange={(e) =>
-                  setUserCredentials({
-                    ...userCredentials,
-                    password: e.target.value,
-                  })
-                }
-              />
-              {/* <FormControlLabel
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label={TS.string("account", "passwordInput")}
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={userCredentials.password}
+                  onChange={(e) =>
+                    setUserCredentials({
+                      ...userCredentials,
+                      password: e.target.value,
+                    })
+                  }
+                />
+                {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label={TS.string("account", "loginRememberMe")}
             /> */}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={onHandleLogin}
-              >
-                {TS.string("account", "loginButtonText")}
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  {/* <Link href="#" variant="body2">
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={onHandleLogin}
+                >
+                  {TS.string("account", "loginButtonText")}
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    {/* <Link href="#" variant="body2">
                     {TS.string("account", "forgotPasswordLoginText")}
                   </Link> */}
+                  </Grid>
+                  <Grid item>
+                    <Link href={"/register"}>
+                      <LinkMaterial href="#" variant="body2">
+                        {TS.string("account", "loginDontHaveAccount")}
+                      </LinkMaterial>
+                    </Link>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Link href={"/register"}>
-                    <LinkMaterial href="#" variant="body2">
-                      {TS.string("account", "loginDontHaveAccount")}
-                    </LinkMaterial>
-                  </Link>
-                </Grid>
-              </Grid>
-              <Box mt={5}>
-                <Copyright />
-              </Box>
-            </form>
-          </div>
+                <Box mt={5}>
+                  <Copyright />
+                </Box>
+              </form>
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </>
   );
 };
 export default Login;

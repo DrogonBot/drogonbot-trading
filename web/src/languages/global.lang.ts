@@ -28,7 +28,7 @@ export const globalStrings = {
   },
 
   genericAbout: {
-    eng: "About",
+    eng: "About Us",
     ptBr: "Sobre Nós",
   },
 
@@ -125,8 +125,8 @@ export const globalStrings = {
     ptBr: "Home",
   },
   genericPrivacyPolicy: {
-    eng: "Privacy",
-    ptBr: "Privacidade",
+    eng: "Privacy Policy",
+    ptBr: "Política de Privacidade",
   },
   genericAdvertise: {
     eng: "Post Job",

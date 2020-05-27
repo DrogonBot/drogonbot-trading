@@ -13,5 +13,7 @@ export const LinearLoadingTop = () => {
 };
 
 const Container = styled.div`
-  flex: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
 `;

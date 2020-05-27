@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { Body, PageContainer, PageContent } from '../components/elements/common/layout';
@@ -5,6 +6,7 @@ import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { SearchTop } from '../components/pages/posts/SearchTop';
 import { appEnv } from '../constants/Env.constant';
+import { TS } from '../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../store/actions/form.actions';
 import { IProvince } from '../types/Form.types';
 import { AvailableLanguages } from '../types/Global.types';
@@ -307,6 +309,12 @@ const Privacy = ({ provinces }: IProps) => {
 
   return (
     <>
+      <Head>
+        <title>{`${appEnv.appName} | ${TS.string(
+          "global",
+          "genericPrivacyPolicy"
+        )}}`}</title>
+      </Head>
       <Header />
       <PageContainer>
         <SearchTop provinces={provinces} />

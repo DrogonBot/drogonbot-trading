@@ -4,6 +4,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -164,6 +165,12 @@ const Register = ({ provinces, jobRoles }: IProps) => {
 
   return (
     <>
+      <Head>
+        <title>{`${appEnv.appName} | ${TS.string(
+          "account",
+          "registerButtonText"
+        )}`}</title>
+      </Head>
       <Header />
 
       <Body>

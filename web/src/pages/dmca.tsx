@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -192,6 +193,9 @@ const About = ({ provinces }: IProps) => {
 
   return (
     <>
+      <Head>
+        <title>{`${appEnv.appName} | DMCA`}</title>
+      </Head>
       <Header />
 
       <Body>
