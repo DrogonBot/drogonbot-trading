@@ -80,7 +80,7 @@ placeRouter.get("/places/:country", async (req, res) => {
 
       const sortedStates = states.sort((x, y) => x.stateName > y.stateName ? 1 : -1);
 
-      return res.status(200).send(states)
+      return res.status(200).send(sortedStates)
     }
 
     return res.status(200).send(places);
