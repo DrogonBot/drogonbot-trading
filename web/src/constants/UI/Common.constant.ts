@@ -22,11 +22,13 @@ export const P = styled.p`
 `;
 
 export const ContainerMobile = styled.div`
+  flex: 100%;
   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
     display: none;
   }
 `;
 export const ContainerDesktop = styled.div`
+  flex: 100%;
   @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
     display: none;
   }
