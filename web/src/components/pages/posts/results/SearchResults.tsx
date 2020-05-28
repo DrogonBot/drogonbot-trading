@@ -22,7 +22,7 @@ export const SearchResults = ({ posts }: IProps) => {
     return (
       <Container>
         {filteredPosts?.map((post: IPost, index: number) => {
-          return index % 3 === 0 ? (
+          return index % 2 === 0 ? (
             <div key={post._id}>
               {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
               <SearchItem
