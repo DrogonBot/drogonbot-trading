@@ -12,6 +12,7 @@ import { EnvType } from './constants/types/env.types';
 import { JobsCron } from './cron_jobs/jobs.cron';
 import { LeadsCron } from './cron_jobs/leads.cron';
 import { RetentionCron } from './cron_jobs/retention.cron';
+import { UsersCron } from './cron_jobs/user.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { affiliateRouter } from './resources/AffiliateProduct/affiliate.routes';
 import { AffiliateSeeder } from './resources/AffiliateProduct/affiliate.seeder';
@@ -76,7 +77,7 @@ switch (process.env.ENV) {
   case EnvType.Production: // Let's turn on our cron job in production only!
 
     LeadsCron.fetchLeadsFromFirebase();
-
+    UsersCron.refreshUserCredits();
     JobsCron.submitApplications()
     RetentionCron.inactiveUserReminder()
 

@@ -1,0 +1,3 @@
+
+
+export const USER_MONTHLY_CREDITS_THRESHOLD = 5;

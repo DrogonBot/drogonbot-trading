@@ -57,7 +57,8 @@ export const PostCTA = ({ email, phone, externalUrl }: IProps) => {
       return;
     }
 
-    // else, proceed with link action
+    // else, proceed with link action + consume one credit
+
     return (window.location.href = CTAInfo.link);
   };
 
