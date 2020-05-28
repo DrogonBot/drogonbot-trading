@@ -47,7 +47,7 @@ export const PageContent = styled.div`
   padding-right: 0.8rem;
 `;
 
-export const InputContainer = styled.div`
+export const FormItemContainer = styled.div`
   margin-bottom: 1rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;

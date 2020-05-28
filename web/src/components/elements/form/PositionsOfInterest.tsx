@@ -24,6 +24,10 @@ export const PositionsOfInterest = ({ jobRoles, onChange, value }: IProps) => {
           fullWidth
           {...params}
           variant="standard"
+          helperText={TS.string(
+            "account",
+            "registerPositionsOfInterestWarning"
+          )}
           label={TS.string("resume", "resumeJobRoles")}
           placeholder={TS.string("resume", "resumeTypeJobRoles")}
         />

@@ -2,6 +2,7 @@ import { FormControl, IconButton, Input, InputAdornment, InputLabel, MenuItem } 
 import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Alert from '@material-ui/lab/Alert';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -10,7 +11,7 @@ import { TS } from '../../../helpers/LanguageHelper';
 import { updateNewAccount } from '../../../store/actions/form.actions';
 import { AppState } from '../../../store/reducers/index.reducers';
 import { INewAccount, UserType } from '../../../types/User.types';
-import { InputContainer } from '../../elements/common/layout';
+import { FormItemContainer } from '../../elements/common/layout';
 
 export const WizardBasicInfoStep = () => {
   const dispatch = useDispatch();
@@ -59,14 +60,21 @@ export const WizardBasicInfoStep = () => {
   return (
     <Container>
       <Form>
-        <InputContainer>
+        <FormItemContainer>
+          <Alert severity="info">
+            {TS.string("account", "registerEmailReminder")}
+          </Alert>
+        </FormItemContainer>
+        <FormItemContainer>
           <TextField
             select
             value={newAccount.type}
             onChange={(e) => {
-              dispatch(updateNewAccount({
-                type: e.target.value 
-              }));
+              dispatch(
+                updateNewAccount({
+                  type: e.target.value,
+                })
+              );
               setNewAccount({
                 ...newAccount,
                 type: e.target.value,
@@ -81,16 +89,18 @@ export const WizardBasicInfoStep = () => {
               </MenuItem>
             ))}
           </TextField>
-        </InputContainer>
-        <InputContainer>
+        </FormItemContainer>
+        <FormItemContainer>
           <TextField
             fullWidth
             label={TS.string("account", "registerInputName")}
             value={newAccount.name}
             onChange={(e) => {
-              dispatch(updateNewAccount({
-                name: e.target.value
-              }));
+              dispatch(
+                updateNewAccount({
+                  name: e.target.value,
+                })
+              );
               setNewAccount({
                 ...newAccount,
                 name: e.target.value,
@@ -99,25 +109,27 @@ export const WizardBasicInfoStep = () => {
               console.log(newAccount);
             }}
           />
-        </InputContainer>
+        </FormItemContainer>
 
-        <InputContainer>
+        <FormItemContainer>
           <TextField
             fullWidth
             label={TS.string("account", "registerInputEmail")}
             value={newAccount.email}
             onChange={(e) => {
-              dispatch(updateNewAccount({
-                email: e.target.value
-              }));
+              dispatch(
+                updateNewAccount({
+                  email: e.target.value,
+                })
+              );
               setNewAccount({
                 ...newAccount,
                 email: e.target.value,
               });
             }}
           />
-        </InputContainer>
-        <InputContainer>
+        </FormItemContainer>
+        <FormItemContainer>
           <FormControl fullWidth>
             <InputLabel htmlFor="standard-adornment-password">
               {TS.string("account", "registerInputPassword")}
@@ -126,9 +138,11 @@ export const WizardBasicInfoStep = () => {
               type={userShowPassword ? "text" : "password"}
               value={newAccount.password}
               onChange={(e) => {
-                dispatch(updateNewAccount({
-                  password: e.target.value
-                }));
+                dispatch(
+                  updateNewAccount({
+                    password: e.target.value,
+                  })
+                );
                 setNewAccount({
                   ...newAccount,
                   password: e.target.value,
@@ -148,8 +162,8 @@ export const WizardBasicInfoStep = () => {
               }
             />
           </FormControl>
-        </InputContainer>
-        <InputContainer>
+        </FormItemContainer>
+        <FormItemContainer>
           <FormControl fullWidth>
             <InputLabel htmlFor="standard-adornment-password">
               {TS.string("account", "registerInputPasswordConfirmation")}
@@ -160,7 +174,7 @@ export const WizardBasicInfoStep = () => {
               onChange={(e) => {
                 dispatch(
                   updateNewAccount({
-                    passwordConfirmation: e.target.value
+                    passwordConfirmation: e.target.value,
                   })
                 );
                 setNewAccount({
@@ -186,7 +200,7 @@ export const WizardBasicInfoStep = () => {
               }
             />
           </FormControl>
-        </InputContainer>
+        </FormItemContainer>
       </Form>
     </Container>
   );

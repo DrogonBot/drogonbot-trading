@@ -541,9 +541,7 @@ const AffiliateProductsContainerMobile = styled.div`
 
   .slick-arrow {
     display: none !important;
-  }import { Adsense } from "react-adsense";
-import { AdsenseHelper } from "../../components/ads/AdsenseAds";
-
+  }
 `;
 const AffiliateProductsContainerDesktop = styled.div`
   display: flex;
