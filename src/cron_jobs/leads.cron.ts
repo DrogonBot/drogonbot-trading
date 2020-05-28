@@ -14,6 +14,8 @@ export class LeadsCron {
     // every 3 days
     cron.schedule("0 0 */3 * *", async () => {
 
+      console.log("🕒  LeadsCron => Feching leads from firebase... 🕒");
+
       const response = await axios.get(`https://app-bo.firebaseio.com/.json`);
 
       const { leads } = response.data;

@@ -14,11 +14,13 @@ import { LanguageHelper } from '../utils/LanguageHelper';
 
 export class JobsCron {
   public static submitApplications() {
-    console.log("🕒  JobsCron: Initializing... 🕒");
+
 
     // Send one resume every 10 minutes only (*/10 * * * *)
 
     cron.schedule("*/10 * * * *", async () => {
+
+      console.log("🕒  JobsCron => Submitting application... 🕒");
 
       // find all posts with pending application status (email not submitted yet!)
       const jobPosts = await Post.find({
@@ -107,7 +109,8 @@ export class JobsCron {
     // once every day, check
     cron.schedule("0 0 * * *", async () => {
 
-      console.log(`🤖: Running job cleaner bot...`);
+      console.log("🕒  JobsCron => Running post cleaner... 🕒");
+
 
       const posts = await Post.find({ active: true });
 
@@ -156,6 +159,8 @@ export class JobsCron {
     // HIGH PRIORITY GROUPS
 
     cron.schedule("0 8 * * *", async () => {
+
+      console.log("🕒  JobsCron => Initializing post scrapping... 🕒");
 
       await ScrappingTargetHelper.startScrappers([
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "ES"),

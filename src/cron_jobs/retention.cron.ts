@@ -12,7 +12,8 @@ export class RetentionCron {
 
     cron.schedule("0 0 */3 * *", async () => {
 
-      console.log("RetentionCron => inactiveUserReminder");
+      console.log("🕒  RetentionCron => Inactive User Reminder... 🕒");
+
 
 
       const users: IUser[] = await User.find({}) // select all users
