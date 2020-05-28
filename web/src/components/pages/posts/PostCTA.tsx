@@ -2,12 +2,11 @@ import { faEnvelope, faLink, faMobileAlt, IconDefinition } from '@fortawesome/fr
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { TS } from '../../../helpers/LanguageHelper';
-import { AppState } from '../../../store/reducers/index.reducers';
-import { IUser } from '../../../types/User.types';
+import { userGetProfileInfo } from '../../../store/actions/user.actions';
 
 interface IProps {
   email: string;
@@ -22,8 +21,7 @@ interface ICTAInfo {
 }
 
 export const PostCTA = ({ email, phone, externalUrl }: IProps) => {
-  const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
-
+  const dispatch = useDispatch();
   const router = useRouter();
 
   let CTAInfo: ICTAInfo;
@@ -48,8 +46,11 @@ export const PostCTA = ({ email, phone, externalUrl }: IProps) => {
     };
   }
 
-  const onCTAClick = () => {
+  const onCTAClick = async () => {
     // if user is NOT authenticated, block and ask him to login
+
+    const user = await dispatch(userGetProfileInfo());
+
     if (!user) {
       alert(TS.string("account", "loginRequiredMessage"));
       router.push("/register");

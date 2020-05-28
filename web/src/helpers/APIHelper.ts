@@ -76,6 +76,7 @@ export class APIHelper {
         );
 
         // NavigationHelper.navigate("Auth", null);
+        window.location.href = `/login`;
       }
 
       clearTimeout(timeoutCallback);
