@@ -346,6 +346,7 @@ const IndividualPage = ({
             phone={post.phone}
             externalUrl={post.externalUrl}
             email={post.email}
+            redirectToSourceOnly={post.redirectToSourceOnly}
           />
         </Cover>
 
@@ -392,6 +393,7 @@ const IndividualPage = ({
                 phone={post.phone}
                 externalUrl={post.externalUrl}
                 email={post.email}
+                redirectToSourceOnly={post.redirectToSourceOnly}
               />
             </MainCTAContainer>
 

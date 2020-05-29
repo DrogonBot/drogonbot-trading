@@ -59,6 +59,7 @@ export interface IPost {
   zipCode?: string,
   source?: PostSource,
   isTrustableSource?: boolean,
+  redirectToSourceOnly?: boolean,
   sourceUrl?: string,
   schedule?: string,
   requisites?: string,

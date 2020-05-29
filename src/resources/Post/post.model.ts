@@ -135,6 +135,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  redirectToSourceOnly: {
+    type: Boolean,
+    default: false
+  },
 
   monthlySalary: {
     type: Number,

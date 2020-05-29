@@ -16,6 +16,7 @@ export interface IScrappingTarget {
   bypassPostContentFilter?: boolean,
   fixEncoding?: boolean
   isTrustableSource?: boolean
+  redirectToSourceOnly?: boolean
 }
 
 export enum TargetPriority {

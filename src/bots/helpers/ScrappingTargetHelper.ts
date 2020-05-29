@@ -49,14 +49,14 @@ export class ScrappingTargetHelper {
         case PagePattern.Feed:
           await BotHelper.initScrapper(result.name, result.scrapperClass, result.source, {
             crawlFeedFunction: result.scrapperClass.crawlPageFeed
-          }, PagePattern.Feed, result.externalSource, result.postDataOverride, result.bypassPostContentFilter, result.fixEncoding, result.isTrustableSource)
+          }, PagePattern.Feed, result.externalSource, result.postDataOverride, result.bypassPostContentFilter, result.fixEncoding, result.isTrustableSource, result.redirectToSourceOnly)
 
           break;
         case PagePattern.ListAndInternalPosts:
           await BotHelper.initScrapper(result.name, result.scrapperClass, result.source, {
             crawlLinksFunction: result.scrapperClass.crawlLinks,
             crawlPageDataFunction: result.scrapperClass.crawlPageData
-          }, PagePattern.ListAndInternalPosts, result.externalSource, result.postDataOverride, result.bypassPostContentFilter, result.fixEncoding, result.isTrustableSource)
+          }, PagePattern.ListAndInternalPosts, result.externalSource, result.postDataOverride, result.bypassPostContentFilter, result.fixEncoding, result.isTrustableSource, result.redirectToSourceOnly)
           break;
       }
     }

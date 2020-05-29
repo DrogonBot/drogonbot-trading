@@ -9,6 +9,7 @@ interface IProps {
   email: string;
   phone: string;
   externalUrl: string;
+  redirectToSourceOnly: boolean;
 }
 
 interface ICTAInfo {
@@ -17,27 +18,41 @@ interface ICTAInfo {
   translatedString: string;
 }
 
-export const PostCTA = ({ email, phone, externalUrl }: IProps) => {
+export const PostCTA = ({
+  email,
+  phone,
+  externalUrl,
+  redirectToSourceOnly,
+}: IProps) => {
   let CTAInfo: ICTAInfo;
 
-  if (email) {
-    CTAInfo = {
-      icon: faEnvelope,
-      link: `mailto:${email}`,
-      translatedString: "postApplyBtn",
-    };
-  } else if (phone) {
-    CTAInfo = {
-      icon: faMobileAlt,
-      link: `tel:${phone}`,
-      translatedString: "postCallPhone",
-    };
-  } else if (externalUrl) {
+  if (redirectToSourceOnly) {
+    // if this post is forcing us to redirect to source, lets do it!
     CTAInfo = {
       icon: faLink,
       link: externalUrl,
       translatedString: "postVisitExternalLink",
     };
+  } else {
+    if (email) {
+      CTAInfo = {
+        icon: faEnvelope,
+        link: `mailto:${email}`,
+        translatedString: "postApplyBtn",
+      };
+    } else if (phone) {
+      CTAInfo = {
+        icon: faMobileAlt,
+        link: `tel:${phone}`,
+        translatedString: "postCallPhone",
+      };
+    } else if (externalUrl) {
+      CTAInfo = {
+        icon: faLink,
+        link: externalUrl,
+        translatedString: "postVisitExternalLink",
+      };
+    }
   }
 
   return (

@@ -13,6 +13,7 @@ import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaS
 import { ScrapperQuatreMG } from '../scrappers/ScrapperQuatreMG';
 import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
 import { ScrapperRJEmpregosNet } from '../scrappers/ScrapperRJEmpregosNet';
+import { ScrapperSeuJobsSP } from '../scrappers/ScrapperSeuJobsSP';
 import { ScrapperSociiRH } from '../scrappers/ScrapperSociiRH';
 import { ScrapperVagasDeEmpregoGV } from '../scrappers/ScrapperVagasDeEmpregoGV';
 import { ScrapperVagasUrgentesMG } from '../scrappers/ScrapperVagasUrgentesMG';
@@ -679,6 +680,20 @@ export const scrappingTargets: IScrappingTarget[] = [
 
 
   // SP ========================================
+  {
+    name: "Blog => Seu Jobs SP",
+    externalSource: "https://www.seujobs.com/category/sao-paulo/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperSeuJobsSP,
+    bypassPostContentFilter: true,
+    redirectToSourceOnly: true
+  },
   {
     name: "Blog => Captativa RH",
     externalSource: "https://jobs.quickin.io/captativa/jobs/",

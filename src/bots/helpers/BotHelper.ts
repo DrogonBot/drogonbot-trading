@@ -9,6 +9,7 @@ import { IPost, PostSource } from '../../resources/Post/post.types';
 import { User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
+import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ICrawlerFunctions, IProxyItem, PagePattern, ProxyType } from '../types/bots.types';
@@ -95,7 +96,7 @@ export class BotHelper {
 
   }
 
-  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object, bypassPostContentFilter?: boolean, fixEncoding?: boolean, isTrustableSource?: boolean) => {
+  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object, bypassPostContentFilter?: boolean, fixEncoding?: boolean, isTrustableSource?: boolean, redirectToSourceOnly?: boolean) => {
 
     BotHelper.scrapperClass = scrapperClass;
     BotHelper.fixEncoding = fixEncoding || false;
@@ -131,7 +132,7 @@ export class BotHelper {
             }
 
             await GenericHelper.sleep(BotHelper.postLinkScrappingIntervalMs)
-            await BotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride, bypassPostContentFilter, isTrustableSource)
+            await BotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride, bypassPostContentFilter, isTrustableSource, redirectToSourceOnly)
           }
         }
 
@@ -140,7 +141,7 @@ export class BotHelper {
       case PagePattern.Feed: // used by ScrapperFacebook
 
         if (externalSource) {
-          await BotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride, bypassPostContentFilter, isTrustableSource)
+          await BotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride, bypassPostContentFilter, isTrustableSource, redirectToSourceOnly)
         } else {
           console.log(`🤖: Warning! You should define an external source page for scrapping on OnePageAllPosts PagePattern!`);
         }
@@ -204,7 +205,7 @@ export class BotHelper {
     }
   }
 
-  private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object, bypassPostContentFilter?: boolean, isTrustableSource?: boolean) => {
+  private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object, bypassPostContentFilter?: boolean, isTrustableSource?: boolean, redirectToSourceOnly?: boolean) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
 
     const args = postDataOverride ? [link, postDataOverride] : [link]
@@ -233,7 +234,7 @@ export class BotHelper {
 
 
 
-        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id, isTrustableSource })
+        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
         await newPost.save()
         console.log(`🤖: Saving post: ${post.title}`);
 
@@ -252,7 +253,7 @@ export class BotHelper {
 
   }
 
-  private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?, bypassPostContentFilter?: boolean, isTrustableSource?: boolean) => {
+  private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?, bypassPostContentFilter?: boolean, isTrustableSource?: boolean, redirectToSourceOnly?: boolean) => {
     try {
       console.log(`🤖: Scrapping data from ...${link}`);
 
@@ -275,8 +276,17 @@ export class BotHelper {
         // create a new post and save with post data!
 
         try {
-          const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id, isTrustableSource })
+          const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
+
+          // hide all contact data from page source, if this is a redirectOnly page
+          if (redirectToSourceOnly) {
+            newPost.content = newPost.content.replace(new RegExp(/\S+@\S+\.\S+/, 'ig'), LanguageHelper.getLanguageString('post', 'postIsRedirectOnlyMessage'));
+
+            newPost.content = newPost.content.replace(new RegExp(/(\(?\d{2}\)?\.?\s?)?(\d{4,5}(\-?|\s?)\d{4})/, 'g'), LanguageHelper.getLanguageString('post', 'postIsRedirectOnlyMessage'));
+          }
+
           await newPost.save()
+
           console.log(`${newPost.title} - ${newPost.stateCode}/${newPost.city} - ${newPost.externalUrl ? newPost.externalUrl : ''}`);
 
           await BotHelper._notifyUsers(newPost);
