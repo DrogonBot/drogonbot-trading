@@ -127,6 +127,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  isTrustableSource: {
+    type: Boolean,
+    default: false
+  },
   sourceUrl: {
     type: String,
     trim: true

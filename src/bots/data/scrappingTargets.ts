@@ -296,7 +296,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperSociiRH,
-    bypassPostContentFilter: true
+    bypassPostContentFilter: true,
+    isTrustableSource: true
   },
   {
     name: "Blog => CBDV BH",
@@ -309,7 +310,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperCBDVMG,
-    bypassPostContentFilter: true
+    bypassPostContentFilter: true,
+    isTrustableSource: true
   },
   {
     name: "Blog => Empregos MG",
@@ -335,7 +337,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperRecrutamentoInteligenteMG,
-    bypassPostContentFilter: true
+    bypassPostContentFilter: true,
+    isTrustableSource: true
   },
   {
     name: "Quattre RH - MG",
@@ -348,7 +351,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperQuatreMG,
-    bypassPostContentFilter: true
+    bypassPostContentFilter: true,
+    isTrustableSource: true
   },
 
 
@@ -484,7 +488,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperAGazetaEmpregosES,
-    bypassPostContentFilter: true
+    bypassPostContentFilter: true,
+    isTrustableSource: true
   },
   {
     name: "Vagas de Emprego GV",
@@ -497,7 +502,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperVagasDeEmpregoGV,
-    bypassPostContentFilter: true
+    bypassPostContentFilter: true,
+    isTrustableSource: true
   },
   {
     name: "OLX => ES",
@@ -684,7 +690,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperCaptativaSP,
-    bypassPostContentFilter: true
+    bypassPostContentFilter: true,
+    isTrustableSource: true
   },
   {
     name: "Global Empregos - SP",
@@ -698,7 +705,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperGlobalEmpregosSP,
     bypassPostContentFilter: true,
-    fixEncoding: true
+    fixEncoding: true,
+    isTrustableSource: true
   },
   {
     name: "Grupo Resolve RH",
@@ -712,7 +720,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperGrupoResolveSP,
     bypassPostContentFilter: true,
-    fixEncoding: true
+    fixEncoding: true,
+    isTrustableSource: true
   },
   {
     name: "Blog => Empregos Sao Paulo e Regioes",

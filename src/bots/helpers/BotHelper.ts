@@ -95,7 +95,7 @@ export class BotHelper {
 
   }
 
-  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object, bypassPostContentFilter?: boolean, fixEncoding?: boolean) => {
+  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object, bypassPostContentFilter?: boolean, fixEncoding?: boolean, isTrustableSource?: boolean) => {
 
     BotHelper.scrapperClass = scrapperClass;
     BotHelper.fixEncoding = fixEncoding || false;
@@ -131,7 +131,7 @@ export class BotHelper {
             }
 
             await GenericHelper.sleep(BotHelper.postLinkScrappingIntervalMs)
-            await BotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride, bypassPostContentFilter)
+            await BotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride, bypassPostContentFilter, isTrustableSource)
           }
         }
 
@@ -140,7 +140,7 @@ export class BotHelper {
       case PagePattern.Feed: // used by ScrapperFacebook
 
         if (externalSource) {
-          await BotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride, bypassPostContentFilter)
+          await BotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride, bypassPostContentFilter, isTrustableSource)
         } else {
           console.log(`🤖: Warning! You should define an external source page for scrapping on OnePageAllPosts PagePattern!`);
         }
@@ -204,7 +204,7 @@ export class BotHelper {
     }
   }
 
-  private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object, bypassPostContentFilter?: boolean) => {
+  private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object, bypassPostContentFilter?: boolean, isTrustableSource?: boolean) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
 
     const args = postDataOverride ? [link, postDataOverride] : [link]
@@ -233,7 +233,7 @@ export class BotHelper {
 
 
 
-        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id })
+        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id, isTrustableSource })
         await newPost.save()
         console.log(`🤖: Saving post: ${post.title}`);
 
@@ -252,7 +252,7 @@ export class BotHelper {
 
   }
 
-  private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?, bypassPostContentFilter?: boolean) => {
+  private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?, bypassPostContentFilter?: boolean, isTrustableSource?: boolean) => {
     try {
       console.log(`🤖: Scrapping data from ...${link}`);
 
@@ -275,7 +275,7 @@ export class BotHelper {
         // create a new post and save with post data!
 
         try {
-          const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id })
+          const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id, isTrustableSource })
           await newPost.save()
           console.log(`${newPost.title} - ${newPost.stateCode}/${newPost.city} - ${newPost.externalUrl ? newPost.externalUrl : ''}`);
 

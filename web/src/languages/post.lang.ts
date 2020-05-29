@@ -208,4 +208,8 @@ export const strings = {
     eng: "Jobs",
     ptBr: "Vagas",
   },
+  postTrustableSource: {
+    eng: "Trustable Source",
+    ptBr: "Fonte Confiável",
+  },
 };

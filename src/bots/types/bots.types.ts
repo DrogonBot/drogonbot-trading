@@ -15,6 +15,7 @@ export interface IScrappingTarget {
   scrapperClass: any,
   bypassPostContentFilter?: boolean,
   fixEncoding?: boolean
+  isTrustableSource?: boolean
 }
 
 export enum TargetPriority {

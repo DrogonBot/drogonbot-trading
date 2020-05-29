@@ -1,9 +1,12 @@
+import Tooltip from '@material-ui/core/Tooltip';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Link from 'next/link';
 import styled from 'styled-components';
 
 import { colors } from '../../../../constants/UI/Colors.constant';
 import { UI } from '../../../../constants/UI/UI.constant';
 import { DateHelper } from '../../../../helpers/DateHelper';
+import { TS } from '../../../../helpers/LanguageHelper';
 import { Breadcumb } from '../../../elements/ui/Breadcumb';
 
 interface IProps {
@@ -16,6 +19,7 @@ interface IProps {
   slug: string;
   stateCode: string;
   city: string;
+  isTrustableSource: boolean;
 }
 
 export const SearchItem = ({
@@ -28,6 +32,7 @@ export const SearchItem = ({
   slug,
   stateCode,
   city,
+  isTrustableSource,
 }: IProps) => {
   const humanDate = DateHelper.displayHumanDate(date);
 
@@ -35,7 +40,10 @@ export const SearchItem = ({
     <Container>
       <Breadcumb parent={`${stateCode} › ${city} › ${category}`} child={tags} />
       <Link href={`/posts/[slug]`} passHref as={`/posts/${slug}`}>
-        <Title>{title}</Title>
+        <Title>
+          {title}
+          {isTrustableSource && <VerifiedIcon />}
+        </Title>
       </Link>
       <MobileDate>{humanDate}</MobileDate>
       <Link href={`/posts/[slug]`} passHref as={`/posts/${slug}`}>
@@ -50,6 +58,24 @@ export const SearchItem = ({
     </Container>
   );
 };
+
+const VerifiedIcon = () => (
+  <VerifiedIconContainer>
+    <Tooltip title={TS.string("post", "postTrustableSource")}>
+      <VerifiedUserIcon />
+    </Tooltip>
+  </VerifiedIconContainer>
+);
+
+const VerifiedIconContainer = styled.div`
+  position: relative;
+  top: -0.1rem;
+  font-size: 1.3rem;
+  margin-left: 0.3rem;
+  svg {
+    color: ${colors.green};
+  }
+`;
 
 const Container = styled.div`
   flex: 100%;
@@ -70,7 +96,8 @@ const Container = styled.div`
 `;
 
 const Title = styled.a`
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: 0.8rem;
   font-size: 18px;
   margin-top: 1rem;
