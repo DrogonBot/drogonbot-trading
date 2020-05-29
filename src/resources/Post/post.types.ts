@@ -82,3 +82,7 @@ export interface ISimilarityMatch {
   target: string,
   rating: number;
 }
+
+export interface IGetProvinceCity {
+  city: string, stateCode: string
+}

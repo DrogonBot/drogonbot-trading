@@ -77,6 +77,51 @@ export class PostScrapperHelper {
     }
   }
 
+
+  public static getProvinceAndCity = async (content) => {
+
+    try {
+      const places = await Place.find({})
+
+      for (const place of places) {
+
+        // loop until we find the matching stateCode
+        const stateCodeFound = new RegExp(`\\b${place.stateCode}\\b`, 'gi').test(content)
+
+        if (stateCodeFound) {
+          // once we find this stateCode, search for the city
+
+          // Here we test every city against our post content. If we find it, then that's because this post is probably associated with it
+          for (const city of place.cities) {
+            const cityFound = new RegExp(city.cityName, 'gi').test(content)
+
+            if (cityFound) {
+              return {
+                city: city.cityName,
+                stateCode: place.stateCode
+              };
+            }
+            continue;
+          }
+        }
+      }
+
+      // if nothing is found, lets default to SP
+
+      return {
+        stateCode: "SP",
+        city: "São Paulo"
+      }
+
+
+    }
+    catch (error) {
+      console.error(error);
+
+    }
+
+  }
+
   public static getCity = async (stateCode, content) => {
 
     try {

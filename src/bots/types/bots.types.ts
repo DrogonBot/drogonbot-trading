@@ -8,7 +8,7 @@ export interface ICredential {
 export interface IScrappingTarget {
   name: string;
   externalSource: string;
-  postDataOverride: any;
+  postDataOverride?: any;
   source: PostSource;
   priority: TargetPriority;
   pagePattern: PagePattern.Feed | PagePattern.ListAndInternalPosts,

@@ -9,7 +9,7 @@ import { IScrapperLink } from '../types/bots.types';
 
 
 
-export class ScrapperSeuJobsSP {
+export class ScrapperSeuJobs {
 
   public static postLinks: IScrapperLink[] | null = null
 
@@ -23,7 +23,7 @@ export class ScrapperSeuJobsSP {
 
     const $ = cheerio.load(html);
 
-    const postList = $('.entry-title a')
+    const postList = $('.job_listings a[href*=seujobs]')
 
     let links: string[] = []
 
@@ -39,7 +39,7 @@ export class ScrapperSeuJobsSP {
       }
     })
 
-    console.log(`🤖: ${links.length} ${ScrapperSeuJobsSP.name} links crawled successfully!`);
+    console.log(`🤖: ${links.length} ${ScrapperSeuJobs.name} links crawled successfully!`);
     console.log(links);
 
     return links.map((link) => {
@@ -73,8 +73,9 @@ export class ScrapperSeuJobsSP {
 
     rawContent = rawContent.trim()
 
+    const locationTag = $('.google_map_link').text().trim();
 
-    const rawCity = await PostScrapperHelper.getCity("SP", `${title} - ${rawContent}`) || "São Paulo"
+    const place = await PostScrapperHelper.getProvinceAndCity(locationTag)
 
     // remove html tags
     rawContent = GenericHelper.stripHtml(rawContent)
@@ -91,7 +92,8 @@ export class ScrapperSeuJobsSP {
       externalUrl: link,
       country: "Brazil",
       source: PostSource.Blog,
-      city: rawCity,
+      city: place?.city || "São Paulo",
+      stateCode: place?.stateCode || "SP",
       sector,
       jobRoles: [jobRoleBestMatch],
       ...postDataOverride,

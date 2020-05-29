@@ -13,7 +13,7 @@ import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaS
 import { ScrapperQuatreMG } from '../scrappers/ScrapperQuatreMG';
 import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
 import { ScrapperRJEmpregosNet } from '../scrappers/ScrapperRJEmpregosNet';
-import { ScrapperSeuJobsSP } from '../scrappers/ScrapperSeuJobsSP';
+import { ScrapperSeuJobs } from '../scrappers/ScrapperSeuJobs';
 import { ScrapperSociiRH } from '../scrappers/ScrapperSociiRH';
 import { ScrapperVagasDeEmpregoGV } from '../scrappers/ScrapperVagasDeEmpregoGV';
 import { ScrapperVagasUrgentesMG } from '../scrappers/ScrapperVagasUrgentesMG';
@@ -681,16 +681,12 @@ export const scrappingTargets: IScrappingTarget[] = [
 
   // SP ========================================
   {
-    name: "Blog => Seu Jobs SP",
-    externalSource: "https://www.seujobs.com/category/sao-paulo/",
+    name: "Blog => Seu Jobs",
+    externalSource: "https://www.seujobs.com/",
     priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP"
-    },
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperSeuJobsSP,
+    scrapperClass: ScrapperSeuJobs,
     bypassPostContentFilter: true,
     redirectToSourceOnly: true
   },
