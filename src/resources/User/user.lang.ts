@@ -206,5 +206,13 @@ export const strings = {
   userCreditsError: {
     eng: "Error while trying to manage your credits!",
     ptBr: "Erro ao tentar gerenciar seus créditos!"
+  },
+  userClickAlreadyLogged: {
+    eng: "This user IP already clicked in our ads",
+    ptBr: "Este IP do usuário já clicou em nossos anúncios"
+  },
+  userClickComputed: {
+    eng: "New click computed successfully",
+    ptBr: "Novo clique computado com sucesso"
   }
 };

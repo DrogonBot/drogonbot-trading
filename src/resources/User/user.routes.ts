@@ -8,6 +8,7 @@ import multer from 'multer';
 import randomstring from 'randomstring';
 import sharp from 'sharp';
 
+import { USER_PER_CLICK_CREDIT_MULTIPLIER } from '../../constants/user.constant';
 import { GenericEmailManager } from '../../emails/generic.email';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { RequestMiddleware } from '../../middlewares/request.middleware';
@@ -1010,9 +1011,6 @@ userRouter.post("/users/consume-credit", [userAuthMiddleware], async (req, res) 
   // update user credits
   if (user) {
 
-    console.log(user);
-
-
     // check if the user has credits
     if (!user.credits || user.credits <= 0) {
       return res.status(200).send({
@@ -1026,6 +1024,15 @@ userRouter.post("/users/consume-credit", [userAuthMiddleware], async (req, res) 
 
       user.credits -= 1;
       await user.save();
+
+      // Log in the system
+
+      const creditConsumption = new Log({
+        emitter: user._id,
+        action: 'USER_CREDIT_CONSUMED',
+        target: user.credits
+      })
+      await creditConsumption.save()
 
 
 
@@ -1055,6 +1062,59 @@ userRouter.post("/users/consume-credit", [userAuthMiddleware], async (req, res) 
 
 
 
+
+})
+
+userRouter.post("/users/validate-post-click", [RequestMiddleware.getRequestIP], async (req, res) => {
+
+  const { clientIp } = req;
+  const { promoterId } = req.body
+
+  const user = await User.findOne({
+    _id: promoterId
+  })
+
+
+  if (!user) {
+    return res.status(200).send({
+      status: "error",
+      message: LanguageHelper.getLanguageString('user', 'userNotFoundByToken')
+    })
+  }
+
+  const checkClickAlreadyLoggedByThisUser = await Log.findOne({
+    emitter: user._id,
+    target: clientIp
+  })
+
+  if (checkClickAlreadyLoggedByThisUser) {
+    return res.status(200).send({
+      status: 'error',
+      message: LanguageHelper.getLanguageString('user', 'userClickAlreadyLogged')
+    })
+  }
+
+  // if everything is ok and we have a new user, compute as new click
+
+  const newPromotedClick = new Log({
+    emitter: promoterId,
+    action: 'USER_COMPUTE_PROMOTED_CLICK',
+    target: clientIp
+  })
+  await newPromotedClick.save();
+
+
+
+
+
+  // add user credits
+  user.credits += USER_PER_CLICK_CREDIT_MULTIPLIER;
+  await user.save();
+
+  return res.status(200).send({
+    status: 'success',
+    message: LanguageHelper.getLanguageString('user', 'userClickComputed')
+  })
 
 })
 

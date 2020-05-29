@@ -20,6 +20,8 @@ import FlagIcon from '@material-ui/icons/Flag';
 import SmartphoneIcon from '@material-ui/icons/Smartphone';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { JobPostingJsonLd } from 'next-seo';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import Linkify from 'react-linkify';
 import Slider from 'react-slick';
 import styled from 'styled-components';
@@ -72,6 +74,15 @@ const IndividualPage = ({
 }: IProps) => {
   //  human readable date -
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.promoter) {
+      // if we have a promoter, lets compute a new click to this user.
+      // TODO: Stopped here
+    }
+  }, []);
 
   const onRenderPositionType = () => {
     switch (post.positionType) {
