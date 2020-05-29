@@ -111,6 +111,10 @@ export const userSchema: Schema = new Schema(
     credits: {
       type: Number,
       default: 5
+    },
+    isJobPromoter: {
+      type: Boolean,
+      default: false
     }
   },
   {

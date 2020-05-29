@@ -917,7 +917,7 @@ userRouter.patch("/users/me", [userAuthMiddleware], async (req, res) => {
 
   // check if keys are allowed to be updated
   if (
-    !RouterHelper.checkRequestKeysAllowed(req.body, ["genericPositionsOfInterest", "type", "lastNotification", "stateCode", "country", "city"])
+    !RouterHelper.checkRequestKeysAllowed(req.body, ["genericPositionsOfInterest", "type", "lastNotification", "stateCode", "country", "city", "isJobPromoter"])
   ) {
     return res.status(400).send({
       status: "error",
