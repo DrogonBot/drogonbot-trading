@@ -4,6 +4,7 @@ import Menu, { MenuProps } from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -36,6 +37,12 @@ export const AccountDropdown = () => {
 
     router.push({
       pathname: "/login",
+    });
+  };
+
+  const onHandlePromoterArea = () => {
+    router.push({
+      pathname: "/posts/advertise",
     });
   };
 
@@ -80,6 +87,13 @@ export const AccountDropdown = () => {
           <MeetingRoomIcon fontSize="small" />,
           <ListItemText primary={TS.string("account", "logoutButtonText")} />,
           onHandleLogout
+        )}
+        {renderMenuItem(
+          <DynamicFeedIcon fontSize="small" />,
+          <ListItemText
+            primary={TS.string("account", "PromoteJobsButtonText")}
+          />,
+          onHandlePromoterArea
         )}
         {/* {renderMenuItem(
           <DraftsIcon fontSize="small" />,

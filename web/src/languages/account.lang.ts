@@ -15,6 +15,10 @@ export const strings = {
     eng: "Logout",
     ptBr: "Logout",
   },
+  PromoteJobsButtonText: {
+    eng: "Promote Jobs",
+    ptBr: "Área do Divulgador",
+  },
   emailInput: {
     eng: "E-mail",
     ptBr: "E-mail",

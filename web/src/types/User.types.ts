@@ -19,6 +19,8 @@ export interface IUser {
   pushToken: string;
   createdAt: string;
   updatedAt: string;
+  credits: number;
+  isJobPromoter: boolean;
 }
 
 export interface INewAccount {

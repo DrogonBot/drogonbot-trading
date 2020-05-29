@@ -342,11 +342,7 @@ const IndividualPage = ({
         </PageContainer>
 
         <Cover backgroundImagePath={`/images/seo/${post.sector}.jpg`}>
-          <PostCTA
-            phone={post.phone}
-            externalUrl={post.externalUrl}
-            email={post.email}
-          />
+          <PostCTA post={post} />
         </Cover>
 
         <MainContainer>
@@ -388,11 +384,7 @@ const IndividualPage = ({
             </InfoTagsContainer>
 
             <MainCTAContainer>
-              <PostCTA
-                phone={post.phone}
-                externalUrl={post.externalUrl}
-                email={post.email}
-              />
+              <PostCTA post={post} />
             </MainCTAContainer>
 
             <TOSContainer>

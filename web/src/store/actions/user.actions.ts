@@ -226,3 +226,34 @@ export const userUpdateAttribute = (keyValuePairs) => async (dispatch) => {
     return updatedUser;
   }
 };
+
+export const userConsumeCredit = (postId) => async (
+  dispatch
+): Promise<boolean> => {
+  const response = await APIHelper.request(
+    RequestTypes.POST,
+    "/users/consume-credit",
+    {
+      postId,
+    },
+    true
+  );
+
+  // refresh user info with consumed credits
+  await dispatch(userGetProfileInfo());
+
+  if (response) {
+    console.log(response.data);
+    if (response.status !== 200 || response.data.status === "error") {
+      console.log("error!!");
+      const errorResponse: IRequestDefaultError = response.data;
+
+      if (process.browser) {
+        window.alert(errorResponse.message);
+      }
+
+      return false;
+    }
+  }
+  return true;
+};

@@ -6,12 +6,11 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { TS } from '../../../helpers/LanguageHelper';
-import { userGetProfileInfo } from '../../../store/actions/user.actions';
+import { userConsumeCredit, userGetProfileInfo } from '../../../store/actions/user.actions';
+import { IPost } from '../../../types/Post.types';
 
 interface IProps {
-  email: string;
-  phone: string;
-  externalUrl: string;
+  post: IPost;
 }
 
 interface ICTAInfo {
@@ -20,28 +19,28 @@ interface ICTAInfo {
   translatedString: string;
 }
 
-export const PostCTA = ({ email, phone, externalUrl }: IProps) => {
+export const PostCTA = ({ post }: IProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
   let CTAInfo: ICTAInfo;
 
-  if (email) {
+  if (post.email) {
     CTAInfo = {
       icon: faEnvelope,
-      link: `mailto:${email}`,
+      link: `mailto:${post.email}`,
       translatedString: "postApplyBtn",
     };
-  } else if (phone) {
+  } else if (post.phone) {
     CTAInfo = {
       icon: faMobileAlt,
-      link: `tel:${phone}`,
+      link: `tel:${post.phone}`,
       translatedString: "postCallPhone",
     };
-  } else if (externalUrl) {
+  } else if (post.externalUrl) {
     CTAInfo = {
       icon: faLink,
-      link: externalUrl,
+      link: post.externalUrl,
       translatedString: "postVisitExternalLink",
     };
   }
@@ -58,8 +57,13 @@ export const PostCTA = ({ email, phone, externalUrl }: IProps) => {
     }
 
     // else, proceed with link action + consume one credit
+    const isCreditConsumed = await dispatch(userConsumeCredit(post));
 
-    return (window.location.href = CTAInfo.link);
+    if (isCreditConsumed) {
+      return (window.location.href = CTAInfo.link);
+    } else {
+      router.push("/posts/advertise");
+    }
   };
 
   return (
