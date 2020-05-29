@@ -260,4 +260,8 @@ export const strings = {
     eng: "Location & Contact",
     ptBr: "Localização e Contato",
   },
+  userStartAdvertising: {
+    eng: "Start Promoting",
+    ptBr: "Quero ser Divulgador",
+  },
 };

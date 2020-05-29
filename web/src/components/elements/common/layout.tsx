@@ -52,3 +52,11 @@ export const FormItemContainer = styled.div`
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 `;
+
+export const PageList = styled.ul`
+  list-style: none;
+  color: ${colors.silver};
+  li {
+    margin-bottom: 0.5rem;
+  }
+`;
