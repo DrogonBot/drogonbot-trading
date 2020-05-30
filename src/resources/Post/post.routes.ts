@@ -41,8 +41,6 @@ postRouter.get('/feed/posts', async (req, res) => {
       title: post.title,
       description: post.content,
       url: `${process.env.WEB_APP_URL}/posts/${post.slug}`, // link to the item
-      guid: post._id, // optional - defaults to url
-      categories: [post.sector], // optional - array of item categories
       author: process.env.APP_NAME, // optional - defaults to feed author property
       date: new Date(post.createdAt), // any format that js Date can parse.
       image_url: `${process.env.WEB_APP_URL}/images/seo/${post.sector}`,
@@ -50,7 +48,6 @@ postRouter.get('/feed/posts', async (req, res) => {
       copyright: `All rights reserved ${new Date().getFullYear()}, ${process.env.APP_NAME}`,
       language: `pt-br`,
       custom_elements: [
-        { 'post:country': post.country },
         { 'post:stateCode': post.stateCode },
         { 'post:city': post.city },
         { 'post:source': post.source },
@@ -73,6 +70,8 @@ postRouter.get('/feed/posts', async (req, res) => {
 
 
   }
+
+  res.set('Content-Type', 'application/rss+xml');
 
 
   return res.status(200).send(feed.xml({ indent: true }))
