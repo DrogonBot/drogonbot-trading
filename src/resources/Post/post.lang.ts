@@ -245,8 +245,8 @@ Good Luck!
     `
   },
   postIsRedirectOnlyMessage: {
-    eng: "[ Click on Apply Externally to Get Contact Info ]",
-    ptBr: "[ Clique em Aplicar Externamente para Obter Informações de Contato ]"
+    eng: "[ Click on post's link to apply ]",
+    ptBr: "[ Clique no link do post para aplicar ]"
   }
 
 

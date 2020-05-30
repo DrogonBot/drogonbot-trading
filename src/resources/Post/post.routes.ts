@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import _ from 'lodash';
+import RSS from 'rss';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
@@ -16,6 +17,61 @@ export interface IJobReminder {
   userPush: string,
   jobs: IPost[]
 }
+
+postRouter.get('/post/feed/rss', async (req, res) => {
+
+  const { query } = req;
+
+  const feed = new RSS()
+
+  const posts = await Post.find({ ...query }).limit(30);
+
+  for (const post of posts) {
+
+    feed.item({
+      title: post.title,
+      description: post.content,
+      url: `${process.env.WEB_APP_URL}/posts/${post.slug}`, // link to the item
+      guid: post._id, // optional - defaults to url
+      categories: [post.sector], // optional - array of item categories
+      author: process.env.APP_NAME, // optional - defaults to feed author property
+      date: new Date(post.createdAt), // any format that js Date can parse.
+      image_url: `${process.env.WEB_APP_URL}/images/seo/${post.sector}`,
+      feed_url: `${process.env.API_URL}/post/feed/rss`,
+      copyright: `All rights reserved ${new Date().getFullYear()}, ${process.env.APP_NAME}`,
+      language: `pt-br`,
+      custom_elements: [
+        { 'post:country': post.country },
+        { 'post:stateCode': post.stateCode },
+        { 'post:city': post.city },
+        { 'post:source': post.source },
+        { 'post:positionType': post.positionType },
+        { 'post:jobRoles': post.jobRoles },
+        { 'post:experienceRequired': post.experienceRequired },
+        { 'post:category': post.category },
+        { 'post:benefits': post.benefits },
+        { 'post:isTrustableSource': post.isTrustableSource },
+        { 'post:redirectToSourceOnly': post.redirectToSourceOnly },
+        { 'post:images': post.images },
+        { 'post:active': post.active },
+        { 'post:views': post.views },
+        { 'post:requisites': post.requisites },
+        { 'post:schedule': post.schedule },
+        { 'post:companyName': post.companyName },
+      ]
+    })
+
+
+
+  }
+
+
+  return res.status(200).send(feed.xml())
+
+
+
+})
+
 
 postRouter.get('/post', async (req, res) => {
 

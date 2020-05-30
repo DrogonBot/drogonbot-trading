@@ -23,6 +23,19 @@ import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.typ
 
 export const scrappingTargets: IScrappingTarget[] = [
 
+  // ! ALL ============================================
+
+  {
+    name: "Blog => Seu Jobs",
+    externalSource: "https://www.seujobs.com/",
+    priority: TargetPriority.High,
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperSeuJobs,
+    bypassPostContentFilter: true,
+    redirectToSourceOnly: true
+  },
+
   // ! FACEBOOK ========================================
 
   // ES ========================================
@@ -680,16 +693,7 @@ export const scrappingTargets: IScrappingTarget[] = [
 
 
   // SP ========================================
-  {
-    name: "Blog => Seu Jobs",
-    externalSource: "https://www.seujobs.com/",
-    priority: TargetPriority.High,
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperSeuJobs,
-    bypassPostContentFilter: true,
-    redirectToSourceOnly: true
-  },
+
   {
     name: "Blog => Captativa RH",
     externalSource: "https://jobs.quickin.io/captativa/jobs/",
