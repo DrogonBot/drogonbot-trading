@@ -33,7 +33,7 @@ postRouter.get('/feed/posts', async (req, res) => {
     ttl: '60'
   })
 
-  const posts = await Post.find({ ...query }).limit(30);
+  const posts = await Post.find({ active: true, ...query }).limit(30);
 
   for (const post of posts) {
 
