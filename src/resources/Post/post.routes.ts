@@ -18,11 +18,20 @@ export interface IJobReminder {
   jobs: IPost[]
 }
 
-postRouter.get('/post/feed/rss', async (req, res) => {
+postRouter.get('/feed/posts', async (req, res) => {
 
   const { query } = req;
 
-  const feed = new RSS()
+  const feed = new RSS({
+    title: `${process.env.APP_NAME} feed`,
+    description: `Feed for ${process.env.APP_NAME} website`,
+    feed_url: 'https://api.empregourgente.com/feed/posts',
+    site_url: 'http://empregourgente.com',
+    image_url: 'http://empregourgente.com/images/icons/icon-384x384.png',
+    copyright: `All rights reserved ${new Date().getFullYear()}, ${process.env.APP_NAME}`,
+    language: 'pt-br',
+    ttl: '60'
+  })
 
   const posts = await Post.find({ ...query }).limit(30);
 
@@ -37,7 +46,7 @@ postRouter.get('/post/feed/rss', async (req, res) => {
       author: process.env.APP_NAME, // optional - defaults to feed author property
       date: new Date(post.createdAt), // any format that js Date can parse.
       image_url: `${process.env.WEB_APP_URL}/images/seo/${post.sector}`,
-      feed_url: `${process.env.API_URL}/post/feed/rss`,
+      feed_url: `${process.env.API_URL}/feed/posts`,
       copyright: `All rights reserved ${new Date().getFullYear()}, ${process.env.APP_NAME}`,
       language: `pt-br`,
       custom_elements: [
@@ -66,7 +75,7 @@ postRouter.get('/post/feed/rss', async (req, res) => {
   }
 
 
-  return res.status(200).send(feed.xml())
+  return res.status(200).send(feed.xml({ indent: true }))
 
 
 
