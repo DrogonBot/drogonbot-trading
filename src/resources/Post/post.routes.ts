@@ -47,7 +47,7 @@ postRouter.get('/feed/posts', async (req, res) => {
       feed_url: `${process.env.API_URL}/feed/posts`,
       copyright: `All rights reserved ${new Date().getFullYear()}, ${process.env.APP_NAME}`,
       language: `pt-br`,
-      custom_elements: [
+      custom_namespaces: [
         { 'stateCode': post.stateCode },
         { 'city': post.city },
         { 'source': post.source },
