@@ -31,26 +31,26 @@ export const PostCTA = ({
     CTAInfo = {
       icon: faLink,
       link: externalUrl,
-      translatedString: "postVisitExternalLink",
+      translatedString: "postGenericApplyText",
     };
   } else {
     if (email) {
       CTAInfo = {
         icon: faEnvelope,
         link: `mailto:${email}`,
-        translatedString: "postApplyBtn",
+        translatedString: "postGenericApplyText",
       };
     } else if (phone) {
       CTAInfo = {
         icon: faMobileAlt,
         link: `tel:${phone}`,
-        translatedString: "postCallPhone",
+        translatedString: "postGenericApplyText",
       };
     } else if (externalUrl) {
       CTAInfo = {
         icon: faLink,
         link: externalUrl,
-        translatedString: "postVisitExternalLink",
+        translatedString: "postGenericApplyText",
       };
     }
   }

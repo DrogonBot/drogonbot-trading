@@ -26,7 +26,6 @@ import styled from 'styled-components';
 
 import { AdsenseHelper } from '../../components/ads/AdsenseAds';
 import { Body, PageContainer } from '../../components/elements/common/layout';
-import { AffiliateProductCard } from '../../components/elements/ui/AffiliateProductCard';
 import { AlertModal } from '../../components/elements/ui/AlertModal';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { InfoTag } from '../../components/elements/ui/InfoTag';
@@ -43,16 +42,16 @@ import { UI } from '../../constants/UI/UI.constant';
 import { DateHelper } from '../../helpers/DateHelper';
 import { TS } from '../../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
-import { postReadAffiliatedProducts, postReadFeed, postReadOne } from '../../store/actions/post.action';
+import { postReadFeed, postReadOne } from '../../store/actions/post.action';
 import { AdsenseAdsTypes } from '../../types/Ads.types';
 import { IProvince } from '../../types/Form.types';
-import { IAffiliateProduct, IPost, PostBenefits, PostCategory, PostPositionType } from '../../types/Post.types';
+import { IPost, PostBenefits, PostCategory, PostPositionType } from '../../types/Post.types';
 
 interface IProps {
   post: IPost;
   provinces: IProvince[];
   relatedPosts: IPost[];
-  affiliatedProducts: IAffiliateProduct[];
+  // affiliatedProducts: IAffiliateProduct[];
 }
 
 const carouselSettings = {
@@ -68,8 +67,8 @@ const IndividualPage = ({
   post,
   provinces,
   relatedPosts,
-  affiliatedProducts,
-}: IProps) => {
+}: // affiliatedProducts,
+IProps) => {
   //  human readable date -
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
 
@@ -290,12 +289,39 @@ const IndividualPage = ({
     }
   };
 
-  const onRenderAffiliateProducts = () => {
-    return affiliatedProducts.map((product, i) => (
-      <div key={i}>
-        <AffiliateProductCard affiliateProduct={product} />
-      </div>
-    ));
+  // const onRenderAffiliateProducts = () => {
+  //   return affiliatedProducts.map((product, i) => (
+  //     <div key={i}>
+  //       <AffiliateProductCard affiliateProduct={product} />
+  //     </div>
+  //   ));
+  // };
+
+  const onRenderPostContent = () => {
+    // if it has an email or phone, its a fully scrapped page. Lets just display everything
+    if (post.email || post.phone) {
+      return post.content;
+    }
+
+    // if its an indexed page, lets add this "see more" info to redirect user to the destination page
+    if (post.externalUrl) {
+      const SeeMore = () => (
+        <SeeMoreLink href={post.externalUrl} target="_blank">
+          <strong>{TS.string("post", "postMoreInfoDestinationPage")}...</strong>
+        </SeeMoreLink>
+      );
+
+      return (
+        <>
+          {post.content.substr(0, post.content.length - 15)}
+          <p>
+            <SeeMore />
+          </p>
+        </>
+      );
+    }
+
+    return post.content;
   };
 
   return (
@@ -372,7 +398,7 @@ const IndividualPage = ({
             <Small>{humanDate}</Small>
             <ContentArea>
               <Linkify properties={{ target: "_blank" }}>
-                {post.content}
+                {onRenderPostContent()}
               </Linkify>
             </ContentArea>
 
@@ -419,22 +445,22 @@ const IndividualPage = ({
             </ContainerDesktop>
           </LeftColumn>
 
-          <RightColumn>
+          {/* <RightColumn>
             <H2> {TS.string("post", "postImproveSkills")}</H2>
             <Small>{TS.string("post", "postImproveSkillsDescription")}</Small>
             <AffiliateProductsContainerDesktop>
               {onRenderAffiliateProducts()}
             </AffiliateProductsContainerDesktop>
-          </RightColumn>
+          </RightColumn> */}
         </MainContainer>
 
-        <AffiliateProductsContainerMobile>
+        {/* <AffiliateProductsContainerMobile>
           <InternalContainer>
             <H2> {TS.string("post", "postImproveSkills")}</H2>
             <Small>{TS.string("post", "postImproveSkillsDescription")}</Small>
           </InternalContainer>
           <Slider {...carouselSettings}>{onRenderAffiliateProducts()}</Slider>
-        </AffiliateProductsContainerMobile>
+        </AffiliateProductsContainerMobile> */}
 
         <ContainerMobile>
           {relatedPosts?.length ? (
@@ -500,10 +526,10 @@ IndividualPage.getInitialProps = async (ctx) => {
   const provinces = await ctx.store.getState().formReducer.states;
   const post: IPost = await ctx.store.getState().postReducer.post;
 
-  await ctx.store.dispatch(postReadAffiliatedProducts(post));
+  // await ctx.store.dispatch(postReadAffiliatedProducts(post));
 
-  const affiliatedProducts: IAffiliateProduct[] = await ctx.store.getState()
-    .postReducer.affiliatedProducts;
+  // const affiliatedProducts: IAffiliateProduct[] = await ctx.store.getState()
+  //   .postReducer.affiliatedProducts;
 
   if (post?.jobRoles?.length > 0) {
     await ctx.store.dispatch(
@@ -520,7 +546,7 @@ IndividualPage.getInitialProps = async (ctx) => {
     post,
     provinces,
     relatedPosts,
-    affiliatedProducts,
+    // affiliatedProducts,
   };
 };
 
@@ -535,23 +561,21 @@ const MainContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const AffiliateProductsContainerMobile = styled.div`
-  /*DESKTOP ONLY CODE*/
-  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
-    display: none;
-  }
+// const AffiliateProductsContainerMobile = styled.div`
+//   /*DESKTOP ONLY CODE*/
+//   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
+//     display: none;
+//   }
 
-  .slick-arrow {
-    display: none !important;
-  }import { Adsense } from "react-adsense";
-import { AdsenseHelper } from "../../components/ads/AdsenseAds";
-
-`;
-const AffiliateProductsContainerDesktop = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex: 100%;
-`;
+//   .slick-arrow {
+//     display: none !important;
+//   }
+// `;
+// const AffiliateProductsContainerDesktop = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   flex: 100%;
+// `;
 
 const LeftColumn = styled.div`
   flex: 50%;
@@ -563,15 +587,19 @@ const LeftColumn = styled.div`
     padding: 3rem;
   }
 `;
-const RightColumn = styled.div`
-  flex: auto;
-  padding: 1.5rem;
-  width: 50%;
+// const RightColumn = styled.div`
+//   flex: auto;
+//   padding: 1.5rem;
+//   width: 50%;
 
-  /*MOBILE ONLY CODE*/
-  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
-    display: none;
-  }
+//   /*MOBILE ONLY CODE*/
+//   @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
+//     display: none;
+//   }
+// `;
+
+const SeeMoreLink = styled.a`
+  color: ${colors.accent};
 `;
 
 const WhatsAppLogoContainer = styled.div`
