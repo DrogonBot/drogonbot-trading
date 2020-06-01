@@ -134,7 +134,7 @@ export class PuppeteerBot {
 
       ${post.content.substring(0, 100)}...
 
-    https://empregourgente.com/posts/${post.slug}
+    https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_facebook&utm_medium=social
     `
     }
 

@@ -155,7 +155,8 @@ export class JobsCron {
 
     // HIGH PRIORITY GROUPS
 
-    cron.schedule("0 8 * * *", async () => {
+    // Every 12 hours
+    cron.schedule("0 */12 * * *", async () => {
 
       await ScrappingTargetHelper.startScrappers([
         ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "ES"),
