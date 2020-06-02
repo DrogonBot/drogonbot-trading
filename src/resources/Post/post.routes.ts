@@ -49,6 +49,7 @@ postRouter.get('/feed/posts', async (req, res) => {
       language: `pt-br`,
       custom_namespaces: [
         { 'stateCode': post.stateCode },
+        { 'image': `${process.env.WEB_APP_URL}/images/seo/${post.sector}.jpg` },
         { 'city': post.city },
         { 'source': post.source },
         { 'positionType': post.positionType },
