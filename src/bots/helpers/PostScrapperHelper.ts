@@ -151,10 +151,8 @@ export class PostScrapperHelper {
   }
 
   private static _getSector = async (jobRole) => {
-    // now, based on the jobRoleBestMatch, lets find which sector does this position belongs too
 
-    // Set first letter as capitalized, just in case... (it will be ignored anyway, but lets keep consistency with sector.data)
-    // jobRole = _.startCase(_.camelCase(jobRole))
+    // now, based on the jobRoleBestMatch, lets find which sector does this position belongs too
 
     try {
       console.log(`Getting sector for [${jobRole}]...`);

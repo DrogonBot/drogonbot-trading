@@ -136,6 +136,10 @@ export class DataExtractorHelper {
 
     }
 
+    const externalUrl = DataExtractorHelper._tryExtractingData(rawPost, /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
+
+    const replacedExternalUrl = externalUrl.replace(new RegExp('//', 'g'), "/"); // if we find a double /, replace for a single one.
+
     return {
       category: DataExtractorHelper._readCategory(isTemporary, isCLT, isInternship),
       positionType: isPartTime ? PostPositionType.PartTime : PostPositionType.FullTime,
@@ -146,7 +150,7 @@ export class DataExtractorHelper {
       yearlySalary: (salary && salary * 12) || null,
       hourlySalary: (salary && (salary * 12) / 1920) || null,
       experienceRequired: isExperienceRequired,
-      externalUrl: DataExtractorHelper._tryExtractingData(rawPost, /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig),
+      externalUrl: replacedExternalUrl,
       phone,
       requisites: DataExtractorHelper._tryExtractingData(rawPost, /(((Pre|Pré)?\-?(Requisitos|Essencial))\:?\n?)\s?(.+\n){1,100}/i, /((Pre|Pré)?\-?Requisitos|Essencial)\:?\n?\s?/i),
       schedule: DataExtractorHelper._tryExtractingData(rawPost, /((Horario|horário)\:?\n?)\s?(.+\n){1,100}/i, /(Horario|horário):\n?\s?/i),
