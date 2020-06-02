@@ -152,10 +152,19 @@ export class PostScrapperHelper {
 
   private static _getSector = async (jobRole) => {
     // now, based on the jobRoleBestMatch, lets find which sector does this position belongs too
+
+    // Set first letter as capitalized, just in case... (it will be ignored anyway, but lets keep consistency with sector.data)
+    // jobRole = _.startCase(_.camelCase(jobRole))
+
     try {
-      const sector = await Sector.findOne({ keywords: { "$in": [jobRole] } })
+      console.log(`Getting sector for [${jobRole}]...`);
+      // Find job role with something similar ("LIKE"), no case sensitive
+      const sector = await Sector.findOne({ keywords: { "$in": [new RegExp(`.*${jobRole}.*`, "i")] } })
       if (sector) {
+        console.log(`Getting sector for [${jobRole}] => ${sector.name}`);
         return sector.name
+      } else {
+        console.log(`Couldn't the sector for ${jobRole}!`);
       }
     }
     catch (error) {
@@ -200,7 +209,7 @@ export class PostScrapperHelper {
           console.log('SIMILAR TITLE');
           console.log(`${title} => ${similarTitle.target}`);
           const sectorKeyword = await PostScrapperHelper._getSector(similarTitle.target);
-          console.log(`Title SIMILARITY match: [${similarTitle.target}]`);
+          console.log(`Title SIMILARITY match: [${similarTitle.target}] of ${Math.floor(similarTitle.rating * 100)}%`);
           return {
             jobRoleBestMatch: similarTitle.target,
             sector: sectorKeyword
