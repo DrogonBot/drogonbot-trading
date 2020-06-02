@@ -84,6 +84,7 @@ export class ScrapperGrupoResolveSP {
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
 
+
     const jobData = {
       ...complementaryData,
       title,

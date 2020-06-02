@@ -136,12 +136,8 @@ export class DataExtractorHelper {
 
     }
 
-    let externalUrl = DataExtractorHelper._tryExtractingData(rawPost, /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
+    const externalUrl = DataExtractorHelper._tryExtractingData(rawPost, /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
 
-
-    if (externalUrl?.includes('//')) {
-      externalUrl = externalUrl.replace(new RegExp('//', 'g'), "/"); // if we find a double /, replace for a single one.
-    }
 
     return {
       category: DataExtractorHelper._readCategory(isTemporary, isCLT, isInternship),
