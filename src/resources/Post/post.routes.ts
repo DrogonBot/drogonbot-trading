@@ -43,7 +43,7 @@ postRouter.get('/feed/posts', async (req, res) => {
       url: `${process.env.WEB_APP_URL}/posts/${post.slug}`, // link to the item
       author: process.env.APP_NAME, // optional - defaults to feed author property
       date: new Date(post.createdAt), // any format that js Date can parse.
-      image_url: `${process.env.WEB_APP_URL}/images/seo/${post.sector}`,
+      image_url: `${process.env.WEB_APP_URL}/images/seo/${post.sector}.jpg`,
       feed_url: `${process.env.API_URL}/feed/posts`,
       copyright: `All rights reserved ${new Date().getFullYear()}, ${process.env.APP_NAME}`,
       language: `pt-br`,
@@ -64,6 +64,13 @@ postRouter.get('/feed/posts', async (req, res) => {
         { 'requisites': post.requisites },
         { 'schedule': post.schedule },
         { 'companyName': post.companyName },
+      ],
+      enclosure: [
+        {
+          'url': `${process.env.WEB_APP_URL}/images/seo/${post.sector}.jpg`,
+          'size': 1668,
+          'type': 'image/jpeg'
+        }
       ]
     })
 
