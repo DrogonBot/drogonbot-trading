@@ -15,9 +15,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Link } from '@material-ui/core';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import FlagIcon from '@material-ui/icons/Flag';
-import SmartphoneIcon from '@material-ui/icons/Smartphone';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { JobPostingJsonLd } from 'next-seo';
 import Linkify from 'react-linkify';
@@ -31,6 +28,8 @@ import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { InfoTag } from '../../components/elements/ui/InfoTag';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
+import { FlagPost } from '../../components/pages/posts/FlagPost';
+import { JoinCommunities } from '../../components/pages/posts/JoinCommunities';
 import { PostCard } from '../../components/pages/posts/PostCard';
 import { PostCTA } from '../../components/pages/posts/PostCTA';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
@@ -188,16 +187,6 @@ IProps) => {
         />
       )
     );
-  };
-
-  const getFacebookLink = (stateCode: string) => {
-    const facebookGroupLinks = {
-      ES: "https://www.facebook.com/groups/empregoses/",
-      SP: "https://www.facebook.com/groups/empregosessp/",
-      MG: "https://www.facebook.com/groups/grupoempregosbh/",
-    };
-
-    return facebookGroupLinks[stateCode];
   };
 
   const getJobJsonLDType = () => {
@@ -381,19 +370,8 @@ IProps) => {
             {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
             <TitleContainer>
               <H1>{post.title}</H1>{" "}
-              <a
-                target="_blank"
-                href={`mailto:${appEnv.appEmail}?subject=Denuncia%20de%20Vaga&body=Bom+dia%21+Venho+por+meio+desta+mensagem+denunciar+a+vaga+https://empregourgente.com/posts/${post.slug}%0D%0A%0D%0AMotivos: %0D%0A - DIGITE AQUI O MOTIVO %0D%0A%0D%0AObrigado`}
-              >
-                <Button
-                  startIcon={<FlagIcon />}
-                  variant="outlined"
-                  color="secondary"
-                >
-                  {TS.string("post", "postFlag")}
-                </Button>
-              </a>
             </TitleContainer>
+
             <Breadcumb parent={post.sector} child={post.jobRoles.join(", ")} />
             <Small>{humanDate}</Small>
             <ContentArea>
@@ -430,6 +408,10 @@ IProps) => {
             </TOSContainer>
 
             {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
+
+            <FlagPost post={post} />
+
+            <JoinCommunities post={post} />
 
             <ContainerDesktop>
               {relatedPosts?.length ? (
@@ -470,46 +452,6 @@ IProps) => {
             </InternalContainer>
           ) : null}
         </ContainerMobile>
-
-        <InternalContainer>
-          <H2Block>
-            <H2>{TS.string("global", "joinOurCommunity")}</H2>
-            <CommunitiesContainer>
-              <a
-                href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
-                target="_blank"
-              >
-                <Button
-                  variant="outlined"
-                  className="btnWhatsapp"
-                  startIcon={<WhatsAppIcon />}
-                >
-                  WHATSAPP
-                </Button>
-              </a>
-
-              <a href={getFacebookLink(post.stateCode)} target="_blank">
-                <Button
-                  variant="outlined"
-                  className="btnFacebook"
-                  startIcon={<FacebookIcon />}
-                >
-                  FACEBOOK
-                </Button>
-              </a>
-
-              <a href={`https://bit.ly/emprego-urgente-link1`} target="_blank">
-                <Button
-                  variant="outlined"
-                  className="btnEU"
-                  startIcon={<SmartphoneIcon />}
-                >
-                  APP
-                </Button>
-              </a>
-            </CommunitiesContainer>
-          </H2Block>
-        </InternalContainer>
 
         {onShowWhatsAppLeadCaptureAlert()}
       </Body>
@@ -587,6 +529,7 @@ const LeftColumn = styled.div`
     padding: 3rem;
   }
 `;
+
 // const RightColumn = styled.div`
 //   flex: auto;
 //   padding: 1.5rem;
@@ -611,10 +554,6 @@ const WhatsAppLogoContainer = styled.div`
 
 const WhatsAppLogo = styled.img`
   max-width: 100px;
-`;
-
-const H2Block = styled.div`
-  margin-top: 4rem;
 `;
 
 const MainCTAContainer = styled.div`
@@ -683,38 +622,6 @@ const InfoTagsContainer = styled.div`
 const ContentArea = styled.p`
   color: ${colors.silver};
   white-space: pre-wrap;
-`;
-
-const CommunitiesContainer = styled.div`
-  margin-top: 3rem;
-  margin-bottom: 8rem;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 90%;
-  justify-content: space-between;
-
-  /*MOBILE ONLY CODE*/
-  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
-    margin: 0 auto;
-  }
-
-  .btnWhatsapp {
-    background-color: white;
-    border: 1px solid ${colors.whatsappGreen};
-    color: ${colors.whatsappGreen};
-  }
-  .btnFacebook {
-    background-color: white;
-    border: 1px solid ${colors.facebookBlue};
-    color: ${colors.facebookBlue};
-  }
-
-  .btnEU {
-    background-color: white;
-    border: 1px solid ${colors.accent};
-    color: ${colors.accent};
-  }
 `;
 
 const AlertModalContainer = styled.div`

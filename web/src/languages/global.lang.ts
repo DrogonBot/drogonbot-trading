@@ -136,4 +136,16 @@ export const globalStrings = {
     eng: "Partners: ",
     ptBr: "Parceiros: ",
   },
+  genericWhatsAppGroups: {
+    eng: "WhatsApp Groups",
+    ptBr: "Grupos de WhatsApp",
+  },
+  genericFacebookGroups: {
+    eng: "Facebook Groups",
+    ptBr: "Grupos do Facebook",
+  },
+  genericAppJobs: {
+    eng: "Jobs App",
+    ptBr: "App de Vagas",
+  },
 };
