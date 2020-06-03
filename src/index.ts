@@ -9,6 +9,7 @@ import path from 'path';
 import socketio from 'socket.io';
 
 import { EnvType } from './constants/types/env.types';
+import { EmailQueueCron } from './cron_jobs/emailqueue.cron';
 import { JobsCron } from './cron_jobs/jobs.cron';
 import { LeadsCron } from './cron_jobs/leads.cron';
 import { RetentionCron } from './cron_jobs/retention.cron';
@@ -94,6 +95,8 @@ switch (process.env.ENV) {
     // Job post Schedulers
     // ! Schedulers inactivated temporarely
     // JobsCron.initializeJobPostSchedulers()
+
+    EmailQueueCron.submitQueueEmails();
 
     break;
 }

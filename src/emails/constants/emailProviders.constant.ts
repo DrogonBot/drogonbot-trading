@@ -2,7 +2,13 @@ import sgMail from '@sendgrid/mail';
 import mailjet from 'node-mailjet';
 import SibApiV3Sdk from 'sib-api-v3-sdk';
 
-import { IEmailProvider } from '../TransactionalEmailManager';
+
+export interface IEmailProvider {
+  key: string,
+  freeTierThreshold: number
+  emailSendingFunction: Function
+}
+
 
 export const emailProviders: IEmailProvider[] = [
   {

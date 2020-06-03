@@ -31,6 +31,8 @@ const leadSchema = new mongoose.Schema({
     transactional: Boolean,
     marketing: Boolean
   }
+}, {
+  timestamps: true
 })
 
 export const Lead: Model<ILeadModel> = model<ILeadModel>('Lead', leadSchema)

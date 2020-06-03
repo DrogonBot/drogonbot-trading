@@ -7,17 +7,11 @@ import { User } from '../resources/User/user.model';
 import { EncryptionHelper } from '../utils/EncryptionHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';
 import { TextHelper } from '../utils/TextHelper';
-import { emailProviders } from './constants/emailProviders.constant';
+import { emailProviders, IEmailProvider } from './constants/emailProviders.constant';
 
 export enum EmailType {
   Html = "Html",
   Text = "Text"
-}
-
-export interface IEmailProvider {
-  key: string,
-  freeTierThreshold: number
-  emailSendingFunction: Function
 }
 
 
