@@ -88,7 +88,7 @@ export class JobsEmailManager extends TransactionalEmailManager {
 
       console.log(`Sending resume to ${post.email} - from ${from}`);
 
-      this.smartSend(
+      await this.smartSend(
         post.email,
         from,
         subject,
@@ -100,8 +100,6 @@ export class JobsEmailManager extends TransactionalEmailManager {
     catch (error) {
       console.log('Failed while trying to submit this resume...');
       console.error(error);
-
-
     }
 
   }

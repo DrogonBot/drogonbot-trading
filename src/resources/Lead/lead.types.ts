@@ -9,7 +9,7 @@ export interface ILead {
   jobRoles: string[],
   phone?: string;
   city?: string;
-  emailSubscriptionStatus?: IEmailSubscriptionStatus
+  emailSubscriptionStatus: IEmailSubscriptionStatus
 }
 
 export interface ILeadRaw {
