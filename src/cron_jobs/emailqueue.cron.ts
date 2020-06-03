@@ -21,7 +21,7 @@ export class EmailQueueCron {
 
       // select only 3 emails per minute
 
-      const emailsToSubmit = _.slice(allEmails, 0, MAX_JOB_NOTIFICATIONS_PER_MINUTE_INTERVAL - 1);
+      const emailsToSubmit = _.slice(allEmails, 0, MAX_JOB_NOTIFICATIONS_PER_MINUTE_INTERVAL);
 
       for (const email of emailsToSubmit) {
 
