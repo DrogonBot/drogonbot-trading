@@ -2,12 +2,14 @@ import { IEmailSubscriptionStatus } from '../User/user.types';
 
 
 export interface ILead {
+  name: string,
   stateCode: string,
   country: string,
   email: string,
-  name: string,
   jobRoles: string[],
-  emailSubscriptionStatus: IEmailSubscriptionStatus
+  phone?: string;
+  city?: string;
+  emailSubscriptionStatus?: IEmailSubscriptionStatus
 }
 
 export interface ILeadRaw {
