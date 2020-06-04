@@ -8,7 +8,6 @@ import { User } from '../resources/User/user.model';
 import { EncryptionHelper } from '../utils/EncryptionHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';
 import { TextHelper } from '../utils/TextHelper';
-import { GenericEmailManager } from './generic.email';
 
 export enum EmailType {
   Html = "Html",
@@ -108,40 +107,7 @@ export class TransactionalEmailManager {
 
     // if we reach this point, it means that there's no providers with credits left!
 
-    const wasAdminAlreadyNotified = await Log.findOne({
-      action: "ADMIN_WARNING_EMAIL_CREDITS"
-    })
 
-    if (!wasAdminAlreadyNotified) {
-      const sendgridTotalSubmissions = await Log.find({
-        action: `SENDGRID_EMAIL_SUBMISSION`,
-        createdAt: { "$gte": today }
-      })
-      const sendinBlueSubmissions = await Log.find({
-        action: `SENDINBLUE_EMAIL_SUBMISSION`,
-        createdAt: { "$gte": today }
-      })
-      const mailJetSubmissions = await Log.find({
-        action: `MAILJET_EMAIL_SUBMISSION`,
-        createdAt: { "$gte": today }
-      })
-
-      const genericEmailManager = new GenericEmailManager();
-      genericEmailManager.sendEmail(process.env.ADMIN_EMAIL, 'SmartSend: No credits left', 'admin-notification', {
-        notification: `Today we submitted the following, by using our e-mail:
-
-        Sendgrid: ${sendgridTotalSubmissions.length}
-        SendInBlue: ${sendinBlueSubmissions.length}
-        Mailjet: ${mailJetSubmissions.length}
-        `
-      })
-
-      const adminNotified = new Log({
-        action: "ADMIN_WARNING_EMAIL_CREDITS",
-        emitter: process.env.ADMIN_EMAIL
-      })
-      await adminNotified.save()
-    }
 
     return false
   }
