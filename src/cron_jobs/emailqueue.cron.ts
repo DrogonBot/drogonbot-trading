@@ -32,8 +32,6 @@ export class EmailQueueCron {
         if (submissionStatus === true) { // it means this email was submitted successfully!
           // clean our db
           await email.remove()
-        } else {
-          console.log(`💌 Email Queue: skipping email removal of ${email.to} => ${email.subject} since our submission failed.`);
         }
       }
 

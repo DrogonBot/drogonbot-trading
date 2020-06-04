@@ -5,10 +5,10 @@ import { emailProviders, IEmailProvider } from '../constants/emailProviders.cons
 import { Lead } from '../resources/Lead/lead.model';
 import { Log } from '../resources/Log/log.model';
 import { User } from '../resources/User/user.model';
-import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { EncryptionHelper } from '../utils/EncryptionHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';
 import { TextHelper } from '../utils/TextHelper';
+import { GenericEmailManager } from './generic.email';
 
 export enum EmailType {
   Html = "Html",
@@ -25,12 +25,12 @@ export class TransactionalEmailManager {
 
   public async smartSend(to: string | undefined, from: string | undefined, subject: string, html: string, text: string): Promise<boolean> {
 
-    console.log('Smart sending email...');
+    const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+
 
     // loop through email providers and check which one has an unmet free tier threshold.
     for (const emailProvider of this.emailProviders) {
 
-      const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
 
       try {
         const providerEmailsToday = await Log.find({
@@ -39,7 +39,9 @@ export class TransactionalEmailManager {
         })
 
 
-        if (providerEmailsToday.length < emailProvider.freeTierThreshold) {
+        if (providerEmailsToday.length < br { emailProvider.freeTierThreshold }) {
+
+          console.log('Smart sending email...');
 
           console.log(`Using ${emailProvider.key} to submit email...`);
 
@@ -105,9 +107,41 @@ export class TransactionalEmailManager {
     }
 
     // if we reach this point, it means that there's no providers with credits left!
-    ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: No email providers credits left! All e-mails will be left on queue`)
 
+    const wasAdminAlreadyNotified = await Log.findOne({
+      action: "ADMIN_WARNING_EMAIL_CREDITS"
+    })
 
+    if (!wasAdminAlreadyNotified) {
+      const sendgridTotalSubmissions = await Log.find({
+        action: `SENDGRID_EMAIL_SUBMISSION`,
+        createdAt: { "$gte": today }
+      })
+      const sendinBlueSubmissions = await Log.find({
+        action: `SENDINBLUE_EMAIL_SUBMISSION`,
+        createdAt: { "$gte": today }
+      })
+      const mailJetSubmissions = await Log.find({
+        action: `MAILJET_EMAIL_SUBMISSION`,
+        createdAt: { "$gte": today }
+      })
+
+      const genericEmailManager = new GenericEmailManager();
+      genericEmailManager.sendEmail(process.env.ADMIN_EMAIL, 'SmartSend: No credits left', 'admin-notification', {
+        notification: `Today we submitted the following, by using our e-mail:
+
+        Sendgrid: ${sendgridTotalSubmissions.length}
+        SendInBlue: ${sendinBlueSubmissions.length}
+        Mailjet: ${mailJetSubmissions}
+        `
+      })
+
+      const adminNotified = new Log({
+        action: "ADMIN_WARNING_EMAIL_CREDITS",
+        emitter: process.env.ADMIN_EMAIL
+      })
+      await adminNotified.save()
+    }
 
     return false
   }
