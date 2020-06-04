@@ -27,6 +27,9 @@ const leadSchema = new mongoose.Schema({
     type: [String],
     default: []
   },
+  phone: {
+    type: String
+  },
   emailSubscriptionStatus: {
     transactional: Boolean,
     marketing: Boolean
