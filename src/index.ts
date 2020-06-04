@@ -19,6 +19,7 @@ import { AffiliateSeeder } from './resources/AffiliateProduct/affiliate.seeder';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
 import { countryRouter } from './resources/Country/country.routes';
 import { CountrySeeder } from './resources/Country/country.seed';
+import { leadsRouter } from './resources/Lead/lead.routes';
 import { operationRouter } from './resources/Operation/operation.routes';
 import { placeRouter } from './resources/Place/place.routes';
 import { PlaceSeeder } from './resources/Place/place.seeder';
@@ -141,7 +142,7 @@ app.use(express.static(publicDirectory, { dotfiles: 'allow' }))
 
 
 app.use(userRouter);
-
+app.use(leadsRouter);
 app.use(conversationRouter)
 app.use(postRouter)
 app.use(placeRouter)

@@ -15,9 +15,7 @@ export class EmailQueueCron {
 
       const allEmails = await EmailQueue.find({});
 
-      if (allEmails.length) {
-        console.log(`Submitting ${MAX_JOB_NOTIFICATIONS_PER_MINUTE_INTERVAL} job-notifications emails on ${new Date()}`);
-      }
+
 
       // select only 3 emails per minute
 
