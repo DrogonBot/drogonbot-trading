@@ -132,7 +132,7 @@ export class TransactionalEmailManager {
 
         Sendgrid: ${sendgridTotalSubmissions.length}
         SendInBlue: ${sendinBlueSubmissions.length}
-        Mailjet: ${mailJetSubmissions}
+        Mailjet: ${mailJetSubmissions.length}
         `
       })
 
