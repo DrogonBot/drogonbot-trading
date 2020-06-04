@@ -1,17 +1,18 @@
 import { Router } from 'express';
 
-import { RequestMiddleware } from '../../middlewares/request.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { Lead } from './lead.model';
 
 // @ts-ignore
 const leadsRouter = new Router();
 
-leadsRouter.post('/leads/save', [RequestMiddleware.allowedRequestKeys(['name', 'email', 'stateCode', 'country', 'jobRoles', 'phone', 'city'])], async (req, res) => {
+leadsRouter.post('/leads/save', async (req, res) => {
+
+  const { name, email, stateCode, country, jobRoles, phone, city } = req.body;
 
   try {
     const lead = new Lead({
-      ...req.body
+      name, email, stateCode, country, jobRoles, phone, city
     })
 
     await lead.save();
