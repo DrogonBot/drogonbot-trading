@@ -10,6 +10,9 @@ leadsRouter.post('/leads/save', async (req, res) => {
 
   const { name, email, stateCode, country, jobRoles, phone, city } = req.body;
 
+  console.log('New lead received:');
+  console.log(req.body);
+
   try {
 
     // check if lead was already added to our database
@@ -24,6 +27,8 @@ leadsRouter.post('/leads/save', async (req, res) => {
     }
 
     // if it doesn't exist yet, lets create it
+
+
 
     const lead = new Lead({
       name, email, stateCode, country, jobRoles, phone, city
