@@ -32,7 +32,6 @@ export class EmailQueueCron {
           // clean our db
           await email.remove()
 
-          // wait for 1 minute
           await GenericHelper.sleep(1000 * ((60 / MAX_JOB_NOTIFICATIONS_PER_HOUR_INTERVAL) * 100)) // spread it between 1 hour
         }
       }
