@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import moment from 'moment-timezone';
 
+import { emailProviders, IEmailProvider } from '../constants/emailProviders.constant';
 import { Lead } from '../resources/Lead/lead.model';
 import { Log } from '../resources/Log/log.model';
 import { User } from '../resources/User/user.model';
@@ -8,7 +9,6 @@ import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { EncryptionHelper } from '../utils/EncryptionHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';
 import { TextHelper } from '../utils/TextHelper';
-import { emailProviders, IEmailProvider } from './constants/emailProviders.constant';
 
 export enum EmailType {
   Html = "Html",

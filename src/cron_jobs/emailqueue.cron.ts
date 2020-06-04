@@ -27,7 +27,7 @@ export class EmailQueueCron {
 
         const accountEmail = new AccountEmailManager()
         const submissionStatus = await accountEmail.smartSend(email.to, email.from, email.subject, email.htmlEmail, email.textEmail)
-        console.log(`Submission status: ${submissionStatus}`);
+
 
         if (submissionStatus === true) { // it means this email was submitted successfully!
           // clean our db
