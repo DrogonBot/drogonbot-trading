@@ -93,14 +93,6 @@ export class TransactionalEmailManager {
           return true
         }
 
-        // if we reach this point, it means that there's no providers with credits left!
-
-
-        ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: No email providers credits left! All e-mails will be left on queue`)
-
-
-
-        return false;
 
 
       }
@@ -111,6 +103,12 @@ export class TransactionalEmailManager {
       }
 
     }
+
+    // if we reach this point, it means that there's no providers with credits left!
+    ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: No email providers credits left! All e-mails will be left on queue`)
+
+
+
     return false
   }
 
