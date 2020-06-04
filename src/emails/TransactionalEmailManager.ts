@@ -39,7 +39,7 @@ export class TransactionalEmailManager {
         })
 
 
-        if (providerEmailsToday.length < br { emailProvider.freeTierThreshold }) {
+        if (providerEmailsToday.length < emailProvider.freeTierThreshold) {
 
           console.log('Smart sending email...');
 
