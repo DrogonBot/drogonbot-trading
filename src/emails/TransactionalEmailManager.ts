@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 import { Lead } from '../resources/Lead/lead.model';
 import { Log } from '../resources/Log/log.model';
 import { User } from '../resources/User/user.model';
+import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { EncryptionHelper } from '../utils/EncryptionHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';
 import { TextHelper } from '../utils/TextHelper';
@@ -22,7 +23,7 @@ export class TransactionalEmailManager {
     this.emailProviders = emailProviders
   }
 
-  public async smartSend(to: string | undefined, from: string | undefined, subject: string, html: string, text: string) {
+  public async smartSend(to: string | undefined, from: string | undefined, subject: string, html: string, text: string): Promise<boolean> {
 
     console.log('Smart sending email...');
 
@@ -51,7 +52,7 @@ export class TransactionalEmailManager {
 
           if ((user?.emailSubscriptionStatus.transactional === false) || (!lead?.emailSubscriptionStatus.transactional === false)) {
             console.log(`Skipping email submission to unsubscribed user`);
-            return
+            return true
           }
 
           // insert unsubscribe link into [Unsubscribe Link] tag
@@ -59,7 +60,7 @@ export class TransactionalEmailManager {
 
           if (!to) {
             console.log('You should provide a valid "to" email');
-            return
+            return false
           }
 
           // here we encrypt the to email for security purposes
@@ -89,14 +90,28 @@ export class TransactionalEmailManager {
           await newEmailProviderLog.save()
 
 
-          return
+          return true
         }
+
+        // if we reach this point, it means that there's no providers with credits left!
+
+
+        ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: No email providers credits left! All e-mails will be left on queue`)
+
+
+
+        return false;
+
+
       }
       catch (error) {
         console.log(`Failed to submit email through ${emailProvider.key}`);
         console.error(error);
+        return false;
       }
+
     }
+    return false
   }
 
 

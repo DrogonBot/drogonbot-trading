@@ -26,10 +26,15 @@ export class EmailQueueCron {
       for (const email of emailsToSubmit) {
 
         const accountEmail = new AccountEmailManager()
-        await accountEmail.smartSend(email.to, email.from, email.subject, email.htmlEmail, email.textEmail)
+        const submissionStatus = await accountEmail.smartSend(email.to, email.from, email.subject, email.htmlEmail, email.textEmail)
+        console.log(`Submission status: ${submissionStatus}`);
 
-        // clean our db
-        await email.remove()
+        if (submissionStatus === true) { // it means this email was submitted successfully!
+          // clean our db
+          await email.remove()
+        } else {
+          console.log(`💌 Email Queue: skipping email removal of ${email.to} => ${email.subject} since our submission failed.`);
+        }
       }
 
 
