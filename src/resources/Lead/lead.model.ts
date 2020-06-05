@@ -7,6 +7,10 @@ export interface ILeadModel extends ILead, Document {
 }
 
 const leadSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    required: true,
+  },
   stateCode: {
     type: String,
     required: true
@@ -30,6 +34,7 @@ const leadSchema = new mongoose.Schema({
   phone: {
     type: String
   },
+
   emailSubscriptionStatus: {
     transactional: Boolean,
     marketing: Boolean

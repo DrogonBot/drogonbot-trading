@@ -84,6 +84,9 @@ export const userSchema: Schema = new Schema(
     facebookId: {
       type: String
     },
+    phone: {
+      type: String
+    },
 
     tokens: [
       // this will allow multi device sign in (different devices with different tokens)

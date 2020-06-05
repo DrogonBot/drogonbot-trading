@@ -15,6 +15,7 @@ export enum AuthType {
 export enum UserType {
   JobSeeker = "JobSeeker",
   Company = "Company",
+  RecruitmentCompany = "RecruitmentCompany",
   Staff = "Staff",
   Admin = "Admin",
 }
