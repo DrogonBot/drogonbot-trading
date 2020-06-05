@@ -8,7 +8,7 @@ const leadsRouter = new Router();
 
 leadsRouter.post('/leads/save', async (req, res) => {
 
-  const { name, email, stateCode, country, jobRoles, phone, city } = req.body;
+  const { name, email, stateCode, country, jobRoles, phone, city, type } = req.body;
 
   try {
 
@@ -26,7 +26,7 @@ leadsRouter.post('/leads/save', async (req, res) => {
     // if it doesn't exist yet, lets create it
 
     const lead = new Lead({
-      name, email, stateCode, country, jobRoles, phone, city
+      name, email, stateCode, country, jobRoles, phone, city, type
     })
 
     await lead.save();
