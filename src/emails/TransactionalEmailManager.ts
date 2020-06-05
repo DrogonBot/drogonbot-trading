@@ -44,7 +44,7 @@ export class TransactionalEmailManager {
 
           console.log(`Using ${emailProvider.key} to submit email...`);
 
-          console.log(`Free tier balance today: ${providerEmailsToday.length}/${emailProvider.freeTierThreshold}`);
+          console.log(`Credits balance today: ${providerEmailsToday.length}/${emailProvider.freeTierThreshold}`);
 
           // Unsubscribed users: check if we should skip this user submission or not
 
