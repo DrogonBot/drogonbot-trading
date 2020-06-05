@@ -136,7 +136,7 @@ export class JobsCron {
           if (PostScrapperHelper.checkForBannedWords(`${post.title} ${post.content}`)) {
             // Post is completely removed, since it's probably garbage.
             console.log(`🤖: Deleting post ${post.title}`);
-            console.log(post.content);
+
             await post.remove();
           }
         }
