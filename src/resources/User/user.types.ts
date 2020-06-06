@@ -18,6 +18,7 @@ export enum UserType {
   RecruitmentCompany = "RecruitmentCompany",
   Staff = "Staff",
   Admin = "Admin",
+  SMSLead = "SMSLead"
 }
 
 export interface IUserNotification {
