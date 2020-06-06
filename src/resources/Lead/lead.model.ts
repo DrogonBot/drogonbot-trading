@@ -23,9 +23,7 @@ const leadSchema = new mongoose.Schema({
     required: true,
   },
   email: {
-    type: String,
-    required: true,
-    unique: true
+    type: String
   },
   name: {
     type: String
@@ -35,7 +33,8 @@ const leadSchema = new mongoose.Schema({
     default: []
   },
   phone: {
-    type: String
+    type: String,
+
   },
 
   emailSubscriptionStatus: {

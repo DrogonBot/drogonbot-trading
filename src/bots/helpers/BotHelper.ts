@@ -192,8 +192,8 @@ export class BotHelper {
 
       for (const targetedUser of targetedUsers) {
 
-        console.log(post.slug);
-        if (post.slug) {
+        // make sure we have a psot and an email!
+        if (post.slug && targetedUser.email) {
           console.log(`🤖: Email notification: Notifying user ${targetedUser.email} about new post (${post.title}) - slug: ${post.slug}`);
           await PostScrapperHelper.notifyUsersEmail(targetedUser, post)
         }

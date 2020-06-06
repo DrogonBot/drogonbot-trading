@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import { exec } from 'child_process';
 import cors from 'cors';
 import express from 'express';
@@ -121,6 +122,10 @@ app.use(formData.format());
 app.use(formData.stream());
 // union the body and the files
 app.use(formData.union());
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
 
 
 // app.use(GlobalMiddleware.enableCors);

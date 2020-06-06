@@ -1,6 +1,8 @@
+import cheerio from 'cheerio';
 import { Router } from 'express';
 
 import { LanguageHelper } from '../../utils/LanguageHelper';
+import { UserType } from '../User/user.types';
 import { Lead } from './lead.model';
 
 // @ts-ignore
@@ -46,6 +48,68 @@ leadsRouter.post('/leads/save', async (req, res) => {
   }
 
 })
+
+
+leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {
+
+  const { htmlContent } = req.body;
+
+
+  const adminNumbers = ['+55 11 35322-9854', '+55 21 98314-0109', '+55 21 98577-2503', '+55 21 98831-9261', '+55 21 98891-0663', '+55 21 99662-2975',
+    '+55 21 98891-0663', '+55 21 99662-2975', '+55 21 99771-0744', '+55 21 99868-8549']
+
+
+  const $ = cheerio.load(htmlContent);
+
+
+  const leadsList = $('span[dir="auto"][title*="+"]');
+
+  leadsList.each(async (i, el) => {
+    const leadPhone = $(el).text();
+
+    if (!adminNumbers.includes(leadPhone)) { // to avoid issues, lets not scrap admin numbers =D
+
+      const phoneExists = await Lead.exists({ phone: leadPhone })
+
+      if (!phoneExists) {
+        try {
+          const newLead = new Lead({
+            type: UserType.JobSeeker,
+            stateCode: "RJ",
+            country: "Brazil",
+            phone: leadPhone
+          })
+
+          await newLead.save();
+          console.log(`Saved ${leadPhone} into database...`);
+        }
+        catch (error) {
+          console.log(`Error while trying to save lead ${leadPhone} in our database.`);
+          console.error(error.message);
+        }
+      } else {
+        console.log(`Skipping ${leadPhone}, since it already exists!`);
+      }
+
+
+
+    }
+
+
+
+
+
+  })
+
+  return res.status(200).send({
+    status: 'ok',
+    message: "success"
+  })
+
+
+
+
+});
 
 
 
