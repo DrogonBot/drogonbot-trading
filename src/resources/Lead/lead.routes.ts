@@ -75,8 +75,7 @@ leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {
         try {
           const newLead = new Lead({
             type: UserType.SMSLead,
-            stateCode: "MG",
-            city: "Belo Horizonte",
+            stateCode: "ES",
             country: "Brazil",
             phone: leadPhone
           })
