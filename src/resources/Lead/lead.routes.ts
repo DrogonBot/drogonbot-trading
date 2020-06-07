@@ -52,7 +52,7 @@ leadsRouter.post('/leads/save', async (req, res) => {
 
 leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {
 
-  const { htmlContent } = req.body;
+  const { htmlContent, stateCode, city } = req.body;
 
 
   const adminNumbers = ['+55 11 95322-9854', '+55 21 98314-0109', '+55 21 98557-2503', '+55 21 98831-9261', '+55 21 98891-0663', '+55 21 99662-2975',
@@ -75,7 +75,8 @@ leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {
         try {
           const newLead = new Lead({
             type: UserType.SMSLead,
-            stateCode: "ES",
+            stateCode,
+            city,
             country: "Brazil",
             phone: leadPhone
           })
