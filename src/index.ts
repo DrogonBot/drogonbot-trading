@@ -12,7 +12,6 @@ import socketio from 'socket.io';
 import { EnvType } from './constants/types/env.types';
 import { EmailQueueCron } from './cron_jobs/emailqueue.cron';
 import { JobsCron } from './cron_jobs/jobs.cron';
-import { LeadsCron } from './cron_jobs/leads.cron';
 import { RetentionCron } from './cron_jobs/retention.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { affiliateRouter } from './resources/AffiliateProduct/affiliate.routes';
@@ -78,24 +77,25 @@ switch (process.env.ENV) {
 
   case EnvType.Production: // Let's turn on our cron job in production only!
 
-    LeadsCron.fetchLeadsFromFirebase();
+
 
     JobsCron.submitApplications()
     RetentionCron.inactiveUserReminder()
 
-    // job crawlers
+
 
     JobsCron.jobCrawlersCleaners();
     JobsCron.initializeJobCrawlers();
 
-    // Job posters
 
-    JobsCron.initPostersBot();
+
+    // ! Schedulers and posters inactivated temporarely
+
+    // Job posters
+    // JobsCron.initPostersBot();
 
     // JobsCron.initializeJobPoster();
-
     // Job post Schedulers
-    // ! Schedulers inactivated temporarely
     // JobsCron.initializeJobPostSchedulers()
 
     EmailQueueCron.submitQueueEmails();

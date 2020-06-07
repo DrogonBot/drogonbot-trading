@@ -3,6 +3,7 @@ import cron from 'node-cron';
 
 import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
+import { PosterFacebook } from '../bots/posters/PosterFacebook';
 import { TargetPriority } from '../bots/types/bots.types';
 import { JobsEmailManager } from '../emails/jobs.email';
 import { Post } from '../resources/Post/post.model';
@@ -200,12 +201,11 @@ export class JobsCron {
 
   public static initPostersBot = () => {
 
-    // !Temp disabled
-    // cron.schedule("0 */4 * * *", async () => {
+    cron.schedule("0 */4 * * *", async () => {
 
-    //   await PosterFacebook.triggerMarketingPost()
+      await PosterFacebook.triggerMarketingPost()
 
-    // });
+    });
 
 
   }
