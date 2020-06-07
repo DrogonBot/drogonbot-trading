@@ -255,7 +255,7 @@ IProps) => {
 
                 <AlertModalContainer>
                   <a
-                    href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
+                    href={`https://rebrand.ly/emprego-urgente/?stateCode=${post.stateCode.toUpperCase()}`}
                     target="_blank"
                   >
                     <Button
