@@ -1,9 +1,7 @@
-import moment from 'moment-timezone';
 import UserAgent from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
 import { Lead } from '../../resources/Lead/lead.model';
-import { Log } from '../../resources/Log/log.model';
 import { Post } from '../../resources/Post/post.model';
 import { IPost, PostSource } from '../../resources/Post/post.types';
 import { User } from '../../resources/User/user.model';
@@ -39,31 +37,36 @@ export class BotHelper {
     switch (process.env.ENV) {
       case EnvType.Production:
 
-        // ! Due to high costs, ZenScrape is restricted to Facebook only!
-        if (source === PostSource.Facebook) {
-          // lets check if our free tier on ZenScrape is already gone. If so, use free proxy for requests
-          const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+        BotHelper.proxyType = ProxyType.FreeProxy
+        await BotHelper.initializeFreeProxy()
 
-          const zenScrapeUsedRequests = await Log.find({
-            action: `ZENSCRAPE_REQUEST`,
-            createdAt: { "$gte": today }
-          })
 
-          // use ZenScrape if we still have credits left
+        // ! ZenScrape is turned off temporarely
+        // // ! Due to high costs, ZenScrape is restricted to Facebook only!
+        // if (source === PostSource.Facebook) {
+        //   // lets check if our free tier on ZenScrape is already gone. If so, use free proxy for requests
+        //   const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
 
-          if (zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)) {
-            console.log(`⚙️: Setting ProxyType as ZenScrape`);
-            BotHelper.proxyType = ProxyType.ZenScrape
-          } else {
-            console.log(`⚙️: Setting ProxyType as FreeProxy`);
-            BotHelper.proxyType = ProxyType.FreeProxy;
-            await BotHelper.initializeFreeProxy()
-          }
+        //   const zenScrapeUsedRequests = await Log.find({
+        //     action: `ZENSCRAPE_REQUEST`,
+        //     createdAt: { "$gte": today }
+        //   })
 
-        } else { // use FreeProxy as fallback, is ZenScrape is not available anymore
-          BotHelper.proxyType = ProxyType.FreeProxy
-          await BotHelper.initializeFreeProxy()
-        }
+        //   // use ZenScrape if we still have credits left
+
+        //   if (zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)) {
+        //     console.log(`⚙️: Setting ProxyType as ZenScrape`);
+        //     BotHelper.proxyType = ProxyType.ZenScrape
+        //   } else {
+        //     console.log(`⚙️: Setting ProxyType as FreeProxy`);
+        //     BotHelper.proxyType = ProxyType.FreeProxy;
+        //     await BotHelper.initializeFreeProxy()
+        //   }
+
+        // } else { // use FreeProxy as fallback, is ZenScrape is not available anymore
+        //   BotHelper.proxyType = ProxyType.FreeProxy
+        //   await BotHelper.initializeFreeProxy()
+        // }
 
 
         break;

@@ -19,7 +19,13 @@ export class ScrappingTargetHelper {
     }
 
     if (stateCode) {
-      results = results.filter((result) => result.postDataOverride.stateCode === stateCode.toUpperCase())
+      results = results.filter((result) => {
+        // remember that not every scrappingTarget has a stateCode! Some websites scrape multiple states
+        if (result.postDataOverride?.stateCode) {
+          return result.postDataOverride.stateCode === stateCode.toUpperCase()
+        }
+        return result;
+      })
     }
 
     if (sortByPriority) {

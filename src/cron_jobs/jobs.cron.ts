@@ -43,11 +43,12 @@ export class JobsCron {
 
 
   public static submitApplications() {
-    console.log("🕒  JobsCron: Initializing... 🕒");
 
     // Send one resume every 10 minutes only (*/10 * * * *)
 
     cron.schedule("*/10 * * * *", async () => {
+
+      console.log("🕒  JobsCron: submitApplications() 🕒");
 
       // find all posts with pending application status (email not submitted yet!)
       const jobPosts = await Post.find({
@@ -185,7 +186,7 @@ export class JobsCron {
     // HIGH PRIORITY GROUPS
 
     // at 1am...
-    cron.schedule("0 1 * * *", async () => {
+    cron.schedule("* 1 * * *", async () => {
       JobsCron.executeCrawlers()
     });
 
