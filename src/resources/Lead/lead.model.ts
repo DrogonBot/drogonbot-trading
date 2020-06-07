@@ -1,6 +1,5 @@
 import mongoose, { Document, Model, model } from 'mongoose';
 
-import { UserType } from '../User/user.types';
 import { ILead } from './lead.types';
 
 export interface ILeadModel extends ILead, Document {
@@ -11,7 +10,7 @@ const leadSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    default: UserType.JobSeeker
+
   },
   stateCode: {
     type: String,
