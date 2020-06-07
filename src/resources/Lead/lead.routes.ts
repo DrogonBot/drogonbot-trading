@@ -71,7 +71,11 @@ leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {
 
       const phoneExists = await Lead.exists({ phone: leadPhone })
 
-      if (!phoneExists) {
+      // check if number has letters (if so, skip)
+
+      const hasLetters = /[a-z]+/i.test(leadPhone)
+
+      if (!phoneExists && !hasLetters) {
         try {
           const newLead = new Lead({
             type: UserType.SMSLead,
