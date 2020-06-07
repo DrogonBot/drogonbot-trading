@@ -1,5 +1,3 @@
-import EmailValidator from 'email-deep-validator';
-
 import { PostBenefits, PostCategory, PostPositionType } from '../../resources/Post/post.types';
 
 
@@ -72,15 +70,41 @@ export class DataExtractorHelper {
     return email
   }
 
+  private static _extractSalary = (content: string) => {
+
+    try {
+      const match = content.match(/(R\$\s?)\d{3,5}((\.|,)\d{2})?/g) || content.match(/\d+\s(reais)/g)
+
+      if (!match) {
+        return null;
+      }
+
+      let salaryString = match[0]
+
+      salaryString = salaryString.replace(new RegExp(/R\$/, 'g'), "");
+
+      const salaryMainValue = salaryString.split('.')[0] || salaryString.split(',')[0]
+
+      console.log(salaryMainValue);
+
+      return parseFloat(salaryString)
+    }
+    catch (error) {
+      console.error(error);
+      return null;
+    }
+
+  }
+
   public static extractJobData = async (rawPost) => {
 
     rawPost = rawPost.replace(new RegExp('\n', 'g'), " ");
 
     // This function will extract as much data as we can from a raw job post. Unfortunately, it's not able to fill all of the required IPost fields, so you should do some extra checks to do so (like infering the sector and jobRoles)
 
-    let salary = null
+    let salary: number | null = null
     try {
-      salary = (rawPost.match(/((R\$\s)\d+[\.|\,]?\d+)/g) || rawPost.match(/\d+[\.|\,]?\d+[.|,]?\d+\s(reais)/g))[0].replace(/[^0-9]/g, '');
+      salary = DataExtractorHelper._extractSalary(rawPost)
     }
     catch (error) {
       salary = null
@@ -115,26 +139,8 @@ export class DataExtractorHelper {
     const benefits: PostBenefits[] = DataExtractorHelper._readBenefits(hasLifeInsurance, hasMealAssistance, hasTransportAssistance, hasHealthPlan, hasDentalPlan)
 
     // Extract and validate email
-    let email = DataExtractorHelper._tryExtractingData(rawPost, /\S+@\S+\.\S+/ig)
+    const email = DataExtractorHelper._tryExtractingData(rawPost, /\S+@\S+\.\S+/ig)
 
-
-    if (email !== null) {
-
-      email = DataExtractorHelper._repairEmail(email); // search for errors and fix it if necessary
-
-      const emailValidator = new EmailValidator()
-
-      const { wellFormed } = await emailValidator.verify(email);
-
-
-      // console.log(`🤖: Checking if ${email} is valid...`);
-
-      if (!wellFormed) {
-        console.log(`🤖: ${email} is INVALID! (wellFormed: ${wellFormed}) Setting it to null to prevent future errors`);
-        email = null
-      }
-
-    }
 
     const externalUrl = DataExtractorHelper._tryExtractingData(rawPost, /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/ig);
 
