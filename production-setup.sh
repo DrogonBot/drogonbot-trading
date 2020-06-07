@@ -106,7 +106,7 @@ sudo rm dbBackupCron
 
 # Docker system prune (remove unused data periodically, avoiding your disk to completely fill over time)
 sudo crontab -l > dockerSystemPrune
-echo "0 */3 * * * docker system prune --all --volumes" >> dockerSystemPrune
+echo "0 * * * * docker system prune --all --volumes" >> dockerSystemPrune
 sudo crontab dockerSystemPrune
 sudo rm dockerSystemPrune
 

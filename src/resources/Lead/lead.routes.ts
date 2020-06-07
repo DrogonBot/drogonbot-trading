@@ -55,6 +55,7 @@ leadsRouter.get('/leads/fix/type', async (req, res) => {
 
   for (const lead of leads) {
     if (!lead.type) {
+      console.log(`fixing type for ${lead.email}`);
       lead.type = UserType.JobSeeker
       await lead.save();
     }
