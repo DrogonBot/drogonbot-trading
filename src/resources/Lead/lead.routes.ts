@@ -49,6 +49,26 @@ leadsRouter.post('/leads/save', async (req, res) => {
 
 })
 
+leadsRouter.get('/leads/fix/type', async (req, res) => {
+
+  const leads = await Lead.find({})
+
+  for (const lead of leads) {
+    if (!lead.type) {
+      lead.type = UserType.JobSeeker
+      await lead.save();
+    }
+  }
+
+  return res.status(200).send({
+    status: 'ok',
+    message: "success"
+  })
+
+
+
+})
+
 
 leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {
 
