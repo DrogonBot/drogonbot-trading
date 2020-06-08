@@ -1,7 +1,6 @@
 import moment from 'moment';
 import cron from 'node-cron';
 
-import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
 import { PosterFacebook } from '../bots/posters/PosterFacebook';
 import { TargetPriority } from '../bots/types/bots.types';
@@ -160,25 +159,7 @@ export class JobsCron {
 
       }
 
-      // Clean posts with forbidden keywords, that somehow ended up in our database
-      try {
-        const dbPosts = await Post.find({})
 
-        for (const post of dbPosts) {
-          if (PostScrapperHelper.checkForBannedWords(`${post.title} ${post.content}`)) {
-            // Post is completely removed, since it's probably garbage.
-            console.log(`🤖: Deleting post ${post.title}`);
-
-            await post.remove();
-          }
-        }
-
-
-      }
-      catch (error) {
-        console.error(error);
-
-      }
     });
   }
 
