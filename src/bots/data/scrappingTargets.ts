@@ -3,6 +3,7 @@ import { ScrapperAGazetaEmpregosES } from '../scrappers/ScrapperAGazetaEmpregosE
 import { ScrapperBHJobs } from '../scrappers/ScrapperBHJobs';
 import { ScrapperCaptativaSP } from '../scrappers/ScrapperCaptativaSP';
 import { ScrapperCBDVMG } from '../scrappers/ScrapperCBDVMG';
+import { ScrapperEmpregoPortasAbertasMG } from '../scrappers/ScrapperEmpregoPortasAbertasMG';
 import { ScrapperEmpregosES } from '../scrappers/ScrapperEmpregosES';
 import { ScrapperEmpregosMG } from '../scrappers/ScrapperEmpregosMG';
 import { ScrapperEmpregosSaoPaulo } from '../scrappers/ScrapperEmpregosSaoPaulo';
@@ -341,6 +342,20 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperBHJobs,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "Empregos Portas Abertas BH",
+    externalSource: "https://www.empregoportasabertas.com/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperEmpregoPortasAbertasMG,
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
