@@ -2,6 +2,7 @@ import { PostSource } from '../../resources/Post/post.types';
 import { ScrapperAGazetaEmpregosES } from '../scrappers/ScrapperAGazetaEmpregosES';
 import { ScrapperCaptativaSP } from '../scrappers/ScrapperCaptativaSP';
 import { ScrapperCBDVMG } from '../scrappers/ScrapperCBDVMG';
+import { ScrapperEmpregosES } from '../scrappers/ScrapperEmpregosES';
 import { ScrapperEmpregosMG } from '../scrappers/ScrapperEmpregosMG';
 import { ScrapperEmpregosSaoPaulo } from '../scrappers/ScrapperEmpregosSaoPaulo';
 import { ScrapperEmpregosSaoPauloRegioes } from '../scrappers/ScrapperEmpregosSaoPauloRegioes';
@@ -503,6 +504,20 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperAGazetaEmpregosES,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "Empregos ES",
+    externalSource: "https://empregoses.com.br/category/noticias-de-vagas/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "ES"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperEmpregosES,
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
