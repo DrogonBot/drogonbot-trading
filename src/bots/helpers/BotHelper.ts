@@ -199,7 +199,7 @@ export class BotHelper {
         if (post.slug && targetedUser.email) {
 
           if (targetedUser.city && targetedUser.city !== post.city) {
-            console.log(`🤖: Skipping e-mail notification for the user ${targetedUser.email}, since his city does not match with post's city (${post.city})`);
+            console.log(`🤖: Skipping e-mail notification for the user ${targetedUser.email}, since his city (${targetedUser.city}) does not match with post's city (${post.city})`);
             continue;
           }
 
