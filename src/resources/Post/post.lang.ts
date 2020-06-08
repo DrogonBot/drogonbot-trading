@@ -183,8 +183,8 @@ export const strings = {
     ptBr: "Encontramos essa vaga que se relaciona com sua busca de emprego:"
   },
   jobsNotificationSecondParagraph4: {
-    eng: "There's a really job match with interests:",
-    ptBr: "Encontramos uma vaga provavelmente lhe interessa:"
+    eng: "There's a really job match with your interests:",
+    ptBr: "Encontramos uma vaga que provavelmente lhe interessa:"
   },
   jobsNotificationClosing: {
     eng: `We suggest that you <a href="{{postUrl}}">apply immediately through the <strong>red button</strong> at the top of the post.</a>,
