@@ -271,9 +271,9 @@ export class PostScrapperHelper {
 
     // Randomize post content: Avoid spam filters thinking that your message is too repetitive. It will create some uniqueness!
 
-    const firstPhraseSample = _.sample(['jobsNotificationFirstPhrase', 'jobsNotificationFirstPhrase2'])
-    const secondPhraseSample = _.sample(['jobsNotificationSecondParagraph', 'jobsNotificationSecondParagraph2'])
-    const closingSample = _.sample(['jobsNotificationClosing', 'jobsNotificationClosing2'])
+    const firstPhraseSample = _.sample(['jobsNotificationFirstPhrase', 'jobsNotificationFirstPhrase2', 'jobsNotificationFirstPhrase3', 'jobsNotificationFirstPhrase4'])
+    const secondPhraseSample = _.sample(['jobsNotificationSecondParagraph', 'jobsNotificationSecondParagraph2', 'jobsNotificationSecondParagraph3', 'jobsNotificationSecondParagraph4'])
+    const closingSample = _.sample(['jobsNotificationClosing', 'jobsNotificationClosing2', 'jobsNotificationClosing3'])
 
     await accountEmailManager.postEmailNotification(
       user.email,
