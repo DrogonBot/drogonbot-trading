@@ -32,19 +32,23 @@ export interface IEmailSubscriptionStatus {
 
 export interface IUserDocument extends Document {
   name: string;
+  genericPositionsOfInterest: string[]
   language: string;
+  country: string;
+  stateCode: string;
+  city: string;
+  type: string; // account type
   givenName: string;
   familyName: string;
-  type: string; // account type
   password: string;
+  email: string;
+  pushToken: string;
   authType: { type: string; default: AuthType.EmailPassword };
   facebookId: string;
-  email: string;
+  phone: string;
   tokens: Object[];
   avatar: Binary;
-  genericPositionsOfInterest: string[]
   avatarUrl: string;
-  pushToken: string;
   createdAt: string;
   updatedAt: string;
   lastNotification: any;

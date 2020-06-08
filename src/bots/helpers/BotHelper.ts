@@ -195,8 +195,14 @@ export class BotHelper {
 
       for (const targetedUser of targetedUsers) {
 
-        // make sure we have a psot and an email!
+        // make sure we have a post and an email!
         if (post.slug && targetedUser.email) {
+
+          if (targetedUser.city && targetedUser.city !== post.city) {
+            console.log(`🤖: Skipping e-mail notification for the user ${targetedUser.email}, since his city does not match with post's city (${post.city})`);
+            continue;
+          }
+
           console.log(`🤖: Email notification: Notifying user ${targetedUser.email} about new post (${post.title}) - slug: ${post.slug}`);
           await PostScrapperHelper.notifyUsersEmail(targetedUser, post)
         }
