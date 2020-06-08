@@ -32,7 +32,11 @@ export class EmailQueueCron {
           // clean our db
           await email.remove()
 
-          await GenericHelper.sleep(1000 * ((60 / MAX_JOB_NOTIFICATIONS_PER_HOUR_INTERVAL) * 100)) // spread it between 1 hour
+          if (email.to.includes('yahoo') || email.to.includes('hotmail') || email.to.includes('outlook')) {
+            // add interval only on the following emails above
+            await GenericHelper.sleep(1000 * ((60 / MAX_JOB_NOTIFICATIONS_PER_HOUR_INTERVAL) * 100)) // spread it between 1 hour
+          }
+
         }
       }
 
