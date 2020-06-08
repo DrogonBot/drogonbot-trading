@@ -1,5 +1,6 @@
 import { PostSource } from '../../resources/Post/post.types';
 import { ScrapperAGazetaEmpregosES } from '../scrappers/ScrapperAGazetaEmpregosES';
+import { ScrapperBHJobs } from '../scrappers/ScrapperBHJobs';
 import { ScrapperCaptativaSP } from '../scrappers/ScrapperCaptativaSP';
 import { ScrapperCBDVMG } from '../scrappers/ScrapperCBDVMG';
 import { ScrapperEmpregosES } from '../scrappers/ScrapperEmpregosES';
@@ -326,6 +327,20 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperCBDVMG,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "BH Jobs",
+    externalSource: "https://www.bhjobs.com.br/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperBHJobs,
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
