@@ -12,7 +12,7 @@ export class EmailQueueCron {
 
     console.log("🕒  EmailQueueCron: Initializing... 🕒");
 
-    // Once per hour ( submit 1 per minute)
+    // Once per hour
     cron.schedule("0 * * * *", async () => {
 
       const allEmails = await EmailQueue.find({});
@@ -32,10 +32,8 @@ export class EmailQueueCron {
           // clean our db
           await email.remove()
 
-          if (email.to.includes('yahoo') || email.to.includes('hotmail') || email.to.includes('outlook')) {
-            // add interval only on the following emails above
-            await GenericHelper.sleep(1000 * ((60 / MAX_JOB_NOTIFICATIONS_PER_HOUR_INTERVAL) * 100)) // spread it between 1 hour
-          }
+
+          await GenericHelper.sleep(1000 * ((60 / MAX_JOB_NOTIFICATIONS_PER_HOUR_INTERVAL) * 100)) // spread it between 1 hour
 
         }
       }
