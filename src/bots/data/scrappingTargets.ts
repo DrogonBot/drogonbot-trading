@@ -8,6 +8,7 @@ import { ScrapperEmpregosSaoPauloRegioes } from '../scrappers/ScrapperEmpregosSa
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ScrapperGlobalEmpregosSP } from '../scrappers/ScrapperGlobalEmpregosSP';
 import { ScrapperGrupoResolveSP } from '../scrappers/ScrapperGrupoResolveSP';
+import { ScrapperMaisVagasES } from '../scrappers/ScrapperMaisVagasES';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
 import { ScrapperQuatreMG } from '../scrappers/ScrapperQuatreMG';
@@ -502,6 +503,20 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperAGazetaEmpregosES,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "Mais Vagas ES",
+    externalSource: "https://maisvagases.com.br/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "ES"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperMaisVagasES,
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
