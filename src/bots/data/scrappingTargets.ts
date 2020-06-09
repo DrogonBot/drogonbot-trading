@@ -21,6 +21,7 @@ import { ScrapperSociiRH } from '../scrappers/ScrapperSociiRH';
 import { ScrapperVagasDeEmpregoGV } from '../scrappers/ScrapperVagasDeEmpregoGV';
 import { ScrapperVagasUrgentesMG } from '../scrappers/ScrapperVagasUrgentesMG';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
+import { ScrapperVeroRH } from './../scrappers/ScrapperVeroRHSP';
 
 
 
@@ -38,8 +39,6 @@ export const scrappingTargets: IScrappingTarget[] = [
     bypassPostContentFilter: true,
     redirectToSourceOnly: true
   },
-
-
 
   // MG ========================================
 
@@ -417,6 +416,21 @@ export const scrappingTargets: IScrappingTarget[] = [
     scrapperClass: ScrapperGlobalEmpregosSP,
     bypassPostContentFilter: true,
     fixEncoding: true,
+    isTrustableSource: true
+  },
+  {
+    name: "VeroRH - SP",
+    externalSource: "http://www.verorh.com.br/consulta-vagas/",
+    priority: TargetPriority.Medium,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperVeroRH,
+    bypassPostContentFilter: true,
+
     isTrustableSource: true
   },
   {
