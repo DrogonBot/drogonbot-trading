@@ -10,11 +10,7 @@
     "noUnusedParameters": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -23,8 +19,6 @@
     "jsx": "react",
     "noEmit": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/*"
-  ]
+  "include": ["src/**/*.ts", "src/*"],
+  "exclude": ["node_modules"]
 }
