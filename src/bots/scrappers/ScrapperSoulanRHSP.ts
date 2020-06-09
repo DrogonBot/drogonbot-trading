@@ -2,14 +2,13 @@ import cheerio from 'cheerio';
 import htmlToText from 'html-to-text';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 import { IScrapperLink } from '../types/bots.types';
 
 
-export class ScrapperBHJobs {
+export class ScrapperSoulanRHSP {
 
   public static postLinks: IScrapperLink[] | null = null
 
@@ -23,7 +22,7 @@ export class ScrapperBHJobs {
 
     const $ = cheerio.load(html);
 
-    const postList = $('a.list-group-item')
+    const postList = $('a.job-box')
 
     let links: string[] = []
 
@@ -39,7 +38,7 @@ export class ScrapperBHJobs {
       }
     })
 
-    console.log(`🤖: ${links.length} ${ScrapperBHJobs.name} links crawled successfully!`);
+    console.log(`🤖: ${links.length} ${ScrapperSoulanRHSP.name} links crawled successfully!`);
     console.log(links);
 
     return links.map((link) => {
@@ -60,23 +59,19 @@ export class ScrapperBHJobs {
     const $ = cheerio.load(html);
 
 
-    const title = $(`span[itemprop=title]`).text()
+    const title = $(`.container h1`).text()
 
-    let rawContent = $('span[itemprop=description]').html() || $('span[itemprop=description]').text()
+    let rawContent = $('.descricaoVaga').html() || $('.descricaoVaga').text()
+
+    const locationText = $('.icon-label').text()
+
+    const { stateCode, city } = await PostScrapperHelper.getProvinceAndCity(locationText)
+
     // parse html to text
     rawContent = htmlToText.fromString(rawContent, {
       wordwrap: null
     })
 
-
-    console.log(title);
-    console.log(rawContent);
-
-    const locationText = $(`span[itemprop=addressLocality]`).text()
-    const rawCity = await PostScrapperHelper.getCity("MG", locationText) || "Belo Horizonte"
-
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 
@@ -89,7 +84,8 @@ export class ScrapperBHJobs {
       externalUrl: link,
       country: "Brazil",
       source: PostSource.Blog,
-      city: rawCity,
+      city,
+      stateCode,
       sector,
       jobRoles: [jobRoleBestMatch],
       ...postDataOverride,
