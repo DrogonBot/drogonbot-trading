@@ -10,7 +10,7 @@ export const IndexScreen = () => {
 
   return (
     <DefaultScreen title="Dashboard">
-      <p>Dashboard sdass</p>
+      <p>Dashboard will be here</p>
     </DefaultScreen>
   );
 };

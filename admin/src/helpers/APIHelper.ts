@@ -20,12 +20,12 @@ export class APIHelper {
         const token = await localStorage.getItem("token");
         AUTH_HEADERS = {
           Authorization: `Bearer ${token}`,
-          "Content-type": "application/json"
+          "Content-type": "application/json",
         };
       }
 
       const GUEST_HEADERS = {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
       };
 
       // prepare connection timeout callback
@@ -53,7 +53,7 @@ export class APIHelper {
         },
         headers: useAuth
           ? { ...AUTH_HEADERS, ...customHeaders }
-          : { ...GUEST_HEADERS, ...customHeaders }
+          : { ...GUEST_HEADERS, ...customHeaders },
       });
 
       // If user is not authenticated...
@@ -62,6 +62,7 @@ export class APIHelper {
         await persistor.purge();
         await localStorage.clear();
         window.location.href = "/";
+        alert(response.data.message);
       }
 
       clearTimeout(timeoutCallback);

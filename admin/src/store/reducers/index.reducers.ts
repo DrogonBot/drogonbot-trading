@@ -6,8 +6,10 @@ import { userReducer } from './user.reducer';
 /*#############################################################|
 |                        REDUCERS
 *##############################################################*/
-// tslint:disable-next-line: no-default-export
-export default combineReducers({
+
+export const rootReducer = combineReducers({
   userReducer,
-  uiReducer
+  uiReducer,
 });
+
+export type AppState = ReturnType<typeof rootReducer>;
