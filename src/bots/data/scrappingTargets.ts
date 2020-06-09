@@ -292,7 +292,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperRJEmpregosNet,
-    bypassPostContentFilter: true
+    bypassPostContentFilter: true,
+    isTrustableSource: true
   },
   {
     name: "OLX => RJ/CAPITAL",

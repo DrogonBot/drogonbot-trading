@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -58,31 +57,15 @@ export class ScrapperQuatreMG {
 
     const $ = cheerio.load(html);
 
-
     const title = $(`#tit-servico`).text()
 
     const details = $('#detalhes-vaga').text()
 
-    const contentPs = $("#conteudo p");
-    let rawContent = ""
-    $(contentPs).each(function (i, p) {
-      const element = $(p)
-      rawContent += element.text() + '\n'
-    });
-
-    rawContent = rawContent.replace(new RegExp('\t', 'g'), "");
-
-    console.log(title);
-    console.log(rawContent);
+    const rawContent = PostScrapperHelper.extractContent(html, '#conteudo')
 
     const rawCity = await PostScrapperHelper.getCity("MG", `${title} - ${details} - ${rawContent}`) || "Belo Horizonte"
 
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
-
-
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
-
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
 

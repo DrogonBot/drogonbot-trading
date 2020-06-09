@@ -302,8 +302,8 @@ IProps) => {
 
       return (
         <>
-          {post.content.length > 300
-            ? post.content.substr(0, 300)
+          {post.content.length > 1000
+            ? post.content.substr(0, 1000)
             : post.content.substr(0, post.content.length - 15)}
           <p>
             <SeeMore />
