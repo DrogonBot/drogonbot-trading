@@ -11,7 +11,7 @@ export class APIHelper {
     useAuth = true,
     customHeaders: object = {},
     onTimeoutCallback = () => null,
-    timeout = 5000
+    timeout = 60000
   ) => {
     let AUTH_HEADERS;
 
