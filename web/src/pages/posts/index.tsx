@@ -12,7 +12,7 @@ import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { NextSEOPosts } from '../../components/seo/NextSEOPosts';
 import { appEnv } from '../../constants/Env.constant';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
-import { postReadFeed } from '../../store/actions/post.action';
+import { postClearAll, postReadFeed } from '../../store/actions/post.action';
 import { IProvince } from '../../types/Form.types';
 import { IPost } from '../../types/Post.types';
 import { IPaginationData } from '../../types/UI.types';
@@ -97,6 +97,9 @@ Posts.getInitialProps = async (ctx) => {
   await ctx.store.dispatch(loadCountryProvinces(appEnv.appCountry));
   console.log("Loading provinces...");
   const provinces = ctx.store.getState().formReducer.states; // populate province dropdown
+
+  // lets clear our store
+  await ctx.store.dispatch(postClearAll());
 
   console.log("Loading pagination data...");
   const { searchProvince, searchKeyword, page = 1 } = ctx.query;

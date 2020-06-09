@@ -24,8 +24,7 @@ export const postRead = (
     RequestTypes.GET,
     postUrl,
     {},
-    false,
-    { "Cache-Control": "no-cache" }
+    false
   );
 
   if (response) {
