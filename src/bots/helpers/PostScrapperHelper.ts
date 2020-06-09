@@ -1,3 +1,5 @@
+import cheerio from 'cheerio';
+import htmlToText from 'html-to-text';
 import _ from 'lodash';
 import stringSimilarity from 'string-similarity';
 
@@ -75,6 +77,20 @@ export class PostScrapperHelper {
     catch (error) {
       return ""
     }
+  }
+
+  public static extractContent = (sourceHtml: string, selector: string) => {
+
+    const $ = cheerio.load(sourceHtml);
+
+    let content = $(selector).html() || $(selector).text()
+    // parse html to text
+    content = htmlToText.fromString(content, {
+      wordwrap: null
+    })
+    content = content.trim()
+
+    return content
   }
 
 

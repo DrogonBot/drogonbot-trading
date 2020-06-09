@@ -59,7 +59,7 @@ export class ScrapperCBDVMG {
 
 
 
-    let rawContent = $('.entry-content').text() || ""
+    let rawContent = PostScrapperHelper.extractContent(html, '.entry-content');
 
     rawContent = rawContent.replace(new RegExp('(adsbygoogle = window.adsbygoogle || []).push({});', 'g'), "");
     rawContent = rawContent.replace('Se você conhecer alguém que se encaixe nesse perfil, compartilhe para ele. Vamos ajudar o máximo de pessoas que conseguirmos. Lembre se: Tudo que vai volta…    –  Vagas Urgentes BH  –', '')

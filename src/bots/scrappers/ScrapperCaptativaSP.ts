@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -62,17 +61,9 @@ export class ScrapperCaptativaSP {
 
     const title = $('h1').text().trim()
 
-    let rawContent = $('.mb-4').text() || ""
-
-
-    rawContent = rawContent.trim()
-
+    const rawContent = PostScrapperHelper.extractContent(html, '.mb-4');
 
     const rawCity = await PostScrapperHelper.getCity("SP", `${title} - ${rawContent}`) || "São Paulo"
-
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
-
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 
