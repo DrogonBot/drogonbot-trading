@@ -4,15 +4,23 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { DefaultScreen } from '../../components/Screen/DefaultScreen';
+import { postReadMarketingText } from '../../store/actions/post.actions';
 
 export const WhatsAppScreen = () => {
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
   const [province, setProvince] = useState("");
+
+  useEffect(() => {
+    dispatch(postReadMarketingText(province));
+  }, [province, dispatch]);
 
   const onHandleProvinceChange = (e) => {
     setProvince(String(e.target.value));

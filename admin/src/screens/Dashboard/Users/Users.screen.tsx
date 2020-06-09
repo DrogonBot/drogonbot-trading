@@ -25,7 +25,7 @@ export const UsersScreen = () => {
   const [selectedUserId, setSelectedUserId] = useState("");
 
   const dispatch = useDispatch();
-  const users: IUser[] = useSelector<AppState, IUser>(
+  const users = useSelector<AppState, IUser[]>(
     (state) => state.userReducer.users
   );
 
