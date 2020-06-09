@@ -3,20 +3,26 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { DefaultScreen } from '../../components/Screen/DefaultScreen';
 import { postReadMarketingText } from '../../store/actions/post.actions';
+import { AppState } from '../../store/reducers/index.reducers';
+import { IPostMarketingItem } from '../../typescript/Post.types';
 
 export const WhatsAppScreen = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
 
-  const [province, setProvince] = useState("");
+  const [province, setProvince] = useState<string>("");
+
+  const marketingPosts =
+    useSelector<AppState, IPostMarketingItem[]>(
+      (state) => state.postReducer.marketingPosts
+    ) || [];
 
   useEffect(() => {
     dispatch(postReadMarketingText(province));
@@ -50,15 +56,6 @@ export const WhatsAppScreen = () => {
             <MenuItem value={"RJ"}>RJ</MenuItem>
           </Select>
         </FormControl>
-
-        <TextField
-          id="outlined-multiline-static"
-          label="Marketing Text"
-          multiline
-          rows={4}
-          defaultValue=""
-          variant="outlined"
-        />
       </Container>
     </DefaultScreen>
   );
