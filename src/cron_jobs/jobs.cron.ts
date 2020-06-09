@@ -2,7 +2,6 @@ import moment from 'moment';
 import cron from 'node-cron';
 
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
-import { PosterFacebook } from '../bots/posters/PosterFacebook';
 import { TargetPriority } from '../bots/types/bots.types';
 import { JobsEmailManager } from '../emails/jobs.email';
 import { Post } from '../resources/Post/post.model';
@@ -15,7 +14,7 @@ import { LanguageHelper } from '../utils/LanguageHelper';
 export class JobsCron {
 
 
-  public static executeCrawlers = async () => {
+  private static _executeCrawlers = async () => {
 
     await ScrappingTargetHelper.startScrappers([
       ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "ES"),
@@ -165,34 +164,22 @@ export class JobsCron {
 
   public static initializeJobCrawlers = () => {
 
-
-    // HIGH PRIORITY GROUPS
-
     // at 1am...
     cron.schedule("* 1 * * *", async () => {
-      JobsCron.executeCrawlers()
-    });
-
-    // at 12pm
-    cron.schedule("0 12 * * *", async () => {
-      JobsCron.executeCrawlers()
-    });
-
-
-
-
-  }
-
-  public static initPostersBot = () => {
-
-    cron.schedule("0 */4 * * *", async () => {
-
-      await PosterFacebook.triggerMarketingPost()
-
+      JobsCron._executeCrawlers()
     });
 
 
   }
+
+  // public static initPostersBot = () => {
+
+  //   cron.schedule("0 */4 * * *", async () => {
+  //     await PosterFacebook.triggerMarketingPost()
+  //   });
+
+
+  // }
 
   // public static initializeJobPostSchedulers = () => {
   //   cron.schedule("0 */4 * * *", async () => {
