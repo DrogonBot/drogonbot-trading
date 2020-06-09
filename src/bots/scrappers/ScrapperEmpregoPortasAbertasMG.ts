@@ -62,17 +62,9 @@ export class ScrapperEmpregoPortasAbertasMG {
     const title = $(`.post-title.entry-title`).text()
 
 
+    let rawContent = PostScrapperHelper.extractContent(html, '.post-body');
 
-    const contentItems = $(`div[style*="background-color"]`);
-    let rawContent = ""
-    $(contentItems).each(function (i, p) {
-      const element = $(p)
 
-      rawContent += element.text() + '\n'
-
-    });
-
-    rawContent = rawContent.trim()
 
     rawContent = rawContent.replace('Esta e outras vagas confira no nosso site: www.empregoportasabertas.com', '')
     rawContent = rawContent.replace('Vagas adicionadas diariamente', '')

@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -58,30 +57,17 @@ export class ScrapperEmpregosES {
 
     const $ = cheerio.load(html);
 
-
     const title = $(`meta[property="og:title"]`).attr('content')
 
-    const contentPs = $(".entry p");
-    let rawContent = ""
-    $(contentPs).each(function (i, p) {
-      const element = $(p)
+    let rawContent = PostScrapperHelper.extractContent(html, '.entry');
 
-      rawContent += element.text() + '\n'
-
-    });
-
-    rawContent = rawContent.trim()
-
-
-
-    console.log(title);
-    console.log(rawContent);
-
+    rawContent = rawContent.replace('• VAGAS EM PRIMEIRA MÃO, PARTICIPE DOS NOSSOS GRUPOS. ', '')
+    rawContent = rawContent.replace('TELEGRAM: https://t.me/joinchat/LqDO-RT4lp5sbW8EjRW9kQ', '')
+    rawContent = rawContent.replace('WHATSAPP: https://chat.whatsapp.com/HjZRLmc9J893PLvFdNBc19', '')
+    rawContent = rawContent.replace('INSTAGRAM: https://www.instagram.com/empregosnoes/', '')
+    rawContent = rawContent.replace(/CONFIRA AS VAGAS RECENTES COMPARTILHAR[\s\S]+/g, '')
 
     const rawCity = await PostScrapperHelper.getCity("ES", `${title} ${rawContent}`) || "Vitória"
-
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 

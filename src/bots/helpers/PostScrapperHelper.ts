@@ -86,7 +86,10 @@ export class PostScrapperHelper {
     let content = $(selector).html() || $(selector).text()
     // parse html to text
     content = htmlToText.fromString(content, {
-      wordwrap: null
+      wordwrap: null,
+      ignoreHref: true,
+      noLinkBrackets: true,
+      ignoreImage: true
     })
     content = content.trim()
 
