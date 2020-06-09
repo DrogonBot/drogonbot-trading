@@ -16,6 +16,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import GroupIcon from '@material-ui/icons/Group';
 import MenuIcon from '@material-ui/icons/Menu';
+import ShareIcon from '@material-ui/icons/Share';
 import clsx from 'clsx';
 import React, { ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -66,6 +67,11 @@ export const Header = (props: IProps) => {
         icon: <GroupIcon />,
         label: "Users",
         link: "/users",
+      },
+      user.type === "Admin" && {
+        icon: <ShareIcon />,
+        label: "WhatsApp Share",
+        link: "/whatsapp",
       },
     ];
 
