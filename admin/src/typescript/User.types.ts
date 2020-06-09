@@ -1,5 +1,3 @@
-
-
 export interface IUser {
   _id: string;
   name: string;
@@ -13,7 +11,7 @@ export interface IUser {
   email: string;
   tokens: Object[];
   avatar: any;
-  genericPositionsOfInterest: string[]
+  genericPositionsOfInterest: string[];
   avatarUrl: string;
   pushToken: string;
   createdAt: string;

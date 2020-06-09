@@ -1,6 +1,6 @@
 import { IUser } from '../../typescript/User.types';
 
-const INITIAL_STATE = {
+const INITIAL_STATE: IUserState = {
   user: null,
   token: null,
   users: [], //this is for admin panel editing. user is the logged in user!
@@ -69,6 +69,13 @@ export const USER_LOGIN = "USER_LOGIN";
 export const USERS_GET = "USERS_GET";
 export const USERS_EDIT = "USERS_EDIT";
 export const USERS_DELETE = "USERS_DELETE";
+
+export interface IUserState {
+  user: IUser | null;
+  users: IUser[];
+  token: string | null;
+  // resumes: IResumeState[] | [];
+}
 
 /*
 

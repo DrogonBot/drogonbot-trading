@@ -25,7 +25,7 @@ export const UsersScreen = () => {
   const [selectedUserId, setSelectedUserId] = useState("");
 
   const dispatch = useDispatch();
-  const users = useSelector<AppState, IUser>(
+  const users: IUser[] = useSelector<AppState, IUser>(
     (state) => state.userReducer.users
   );
 
@@ -80,7 +80,9 @@ export const UsersScreen = () => {
         <DefaultModal
           modalKey={"editUser"}
           title={"Edit User"}
-          content={<EditUserForm user={selectedUser} userId={selectedUserId} />}
+          content={
+            <EditUserForm user={selectedUser!} userId={selectedUserId} />
+          }
         />
       </>
     );
