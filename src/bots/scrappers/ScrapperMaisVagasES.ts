@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -63,17 +62,11 @@ export class ScrapperMaisVagasES {
 
     title = title?.replace('Mais Vagas ES - ', '')
 
-
-    let rawContent = $(`meta[property="og:description"]`).attr('content') || ""
-
-    console.log(title);
-    console.log(rawContent);
+    let rawContent = PostScrapperHelper.extractContent(html, '.job_listing-description');
+    rawContent = rawContent.replace('Entre em nosso canal no Telegram e receba diariamente em tempo real publicações de vagas de emprego. Clique aqui e entre agora!', '')
 
     const locationText = $(`.google_map_link`).text()
     const rawCity = await PostScrapperHelper.getCity("ES", locationText) || "Vitória"
-
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 

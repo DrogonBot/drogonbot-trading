@@ -65,7 +65,9 @@ export class ScrapperGrupoResolveSP {
 
     const title = $('table td .subtitulo').text().trim()
 
-    let rawContent = $('table td').text() || ""
+
+    let rawContent = PostScrapperHelper.extractContent(html, 'table td');
+
 
     rawContent = rawContent.replace(RegExp(`Vaga No. .+`, 'g'), "");
     rawContent = rawContent.replace('Visualizar Vaga', '')

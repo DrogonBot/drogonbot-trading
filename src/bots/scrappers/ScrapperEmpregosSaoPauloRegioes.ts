@@ -58,6 +58,7 @@ export class ScrapperEmpregosSaoPauloRegioes {
     let title = $('h2').text()
 
     title = title.replace('SeguidoresBlog Archive', '')
+    title = title.replace('Marcadores', '')
 
     let rawContent = $('.post-body').text() || ""
 
@@ -74,7 +75,7 @@ export class ScrapperEmpregosSaoPauloRegioes {
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
 
-    rawContent = rawContent.replace('     Não perca a oportunidade,sua vida vai ser muito melhor com novo emprego Ideal, permita mudanças e largue na frente cadastrando e enviando seu currículo em nosso site Vagas de Empregos São Paulo e Regiões,temos as melhores vagas tanto no site quanto em grupos de whatsapp,facebook ou telegram entre e conquiste seu futuro com um novo emprego,nossas vagas são postadas diariamente totalmente grátis. Leia atentamente os anuncio antes de cadastrar ou enviar seu currículo.    ', '')
+    rawContent = rawContent.replace('Não perca a oportunidade,sua vida vai ser muito melhor com novo emprego Ideal, permita mudanças e largue na frente cadastrando e enviando seu currículo em nosso site Vagas de Empregos São Paulo e Regiões,temos as melhores vagas tanto no site quanto em grupos de whatsapp,facebook ou telegram entre e conquiste seu futuro com um novo emprego,nossas vagas são postadas diariamente totalmente grátis. Leia atentamente os anuncio antes de cadastrar ou enviar seu currículo.', '')
 
 
     const jobData = {
