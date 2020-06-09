@@ -3,7 +3,7 @@ import { IUser } from '../../typescript/User.types';
 const INITIAL_STATE = {
   user: null,
   token: null,
-  users: [] //this is for admin panel editing. user is the logged in user!
+  users: [], //this is for admin panel editing. user is the logged in user!
 };
 
 export const userReducer = (state = INITIAL_STATE, action) => {
@@ -20,13 +20,13 @@ export const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         user: action.payload.user,
-        token: action.payload.token
+        token: action.payload.token,
       };
 
     case USERS_GET:
       return {
         ...state,
-        users: action.payload
+        users: action.payload,
       };
 
     case USERS_EDIT:
@@ -39,17 +39,22 @@ export const userReducer = (state = INITIAL_STATE, action) => {
             return editUser; //return edit user.
           }
           return user;
-        })
+        }),
       };
 
     case USERS_DELETE:
       return {
         ...state,
-        users: state.users.filter((user: IUser) => user._id !== action.payload)
+        users: state.users.filter((user: IUser) => user._id !== action.payload),
       };
 
     case USER_LOGOUT:
       localStorage.clear();
+
+      return {
+        ...state,
+        users: INITIAL_STATE.users,
+      };
       break;
 
     default:
