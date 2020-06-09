@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -9,7 +8,7 @@ import { IScrapperLink } from '../types/bots.types';
 
 
 
-export class ScrapperSociiRH {
+export class ScrapperSociiRHMG {
 
   public static postLinks: IScrapperLink[] | null = null
 
@@ -20,6 +19,7 @@ export class ScrapperSociiRH {
     const html = await ConnectionHelper.requestHtml(
       externalSource
     );
+
 
     const $ = cheerio.load(html);
 
@@ -39,7 +39,7 @@ export class ScrapperSociiRH {
       }
     })
 
-    console.log(`🤖: ${links.length} ${ScrapperSociiRH.name} links crawled successfully!`);
+    console.log(`🤖: ${links.length} ${ScrapperSociiRHMG.name} links crawled successfully!`);
     console.log(links);
 
     return links.map((link) => {
@@ -59,25 +59,14 @@ export class ScrapperSociiRH {
 
     const $ = cheerio.load(html);
 
-
     const title = $('.page-title').text().trim()
 
-    let rawContent = $('.job-meta').text() + $('.job-details').text() || ""
-
+    let rawContent = PostScrapperHelper.extractContent(html, '.job-meta') || PostScrapperHelper.extractContent(html, '.job-details');
     rawContent = rawContent.replace(RegExp(`Código Vaga: .+`, 'g'), "");
-
-
-    rawContent = rawContent.trim()
-
 
     const rawCity = await PostScrapperHelper.getCity("MG", `${title} - ${rawContent}`) || "Belo Horizonte"
 
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
-
-
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
-
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
 

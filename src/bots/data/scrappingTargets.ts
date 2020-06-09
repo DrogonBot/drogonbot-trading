@@ -17,7 +17,7 @@ import { ScrapperQuatreMG } from '../scrappers/ScrapperQuatreMG';
 import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
 import { ScrapperRJEmpregosNet } from '../scrappers/ScrapperRJEmpregosNet';
 import { ScrapperSeuJobs } from '../scrappers/ScrapperSeuJobs';
-import { ScrapperSociiRH } from '../scrappers/ScrapperSociiRH';
+import { ScrapperSociiRHMG } from '../scrappers/ScrapperSociiRHMG';
 import { ScrapperVagasDeEmpregoGV } from '../scrappers/ScrapperVagasDeEmpregoGV';
 import { ScrapperVagasUrgentesMG } from '../scrappers/ScrapperVagasUrgentesMG';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
@@ -56,7 +56,7 @@ export const scrappingTargets: IScrappingTarget[] = [
     bypassPostContentFilter: true
   },
   {
-    name: "Blog => SociiRH Blog",
+    name: "Blog => SociiRH Blog MG",
     externalSource: "https://sociisrh.doubt.com.br/",
     priority: TargetPriority.Medium,
     postDataOverride: {
@@ -65,7 +65,7 @@ export const scrappingTargets: IScrappingTarget[] = [
     },
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperSociiRH,
+    scrapperClass: ScrapperSociiRHMG,
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
