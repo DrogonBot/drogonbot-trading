@@ -3,6 +3,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -19,6 +20,7 @@ export const WhatsAppScreen = () => {
 
   return (
     <DefaultScreen title="WhatsApp">
+      <p>Select a province below to fetch your marketing text:</p>
       <Container>
         <FormControl variant="outlined" className={classes.formControl}>
           <InputLabel id="demo-simple-select-outlined-label">
@@ -40,6 +42,15 @@ export const WhatsAppScreen = () => {
             <MenuItem value={"RJ"}>RJ</MenuItem>
           </Select>
         </FormControl>
+
+        <TextField
+          id="outlined-multiline-static"
+          label="Marketing Text"
+          multiline
+          rows={4}
+          defaultValue=""
+          variant="outlined"
+        />
       </Container>
     </DefaultScreen>
   );

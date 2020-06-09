@@ -86,3 +86,8 @@ export interface ISimilarityMatch {
 export interface IGetProvinceCity {
   city: string, stateCode: string
 }
+
+export interface IPostMarketingItem {
+  text: string;
+  url: string
+}

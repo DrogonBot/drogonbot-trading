@@ -8,7 +8,7 @@ import { PostHelper } from '../../utils/PostHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { Resume } from '../Resume/resume.model';
 import { Post } from './post.model';
-import { IPost, IPostApplication, IPostApplicationStatus } from './post.types';
+import { IPost, IPostApplication, IPostApplicationStatus, IPostMarketingItem } from './post.types';
 
 // @ts-ignore
 const postRouter = new Router();
@@ -87,7 +87,6 @@ postRouter.get('/feed/posts', async (req, res) => {
 
 
 })
-
 
 postRouter.get('/post', async (req, res) => {
 
@@ -342,12 +341,7 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
 
 })
 
-
-
-
 // Post a new post ========================================
-
-
 
 postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
@@ -529,6 +523,54 @@ postRouter.delete('/post/:id', userAuthMiddleware, async (req, res) => {
       details: error.message
     })
   }
+
+
+
+})
+
+// post marketing text
+
+postRouter.get('/post/marketing/:stateCode', userAuthMiddleware, async (req, res) => {
+
+  const { stateCode } = req.params
+
+  try {
+    const posts = await Post.find({
+      stateCode
+    }).limit(30)
+
+    if (!posts.length) {
+      return res.status(200).send({
+        status: "error",
+        message: LanguageHelper.getLanguageString('post', 'postNotFound')
+      })
+    }
+
+    let postMarketingItems: IPostMarketingItem[] = []
+
+    for (const post of posts) {
+      postMarketingItems = [
+        ...postMarketingItems,
+        {
+          text: post.title,
+          url: `https://empregourgente.com/posts/${post.slug}`
+        }
+      ]
+    }
+
+    return res.status(200).send({
+      items: postMarketingItems
+    })
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(200).send({
+      status: "error",
+      message: "Error while fetching your marketing post"
+    })
+  }
+
+
 
 
 
