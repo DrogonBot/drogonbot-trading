@@ -46,10 +46,10 @@ export class ScrapperRandstad {
       externalUrl: link,
       country: "Brazil",
       source: PostSource.Blog,
-      stateCode,
       sector,
       jobRoles: [jobRoleBestMatch],
       ...postDataOverride,
+      stateCode,
       city,
     }
 
