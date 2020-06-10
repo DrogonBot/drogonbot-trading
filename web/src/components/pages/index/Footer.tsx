@@ -40,6 +40,11 @@ export const Footer = () => {
                 <img src="/images/partners/seu_jobs.png" />
               </a>
             </PartnerListItem>
+            <PartnerListItem>
+              <a href="https://www.temosvaga.com/" target="_blank">
+                <img src="/images/partners/temosvaga.png" />
+              </a>
+            </PartnerListItem>
           </PartnersList>
         </FooterRight>
       </FooterContainer>
