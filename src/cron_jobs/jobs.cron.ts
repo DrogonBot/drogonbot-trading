@@ -135,7 +135,7 @@ export class JobsCron {
   public static jobCrawlersCleaners = async () => {
 
     // once every day, check
-    cron.schedule("0 0 * * *", async () => {
+    cron.schedule("0 1 * * *", async () => {
 
       console.log(`🤖: Running job cleaner bot...`);
 
