@@ -22,6 +22,7 @@ import { ScrapperSociiRHMG } from '../scrappers/ScrapperSociiRHMG';
 import { ScrapperVagasDeEmpregoGV } from '../scrappers/ScrapperVagasDeEmpregoGV';
 import { ScrapperVagasUrgentesMG } from '../scrappers/ScrapperVagasUrgentesMG';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
+import { ScrapperTrabalhaBrasil } from './../scrappers/ScrapperTrabalhaBrasil';
 import { ScrapperVeroRH } from './../scrappers/ScrapperVeroRHSP';
 
 
@@ -181,6 +182,81 @@ export const scrappingTargets: IScrappingTarget[] = [
     isTrustableSource: true
   },
   {
+    name: "TrabalhaBrasil - ES - Vitoria",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-vitoria-es",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "ES",
+      city: "Vitória"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - ES - Vila Velha",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-vila-velha-es",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "ES",
+      city: "Vila Velha"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - ES - Serra",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-serra-es",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "ES",
+      city: "Serra"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - ES - Cariacica",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-cariacica-es",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "ES",
+      city: "Cariacica"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - ES - Viana",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-viana-es",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "ES",
+      city: "Viana"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
     name: "A Gazeta Empregos ES",
     externalSource: "https://www.agazetaempregos.com.br/",
     priority: TargetPriority.High,
@@ -318,6 +394,98 @@ export const scrappingTargets: IScrappingTarget[] = [
     isTrustableSource: true
   },
   {
+    name: "TrabalhaBrasil - RJ - Rio de Janeiro",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-rio-de-janeiro-rj",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Rio de Janeiro"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - RJ - São Gonçalo",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-goncalo-rj",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "São Gonçalo"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+
+  {
+    name: "TrabalhaBrasil - RJ - Duque de Caxias",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-duque-de-caxias-rj",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Duque de Caxias"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - RJ - Nova Iguacu",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-nova-iguacu-rj",
+    priority: TargetPriority.Low,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Nova Iguaçu"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - RJ - Niteroi",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-niteroi-rj",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Niterói"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - RJ - Belford Roxo",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-belford-roxo-rj",
+    priority: TargetPriority.Low,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Belford Roxo"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+
+  {
     name: "Blog => Rj Empregos Net",
     externalSource: "https://rjempregos.net/",
     priority: TargetPriority.High,
@@ -438,6 +606,112 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperRandstad,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - SP",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-paulo-sp/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "São Paulo"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+
+  {
+    name: "TrabalhaBrasil - SP - Guarulhos",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-guarulhos-sp",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "Guarulhos"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - SP - Campinas",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-campinas%2C-sp-",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "Campinas"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - SP - Sao Bernardo do Campo",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-bernardo-do-campo-sp",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "São Bernardo do Campo"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - SP - Sao Jose dos Campos",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-jose-dos-campos-sp",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "São José dos Campos"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - SP - Santo Andre",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-santo-andre-sp",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "Santo André"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - SP - Ribeirao Preto",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-ribeirao-preto-sp",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "Ribeirão Preto"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
@@ -650,6 +924,82 @@ export const scrappingTargets: IScrappingTarget[] = [
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
+  {
+    name: "TrabalhaBrasil - MG - BH",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-belo-horizonte-mg",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG",
+      city: "Belo Horizonte"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - MG - Uberlandia",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-uberlandia-mg",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG",
+      city: "Uberlândia"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - MG - Contagem",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-contagem-mg",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG",
+      city: "Contagem"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - MG - Juiz de Fora",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-juiz-de-fora-mg",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG",
+      city: "Juiz de Fora"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - MG - Betim",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-betim-mg",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG",
+      city: "Betim"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+
 
   {
     name: "OLX => MG/BH",
