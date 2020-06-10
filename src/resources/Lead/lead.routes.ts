@@ -49,6 +49,45 @@ leadsRouter.post('/leads/save', async (req, res) => {
 
 })
 
+leadsRouter.get('/leads/fix/city', async (req, res) => {
+
+  try {
+
+    const leads = await Lead.find({})
+
+    const numberCity = {
+      11: "São Paulo",
+      21: "Rio de Janeiro",
+      31: "Belo Horizonte",
+    }
+
+
+    for (const lead of leads) {
+
+      const numberCityKv = Object.entries(numberCity).map(([key, value]) => ({ key, value }))
+
+      for (const kv of numberCityKv) {
+
+        if (lead.phone && lead.phone.includes(kv.key)) {
+          lead.city = kv.value;
+          await lead.save();
+        }
+
+      }
+
+
+
+    }
+
+
+  }
+  catch (error) {
+    console.error(error);
+    onerror
+  }
+
+
+})
 
 
 
