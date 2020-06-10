@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { BotHelper } from '../helpers/BotHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -21,35 +20,7 @@ export class ScrapperGlobalEmpregosSP {
       externalSource
     );
 
-    const $ = cheerio.load(html, { decodeEntities: BotHelper.fixEncoding ? false : true });
-
-    const postList = $('a.botao-detalhes')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperGlobalEmpregosSP.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
-
+    return PostScrapperHelper.extractPostLinks(ScrapperGlobalEmpregosSP.name, externalSource, html, 'a.botao-detalhes')
   }
 
   public static crawlPageData = async (link: string, postDataOverride?) => {

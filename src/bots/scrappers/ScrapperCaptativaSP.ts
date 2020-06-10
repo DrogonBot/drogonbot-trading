@@ -20,33 +20,8 @@ export class ScrapperCaptativaSP {
       externalSource
     );
 
-    const $ = cheerio.load(html);
 
-    const postList = $('a[href*=jobs].text-dark')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperCaptativaSP.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
+    return PostScrapperHelper.extractPostLinks(ScrapperCaptativaSP.name, externalSource, html, 'a[href*=jobs].text-dark')
 
 
   }

@@ -512,7 +512,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperEmpregosSaoPauloRegioes,
-    bypassPostContentFilter: true
+    bypassPostContentFilter: true,
+    isTrustableSource: true
   },
   {
     name: "Blog => Empregos Sao Paulo",

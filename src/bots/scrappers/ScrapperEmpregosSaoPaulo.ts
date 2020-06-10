@@ -20,30 +20,7 @@ export class ScrapperEmpregosSaoPaulo {
       externalSource
     );
 
-    const $ = cheerio.load(html);
-
-    const postList = $('.more-link')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      const link = $(el).attr('href')
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperEmpregosSaoPaulo.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
-
+    return PostScrapperHelper.extractPostLinks(ScrapperEmpregosSaoPaulo.name, externalSource, html, '.more-link')
   }
 
   public static crawlPageData = async (link: string, postDataOverride?) => {

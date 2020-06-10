@@ -15,6 +15,7 @@ import { GenericHelper } from '../../utils/GenericHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { IBestMatchAndSector } from '../types/bots.types';
+import { BotHelper } from './BotHelper';
 
 
 export class PostScrapperHelper {
@@ -81,7 +82,7 @@ export class PostScrapperHelper {
 
   public static extractPostLinks = (scrapperName: string, externalSource: string, sourceHtml: string, selector: string, ) => {
 
-    const $ = cheerio.load(sourceHtml);
+    const $ = cheerio.load(sourceHtml, { decodeEntities: BotHelper.fixEncoding ? false : true });
 
     const postList = $(selector)
 

@@ -22,6 +22,8 @@ export class ScrapperGrupoResolveSP {
       externalSource
     );
 
+    // ! This link fetching has some specificities and I've skipped refactoring.
+
     const $ = cheerio.load(html, { decodeEntities: BotHelper.fixEncoding ? false : true });
 
     const postList = $('a[href*=consultarvagas]')

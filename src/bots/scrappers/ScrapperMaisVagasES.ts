@@ -19,13 +19,7 @@ export class ScrapperMaisVagasES {
       externalSource
     );
 
-    const $ = cheerio.load(html);
-
-
-
     return PostScrapperHelper.extractPostLinks(ScrapperMaisVagasES.name, externalSource, html, 'a.job_listing-clickbox')
-
-
   }
 
   public static crawlPageData = async (link: string, postDataOverride?) => {

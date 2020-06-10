@@ -21,29 +21,8 @@ export class ScrapperCBDVMG {
       externalSource
     );
 
-    const $ = cheerio.load(html);
 
-    const postList = $('.readmore a')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      const link = $(el).attr('href')
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperCBDVMG.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
+    return PostScrapperHelper.extractPostLinks(ScrapperCBDVMG.name, externalSource, html, '.readmore a')
 
   }
 
