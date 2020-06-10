@@ -79,6 +79,49 @@ export class PostScrapperHelper {
     }
   }
 
+  public static extractPostLinks = (scrapperName: string, externalSource: string, sourceHtml: string, selector: string, ) => {
+
+    const $ = cheerio.load(sourceHtml);
+
+    const postList = $(selector)
+
+
+
+    let links: string[] = []
+
+    const externalSourceUrl = new URL(externalSource)
+    const rootUrl = externalSourceUrl.origin;
+
+    postList.each(function (i, el) {
+      const link = $(el).prop('href')
+
+      if (link[0] === "/") { // if it starts with a /, then its a relative path!, we must add the rootUrl to it...
+
+        links = [
+          ...links,
+          `${rootUrl}${link}`
+        ]
+      } else {
+        // if its already an absolute path, just add it
+        links = [
+          ...links,
+          `${link}`
+        ]
+      }
+
+    })
+
+    console.log(`🤖: ${links.length} ${scrapperName} links crawled successfully!`);
+    console.log(links);
+
+    return links.map((link) => {
+      return {
+        link,
+        scrapped: false
+      }
+    });
+  }
+
   public static extractContent = (sourceHtml: string, selector: string) => {
 
     const $ = cheerio.load(sourceHtml);
@@ -97,7 +140,11 @@ export class PostScrapperHelper {
   }
 
 
-  public static getProvinceAndCity = async (content) => {
+  public static getProvinceAndCity = async (content, postDataOverride) => {
+
+    content = content.replace('/', ' ')
+
+    console.log(content);
 
     try {
       const places = await Place.find({})
@@ -107,19 +154,12 @@ export class PostScrapperHelper {
         // loop until we find the matching stateCode
         const stateCodeFound = new RegExp(`\\b${place.stateCode}\\b`, 'gi').test(content)
 
-
-
         if (stateCodeFound) {
-
           // once we find this stateCode, search for the city
-
           // Here we test every city against our post content. If we find it, then that's because this post is probably associated with it
           for (const city of place.cities) {
             const cityFound = new RegExp(`\\b${city.cityName}\\b`, 'gi').test(content)
-
             if (cityFound) {
-
-
               return {
                 city: city.cityName,
                 stateCode: place.stateCode
@@ -128,23 +168,32 @@ export class PostScrapperHelper {
             continue;
           }
         }
-      }
+        // if no stateCode is found, lets use the postDataOverride one
 
-      // if nothing is found, lets default to SP
+        const inferedPlaces = await Place.findOne({ stateCode: postDataOverride.stateCode })
 
-      return {
-        stateCode: "SP",
-        city: "São Paulo"
+        for (const city of inferedPlaces!.cities) {
+          const cityFound = new RegExp(`\\b${city.cityName}\\b`, 'gi').test(content)
+          if (cityFound) {
+            return {
+              city: city.cityName,
+              stateCode: postDataOverride.stateCode
+            };
+          }
+          continue;
+        }
+
       }
+      // if nothing is found, default to post data override
+      return { stateCode: postDataOverride.stateCode, city: postDataOverride.city }
+
+
 
 
     }
     catch (error) {
       console.error(error);
-      return {
-        stateCode: "SP",
-        city: "São Paulo"
-      }
+      return { stateCode: postDataOverride.stateCode, city: postDataOverride.city }
     }
 
   }

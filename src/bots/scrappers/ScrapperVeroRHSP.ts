@@ -70,7 +70,7 @@ export class ScrapperVeroRH {
 
     rawContent = rawContent.trim()
 
-    const { stateCode, city } = await PostScrapperHelper.getProvinceAndCity(`${title} ${rawContent}`)
+    const { stateCode, city } = await PostScrapperHelper.getProvinceAndCity(`${title} ${rawContent}`, postDataOverride)
 
     // remove html tags
     rawContent = GenericHelper.stripHtml(rawContent)

@@ -6,9 +6,7 @@ import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 import { IScrapperLink } from '../types/bots.types';
 
-
-
-export class ScrapperSeuJobs {
+export class ScrapperRandstad {
 
   public static postLinks: IScrapperLink[] | null = null
 
@@ -20,10 +18,7 @@ export class ScrapperSeuJobs {
       externalSource
     );
 
-    const $ = cheerio.load(html);
-
-    return PostScrapperHelper.extractPostLinks(ScrapperSeuJobs.name, externalSource, html, '.job_listings a[href*=seujobs]')
-
+    return PostScrapperHelper.extractPostLinks(ScrapperRandstad.name, externalSource, html, '.btn.btn-prim[id*="JobsListView"]')
   }
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
@@ -33,14 +28,12 @@ export class ScrapperSeuJobs {
 
     const $ = cheerio.load(html);
 
+    const title = $(`#js_jobTitle`).text()
 
-    const title = $('header > h1').text().trim()
+    let rawContent = PostScrapperHelper.extractContent(html, '.job-desc-section');
+    rawContent = rawContent.replace(/Partilhar[\s\S]+/g, '')
 
-    const rawContent = PostScrapperHelper.extractContent(html, '.entry-content');
-
-    const locationTag = $('.google_map_link').text().trim();
-
-    const place = await PostScrapperHelper.getProvinceAndCity(locationTag, postDataOverride)
+    const { stateCode, city } = await PostScrapperHelper.getProvinceAndCity(`${title} ${rawContent}`, postDataOverride)
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 
@@ -53,11 +46,11 @@ export class ScrapperSeuJobs {
       externalUrl: link,
       country: "Brazil",
       source: PostSource.Blog,
-      stateCode: place?.stateCode || "SP",
+      stateCode,
       sector,
       jobRoles: [jobRoleBestMatch],
       ...postDataOverride,
-      city: place?.city || "São Paulo",
+      city,
     }
 
 

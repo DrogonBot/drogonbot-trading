@@ -14,6 +14,7 @@ import { ScrapperMaisVagasES } from '../scrappers/ScrapperMaisVagasES';
 import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
 import { ScrapperQuatreMG } from '../scrappers/ScrapperQuatreMG';
+import { ScrapperRandstad } from '../scrappers/ScrapperRandstad';
 import { ScrapperRecrutamentoInteligenteMG } from '../scrappers/ScrapperRecrutamentoInteligenteMG';
 import { ScrapperRJEmpregosNet } from '../scrappers/ScrapperRJEmpregosNet';
 import { ScrapperSeuJobs } from '../scrappers/ScrapperSeuJobs';
@@ -37,7 +38,12 @@ export const scrappingTargets: IScrappingTarget[] = [
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperSeuJobs,
     bypassPostContentFilter: true,
-    redirectToSourceOnly: true
+    redirectToSourceOnly: true,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "São Paulo"
+    },
   },
 
   // MG ========================================
@@ -158,6 +164,21 @@ export const scrappingTargets: IScrappingTarget[] = [
   // ! OLX ========================================
 
   // ES ========================================
+  {
+    name: "Randstad - ES",
+    externalSource: "https://www.randstad.com.br/empregos/espirito-santo/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "ES",
+      city: "Vitória"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperRandstad,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
   {
     name: "A Gazeta Empregos ES",
     externalSource: "https://www.agazetaempregos.com.br/",
@@ -280,7 +301,21 @@ export const scrappingTargets: IScrappingTarget[] = [
   },
 
   // RJ ========================================
-
+  {
+    name: "Randstad - RJ",
+    externalSource: "https://www.randstad.com.br/empregos/rio-de-janeiro/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "RJ",
+      city: "Rio de Janeiro"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperRandstad,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
   {
     name: "Blog => Rj Empregos Net",
     externalSource: "https://rjempregos.net/",
@@ -391,6 +426,23 @@ export const scrappingTargets: IScrappingTarget[] = [
   // SP ========================================
 
   {
+    name: "Randstad - SP",
+    externalSource: "https://www.randstad.com.br/empregos/sao-paulo/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "São Paulo"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperRandstad,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+
+
+  {
     name: "Blog => Captativa RH",
     externalSource: "https://jobs.quickin.io/captativa/jobs/",
     priority: TargetPriority.Low,
@@ -425,7 +477,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     priority: TargetPriority.Medium,
     postDataOverride: {
       country: "Brazil",
-      stateCode: "SP"
+      stateCode: "SP",
+      city: "São Paulo"
     },
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
@@ -581,6 +634,22 @@ export const scrappingTargets: IScrappingTarget[] = [
   },
 
   // MG ========================================
+
+  {
+    name: "Randstad - MG",
+    externalSource: "https://www.randstad.com.br/empregos/minas-gerais/",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "MG",
+      city: "Belo Horizonte"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperRandstad,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
 
   {
     name: "OLX => MG/BH",
