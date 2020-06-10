@@ -67,9 +67,18 @@ leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {
   const leadsList = $('span[dir="auto"][title*="+"]');
 
   leadsList.each(async (i, el) => {
+    const leadClientWidth = $(el).prop('clientWidth')
     const leadPhone = $(el).text();
 
-    if (!adminNumbers.includes(leadPhone)) { // to avoid issues, lets not scrap admin numbers =D
+
+    console.log(leadClientWidth);
+
+    if (leadClientWidth === 226) {
+      console.log(`skipping ${leadPhone}, since its a group admin!`);
+    }
+
+    // leadClientWidth 307 is NON admins
+    if (!adminNumbers.includes(leadPhone) && leadClientWidth === 307) { // to avoid issues, lets not scrap admin numbers =D
 
       const phoneExists = await Lead.exists({ phone: leadPhone })
 
