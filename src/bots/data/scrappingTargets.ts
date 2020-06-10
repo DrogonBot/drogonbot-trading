@@ -59,7 +59,8 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperVagasUrgentesMG,
-    bypassPostContentFilter: true
+    bypassPostContentFilter: true,
+    isTrustableSource: true
   },
   {
     name: "Blog => SociiRH Blog MG",
@@ -478,13 +479,11 @@ export const scrappingTargets: IScrappingTarget[] = [
     postDataOverride: {
       country: "Brazil",
       stateCode: "SP",
-      city: "São Paulo"
     },
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperVeroRH,
     bypassPostContentFilter: true,
-
     isTrustableSource: true
   },
   {

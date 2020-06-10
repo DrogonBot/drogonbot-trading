@@ -19,33 +19,7 @@ export class ScrapperVagasDeEmpregoGV {
       externalSource
     );
 
-    const $ = cheerio.load(html);
-
-    const postList = $('h2.entry-title a')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperVagasDeEmpregoGV.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
+    return PostScrapperHelper.extractPostLinks(ScrapperVagasDeEmpregoGV.name, externalSource, html, 'h2.entry-title a')
 
 
   }
@@ -57,11 +31,8 @@ export class ScrapperVagasDeEmpregoGV {
 
     const $ = cheerio.load(html);
 
-
     let title = $(`meta[property="og:title"]`).attr('content')
-
     title = title?.replace(' - Vagas de Emprego GV', '')
-
 
     let rawContent = PostScrapperHelper.extractContent(html, '.entry-inner');
     rawContent = rawContent.replace(/VAGAS DE EMPREGO GV: IMPORTANTE[\s\S]+/g, '')

@@ -20,29 +20,7 @@ export class ScrapperVagasUrgentesMG {
       externalSource
     );
 
-    const $ = cheerio.load(html);
-
-    const postList = $('.post-title a')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      const link = $(el).attr('href')
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperVagasUrgentesMG.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
+    return PostScrapperHelper.extractPostLinks(ScrapperVagasUrgentesMG.name, externalSource, html, '.post-title a')
 
   }
 
@@ -52,7 +30,6 @@ export class ScrapperVagasUrgentesMG {
     const html = await ConnectionHelper.requestHtml(link)
 
     const $ = cheerio.load(html);
-
 
     let title = $('.post-title').text()
 

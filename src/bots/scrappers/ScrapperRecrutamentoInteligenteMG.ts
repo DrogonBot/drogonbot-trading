@@ -20,34 +20,7 @@ export class ScrapperRecrutamentoInteligenteMG {
       externalSource
     );
 
-    const $ = cheerio.load(html);
-
-    const postList = $('.pagina-principal-vagas a.btn-vaga-ver-mais')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperRecrutamentoInteligenteMG.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
+    return PostScrapperHelper.extractPostLinks(ScrapperRecrutamentoInteligenteMG.name, externalSource, html, '.pagina-principal-vagas a.btn-vaga-ver-mais')
 
   }
 
@@ -57,7 +30,6 @@ export class ScrapperRecrutamentoInteligenteMG {
     const html = await ConnectionHelper.requestHtml(link)
 
     const $ = cheerio.load(html);
-
 
     const title = $('#nomeVaga h1').text().trim()
 

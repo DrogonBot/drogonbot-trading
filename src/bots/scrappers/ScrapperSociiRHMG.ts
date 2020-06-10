@@ -20,36 +20,7 @@ export class ScrapperSociiRHMG {
       externalSource
     );
 
-
-    const $ = cheerio.load(html);
-
-    const postList = $('.job-item a')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperSociiRHMG.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
-
+    return PostScrapperHelper.extractPostLinks(ScrapperSociiRHMG.name, externalSource, html, '.job-item a')
   }
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
@@ -61,7 +32,7 @@ export class ScrapperSociiRHMG {
 
     const title = $('.page-title').text().trim()
 
-    let rawContent = PostScrapperHelper.extractContent(html, '.job-meta') || PostScrapperHelper.extractContent(html, '.job-details');
+    let rawContent = PostScrapperHelper.extractContent(html, '.job-summary.section')
     rawContent = rawContent.replace(RegExp(`Código Vaga: .+`, 'g'), "");
 
     const rawCity = await PostScrapperHelper.getCity("MG", `${title} - ${rawContent}`) || "Belo Horizonte"

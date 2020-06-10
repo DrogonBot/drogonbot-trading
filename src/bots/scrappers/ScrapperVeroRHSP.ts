@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -20,35 +19,8 @@ export class ScrapperVeroRH {
       externalSource
     );
 
-    const $ = cheerio.load(html);
 
-    const postList = $('td a')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperVeroRH.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
-
+    return PostScrapperHelper.extractPostLinks(ScrapperVeroRH.name, externalSource, html, 'td a')
   }
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
@@ -58,22 +30,11 @@ export class ScrapperVeroRH {
 
     const $ = cheerio.load(html);
 
-
     const title = $(`.container h1`).text()
 
-    const contentList = $(".descricaoVaga li");
-    let rawContent = ""
-    $(contentList).each(function (i, el) {
-      const element = $(el)
-      rawContent += element.find('p').text() + '\n'
-    });
+    const rawContent = PostScrapperHelper.extractContent(html, '.descricaoVaga');
 
-    rawContent = rawContent.trim()
-
-    const { stateCode, city } = await PostScrapperHelper.getProvinceAndCity(`${title} ${rawContent}`, postDataOverride)
-
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
+    const rawCity = await PostScrapperHelper.getCity("SP", `${title} - ${rawContent}`) || "São Paulo"
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 
@@ -86,15 +47,11 @@ export class ScrapperVeroRH {
       externalUrl: link,
       country: "Brazil",
       source: PostSource.Blog,
-      city,
-      stateCode,
       sector,
       jobRoles: [jobRoleBestMatch],
       ...postDataOverride,
+      city: rawCity,
     }
-
-
-
 
     return jobData
 

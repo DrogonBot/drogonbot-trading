@@ -232,6 +232,10 @@ export class BotHelper {
 
       for (const post of postsData) {
 
+        if (post.email && post.email.includes(',')) {
+          post.email = post.email.replace(',', '') // fix any comma that may be mistakenly added
+        }
+
         // check if post already exists
         // if theres no bypass, lets check if the post content is valid!
         if (!bypassPostContentFilter) {
@@ -272,6 +276,10 @@ export class BotHelper {
 
       const postData = await ConnectionHelper.tryRequestUntilSucceeds(crawlPageDataFunction, args)
 
+      if (postData.email && postData.email.includes(',')) {
+        postData.email = postData.email.replace(',', '') // fix any comma that may be mistakenly added
+      }
+
 
       // if theres no bypass, lets check if the post content is valid!
       if (!bypassPostContentFilter) {
@@ -283,6 +291,7 @@ export class BotHelper {
 
       if (BotHelper.owner) {
         // create a new post and save with post data!
+
 
         try {
           const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
