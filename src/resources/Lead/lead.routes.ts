@@ -64,17 +64,13 @@ leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {
   const $ = cheerio.load(htmlContent);
 
 
-  const leadsList = $('span[dir="auto"][title*="+"]');
+  const leadsList = $('.-GlrD._2xoTX ._3dtfX');
 
   leadsList.each(async (i, el) => {
 
-    console.log(el);
-    console.log($(el).attr('width'));
-    console.log($(el).attr('clientWidth'));
+    const leadPhone = $(el).text()
 
-    const leadPhone = $(el).text();
-
-
+    console.log(leadPhone);
 
 
     // leadClientWidth 307 is NON admins
