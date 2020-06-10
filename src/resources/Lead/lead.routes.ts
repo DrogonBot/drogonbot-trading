@@ -68,8 +68,7 @@ leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {
 
     const leadPhone = $(el).text()
 
-    // leadClientWidth 307 is NON admins
-    if (!adminNumbers.includes(leadPhone) && !leadPhone.includes("Group admin")) { // to avoid issues, lets not scrap admin numbers =D
+    if (!adminNumbers.includes(leadPhone) && !leadPhone.includes("Group admin")) {
 
       const phoneExists = await Lead.exists({ phone: leadPhone })
 
