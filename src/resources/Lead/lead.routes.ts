@@ -68,7 +68,7 @@ leadsRouter.get('/leads/fix/city', async (req, res) => {
 
       for (const kv of numberCityKv) {
 
-        if (lead.phone && lead.phone.includes(kv.key)) {
+        if (lead.phone && lead.phone.includes(`(${kv.key})`)) {
           lead.city = kv.value;
           await lead.save();
         }
