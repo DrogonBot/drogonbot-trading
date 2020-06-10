@@ -49,34 +49,6 @@ leadsRouter.post('/leads/save', async (req, res) => {
 
 })
 
-leadsRouter.get('/leads/fix/city', async (req, res) => {
-
-  try {
-
-    const leads = await Lead.find({})
-
-
-
-    for (const lead of leads) {
-
-      if (lead.phone && lead.phone.includes(`+55 27`)) {
-        lead.city = undefined
-        await lead.save();
-      }
-
-
-
-    }
-
-
-  }
-  catch (error) {
-    console.error(error);
-
-  }
-
-
-})
 
 
 
