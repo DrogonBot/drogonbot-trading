@@ -72,6 +72,7 @@ leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {
 
     console.log(leadPhone);
 
+    return
 
     // leadClientWidth 307 is NON admins
     if (!adminNumbers.includes(leadPhone)) { // to avoid issues, lets not scrap admin numbers =D
