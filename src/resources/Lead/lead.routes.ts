@@ -83,7 +83,7 @@ leadsRouter.get('/leads/fix/city', async (req, res) => {
   }
   catch (error) {
     console.error(error);
-    onerror
+
   }
 
 
