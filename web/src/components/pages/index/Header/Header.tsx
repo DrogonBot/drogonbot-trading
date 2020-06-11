@@ -16,8 +16,8 @@ import { TS } from '../../../../helpers/LanguageHelper';
 import { AppState } from '../../../../store/reducers/index.reducers';
 import { INavOption, NavPosition } from '../../../../types/UI.types';
 import { IUser } from '../../../../types/User.types';
-import { AccountDropdown } from '../../../elements/ui/AccountDropdown';
-import { CreditsIcon } from './CreditsIcon';
+import { AccountDropdown } from './AccountDropdown';
+import { CreditsDisplay } from './CreditsDisplay';
 import { DesktopNav } from './DesktopNav';
 import { MobileNav } from './MobileNav';
 
@@ -67,16 +67,13 @@ export const Header = () => {
     },
     user && {
       // Only show this option on logged in users
-      href: "/account",
-      customComponent: <CreditsIcon />,
+      customComponent: <CreditsDisplay />,
       primary: true,
       position: NavPosition.NavRight,
-      desktopOnly: true,
     },
 
     user && {
       // Only show this option on logged in users
-      href: "/account",
       customComponent: <AccountDropdown key="account-dropdown" />,
       primary: true,
       customColor: colors.accent,

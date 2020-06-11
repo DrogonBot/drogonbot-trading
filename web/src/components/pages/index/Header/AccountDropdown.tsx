@@ -11,10 +11,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-import { colors } from '../../../constants/UI/Colors.constant';
-import { ContainerDesktop } from '../../../constants/UI/Common.constant';
-import { TS } from '../../../helpers/LanguageHelper';
-import { userLogout } from '../../../store/actions/user.actions';
+import { colors } from '../../../../constants/UI/Colors.constant';
+import { ContainerDesktop } from '../../../../constants/UI/Common.constant';
+import { TS } from '../../../../helpers/LanguageHelper';
+import { userLogout } from '../../../../store/actions/user.actions';
 
 export const AccountDropdown = () => {
   const dispatch = useDispatch();
@@ -84,16 +84,16 @@ export const AccountDropdown = () => {
         onClose={handleClose}
       >
         {renderMenuItem(
-          <MeetingRoomIcon fontSize="small" />,
-          <ListItemText primary={TS.string("account", "logoutButtonText")} />,
-          onHandleLogout
-        )}
-        {renderMenuItem(
           <DynamicFeedIcon fontSize="small" />,
           <ListItemText
             primary={TS.string("account", "PromoteJobsButtonText")}
           />,
           onHandlePromoterArea
+        )}
+        {renderMenuItem(
+          <MeetingRoomIcon fontSize="small" />,
+          <ListItemText primary={TS.string("account", "logoutButtonText")} />,
+          onHandleLogout
         )}
         {/* {renderMenuItem(
           <DraftsIcon fontSize="small" />,
