@@ -20,29 +20,38 @@ interface ICTAInfo {
 }
 
 export const PostCTA = ({ post }: IProps) => {
+  let CTAInfo: ICTAInfo;
+
   const dispatch = useDispatch();
   const router = useRouter();
 
-  let CTAInfo: ICTAInfo;
-
-  if (post.email) {
-    CTAInfo = {
-      icon: faEnvelope,
-      link: `mailto:${post.email}`,
-      translatedString: "postApplyBtn",
-    };
-  } else if (post.phone) {
-    CTAInfo = {
-      icon: faMobileAlt,
-      link: `tel:${post.phone}`,
-      translatedString: "postCallPhone",
-    };
-  } else if (post.externalUrl) {
+  if (post.redirectToSourceOnly) {
+    // if this post is forcing us to redirect to source, lets do it!
     CTAInfo = {
       icon: faLink,
       link: post.externalUrl,
-      translatedString: "postVisitExternalLink",
+      translatedString: "postGenericApplyText",
     };
+  } else {
+    if (post.email) {
+      CTAInfo = {
+        icon: faEnvelope,
+        link: `mailto:${post.email}`,
+        translatedString: "postGenericApplyText",
+      };
+    } else if (post.phone) {
+      CTAInfo = {
+        icon: faMobileAlt,
+        link: `tel:${post.phone}`,
+        translatedString: "postGenericApplyText",
+      };
+    } else if (post.externalUrl) {
+      CTAInfo = {
+        icon: faLink,
+        link: post.externalUrl,
+        translatedString: "postGenericApplyText",
+      };
+    }
   }
 
   const onCTAClick = async () => {

@@ -128,6 +128,10 @@ export const strings = {
     eng: "Apply Externally",
     ptBr: "Aplicar Externamente",
   },
+  postGenericApplyText: {
+    eng: "Apply for this Job",
+    ptBr: "Aplicar para Vaga",
+  },
   postSuccessfulSubmission: {
     eng: "Resume submitted successfully!",
     ptBr: "Currículo enviado com sucesso!",
@@ -207,5 +211,14 @@ export const strings = {
   postGenericJobRolesText: {
     eng: "Jobs",
     ptBr: "Vagas",
+  },
+  postTrustableSource: {
+    eng: "Trustable Source",
+    ptBr: "Fonte Confiável",
+  },
+  postMoreInfoDestinationPage: {
+    eng:
+      "See more information and apply for this position on the destination page",
+    ptBr: "Veja mais informações e aplique para vaga na página destino",
   },
 };

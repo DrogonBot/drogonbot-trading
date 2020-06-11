@@ -19,7 +19,13 @@ export class ScrappingTargetHelper {
     }
 
     if (stateCode) {
-      results = results.filter((result) => result.postDataOverride.stateCode === stateCode.toUpperCase())
+      results = results.filter((result) => {
+        // remember that not every scrappingTarget has a stateCode! Some websites scrape multiple states
+        if (result.postDataOverride?.stateCode) {
+          return result.postDataOverride.stateCode === stateCode.toUpperCase()
+        }
+        return result;
+      })
     }
 
     if (sortByPriority) {
@@ -49,14 +55,14 @@ export class ScrappingTargetHelper {
         case PagePattern.Feed:
           await BotHelper.initScrapper(result.name, result.scrapperClass, result.source, {
             crawlFeedFunction: result.scrapperClass.crawlPageFeed
-          }, PagePattern.Feed, result.externalSource, result.postDataOverride, result.bypassPostContentFilter, result.fixEncoding)
+          }, PagePattern.Feed, result.externalSource, result.postDataOverride, result.bypassPostContentFilter, result.fixEncoding, result.isTrustableSource, result.redirectToSourceOnly)
 
           break;
         case PagePattern.ListAndInternalPosts:
           await BotHelper.initScrapper(result.name, result.scrapperClass, result.source, {
             crawlLinksFunction: result.scrapperClass.crawlLinks,
             crawlPageDataFunction: result.scrapperClass.crawlPageData
-          }, PagePattern.ListAndInternalPosts, result.externalSource, result.postDataOverride, result.bypassPostContentFilter, result.fixEncoding)
+          }, PagePattern.ListAndInternalPosts, result.externalSource, result.postDataOverride, result.bypassPostContentFilter, result.fixEncoding, result.isTrustableSource, result.redirectToSourceOnly)
           break;
       }
     }

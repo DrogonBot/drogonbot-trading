@@ -74,6 +74,8 @@ export class APIHelper {
         GenericHelper.clientAlert(
           TS.string("account", "loginUserNotAuthenticated")
         );
+        // clear our tokens
+        window.localStorage.clear();
 
         // NavigationHelper.navigate("Auth", null);
         window.location.href = `/login`;

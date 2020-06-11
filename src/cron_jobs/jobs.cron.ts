@@ -1,7 +1,6 @@
 import moment from 'moment';
 import cron from 'node-cron';
 
-import { PostScrapperHelper } from '../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
 import { TargetPriority } from '../bots/types/bots.types';
 import { JobsEmailManager } from '../emails/jobs.email';
@@ -13,6 +12,34 @@ import { LanguageHelper } from '../utils/LanguageHelper';
 
 
 export class JobsCron {
+
+
+  private static _executeCrawlers = async () => {
+
+    await ScrappingTargetHelper.startScrappers([
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "ES"),
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "SP"),
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "MG"),
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "RJ"),
+    ]);
+
+    await ScrappingTargetHelper.startScrappers([
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "ES"),
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "SP"),
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "MG"),
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "RJ"),
+    ]);
+
+
+    await ScrappingTargetHelper.startScrappers([
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "ES"),
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "SP"),
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "MG"),
+      ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "RJ"),
+    ]);
+  }
+
+
   public static submitApplications() {
 
 
@@ -20,7 +47,7 @@ export class JobsCron {
 
     cron.schedule("*/10 * * * *", async () => {
 
-      console.log("🕒  JobsCron => Submitting application... 🕒");
+      console.log("🕒  JobsCron: submitApplications() 🕒");
 
       // find all posts with pending application status (email not submitted yet!)
       const jobPosts = await Post.find({
@@ -107,7 +134,7 @@ export class JobsCron {
   public static jobCrawlersCleaners = async () => {
 
     // once every day, check
-    cron.schedule("0 0 * * *", async () => {
+    cron.schedule("0 1 * * *", async () => {
 
       console.log("🕒  JobsCron => Running post cleaner... 🕒");
 
@@ -131,79 +158,28 @@ export class JobsCron {
 
       }
 
-      // Clean posts with forbidden keywords, that somehow ended up in our database
-      try {
-        const dbPosts = await Post.find({})
 
-        for (const post of dbPosts) {
-          if (PostScrapperHelper.checkForBannedWords(`${post.title} ${post.content}`)) {
-            // Post is completely removed, since it's probably garbage.
-            console.log(`🤖: Deleting post ${post.title}`);
-            console.log(post.content);
-            await post.remove();
-          }
-        }
-
-
-      }
-      catch (error) {
-        console.error(error);
-
-      }
     });
   }
 
   public static initializeJobCrawlers = () => {
 
-
-    // HIGH PRIORITY GROUPS
-
-    cron.schedule("0 8 * * *", async () => {
-
-      console.log("🕒  JobsCron => Initializing post scrapping... 🕒");
-
-      await ScrappingTargetHelper.startScrappers([
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "ES"),
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "SP"),
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "MG"),
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.High, true, "RJ"),
-      ]);
-
-      await ScrappingTargetHelper.startScrappers([
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "ES"),
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "SP"),
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "MG"),
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Medium, true, "RJ"),
-      ]);
-
-
-      await ScrappingTargetHelper.startScrappers([
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "ES"),
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "SP"),
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "MG"),
-        ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "RJ"),
-      ]);
-
-
+    // at 8am UTC = 5am Brasilia = 1am Vancouver
+    cron.schedule("* 8 * * *", async () => {
+      JobsCron._executeCrawlers()
     });
 
 
-
-
-
   }
 
-  public static initPostersBot = () => {
+  // public static initPostersBot = () => {
 
-    // !Temp disabled
-    // cron.schedule("0 */4 * * *", async () => {
-
-    //   await PosterFacebook.triggerMarketingPost()
-
-    // });
+  //   cron.schedule("0 */4 * * *", async () => {
+  //     await PosterFacebook.triggerMarketingPost()
+  //   });
 
 
-  }
+  // }
 
   // public static initializeJobPostSchedulers = () => {
   //   cron.schedule("0 */4 * * *", async () => {

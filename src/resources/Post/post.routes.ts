@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import _ from 'lodash';
+import RSS from 'rss';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { LanguageHelper } from '../../utils/LanguageHelper';
@@ -7,7 +8,7 @@ import { PostHelper } from '../../utils/PostHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { Resume } from '../Resume/resume.model';
 import { Post } from './post.model';
-import { IPost, IPostApplication, IPostApplicationStatus } from './post.types';
+import { IPost, IPostApplication, IPostApplicationStatus, IPostMarketingItem } from './post.types';
 
 // @ts-ignore
 const postRouter = new Router();
@@ -16,6 +17,76 @@ export interface IJobReminder {
   userPush: string,
   jobs: IPost[]
 }
+
+postRouter.get('/feed/posts', async (req, res) => {
+
+  const { query } = req;
+
+  const feed = new RSS({
+    title: `${process.env.APP_NAME} feed`,
+    description: `Feed for ${process.env.APP_NAME} website`,
+    feed_url: 'https://api.empregourgente.com/feed/posts',
+    site_url: 'http://empregourgente.com',
+    image_url: 'http://empregourgente.com/images/icons/icon-384x384.png',
+    copyright: `All rights reserved ${new Date().getFullYear()}, ${process.env.APP_NAME}`,
+    language: 'pt-br',
+    ttl: '60'
+  })
+
+  const posts = await Post.find({ active: true, ...query }).limit(30);
+
+  for (const post of posts) {
+
+    feed.item({
+      title: post.title,
+      description: post.content,
+      url: `${process.env.WEB_APP_URL}/posts/${post.slug}`, // link to the item
+      author: process.env.APP_NAME, // optional - defaults to feed author property
+      date: new Date(post.createdAt), // any format that js Date can parse.
+      image_url: `${process.env.WEB_APP_URL}/images/seo/${post.sector}.jpg`,
+      feed_url: `${process.env.API_URL}/feed/posts`,
+      copyright: `All rights reserved ${new Date().getFullYear()}, ${process.env.APP_NAME}`,
+      language: `pt-br`,
+      custom_namespaces: [
+        { 'stateCode': post.stateCode },
+        { 'image': `${process.env.WEB_APP_URL}/images/seo/${post.sector}.jpg` },
+        { 'city': post.city },
+        { 'source': post.source },
+        { 'positionType': post.positionType },
+        { 'jobRoles': post.jobRoles },
+        { 'experienceRequired': post.experienceRequired },
+        { 'category': post.category },
+        { 'benefits': post.benefits },
+        { 'isTrustableSource': post.isTrustableSource },
+        { 'redirectToSourceOnly': post.redirectToSourceOnly },
+        { 'images': post.images },
+        { 'active': post.active },
+        { 'views': post.views },
+        { 'requisites': post.requisites },
+        { 'schedule': post.schedule },
+        { 'companyName': post.companyName },
+      ],
+      enclosure: [
+        {
+          'url': `${process.env.WEB_APP_URL}/images/seo/${post.sector}.jpg`,
+          'size': 1668,
+          'type': 'image/jpeg'
+        }
+      ]
+    })
+
+
+
+  }
+
+  res.set('Content-Type', 'application/rss+xml');
+
+
+  return res.status(200).send(feed.xml({ indent: true }))
+
+
+
+})
 
 postRouter.get('/post', async (req, res) => {
 
@@ -270,12 +341,7 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
 
 })
 
-
-
-
 // Post a new post ========================================
-
-
 
 postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
@@ -457,6 +523,54 @@ postRouter.delete('/post/:id', userAuthMiddleware, async (req, res) => {
       details: error.message
     })
   }
+
+
+
+})
+
+// post marketing text
+
+postRouter.get('/post/marketing/:stateCode', userAuthMiddleware, async (req, res) => {
+
+  const { stateCode } = req.params
+
+  try {
+    const posts = await Post.find({
+      stateCode
+    }).limit(30)
+
+    if (!posts.length) {
+      return res.status(200).send({
+        status: "error",
+        message: LanguageHelper.getLanguageString('post', 'postNotFound')
+      })
+    }
+
+    let postMarketingItems: IPostMarketingItem[] = []
+
+    for (const post of posts) {
+      postMarketingItems = [
+        ...postMarketingItems,
+        {
+          text: post.title,
+          url: `https://empregourgente.com/posts/${post.slug}`
+        }
+      ]
+    }
+
+    return res.status(200).send({
+      items: postMarketingItems
+    })
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(200).send({
+      status: "error",
+      message: "Error while fetching your marketing post"
+    })
+  }
+
+
 
 
 

@@ -1,23 +1,17 @@
 import { readFileSync } from 'fs';
 import moment from 'moment-timezone';
 
+import { emailProviders, IEmailProvider } from '../constants/emailProviders.constant';
 import { Lead } from '../resources/Lead/lead.model';
 import { Log } from '../resources/Log/log.model';
 import { User } from '../resources/User/user.model';
 import { EncryptionHelper } from '../utils/EncryptionHelper';
 import { LanguageHelper } from '../utils/LanguageHelper';
 import { TextHelper } from '../utils/TextHelper';
-import { emailProviders } from './constants/emailProviders.constant';
 
 export enum EmailType {
   Html = "Html",
   Text = "Text"
-}
-
-export interface IEmailProvider {
-  key: string,
-  freeTierThreshold: number
-  emailSendingFunction: Function
 }
 
 
@@ -28,14 +22,14 @@ export class TransactionalEmailManager {
     this.emailProviders = emailProviders
   }
 
-  public async smartSend(to: string | undefined, from: string | undefined, subject: string, html: string, text: string) {
+  public async smartSend(to: string | undefined, from: string | undefined, subject: string, html: string, text: string): Promise<boolean> {
 
-    console.log('Smart sending email...');
+    const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+
 
     // loop through email providers and check which one has an unmet free tier threshold.
     for (const emailProvider of this.emailProviders) {
 
-      const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
 
       try {
         const providerEmailsToday = await Log.find({
@@ -46,9 +40,11 @@ export class TransactionalEmailManager {
 
         if (providerEmailsToday.length < emailProvider.freeTierThreshold) {
 
+          console.log('Smart sending email...');
+
           console.log(`Using ${emailProvider.key} to submit email...`);
 
-          console.log(`Free tier balance today: ${providerEmailsToday.length}/${emailProvider.freeTierThreshold}`);
+          console.log(`Credits balance today: ${providerEmailsToday.length}/${emailProvider.freeTierThreshold}`);
 
           // Unsubscribed users: check if we should skip this user submission or not
 
@@ -57,7 +53,7 @@ export class TransactionalEmailManager {
 
           if ((user?.emailSubscriptionStatus.transactional === false) || (!lead?.emailSubscriptionStatus.transactional === false)) {
             console.log(`Skipping email submission to unsubscribed user`);
-            return
+            return true
           }
 
           // insert unsubscribe link into [Unsubscribe Link] tag
@@ -65,7 +61,7 @@ export class TransactionalEmailManager {
 
           if (!to) {
             console.log('You should provide a valid "to" email');
-            return
+            return false
           }
 
           // here we encrypt the to email for security purposes
@@ -95,14 +91,25 @@ export class TransactionalEmailManager {
           await newEmailProviderLog.save()
 
 
-          return
+          return true
         }
+
+
+
       }
       catch (error) {
         console.log(`Failed to submit email through ${emailProvider.key}`);
         console.error(error);
+        return false;
       }
+
     }
+
+    // if we reach this point, it means that there's no providers with credits left!
+
+
+
+    return false
   }
 
 

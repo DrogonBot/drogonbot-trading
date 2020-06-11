@@ -1,4 +1,5 @@
 import { EnvType } from '../constants/types/env.types';
+import { EmailQueue } from '../resources/EmailQueue/emailqueue.model';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
 
@@ -50,8 +51,6 @@ export class AccountEmailManager extends TransactionalEmailManager {
       );
       return
     }
-
-    console.log("Sending job notification email...");
     const htmlEmail = this.loadTemplate(
       EmailType.Html,
       template,
@@ -63,13 +62,17 @@ export class AccountEmailManager extends TransactionalEmailManager {
       customVars
     );
 
-    this.smartSend(
-      to,
-      process.env.ADMIN_EMAIL,
+    console.log(`💌 Adding job notification to email queue: ${to} => ${subject}`);
+    // Add to queue, so we can submit it later
+    const addEmailQueue = new EmailQueue({
       subject,
       htmlEmail,
-      textEmail
-    );
+      textEmail,
+      from: process.env.ADMIN_EMAIL,
+      to
+    })
+    await addEmailQueue.save();
+
 
 
 

@@ -60,3 +60,7 @@ export const PageList = styled.ul`
     margin-bottom: 0.5rem;
   }
 `;
+
+export const ToolTipText = styled.span`
+  font-size: 0.9rem;
+`;

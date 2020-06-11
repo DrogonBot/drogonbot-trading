@@ -16,12 +16,15 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import GroupIcon from '@material-ui/icons/Group';
 import MenuIcon from '@material-ui/icons/Menu';
+import ShareIcon from '@material-ui/icons/Share';
 import clsx from 'clsx';
 import React, { ReactNode } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { userLogout } from '../../store/actions/user.action';
+import { AppState } from '../../store/reducers/index.reducers';
+import { IUser } from '../../typescript/User.types';
 
 const drawerWidth = 240;
 
@@ -34,6 +37,10 @@ export const Header = (props: IProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
+  const user: IUser = useSelector<AppState, IUser>(
+    (state) => state.userReducer.user
+  );
 
   const dispatch = useDispatch();
 
@@ -54,15 +61,21 @@ export const Header = (props: IProps) => {
       {
         icon: <DashboardIcon />,
         label: "Dashboard",
-        link: "/"
+        link: "/",
       },
-      {
+      user.type === "Admin" && {
         icon: <GroupIcon />,
         label: "Users",
-        link: "/users"
-      }
+        link: "/users",
+      },
+      user.type === "Admin" && {
+        icon: <ShareIcon />,
+        label: "WhatsApp Share",
+        link: "/whatsapp",
+      },
     ];
 
+    // @ts-ignore
     return drawerOptions.map(({ icon, label, link }) => (
       <Link to={link} key={label}>
         <ListItem button>
@@ -79,7 +92,7 @@ export const Header = (props: IProps) => {
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: open
+          [classes.appBarShift]: open,
         })}
       >
         <Toolbar>
@@ -110,7 +123,7 @@ export const Header = (props: IProps) => {
         anchor="left"
         open={open}
         classes={{
-          paper: classes.drawerPaper
+          paper: classes.drawerPaper,
         }}
       >
         <div className={classes.drawerHeader}>
@@ -127,7 +140,7 @@ export const Header = (props: IProps) => {
       </Drawer>
       <main
         className={clsx(classes.content, {
-          [classes.contentShift]: open
+          [classes.contentShift]: open,
         })}
       >
         <div className={classes.drawerHeader} />
@@ -140,62 +153,62 @@ export const Header = (props: IProps) => {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: "flex"
+      display: "flex",
     },
     logoutButton: {
-      marginLeft: "auto"
+      marginLeft: "auto",
     },
     appBar: {
       transition: theme.transitions.create(["margin", "width"], {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
+        duration: theme.transitions.duration.leavingScreen,
       }),
       borderWidth: 1,
-      borderColor: "hotpink"
+      borderColor: "hotpink",
     },
     appBarShift: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
       transition: theme.transitions.create(["margin", "width"], {
         easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen
-      })
+        duration: theme.transitions.duration.enteringScreen,
+      }),
     },
     menuButton: {
-      marginRight: theme.spacing(2)
+      marginRight: theme.spacing(2),
     },
     hide: {
-      display: "none"
+      display: "none",
     },
     drawer: {
       width: drawerWidth,
-      flexShrink: 0
+      flexShrink: 0,
     },
     drawerPaper: {
-      width: drawerWidth
+      width: drawerWidth,
     },
     drawerHeader: {
       display: "flex",
       alignItems: "center",
       padding: theme.spacing(0, 1),
       ...theme.mixins.toolbar,
-      justifyContent: "flex-end"
+      justifyContent: "flex-end",
     },
     content: {
       flexGrow: 1,
       padding: theme.spacing(3),
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
+        duration: theme.transitions.duration.leavingScreen,
       }),
-      marginLeft: -drawerWidth
+      marginLeft: -drawerWidth,
     },
     contentShift: {
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen
+        duration: theme.transitions.duration.enteringScreen,
       }),
-      marginLeft: 0
-    }
+      marginLeft: 0,
+    },
   })
 );

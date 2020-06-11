@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -21,33 +20,8 @@ export class ScrapperCaptativaSP {
       externalSource
     );
 
-    const $ = cheerio.load(html);
 
-    const postList = $('a[href*=jobs].text-dark')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperCaptativaSP.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
+    return PostScrapperHelper.extractPostLinks(ScrapperCaptativaSP.name, externalSource, html, 'a[href*=jobs].text-dark')
 
 
   }
@@ -62,17 +36,9 @@ export class ScrapperCaptativaSP {
 
     const title = $('h1').text().trim()
 
-    let rawContent = $('.mb-4').text() || ""
-
-
-    rawContent = rawContent.trim()
-
+    const rawContent = PostScrapperHelper.extractContent(html, '.mb-4');
 
     const rawCity = await PostScrapperHelper.getCity("SP", `${title} - ${rawContent}`) || "São Paulo"
-
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
-
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 

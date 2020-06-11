@@ -1,9 +1,14 @@
-FROM node:lts-slim
+  FROM node:10.16.0-alpine
 
-RUN mkdir -p /usr/src/app
+  WORKDIR /usr/src/app
 
-WORKDIR /usr/src/app
+  # install and cache app dependencies
+  COPY package*.json ./
 
-EXPOSE 3001
- 
-CMD [ "npm", "start" ]
+  RUN npm install
+
+  COPY . .
+
+  EXPOSE 3003
+
+  CMD ["npm", "run", "dev"]

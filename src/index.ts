@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import { exec } from 'child_process';
 import cors from 'cors';
 import express from 'express';
@@ -9,16 +10,16 @@ import path from 'path';
 import socketio from 'socket.io';
 
 import { EnvType } from './constants/types/env.types';
+import { EmailQueueCron } from './cron_jobs/emailqueue.cron';
 import { JobsCron } from './cron_jobs/jobs.cron';
-import { LeadsCron } from './cron_jobs/leads.cron';
 import { RetentionCron } from './cron_jobs/retention.cron';
-import { UsersCron } from './cron_jobs/user.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { affiliateRouter } from './resources/AffiliateProduct/affiliate.routes';
 import { AffiliateSeeder } from './resources/AffiliateProduct/affiliate.seeder';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
 import { countryRouter } from './resources/Country/country.routes';
 import { CountrySeeder } from './resources/Country/country.seed';
+import { leadsRouter } from './resources/Lead/lead.routes';
 import { operationRouter } from './resources/Operation/operation.routes';
 import { placeRouter } from './resources/Place/place.routes';
 import { PlaceSeeder } from './resources/Place/place.seeder';
@@ -76,25 +77,25 @@ switch (process.env.ENV) {
 
   case EnvType.Production: // Let's turn on our cron job in production only!
 
-    LeadsCron.fetchLeadsFromFirebase();
-    UsersCron.refreshUserCredits();
-    JobsCron.submitApplications()
     RetentionCron.inactiveUserReminder()
 
-    // job crawlers
 
+    JobsCron.submitApplications()
     JobsCron.jobCrawlersCleaners();
     JobsCron.initializeJobCrawlers();
 
-    // Job posters
 
-    JobsCron.initPostersBot();
+
+    // ! Schedulers and posters inactivated temporarely
+
+    // Job posters
+    // JobsCron.initPostersBot();
 
     // JobsCron.initializeJobPoster();
-
     // Job post Schedulers
-    // ! Schedulers inactivated temporarely
     // JobsCron.initializeJobPostSchedulers()
+
+    EmailQueueCron.submitQueueEmails();
 
     break;
 }
@@ -119,6 +120,10 @@ app.use(formData.stream());
 // union the body and the files
 app.use(formData.union());
 
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+
 
 // app.use(GlobalMiddleware.enableCors);
 
@@ -139,7 +144,7 @@ app.use(express.static(publicDirectory, { dotfiles: 'allow' }))
 
 
 app.use(userRouter);
-
+app.use(leadsRouter);
 app.use(conversationRouter)
 app.use(postRouter)
 app.use(placeRouter)

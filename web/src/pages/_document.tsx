@@ -48,6 +48,15 @@ class MyDocument extends Document {
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
           />
 
+          {/* Feed Link */}
+
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Emprego Urgente - RSS Feed"
+            href="https://api.empregourgente.com/feed/posts"
+          />
+
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
           {/* PWA TAGS */}

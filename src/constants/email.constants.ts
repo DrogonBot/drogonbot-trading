@@ -1,0 +1,4 @@
+
+
+
+export const MAX_JOB_NOTIFICATIONS_PER_HOUR_INTERVAL = 145

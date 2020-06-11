@@ -58,6 +58,8 @@ export interface IPost {
   phone?: string,
   zipCode?: string,
   source?: PostSource,
+  isTrustableSource?: boolean,
+  redirectToSourceOnly?: boolean,
   sourceUrl?: string,
   schedule?: string,
   requisites?: string,
@@ -79,4 +81,13 @@ export interface IPost {
 export interface ISimilarityMatch {
   target: string,
   rating: number;
+}
+
+export interface IGetProvinceCity {
+  city: string, stateCode: string
+}
+
+export interface IPostMarketingItem {
+  text: string;
+  url: string
 }

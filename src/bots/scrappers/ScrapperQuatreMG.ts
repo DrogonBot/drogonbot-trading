@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -20,35 +19,7 @@ export class ScrapperQuatreMG {
       externalSource
     );
 
-    const $ = cheerio.load(html);
-
-    const postList = $('a[href*="/oportunidades/"].detalhes')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperQuatreMG.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
-
+    return PostScrapperHelper.extractPostLinks(ScrapperQuatreMG.name, externalSource, html, 'a[href*="/oportunidades/"].detalhes')
   }
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
@@ -58,31 +29,15 @@ export class ScrapperQuatreMG {
 
     const $ = cheerio.load(html);
 
-
     const title = $(`#tit-servico`).text()
 
     const details = $('#detalhes-vaga').text()
 
-    const contentPs = $("#conteudo p");
-    let rawContent = ""
-    $(contentPs).each(function (i, p) {
-      const element = $(p)
-      rawContent += element.text() + '\n'
-    });
-
-    rawContent = rawContent.replace(new RegExp('\t', 'g'), "");
-
-    console.log(title);
-    console.log(rawContent);
+    const rawContent = PostScrapperHelper.extractContent(html, '#conteudo')
 
     const rawCity = await PostScrapperHelper.getCity("MG", `${title} - ${details} - ${rawContent}`) || "Belo Horizonte"
 
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
-
-
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
-
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
 

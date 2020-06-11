@@ -35,6 +35,7 @@ export const SearchResults = ({ posts }: IProps) => {
                 slug={post.slug}
                 stateCode={post.stateCode}
                 city={post.city}
+                isTrustableSource={post.isTrustableSource}
               />
             </div>
           ) : (
@@ -49,6 +50,7 @@ export const SearchResults = ({ posts }: IProps) => {
               slug={post.slug}
               stateCode={post.stateCode}
               city={post.city}
+              isTrustableSource={post.isTrustableSource}
             />
           );
         })}

@@ -3,15 +3,15 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 
-import reducers from './reducers/index.reducers';
+import { rootReducer } from './reducers/index.reducers';
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["userReducer"]
+  whitelist: ["userReducer"],
 };
 
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

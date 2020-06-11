@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -21,30 +20,7 @@ export class ScrapperParceriaSocialDeEmpregos {
       externalSource
     );
 
-    const $ = cheerio.load(html);
-
-    const postList = $('.entry-title a')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      const link = $(el).attr('href')
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperParceriaSocialDeEmpregos.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
-
+    return PostScrapperHelper.extractPostLinks(ScrapperParceriaSocialDeEmpregos.name, externalSource, html, '.entry-title a')
   }
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
@@ -57,18 +33,13 @@ export class ScrapperParceriaSocialDeEmpregos {
 
     const title = $('h1.entry-title').text()
 
-    let rawContent = $('.entry-content').text() || ""
+    let rawContent = PostScrapperHelper.extractContent(html, '.entry-content');
+    rawContent = rawContent.replace(/AUTOR[\s\S]+/gim, '')
+    rawContent = rawContent.replace('(adsbygoogle = window.adsbygoogle || []).push({});', '')
 
     const rawCity = await PostScrapperHelper.getCity("SP", `${title} - ${rawContent}`) || "São Paulo"
 
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
-
-    rawContent = rawContent.replace('(adsbygoogle = window.adsbygoogle || []).push({});', '')
-
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
-
-    rawContent = rawContent.replace(new RegExp('\n', 'g'), " ");
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
 

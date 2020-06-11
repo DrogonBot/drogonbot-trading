@@ -2,12 +2,18 @@ import sgMail from '@sendgrid/mail';
 import mailjet from 'node-mailjet';
 import SibApiV3Sdk from 'sib-api-v3-sdk';
 
-import { IEmailProvider } from '../TransactionalEmailManager';
+
+export interface IEmailProvider {
+  key: string,
+  freeTierThreshold: number
+  emailSendingFunction: Function
+}
+
 
 export const emailProviders: IEmailProvider[] = [
   {
     // TODO: SENDGRID Free tier is 100 only
-    key: "SENDGRID", freeTierThreshold: 1500, emailSendingFunction: async (to, from, subject, html, text) => {
+    key: "SENDGRID", freeTierThreshold: 3500, emailSendingFunction: async (to, from, subject, html, text) => {
       // @ts-ignore
       sgMail.setApiKey(process.env.SENDGRID_API_KEY)
       sgMail.send({

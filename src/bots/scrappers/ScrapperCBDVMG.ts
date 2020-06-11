@@ -21,29 +21,8 @@ export class ScrapperCBDVMG {
       externalSource
     );
 
-    const $ = cheerio.load(html);
 
-    const postList = $('.readmore a')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      const link = $(el).attr('href')
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperCBDVMG.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
+    return PostScrapperHelper.extractPostLinks(ScrapperCBDVMG.name, externalSource, html, '.readmore a')
 
   }
 
@@ -59,11 +38,12 @@ export class ScrapperCBDVMG {
 
 
 
-    let rawContent = $('.entry-content').text() || ""
+    let rawContent = PostScrapperHelper.extractContent(html, '.entry-content');
 
     rawContent = rawContent.replace(new RegExp('(adsbygoogle = window.adsbygoogle || []).push({});', 'g'), "");
-    rawContent = rawContent.replace('Se você conhecer alguém que se encaixe nesse perfil, compartilhe para ele. Vamos ajudar o máximo de pessoas que conseguirmos. Lembre se: Tudo que vai volta…    –  Vagas Urgentes BH  –', '')
-    rawContent = rawContent.replace(`Compartilhe isso:Clique para compartilhar no Facebook(abre em nova janela)Clique para compartilhar no WhatsApp(abre em nova janela)Clique para enviar por e-mail a um amigo(abre em nova janela)Clique para compartilhar no Twitter(abre em nova janela)Clique para compartilhar no LinkedIn(abre em nova janela)Clique para compartilhar no Telegram(abre em nova janela)Clique para compartilhar no Skype(abre em nova janela)`, '')
+    rawContent = rawContent.replace('** As empresas enviam as vagas pra CBDV através do formulário. Elas são responsáveis pela vaga **', '')
+    rawContent = rawContent.replace(`Se você conhecer alguém que se encaixe nesse perfil, compartilhe para ele. Vamos ajudar o máximo de pessoas que conseguirmos. Lembre se: Tudo que vai volta… – Vagas Urgentes BH –`, '')
+
     rawContent = rawContent.trim()
 
 

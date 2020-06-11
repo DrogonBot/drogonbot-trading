@@ -1,9 +1,9 @@
 import { IUser } from '../../typescript/User.types';
 
-const INITIAL_STATE = {
+const INITIAL_STATE: IUserState = {
   user: null,
   token: null,
-  users: [] //this is for admin panel editing. user is the logged in user!
+  users: [], //this is for admin panel editing. user is the logged in user!
 };
 
 export const userReducer = (state = INITIAL_STATE, action) => {
@@ -20,13 +20,13 @@ export const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         user: action.payload.user,
-        token: action.payload.token
+        token: action.payload.token,
       };
 
     case USERS_GET:
       return {
         ...state,
-        users: action.payload
+        users: action.payload,
       };
 
     case USERS_EDIT:
@@ -39,18 +39,22 @@ export const userReducer = (state = INITIAL_STATE, action) => {
             return editUser; //return edit user.
           }
           return user;
-        })
+        }),
       };
 
     case USERS_DELETE:
       return {
         ...state,
-        users: state.users.filter((user: IUser) => user._id !== action.payload)
+        users: state.users.filter((user: IUser) => user._id !== action.payload),
       };
 
     case USER_LOGOUT:
       localStorage.clear();
-      break;
+
+      return {
+        ...state,
+        users: INITIAL_STATE.users,
+      };
 
     default:
       return state;
@@ -65,6 +69,13 @@ export const USER_LOGIN = "USER_LOGIN";
 export const USERS_GET = "USERS_GET";
 export const USERS_EDIT = "USERS_EDIT";
 export const USERS_DELETE = "USERS_DELETE";
+
+export interface IUserState {
+  user: IUser | null;
+  users: IUser[];
+  token: string | null;
+  // resumes: IResumeState[] | [];
+}
 
 /*
 

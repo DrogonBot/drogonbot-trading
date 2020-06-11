@@ -1,15 +1,13 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
 import { IScrapperLink } from '../types/bots.types';
 
 
-
-export class ScrapperSociiRH {
+export class ScrapperBHJobs {
 
   public static postLinks: IScrapperLink[] | null = null
 
@@ -21,33 +19,9 @@ export class ScrapperSociiRH {
       externalSource
     );
 
-    const $ = cheerio.load(html);
 
-    const postList = $('.job-item a')
 
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperSociiRH.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
+    return PostScrapperHelper.extractPostLinks(ScrapperBHJobs.name, externalSource, html, 'a.list-group-item')
 
 
   }
@@ -60,24 +34,14 @@ export class ScrapperSociiRH {
     const $ = cheerio.load(html);
 
 
-    const title = $('.page-title').text().trim()
+    const title = $(`span[itemprop=title]`).text()
 
-    let rawContent = $('.job-meta').text() + $('.job-details').text() || ""
+    const rawContent = PostScrapperHelper.extractContent(html, 'span[itemprop=description]');
 
-    rawContent = rawContent.replace(RegExp(`Código Vaga: .+`, 'g'), "");
-
-
-    rawContent = rawContent.trim()
-
-
-    const rawCity = await PostScrapperHelper.getCity("MG", `${title} - ${rawContent}`) || "Belo Horizonte"
-
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
-
+    const locationText = $(`span[itemprop=addressLocality]`).text()
+    const rawCity = await PostScrapperHelper.getCity("MG", locationText) || "Belo Horizonte"
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
-
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
 

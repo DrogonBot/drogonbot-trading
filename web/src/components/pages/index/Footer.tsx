@@ -35,6 +35,16 @@ export const Footer = () => {
                 <img src="/images/partners/na_vizinhanca.png" />
               </a>
             </PartnerListItem>
+            <PartnerListItem>
+              <a href="https://www.seujobs.com/" target="_blank">
+                <img src="/images/partners/seu_jobs.png" />
+              </a>
+            </PartnerListItem>
+            <PartnerListItem>
+              <a href="https://www.temosvaga.com/" target="_blank">
+                <img src="/images/partners/temosvaga.png" />
+              </a>
+            </PartnerListItem>
           </PartnersList>
         </FooterRight>
       </FooterContainer>
@@ -97,6 +107,6 @@ const PartnerListItem = styled.div`
   margin: auto 0;
 
   img {
-    max-width: 100px;
+    max-width: 80px;
   }
 `;

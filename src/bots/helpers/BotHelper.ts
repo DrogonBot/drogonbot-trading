@@ -1,14 +1,13 @@
-import moment from 'moment-timezone';
 import UserAgent from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
 import { Lead } from '../../resources/Lead/lead.model';
-import { Log } from '../../resources/Log/log.model';
 import { Post } from '../../resources/Post/post.model';
 import { IPost, PostSource } from '../../resources/Post/post.types';
 import { User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
+import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ICrawlerFunctions, IProxyItem, PagePattern, ProxyType } from '../types/bots.types';
@@ -38,31 +37,36 @@ export class BotHelper {
     switch (process.env.ENV) {
       case EnvType.Production:
 
-        // ! Due to high costs, ZenScrape is restricted to Facebook only!
-        if (source === PostSource.Facebook) {
-          // lets check if our free tier on ZenScrape is already gone. If so, use free proxy for requests
-          const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+        BotHelper.proxyType = ProxyType.FreeProxy
+        await BotHelper.initializeFreeProxy()
 
-          const zenScrapeUsedRequests = await Log.find({
-            action: `ZENSCRAPE_REQUEST`,
-            createdAt: { "$gte": today }
-          })
 
-          // use ZenScrape if we still have credits left
+        // ! ZenScrape is turned off temporarely
+        // // ! Due to high costs, ZenScrape is restricted to Facebook only!
+        // if (source === PostSource.Facebook) {
+        //   // lets check if our free tier on ZenScrape is already gone. If so, use free proxy for requests
+        //   const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
 
-          if (zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)) {
-            console.log(`⚙️: Setting ProxyType as ZenScrape`);
-            BotHelper.proxyType = ProxyType.ZenScrape
-          } else {
-            console.log(`⚙️: Setting ProxyType as FreeProxy`);
-            BotHelper.proxyType = ProxyType.FreeProxy;
-            await BotHelper.initializeFreeProxy()
-          }
+        //   const zenScrapeUsedRequests = await Log.find({
+        //     action: `ZENSCRAPE_REQUEST`,
+        //     createdAt: { "$gte": today }
+        //   })
 
-        } else { // use FreeProxy as fallback, is ZenScrape is not available anymore
-          BotHelper.proxyType = ProxyType.FreeProxy
-          await BotHelper.initializeFreeProxy()
-        }
+        //   // use ZenScrape if we still have credits left
+
+        //   if (zenScrapeUsedRequests.length <= Number(process.env.ZEN_SCRAPE_FREE_TIER_THRESHOLD)) {
+        //     console.log(`⚙️: Setting ProxyType as ZenScrape`);
+        //     BotHelper.proxyType = ProxyType.ZenScrape
+        //   } else {
+        //     console.log(`⚙️: Setting ProxyType as FreeProxy`);
+        //     BotHelper.proxyType = ProxyType.FreeProxy;
+        //     await BotHelper.initializeFreeProxy()
+        //   }
+
+        // } else { // use FreeProxy as fallback, is ZenScrape is not available anymore
+        //   BotHelper.proxyType = ProxyType.FreeProxy
+        //   await BotHelper.initializeFreeProxy()
+        // }
 
 
         break;
@@ -95,7 +99,7 @@ export class BotHelper {
 
   }
 
-  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object, bypassPostContentFilter?: boolean, fixEncoding?: boolean) => {
+  public static initScrapper = async (name, scrapperClass, source: PostSource, crawlerFunctions: ICrawlerFunctions, type: PagePattern, externalSource?: string, postDataOverride?: Object, bypassPostContentFilter?: boolean, fixEncoding?: boolean, isTrustableSource?: boolean, redirectToSourceOnly?: boolean) => {
 
     BotHelper.scrapperClass = scrapperClass;
     BotHelper.fixEncoding = fixEncoding || false;
@@ -131,7 +135,7 @@ export class BotHelper {
             }
 
             await GenericHelper.sleep(BotHelper.postLinkScrappingIntervalMs)
-            await BotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride, bypassPostContentFilter)
+            await BotHelper._scrapPage(linkItem.link, crawlPageDataFunction, postDataOverride, bypassPostContentFilter, isTrustableSource, redirectToSourceOnly)
           }
         }
 
@@ -140,7 +144,7 @@ export class BotHelper {
       case PagePattern.Feed: // used by ScrapperFacebook
 
         if (externalSource) {
-          await BotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride, bypassPostContentFilter)
+          await BotHelper._scrapFeed(externalSource, crawlFeedFunction, postDataOverride, bypassPostContentFilter, isTrustableSource, redirectToSourceOnly)
         } else {
           console.log(`🤖: Warning! You should define an external source page for scrapping on OnePageAllPosts PagePattern!`);
         }
@@ -191,8 +195,14 @@ export class BotHelper {
 
       for (const targetedUser of targetedUsers) {
 
-        console.log(post.slug);
-        if (post.slug) {
+        // make sure we have a post and an email!
+        if (post.slug && targetedUser.email) {
+
+          if (targetedUser.city && targetedUser.city !== post.city) {
+            console.log(`🤖: Skipping e-mail notification for the user ${targetedUser.email}, since his city (${targetedUser.city}) does not match with post's city (${post.city})`);
+            continue;
+          }
+
           console.log(`🤖: Email notification: Notifying user ${targetedUser.email} about new post (${post.title}) - slug: ${post.slug}`);
           await PostScrapperHelper.notifyUsersEmail(targetedUser, post)
         }
@@ -204,7 +214,7 @@ export class BotHelper {
     }
   }
 
-  private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object, bypassPostContentFilter?: boolean) => {
+  private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object, bypassPostContentFilter?: boolean, isTrustableSource?: boolean, redirectToSourceOnly?: boolean) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
 
     const args = postDataOverride ? [link, postDataOverride] : [link]
@@ -222,6 +232,10 @@ export class BotHelper {
 
       for (const post of postsData) {
 
+        if (post.email && post.email.includes(',')) {
+          post.email = post.email.replace(',', '') // fix any comma that may be mistakenly added
+        }
+
         // check if post already exists
         // if theres no bypass, lets check if the post content is valid!
         if (!bypassPostContentFilter) {
@@ -233,7 +247,7 @@ export class BotHelper {
 
 
 
-        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id })
+        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
         await newPost.save()
         console.log(`🤖: Saving post: ${post.title}`);
 
@@ -252,7 +266,7 @@ export class BotHelper {
 
   }
 
-  private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?, bypassPostContentFilter?: boolean) => {
+  private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?, bypassPostContentFilter?: boolean, isTrustableSource?: boolean, redirectToSourceOnly?: boolean) => {
     try {
       console.log(`🤖: Scrapping data from ...${link}`);
 
@@ -261,6 +275,10 @@ export class BotHelper {
       const args = postDataOverride ? [link, postDataOverride] : [link]
 
       const postData = await ConnectionHelper.tryRequestUntilSucceeds(crawlPageDataFunction, args)
+
+      if (postData.email && postData.email.includes(',')) {
+        postData.email = postData.email.replace(',', '') // fix any comma that may be mistakenly added
+      }
 
 
       // if theres no bypass, lets check if the post content is valid!
@@ -274,9 +292,19 @@ export class BotHelper {
       if (BotHelper.owner) {
         // create a new post and save with post data!
 
+
         try {
-          const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id })
+          const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
+
+          // hide all contact data from page source, if this is a redirectOnly page
+          if (redirectToSourceOnly) {
+            newPost.content = newPost.content.replace(new RegExp(/\S+@\S+\.\S+/, 'ig'), LanguageHelper.getLanguageString('post', 'postIsRedirectOnlyMessage'));
+
+            newPost.content = newPost.content.replace(new RegExp(/(\(?\d{2}\)?\.?\s?)?(\d{4,5}(\-?|\s?)\d{4})/, 'g'), LanguageHelper.getLanguageString('post', 'postIsRedirectOnlyMessage'));
+          }
+
           await newPost.save()
+
           console.log(`${newPost.title} - ${newPost.stateCode}/${newPost.city} - ${newPost.externalUrl ? newPost.externalUrl : ''}`);
 
           await BotHelper._notifyUsers(newPost);

@@ -1,12 +1,15 @@
-import { IEmailSubscriptionStatus } from '../User/user.types';
+import { IEmailSubscriptionStatus, UserType } from '../User/user.types';
 
 
 export interface ILead {
+  type: UserType,
+  name: string,
   stateCode: string,
   country: string,
   email: string,
-  name: string,
   jobRoles: string[],
+  phone?: string;
+  city?: string;
   emailSubscriptionStatus: IEmailSubscriptionStatus
 }
 

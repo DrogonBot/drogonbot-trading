@@ -22,6 +22,8 @@ export class ScrapperGrupoResolveSP {
       externalSource
     );
 
+    // ! This link fetching has some specificities and I've skipped refactoring.
+
     const $ = cheerio.load(html, { decodeEntities: BotHelper.fixEncoding ? false : true });
 
     const postList = $('a[href*=consultarvagas]')
@@ -65,7 +67,9 @@ export class ScrapperGrupoResolveSP {
 
     const title = $('table td .subtitulo').text().trim()
 
-    let rawContent = $('table td').text() || ""
+
+    let rawContent = PostScrapperHelper.extractContent(html, 'table td');
+
 
     rawContent = rawContent.replace(RegExp(`Vaga No. .+`, 'g'), "");
     rawContent = rawContent.replace('Visualizar Vaga', '')
@@ -83,6 +87,7 @@ export class ScrapperGrupoResolveSP {
 
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
+
 
     const jobData = {
       ...complementaryData,

@@ -20,35 +20,7 @@ export class ScrapperRJEmpregosNet {
       externalSource
     );
 
-    const $ = cheerio.load(html);
-
-    const postList = $('.entry-title a')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperRJEmpregosNet.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
-
+    return PostScrapperHelper.extractPostLinks(ScrapperRJEmpregosNet.name, externalSource, html, '.entry-title a')
   }
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
@@ -69,7 +41,6 @@ export class ScrapperRJEmpregosNet {
 
       rawContent += element.text() + '\n'
     });
-
 
     rawContent = rawContent.replace(new RegExp('(adsbygoogle = window.adsbygoogle || []).push({});', 'g'), "");
 

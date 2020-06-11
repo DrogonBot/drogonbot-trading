@@ -159,8 +159,16 @@ export const strings = {
     ptBr: "Ei {{userName}}, tudo certo?"
   },
   jobsNotificationFirstPhrase2: {
-    eng: "Hello {{userName}}! How are you in your job search.",
+    eng: "Hello {{userName}}! How are you in your job search?",
     ptBr: "Ei {{userName}}! Como está sua procura por emprego?"
+  },
+  jobsNotificationFirstPhrase3: {
+    eng: "Hey {{userName}}! Are you having good results in your job search?",
+    ptBr: "Oi {{userName}}! Você está tendo bons resultados em sua busca de emprego?"
+  },
+  jobsNotificationFirstPhrase4: {
+    eng: "Hey {{userName}}! We have good news...?",
+    ptBr: "Ei, {{userName}}! Temos boas notícias ..."
   },
   jobsNotificationSecondParagraph: {
     eng: "We've found a job post that may interest you",
@@ -170,10 +178,23 @@ export const strings = {
     eng: "Our system found some interesting job roles for you:",
     ptBr: "Nosso sistema encontrou uma vaga que provavelmente lhe interessa:"
   },
+  jobsNotificationSecondParagraph3: {
+    eng: "There's a really good match with your job search interests:",
+    ptBr: "Encontramos essa vaga que se relaciona com sua busca de emprego:"
+  },
+  jobsNotificationSecondParagraph4: {
+    eng: "There's a really job match with your interests:",
+    ptBr: "Encontramos uma vaga que provavelmente lhe interessa:"
+  },
   jobsNotificationClosing: {
     eng: `We suggest that you <a href="{{postUrl}}">apply immediately through the <strong>red button</strong> at the top of the post.</a>,
          because generally the first candidates have higher
          chances of getting an interview.
+    <br />
+    <br />
+
+    <br/><br/>
+    * Note that we only forward on opportunities! All information we have is inside the post.
     <br />
     <br />
 
@@ -183,13 +204,14 @@ Good Luck!
                         <br />
 
                        JobAlert Team
-
-
     `,
     ptBr: `Sugerimos que <a href="{{postUrl}}">aplique imediatamente através do <strong>
     botão vermelho</strong> no topo do post</a>,
     pois geralmente os primeiros candidatos têm maiores
     chances de conseguir uma entrevista.
+
+    <br/><br/>
+    * Lembrando que apenas repassamos oportunidades! Todas informações que temos encontram-se no post.
 
     <br />
     <br />
@@ -200,8 +222,6 @@ Good Luck!
     <br />
 
     Equipe EmpregoUrgente
-
-
     `
   },
   jobsNotificationClosing2: {
@@ -220,8 +240,6 @@ Good Luck!
                         <br />
 
                        JobAlert Team
-
-
     `,
     ptBr: `Sugerimos fortemente que <a href="{{postUrl}}">aplique imediatamente através do <strong>
     botão vermelho</strong> no topo do post</a>,
@@ -240,9 +258,43 @@ Good Luck!
     <br />
 
     Equipe EmpregoUrgente
-
-
     `
+  },
+  jobsNotificationClosing3: {
+    eng: `Please, <a href="{{postUrl}}">apply right now through the <strong>red button</strong> at the top of the post.</a>,
+        Remember that the first candidates always higher
+         chances of getting an interview...
+    <br/><br/>
+    * Note that we only forward on opportunities! All information we have is inside the post.
+    <br />
+    <br />
+
+Good Luck!
+
+<br />
+                        <br />
+
+                       JobAlert Team
+    `,
+    ptBr: `Por favor, <a href="{{postUrl}}"> aplique agora através do <strong> botão vermelho </strong> na parte superior da postagem. </a>,
+    Lembre-se que os primeiros candidatos possuem maiores
+    chances de conseguir a vaga...
+    <br/> <br/>
+    * Obs.: Apenas encaminhamos oportunidades! Todas as informações que temos estão dentro do post.
+    <br />
+    <br />
+
+Boa sorte!
+
+<br />
+                        <br />
+
+                       Equipe EmpregoUrgente
+    `
+  },
+  postIsRedirectOnlyMessage: {
+    eng: "[ Click on post's link to apply ]",
+    ptBr: "[ Clique no link do post para aplicar ]"
   }
 
 

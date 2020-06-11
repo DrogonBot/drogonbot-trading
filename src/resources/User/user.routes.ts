@@ -23,7 +23,6 @@ import { Log } from '../Log/log.model';
 import { IUser, User } from './user.model';
 import { AuthType, ILoginData, UserType } from './user.types';
 
-
 // @ts-ignore
 const userRouter = new Router();
 
@@ -35,51 +34,43 @@ const userRouter = new Router();
 
 // User => get users
 
-userRouter.get('/users/search/:keyword', async (req, res) => {
-
+userRouter.get("/users/search/:keyword", async (req, res) => {
   const { keyword } = req.params;
 
   console.log(`Searching for ${keyword}`);
 
   const users = await User.find({
-    name: { '$regex': keyword, '$options': 'i' }
+    name: { $regex: keyword, $options: "i" },
   });
 
   // show only user name and id (for obvious security reasons!)
-  const publicUsers = users.map((user) => _.pick(user, ['name', '_id', 'type', 'avatarUrl'])
-  )
+  const publicUsers = users.map((user) =>
+    _.pick(user, ["name", "_id", "type", "avatarUrl"])
+  );
 
-  return res.status(200).send(
-    publicUsers
-  )
-})
+  return res.status(200).send(publicUsers);
+});
 
-
-userRouter.get('/policy/ptbr', async (req, res) => {
-
+userRouter.get("/policy/ptbr", async (req, res) => {
   const data = readFileSync(
     `./src/public/pages/policy_ptbr.html`,
     "utf-8"
   ).toString();
 
   return res.status(200).send(data);
+});
 
-})
-
-userRouter.get('/policy', async (req, res) => {
-
+userRouter.get("/policy", async (req, res) => {
   const data = readFileSync(
     `./src/public/pages/policy.html`,
     "utf-8"
   ).toString();
 
   return res.status(200).send(data);
+});
 
-})
-
-userRouter.get('/unsubscribe', async (req, res) => {
-
-  const { hashEmail, lang } = req.query
+userRouter.get("/unsubscribe", async (req, res) => {
+  const { hashEmail, lang } = req.query;
 
   const encryptionHelper = new EncryptionHelper();
   const email = encryptionHelper.decrypt(hashEmail);
@@ -88,14 +79,14 @@ userRouter.get('/unsubscribe', async (req, res) => {
 
   // try to find a lead or email with this data, and unsubscribe it
 
-  const user = await User.findOne({ email })
+  const user = await User.findOne({ email });
 
   if (user) {
     user.emailSubscriptionStatus.transactional = false;
     user.emailSubscriptionStatus.marketing = false;
     await user.save();
   } else {
-    const lead = await Lead.findOne({ email })
+    const lead = await Lead.findOne({ email });
 
     if (lead) {
       lead.emailSubscriptionStatus.transactional = false;
@@ -104,17 +95,13 @@ userRouter.get('/unsubscribe', async (req, res) => {
     }
   }
 
-
   const data = readFileSync(
     `./src/public/pages/unsubscribe_${lang}.html`,
     "utf-8"
   ).toString();
 
-  return res.status(200).send(data)
-
-
-})
-
+  return res.status(200).send(data);
+});
 
 // Authentication ========================================
 
@@ -126,19 +113,17 @@ userRouter.get("/users/log/test", userAuthMiddleware, async (req, res) => {
   const log = new Log({
     action: "Test action",
     emitter: user._id,
-    target: user._id
+    target: user._id,
   });
   await log.save();
 
   return res.status(200).send({
     status: "success",
-    message: "Log saved"
+    message: "Log saved",
   });
 });
 
 // User => Login (default email/password route)
-
-
 
 userRouter.post("/users/login", async (req, res) => {
   const { email, password }: ILoginData = req.body;
@@ -152,16 +137,16 @@ userRouter.post("/users/login", async (req, res) => {
     const token = await user.generateAuthToken();
 
     MixpanelHelper.track(MixpanelEvent.USER_LOGIN, {
-      distinct_id: user._id
-    })
+      distinct_id: user._id,
+    });
 
     return res.status(200).send({
       user,
-      token
+      token,
     });
   } catch (error) {
     res.status(400).send({
-      error: error.toString()
+      error: error.toString(),
     });
   }
 });
@@ -177,10 +162,9 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
   const verify = async () => {
     const ticket = await client.verifyIdToken({
       idToken,
-      audience: appClientId
+      audience: appClientId,
     });
     const payload: any = ticket.getPayload();
-
 
     // const userid = payload.sub;
     // If request specified a G Suite domain:
@@ -188,7 +172,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
 
     // Check if user does not exists. If it already exists, just return token.
     const foundUser = await User.findOne({
-      email: payload.email
+      email: payload.email,
     });
 
     if (!foundUser) {
@@ -198,9 +182,8 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
 
       let user;
 
-
       try {
-        const emailAlreadyExists = await User.findOne({ email: payload.email })
+        const emailAlreadyExists = await User.findOne({ email: payload.email });
 
         if (emailAlreadyExists) {
           return res.status(400).send({
@@ -208,14 +191,12 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
             message: LanguageHelper.getLanguageString(
               "user",
               "userEmailAlreadyRegistered"
-            )
+            ),
           });
         }
-      }
-      catch (error) {
+      } catch (error) {
         console.error(error);
       }
-
 
       try {
         user = new User({
@@ -226,14 +207,13 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
           authType: AuthType.GoogleOAuth,
           email: payload.email,
           language,
-          type
+          type,
         });
 
         console.log(payload);
 
         await user.save();
       } catch (error) {
-
         console.log(error);
 
         return res.status(400).send({
@@ -242,7 +222,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
             "user",
             "userFailedLoginOAuth"
           ),
-          details: error.message
+          details: error.message,
         });
       }
 
@@ -250,7 +230,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
 
       return res.status(201).send({
         user,
-        token
+        token,
       });
     } else {
       // if he does exist, let's just login...
@@ -258,22 +238,22 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
       console.log("User was found, sending back current info!");
 
       MixpanelHelper.track(MixpanelEvent.USER_LOGIN, {
-        distinct_id: foundUser._id
-      })
+        distinct_id: foundUser._id,
+      });
 
       const token = await foundUser.generateAuthToken();
 
       return res.status(200).send({
         user: foundUser,
-        token
+        token,
       });
     }
   };
-  verify().catch(error => {
+  verify().catch((error) => {
     return res.status(400).send({
       status: "error",
       message: LanguageHelper.getLanguageString("user", "userFailedLoginOAuth"),
-      details: error.message
+      details: error.message,
     });
   });
 
@@ -283,7 +263,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
 userRouter.post("/users/login/facebook-oauth", async (req, res) => {
   const { accessToken, language, type } = req.body;
 
-  console.log('Facebook - OAuth - Login');
+  console.log("Facebook - OAuth - Login");
 
   // do a request do get user information based on this access token provided
 
@@ -297,7 +277,7 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
 
   const foundUser = await User.findOne({
     facebookId: payload.id,
-    email: payload.email
+    email: payload.email,
   });
 
   // Check if user does not exists. If it already exists, just return token.
@@ -309,9 +289,8 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
 
     let user;
 
-
     try {
-      const emailAlreadyExists = await User.findOne({ email: payload.email })
+      const emailAlreadyExists = await User.findOne({ email: payload.email });
 
       if (emailAlreadyExists) {
         return res.status(400).send({
@@ -319,14 +298,12 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
           message: LanguageHelper.getLanguageString(
             "user",
             "userEmailAlreadyRegistered"
-          )
+          ),
         });
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
     }
-
 
     try {
       user = new User({
@@ -338,19 +315,18 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
         authType: AuthType.FacebookOAuth,
         email: payload.email,
         language,
-        type
+        type,
       });
 
       await user.save();
     } catch (error) {
-
       return res.status(400).send({
         status: "error",
         message: LanguageHelper.getLanguageString(
           "user",
           "userFailedLoginOAuth"
         ),
-        details: error.message
+        details: error.message,
       });
     }
 
@@ -358,7 +334,7 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
 
     return res.status(201).send({
       user,
-      token
+      token,
     });
   } else {
     // if he does exist, let's just login...
@@ -366,14 +342,14 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
     console.log("User was found, sending back current info!");
 
     MixpanelHelper.track(MixpanelEvent.USER_LOGIN, {
-      distinct_id: foundUser._id
-    })
+      distinct_id: foundUser._id,
+    });
 
     const token = await foundUser.generateAuthToken();
 
     return res.status(200).send({
       user: foundUser,
-      token
+      token,
     });
   }
 });
@@ -391,27 +367,25 @@ userRouter.post("/users/reset-password", async (req, res) => {
 
   const randomPassword = randomstring.generate({
     length: 12,
-    charset: "alphanumeric"
+    charset: "alphanumeric",
   });
 
   const encryptedPassword = encryptionHelper.encrypt(randomPassword);
 
   const user: any = await User.findOne({
-    email
+    email,
   });
 
   if (!user) {
     return res.status(400).send({
       status: "error",
-      message: LanguageHelper.getLanguageString('user', 'userNotFound')
+      message: LanguageHelper.getLanguageString("user", "userNotFound"),
     });
   }
 
   MixpanelHelper.track(MixpanelEvent.USER_RESET_PASSWORD, {
-    distinct_id: user._id
-  })
-
-
+    distinct_id: user._id,
+  });
 
   // if user is found, let's send him an email with a reset password link
 
@@ -424,7 +398,7 @@ userRouter.post("/users/reset-password", async (req, res) => {
     {
       name: TextHelper.capitalizeFirstLetter(user.name),
       action_url: `${process.env.WEB_APP_URL}/users/reset-password/link?ecem=${encryptedEmail}&p=${encryptedPassword}`,
-      new_password: randomPassword
+      new_password: randomPassword,
     }
   );
 
@@ -433,7 +407,7 @@ userRouter.post("/users/reset-password", async (req, res) => {
     message: LanguageHelper.getLanguageString(
       "user",
       "userForgotPasswordResetLink"
-    )
+    ),
   });
 });
 
@@ -448,20 +422,19 @@ userRouter.get("/users/reset-password/link", async (req, res) => {
   console.log(`User ${email} changed its password`);
 
   const user = await User.findOne({
-    email
+    email,
   });
 
   if (user) {
     MixpanelHelper.track(MixpanelEvent.USER_RESET_PASSWORD_LINK, {
-      distinct_id: user._id
-    })
+      distinct_id: user._id,
+    });
   }
-
 
   if (!user) {
     return res.status(401).send({
       status: "error",
-      message: "User not found!"
+      message: "User not found!",
     });
   }
 
@@ -478,29 +451,63 @@ userRouter.get("/users/reset-password/link", async (req, res) => {
 });
 
 // User => Sign Up
-userRouter.post("/users",
-  RequestMiddleware.allowedRequestKeys(['name', 'email', 'password', 'passwordConfirmation', 'type', 'language', 'stateCode', 'country', 'city', 'genericPositionsOfInterest']), async (req, res) => {
-
-    const { name, email, password, passwordConfirmation, language, type, stateCode, city } = req.body;
+userRouter.post(
+  "/users",
+  RequestMiddleware.allowedRequestKeys([
+    "name",
+    "email",
+    "password",
+    "passwordConfirmation",
+    "type",
+    "language",
+    "stateCode",
+    "country",
+    "city",
+    "genericPositionsOfInterest",
+  ]),
+  async (req, res) => {
+    const {
+      name,
+      email,
+      password,
+      passwordConfirmation,
+      language,
+      type,
+      stateCode,
+      city,
+    } = req.body;
 
     if (stateCode && stateCode === "default") {
       return res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(null, "globalInvalidValueForField", {
-          invalidField: LanguageHelper.getLanguageString("resume", 'genericProvince')
-        })
-      })
+        message: LanguageHelper.getLanguageString(
+          null,
+          "globalInvalidValueForField",
+          {
+            invalidField: LanguageHelper.getLanguageString(
+              "resume",
+              "genericProvince"
+            ),
+          }
+        ),
+      });
     }
 
     if (city && city === "default") {
       return res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(null, "globalInvalidValueForField", {
-          invalidField: LanguageHelper.getLanguageString("resume", 'genericCity')
-        })
-      })
+        message: LanguageHelper.getLanguageString(
+          null,
+          "globalInvalidValueForField",
+          {
+            invalidField: LanguageHelper.getLanguageString(
+              "resume",
+              "genericCity"
+            ),
+          }
+        ),
+      });
     }
-
 
     try {
       if (password !== passwordConfirmation) {
@@ -509,25 +516,24 @@ userRouter.post("/users",
           message: LanguageHelper.getLanguageString(
             "user",
             "userPasswordConfirmationDontMatch"
-          )
+          ),
         });
       }
-
 
       // force lowercase and trim
       const preparedEmail = TextHelper.stringPrepare(email);
 
-      const emailAlreadyExists = await User.findOne({ email: preparedEmail })
+      const emailAlreadyExists = await User.findOne({ email: preparedEmail });
 
       if (emailAlreadyExists) {
-        console.log('Email already exists');
+        console.log("Email already exists");
 
         return res.status(400).send({
           status: "error",
           message: LanguageHelper.getLanguageString(
             "user",
             "userEmailAlreadyRegistered"
-          )
+          ),
         });
       }
 
@@ -542,16 +548,17 @@ userRouter.post("/users",
 
       return res.status(201).send({
         user,
-        token
+        token,
       });
     } catch (error) {
       res.status(400).send({
         status: "error",
         message: LanguageHelper.getLanguageString("user", "userCreationError"),
-        details: error.message
+        details: error.message,
       });
     }
-  });
+  }
+);
 
 userRouter.post(
   "/users/push-notification",
@@ -569,7 +576,7 @@ userRouter.post(
         message: LanguageHelper.getLanguageString(
           "user",
           "userPushNotificationSaveSuccess"
-        )
+        ),
       });
     } catch (error) {
       console.error(error);
@@ -579,7 +586,7 @@ userRouter.post(
           "user",
           "userPushNotificationSaveError"
         ),
-        details: error.message
+        details: error.message,
       });
     }
   }
@@ -593,12 +600,12 @@ userRouter.post("/users/logout", userAuthMiddleware, async (req, res) => {
   const reqToken = req.token;
 
   MixpanelHelper.track(MixpanelEvent.USER_LOGOUT, {
-    distinct_id: user._id
-  })
+    distinct_id: user._id,
+  });
 
   try {
     // remove the token that's being used for the user from our user tokens array in our database
-    user.tokens = user.tokens.filter(tokenObj => tokenObj.token !== reqToken);
+    user.tokens = user.tokens.filter((tokenObj) => tokenObj.token !== reqToken);
 
     console.log(`Logging out user: ${user.email}`);
 
@@ -606,13 +613,13 @@ userRouter.post("/users/logout", userAuthMiddleware, async (req, res) => {
 
     return res.status(200).send({
       status: "success",
-      message: LanguageHelper.getLanguageString("user", "userLogoutSuccess")
+      message: LanguageHelper.getLanguageString("user", "userLogoutSuccess"),
     });
   } catch (error) {
     return res.status(400).send({
       status: "error",
       message: LanguageHelper.getLanguageString("user", "userLogoutError"),
-      details: error.message
+      details: error.message,
     });
   }
 });
@@ -629,14 +636,14 @@ userRouter.post("/users/logout/all", userAuthMiddleware, async (req, res) => {
 
     return res.status(200).send({
       status: "success",
-      message: LanguageHelper.getLanguageString("user", "userLogoutAllSuccess")
+      message: LanguageHelper.getLanguageString("user", "userLogoutAllSuccess"),
     });
   } catch (error) {
     console.log(error);
     return res.status(500).send({
       status: "error",
       message: LanguageHelper.getLanguageString("user", "userLogoutAllError"),
-      details: error.message
+      details: error.message,
     });
   }
 });
@@ -647,7 +654,7 @@ const upload = multer({
   // multer (upload library) configuration
 
   limits: {
-    fileSize: 1000000 // 1.000.000 bytes = 1 mb
+    fileSize: 1000000, // 1.000.000 bytes = 1 mb
   },
   fileFilter(req, file, cb) {
     // file type restriction
@@ -662,7 +669,7 @@ const upload = multer({
             "user",
             "userErrorFileUploadFormat",
             {
-              format: "png or jpg"
+              format: "png or jpg",
             }
           )
         )
@@ -670,7 +677,7 @@ const upload = multer({
     }
 
     cb(undefined, true); // acccept file callback
-  }
+  },
 });
 
 // !upload-key should match postman's form-data key. set key as 'file' instead of text
@@ -689,7 +696,7 @@ userRouter.post(
     const editedImageBuffer = await sharp(buffer)
       .resize({
         width: 250,
-        height: 250
+        height: 250,
       })
       .png()
       .toBuffer();
@@ -699,7 +706,7 @@ userRouter.post(
 
     return res.status(200).send({
       status: "success",
-      message: LanguageHelper.getLanguageString("user", "userAvatarUploaded")
+      message: LanguageHelper.getLanguageString("user", "userAvatarUploaded"),
     });
   },
   (error, req, res, next) => {
@@ -709,7 +716,7 @@ userRouter.post(
         "user",
         "userAvatarErrorUpload"
       ),
-      details: error.message
+      details: error.message,
     });
   }
 );
@@ -728,7 +735,7 @@ userRouter.get("/user/:id/profile", async (req, res) => {
         message: LanguageHelper.getLanguageString(
           "user",
           "userAvatarUploadEmpty"
-        )
+        ),
       });
     }
 
@@ -754,7 +761,7 @@ userRouter.delete("/users/profile/me", userAuthMiddleware, async (req, res) => {
       message: LanguageHelper.getLanguageString(
         "user",
         "userAvatarUploadDeleted"
-      )
+      ),
     });
   } catch (error) {
     res.status(400).send({
@@ -763,11 +770,10 @@ userRouter.delete("/users/profile/me", userAuthMiddleware, async (req, res) => {
         "user",
         "userAvatarUploadDeletedError"
       ),
-      details: error.message
+      details: error.message,
     });
   }
 });
-
 
 userRouter.get("/users/profile", userAuthMiddleware, async (req, res) => {
   const { user } = req;
@@ -776,13 +782,13 @@ userRouter.get("/users/profile", userAuthMiddleware, async (req, res) => {
   try {
     return res.status(200).send({
       user,
-      token: reqToken
+      token: reqToken,
     }); // req.user is coming from the authMiddleware
   } catch (error) {
     return res.status(500).send({
       status: "error",
       message: LanguageHelper.getLanguageString("user", "userProfileGetError"),
-      details: error.message
+      details: error.message,
     });
   }
 });
@@ -798,11 +804,9 @@ userRouter.post("/users/change-password", async (req, res) => {
 
     if (user) {
       MixpanelHelper.track(MixpanelEvent.USER_CHANGE_PASSWORD, {
-        distinct_id: user._id
-      })
+        distinct_id: user._id,
+      });
     }
-
-
   } catch (error) {
     console.error(error);
     return res.status(400).send({
@@ -810,7 +814,7 @@ userRouter.post("/users/change-password", async (req, res) => {
       message: LanguageHelper.getLanguageString(
         "user",
         "userInvalidCredentials"
-      )
+      ),
     });
   }
 
@@ -824,7 +828,7 @@ userRouter.post("/users/change-password", async (req, res) => {
       message: LanguageHelper.getLanguageString(
         "user",
         "userCurrentPasswordIncorrect"
-      )
+      ),
     });
   }
 
@@ -836,7 +840,7 @@ userRouter.post("/users/change-password", async (req, res) => {
       message: LanguageHelper.getLanguageString(
         "user",
         "userNewPasswordsDoesntMatch"
-      )
+      ),
     });
   }
 
@@ -851,93 +855,99 @@ userRouter.post("/users/change-password", async (req, res) => {
     message: LanguageHelper.getLanguageString(
       "user",
       "userPasswordChangedSuccess"
-    )
+    ),
   });
 });
 
-
-userRouter.get('/test', async (req, res) => {
-
+userRouter.get("/test", async (req, res) => {
   return res.status(200).send({
-    status: 'Success',
-    message: 'Request processed!'
-  })
-
-
-})
+    status: "Success",
+    message: "Request processed!",
+  });
+});
 
 /*#############################################################|
 |  >>> ADMIN ONLY ROUTES
 *##############################################################*/
 
-userRouter.get('/users', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+userRouter.get(
+  "/users",
+  [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)],
+  async (req, res) => {
+    const users = await User.find({});
 
-
-  const users = await User.find({});
-
-  return res.status(200).send(
-    users
-  )
-
-
-
-})
-
+    return res.status(200).send(users);
+  }
+);
 
 // User ==> Delete an account
 
-userRouter.delete("/users/:id", [userAuthMiddleware, (req, res, next) => {
-  UserMiddleware.restrictUserType(UserType.Admin)
-}], async (req, res) => {
-  let user;
+userRouter.delete(
+  "/users/:id",
+  [
+    userAuthMiddleware,
+    (req, res, next) => {
+      UserMiddleware.restrictUserType(UserType.Admin);
+    },
+  ],
+  async (req, res) => {
+    let user;
 
-  const { id } = req.params;
+    const { id } = req.params;
 
-  user = await User.findOne({
-    _id: id
-  })
-
-
-  try {
-    await user.remove();
-
-    return res.status(200).send(user);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).send({
-      status: "error",
-      message: LanguageHelper.getLanguageString("user", "userDeleteError"),
-      details: error.message
+    user = await User.findOne({
+      _id: id,
     });
+
+    try {
+      await user.remove();
+
+      return res.status(200).send(user);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send({
+        status: "error",
+        message: LanguageHelper.getLanguageString("user", "userDeleteError"),
+        details: error.message,
+      });
+    }
   }
-});
+);
 
 userRouter.patch("/users/me", [userAuthMiddleware], async (req, res) => {
-
   const { user } = req;
 
   // check if keys are allowed to be updated
   if (
-    !RouterHelper.checkRequestKeysAllowed(req.body, ["genericPositionsOfInterest", "type", "lastNotification", "stateCode", "country", "city", "isJobPromoter"])
+    !RouterHelper.checkRequestKeysAllowed(req.body, [
+      "genericPositionsOfInterest",
+      "type",
+      "lastNotification",
+      "stateCode",
+      "country",
+      "city",
+      "professionalArea",
+      "phone",
+      "isJobPromoter",
+    ])
   ) {
     return res.status(400).send({
       status: "error",
       message: LanguageHelper.getLanguageString(
         "user",
         "userPatchForbiddenKeys"
-      )
+      ),
     });
   }
 
   // if our keys to be updated are allowed, proceed!
   try {
-
     const updatePayload = req.body;
 
     // update user keys
     Object.entries(updatePayload).map(([key, value]) => {
       user[key] = value;
-    })
+    });
 
     await user.save();
     return res.status(201).send(user);
@@ -946,179 +956,178 @@ userRouter.patch("/users/me", [userAuthMiddleware], async (req, res) => {
   }
 });
 
-userRouter.patch("/users/:id", [userAuthMiddleware, (req, res, next) => {
-  UserMiddleware.restrictUserType(UserType.Admin)
-}], async (req, res) => {
+userRouter.patch(
+  "/users/:id",
+  [
+    userAuthMiddleware,
+    (req, res, next) => {
+      UserMiddleware.restrictUserType(UserType.Admin);
+    },
+  ],
+  async (req, res) => {
+    const updates = Object.keys(req.body);
 
-
-  const updates = Object.keys(req.body);
-
-  if (
-    !RouterHelper.checkRequestKeysAllowed(req.body, ["name", "email"])
-  ) {
-    return res.status(400).send({
-      status: "error",
-      message: LanguageHelper.getLanguageString(
-        "user",
-        "userPatchForbiddenKeys"
-      )
-    });
-  }
-  try {
-
-    let user;
-
-    const { id } = req.params;
-
-    user = await User.findOne({
-      _id: id
-    })
-
-    if (!user) {
+    if (!RouterHelper.checkRequestKeysAllowed(req.body, ["name", "email"])) {
       return res.status(400).send({
-        status: 'error',
-        message: LanguageHelper.getLanguageString('user', 'userNotFound')
-      })
+        status: "error",
+        message: LanguageHelper.getLanguageString(
+          "user",
+          "userPatchForbiddenKeys"
+        ),
+      });
     }
-
-
-    // update every key on the user object
-    updates.forEach(update => {
-      user[update] = req.body[update];
-    });
-    await user.save();
-
-    // const user = await User.findByIdAndUpdate(id, req.body, {
-    //   new: true, //return updated user
-    //   runValidators: true //run our standard validators on update
-    // });
-
-    return res.status(200).send(user);
-  } catch (error) {
-    console.log(error);
-    return res.status(400).send({
-      status: "error",
-      message: LanguageHelper.getLanguageString("user", "userFailedUpdate"),
-      details: error.message
-    });
-  }
-});
-
-userRouter.post("/users/consume-credit", [userAuthMiddleware], async (req, res) => {
-
-  const user: IUser | null = req.user;
-
-  // update user credits
-  if (user) {
-
-    // check if the user has credits
-    if (!user.credits || user.credits <= 0) {
-      return res.status(200).send({
-        status: 'error',
-        message: LanguageHelper.getLanguageString('user', 'userCreditsInsuficient')
-      })
-    }
-
-    // if user has credits, proceed
     try {
+      let user;
 
-      user.credits -= 1;
+      const { id } = req.params;
+
+      user = await User.findOne({
+        _id: id,
+      });
+
+      if (!user) {
+        return res.status(400).send({
+          status: "error",
+          message: LanguageHelper.getLanguageString("user", "userNotFound"),
+        });
+      }
+
+      // update every key on the user object
+      updates.forEach((update) => {
+        user[update] = req.body[update];
+      });
       await user.save();
 
-      // Log in the system
+      // const user = await User.findByIdAndUpdate(id, req.body, {
+      //   new: true, //return updated user
+      //   runValidators: true //run our standard validators on update
+      // });
 
-      const creditConsumption = new Log({
-        emitter: user._id,
-        action: 'USER_CREDIT_CONSUMED',
-        target: user.credits
-      })
-      await creditConsumption.save()
-
-
-
-      return res.status(200).send({
-        status: 'success',
-        message: LanguageHelper.getLanguageString('user', 'userCreditsConsumedSuccess')
-      })
-
+      return res.status(200).send(user);
+    } catch (error) {
+      console.log(error);
+      return res.status(400).send({
+        status: "error",
+        message: LanguageHelper.getLanguageString("user", "userFailedUpdate"),
+        details: error.message,
+      });
     }
-    catch (error) {
-      console.error(error);
+  }
+);
+
+userRouter.post(
+  "/users/consume-credit",
+  [userAuthMiddleware],
+  async (req, res) => {
+    const user: IUser | null = req.user;
+
+    // update user credits
+    if (user) {
+      // check if the user has credits
+      if (!user.credits || user.credits <= 0) {
+        return res.status(200).send({
+          status: "error",
+          message: LanguageHelper.getLanguageString(
+            "user",
+            "userCreditsInsuficient"
+          ),
+        });
+      }
+
+      // if user has credits, proceed
+      try {
+        user.credits -= 1;
+        await user.save();
+
+        // Log in the system
+
+        const creditConsumption = new Log({
+          emitter: user._id,
+          action: "USER_CREDIT_CONSUMED",
+          target: user.credits,
+        });
+        await creditConsumption.save();
+
+        return res.status(200).send({
+          status: "success",
+          message: LanguageHelper.getLanguageString(
+            "user",
+            "userCreditsConsumedSuccess"
+          ),
+        });
+      } catch (error) {
+        console.error(error);
+        return res.status(200).send({
+          status: "error",
+          message: LanguageHelper.getLanguageString("user", "userCreditsError"),
+        });
+      }
+    } else {
       return res.status(200).send({
-        status: 'error',
-        message: LanguageHelper.getLanguageString('user', 'userCreditsError')
-      })
+        status: "error",
+        message: LanguageHelper.getLanguageString(
+          "user",
+          "userNotFoundByToken"
+        ),
+      });
+    }
+  }
+);
+
+userRouter.post(
+  "/users/validate-post-click",
+  [RequestMiddleware.getRequestIP],
+  async (req, res) => {
+    const { clientIp } = req;
+    const { promoterId } = req.body;
+
+    const user = await User.findOne({
+      _id: promoterId,
+    });
+
+    if (!user) {
+      return res.status(200).send({
+        status: "error",
+        message: LanguageHelper.getLanguageString(
+          "user",
+          "userNotFoundByToken"
+        ),
+      });
     }
 
+    const checkClickAlreadyLoggedByThisUser = await Log.findOne({
+      emitter: user._id,
+      target: clientIp,
+    });
 
+    if (checkClickAlreadyLoggedByThisUser) {
+      return res.status(200).send({
+        status: "error",
+        message: LanguageHelper.getLanguageString(
+          "user",
+          "userClickAlreadyLogged"
+        ),
+      });
+    }
 
-  } else {
+    // if everything is ok and we have a new user, compute as new click
+
+    const newPromotedClick = new Log({
+      emitter: promoterId,
+      action: "USER_COMPUTE_PROMOTED_CLICK",
+      target: clientIp,
+    });
+    await newPromotedClick.save();
+
+    // add user credits
+    user.credits += USER_PER_CLICK_CREDIT_MULTIPLIER;
+    await user.save();
+
     return res.status(200).send({
-      status: 'error',
-      message: LanguageHelper.getLanguageString('user', 'userNotFoundByToken')
-    })
+      status: "success",
+      message: LanguageHelper.getLanguageString("user", "userClickComputed"),
+    });
   }
-
-
-
-
-
-})
-
-userRouter.post("/users/validate-post-click", [RequestMiddleware.getRequestIP], async (req, res) => {
-
-  const { clientIp } = req;
-  const { promoterId } = req.body
-
-  const user = await User.findOne({
-    _id: promoterId
-  })
-
-
-  if (!user) {
-    return res.status(200).send({
-      status: "error",
-      message: LanguageHelper.getLanguageString('user', 'userNotFoundByToken')
-    })
-  }
-
-  const checkClickAlreadyLoggedByThisUser = await Log.findOne({
-    emitter: user._id,
-    target: clientIp
-  })
-
-  if (checkClickAlreadyLoggedByThisUser) {
-    return res.status(200).send({
-      status: 'error',
-      message: LanguageHelper.getLanguageString('user', 'userClickAlreadyLogged')
-    })
-  }
-
-  // if everything is ok and we have a new user, compute as new click
-
-  const newPromotedClick = new Log({
-    emitter: promoterId,
-    action: 'USER_COMPUTE_PROMOTED_CLICK',
-    target: clientIp
-  })
-  await newPromotedClick.save();
-
-
-
-
-
-  // add user credits
-  user.credits += USER_PER_CLICK_CREDIT_MULTIPLIER;
-  await user.save();
-
-  return res.status(200).send({
-    status: 'success',
-    message: LanguageHelper.getLanguageString('user', 'userClickComputed')
-  })
-
-})
-
-
-
+);
 
 export { userRouter };

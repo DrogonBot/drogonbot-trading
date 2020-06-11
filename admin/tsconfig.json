@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "target": "es6",
-    "module": "esnext",
+    "target": "ES2020",
+    "module": "ESNext",
     "allowJs": true,
     "outDir": "./dist",
     "rootDir": "./src",
@@ -11,21 +10,15 @@
     "noUnusedParameters": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "noEmit": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/*"
-  ]
+  "include": ["src/**/*.ts", "src/*"],
+  "exclude": ["node_modules"]
 }

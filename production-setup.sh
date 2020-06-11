@@ -63,6 +63,24 @@ if test -f "./environment/prod.env"; then
   
 fi
 
+# Setup Admin panel
+
+if test -f "./admin/environment/Dockerfile.prod"; then
+  printColor "Preparing Admin Panel production Dockerfile"
+  sudo cp ./admin/environment/Dockerfile.prod ./admin/Dockerfile
+  else 
+    echo "You must have a ./admin/environment/Dockerfile.prod to proceed!"
+    exit
+fi
+
+if test -f "./admin/environment/Env.constant.prod.ts"; then
+  printColor "Preparing Admin Panel environment files"
+  sudo cp ./admin/environment/Env.constant.prod.ts ./admin/src/constants/Env.constant.ts
+  else 
+    echo "You must have a ./admin/environment/Env.constant.prod.ts to proceed!"
+    exit
+fi
+
 # Setup Next.js web app
 
 if test -f "./web/environment/Dockerfile.prod"; then
@@ -106,7 +124,7 @@ sudo rm dbBackupCron
 
 # Docker system prune (remove unused data periodically, avoiding your disk to completely fill over time)
 sudo crontab -l > dockerSystemPrune
-echo "0 */3 * * * docker system prune --all --volumes" >> dockerSystemPrune
+echo "0 * * * * docker system prune --all --volumes" >> dockerSystemPrune
 sudo crontab dockerSystemPrune
 sudo rm dockerSystemPrune
 

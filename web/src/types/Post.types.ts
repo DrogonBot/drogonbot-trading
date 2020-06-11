@@ -54,6 +54,8 @@ export interface IPost {
   externalUrl: string;
   email: string;
   source: string;
+  isTrustableSource: boolean;
+  redirectToSourceOnly: boolean;
   monthlySalary: number;
   yearlySalary: number;
   hourlySalary: number;

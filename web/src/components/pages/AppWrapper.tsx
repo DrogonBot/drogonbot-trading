@@ -6,7 +6,10 @@ export const AppWrapper = (props) => {
   if (process.browser) {
     const dispatch = useDispatch();
 
-    dispatch(userGetProfileInfo());
+    if (window.localStorage.getItem("token")) {
+      // if theres a token, lets refresh our info
+      dispatch(userGetProfileInfo());
+    }
   }
 
   return <>{props.children}</>;

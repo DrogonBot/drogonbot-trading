@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 
 import { PostSource } from '../../resources/Post/post.types';
-import { GenericHelper } from '../../utils/GenericHelper';
 import { ConnectionHelper } from '../helpers/ConnectionHelper';
 import { DataExtractorHelper } from '../helpers/DataExtractorHelper';
 import { PostScrapperHelper } from '../helpers/PostScrapperHelper';
@@ -21,34 +20,7 @@ export class ScrapperRecrutamentoInteligenteMG {
       externalSource
     );
 
-    const $ = cheerio.load(html);
-
-    const postList = $('.pagina-principal-vagas a.btn-vaga-ver-mais')
-
-    let links: string[] = []
-
-    postList.each(function (i, el) {
-      let link = $(el).attr('href')
-
-      if (!link?.includes('http')) { // if link does not include a dot, its probably a relative path. Lets include the root path to it
-        link = externalSource.substr(0, externalSource.length - 1) + link;
-      }
-
-      if (link) {
-        links = [...links, link]
-      }
-    })
-
-    console.log(`🤖: ${links.length} ${ScrapperRecrutamentoInteligenteMG.name} links crawled successfully!`);
-    console.log(links);
-
-    return links.map((link) => {
-      return {
-        link,
-        scrapped: false
-      }
-    });
-
+    return PostScrapperHelper.extractPostLinks(ScrapperRecrutamentoInteligenteMG.name, externalSource, html, '.pagina-principal-vagas a.btn-vaga-ver-mais')
 
   }
 
@@ -59,29 +31,13 @@ export class ScrapperRecrutamentoInteligenteMG {
 
     const $ = cheerio.load(html);
 
-
     const title = $('#nomeVaga h1').text().trim()
 
-    let rawContent = ""
-
-    $('.text-empresa + p').each(function (i, p) {
-      const element = $(p)
-
-      rawContent += element.text() + '\n'
-    });
-
-
-    rawContent = rawContent.trim()
-
+    const rawContent = PostScrapperHelper.extractContent(html, '.detalhesVagaTexto');
 
     const rawCity = await PostScrapperHelper.getCity("MG", `${title} - ${rawContent}`) || "Belo Horizonte"
 
-    // remove html tags
-    rawContent = GenericHelper.stripHtml(rawContent)
-
-
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
-
 
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
 
