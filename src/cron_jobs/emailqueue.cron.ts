@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import cron from 'node-cron';
 
 import { MAX_JOB_NOTIFICATIONS_PER_HOUR_INTERVAL } from '../constants/email.constants';
@@ -15,13 +14,10 @@ export class EmailQueueCron {
     // Once per hour
     cron.schedule("0 * * * *", async () => {
 
-      const allEmails = await EmailQueue.find({});
+      const allEmails = await EmailQueue.find({}).limit(MAX_JOB_NOTIFICATIONS_PER_HOUR_INTERVAL);
 
-      // select only X emails per hour
 
-      const emailsToSubmit = _.slice(allEmails, 0, MAX_JOB_NOTIFICATIONS_PER_HOUR_INTERVAL);
-
-      for (const email of emailsToSubmit) {
+      for (const email of allEmails) {
 
         const accountEmail = new AccountEmailManager()
 
