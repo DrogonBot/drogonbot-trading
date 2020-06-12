@@ -15,6 +15,10 @@ export const strings = {
     eng: "Logout",
     ptBr: "Logout",
   },
+  PromoteJobsButtonText: {
+    eng: "Promote Jobs",
+    ptBr: "Área do Divulgador",
+  },
   emailInput: {
     eng: "E-mail",
     ptBr: "E-mail",
@@ -28,9 +32,20 @@ export const strings = {
     ptBr: "Confirmação de senha",
   },
   registerCreateYourAccount: {
-    eng: "Create your Account",
-    ptBr: "Cadastro",
+    eng: "Free Sign Up",
+    ptBr: "Cadastro Gratuito",
   },
+  registerEmailReminder: {
+    eng:
+      "We are going to send you daily jobs based on jobs that interest your! Make sure you access your email every day to check it out!",
+    ptBr:
+      "Nós lhe enviaremos vagas diariamente, por e-mail! Lembre-se de acessá-lo todos os dias para conferir!",
+  },
+  registerPositionsOfInterestWarning: {
+    eng: "We're going to notify you about these positions through e-mail!",
+    ptBr: "Vamos notificá-lo sobre essas posições por e-mail!",
+  },
+
   registerButtonText: {
     eng: "Sign Up",
     ptBr: "Cadastro",
@@ -100,6 +115,11 @@ export const strings = {
   loginDontHaveAccount: {
     eng: "Don't have an account? Sign Up!",
     ptBr: "Ainda não possui uma conta? Cadastre-se!",
+  },
+  loginRequiredMessage: {
+    eng: "You must have an account to apply for jobs! Sign up for free!",
+    ptBr:
+      "Você deve ter uma conta para candidar-se para vagas! Registre-se grátis!",
   },
   loginSignupHere: {
     eng: "Create Account",
@@ -239,5 +259,9 @@ export const strings = {
   wizardLocationContact: {
     eng: "Location & Contact",
     ptBr: "Localização e Contato",
+  },
+  userStartAdvertising: {
+    eng: "Start Promoting",
+    ptBr: "Quero ser Divulgador",
   },
 };

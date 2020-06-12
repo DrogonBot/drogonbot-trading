@@ -132,6 +132,10 @@ export const globalStrings = {
     eng: "Post Job",
     ptBr: "Anunciar Vaga",
   },
+  genericJobSeekerAdvertise: {
+    eng: "Advertise Jobs",
+    ptBr: "Divulgar Vagas",
+  },
   genericPartners: {
     eng: "Partners: ",
     ptBr: "Parceiros: ",

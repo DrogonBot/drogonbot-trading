@@ -14,7 +14,8 @@ import { colors } from '../../../../constants/UI/Colors.constant';
 import { AppState } from '../../../../store/reducers/index.reducers';
 import { INavOption } from '../../../../types/UI.types';
 import { IUser } from '../../../../types/User.types';
-import { AccountDropdown } from '../../../elements/ui/AccountDropdown';
+import { AccountDropdown } from './AccountDropdown';
+import { CreditsDisplay } from './CreditsDisplay';
 
 const useStyles = makeStyles({
   list: {
@@ -69,13 +70,20 @@ export const MobileNav = ({ navOptions }: IProps) => {
     );
 
     return filteredOptions.map((navOption, index) => {
-      return (
-        <Link href={navOption.href} key={navOption.text}>
+      return navOption.href ? (
+        <Link href={navOption.href} key={`${navOption.text}_${index}`}>
           <ListItem button>
             <ListItemIcon>{navOption.icon}</ListItemIcon>
             <ListItemText primary={navOption.text} />
           </ListItem>
         </Link>
+      ) : (
+        <div key={`${navOption.text}_${index}`}>
+          <ListItem button>
+            {navOption.icon && <ListItemIcon>{navOption.icon}</ListItemIcon>}
+            <ListItemText primary={navOption.text} />
+          </ListItem>
+        </div>
       );
     });
   };
@@ -119,11 +127,17 @@ export const MobileNav = ({ navOptions }: IProps) => {
         {sideList("left")}
       </SwipeableDrawer>
 
-      {user && (
-        <AccountDropdownContainer>
-          <AccountDropdown />
-        </AccountDropdownContainer>
-      )}
+      <NavRight>
+        <NavItem>{user && <CreditsDisplay />}</NavItem>
+
+        <NavItem>
+          {user && (
+            <AccountDropdownContainer>
+              <AccountDropdown />
+            </AccountDropdownContainer>
+          )}
+        </NavItem>
+      </NavRight>
     </Container>
   );
 };
@@ -146,9 +160,18 @@ const HamburgerIcon = styled.div`
 `;
 
 const AccountDropdownContainer = styled.div`
+  padding-right: 0.5rem;
+`;
+
+const NavRight = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const NavItem = styled.div`
+  margin-right: 0.5rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  padding-right: 0.5rem;
 `;

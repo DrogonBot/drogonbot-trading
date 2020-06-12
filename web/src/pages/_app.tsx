@@ -14,6 +14,7 @@ import styled from 'styled-components';
 
 import { LinearLoadingTop } from '../components/elements/ui/LinearLoadingTop';
 import { RouterEventsWatcher } from '../components/elements/ui/RouterEvents';
+import { AppWrapper } from '../components/pages/AppWrapper';
 import { NextSEOApp } from '../components/seo/NextSEOApp';
 import { MUITheme } from '../constants/UI/Theme.constant';
 import { GAnalyticsHelper } from '../helpers/GAnalyticsHelper';
@@ -42,12 +43,14 @@ class MyApp extends App {
   private _renderRootComponent(Component: JSX.Element) {
     return (
       <>
-        <NextSEOApp />
-        <RouterEventsWatcher />
-        <ThemeProvider theme={MUITheme}>
-          <LinearLoadingTop />
-          {Component}
-        </ThemeProvider>
+        <AppWrapper>
+          <NextSEOApp />
+          <RouterEventsWatcher />
+          <ThemeProvider theme={MUITheme}>
+            <LinearLoadingTop />
+            {Component}
+          </ThemeProvider>
+        </AppWrapper>
       </>
     );
   }

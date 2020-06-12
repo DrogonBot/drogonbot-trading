@@ -6,7 +6,7 @@ import { TS } from '../../../helpers/LanguageHelper';
 import { loadCountryProvinces, loadProvinceCities } from '../../../store/actions/form.actions';
 import { setLoading } from '../../../store/actions/ui.action';
 import { ICity, IProvince } from '../../../types/Form.types';
-import { InputContainer } from '../common/layout';
+import { FormItemContainer } from '../common/layout';
 
 export interface ILocation {
   country: string;
@@ -139,7 +139,7 @@ export const LocationDropdown = ({
   return (
     <>
       {showCountry && (
-        <InputContainer>
+        <FormItemContainer>
           <TextField
             select
             label={TS.string("form", "genericCountry")}
@@ -154,10 +154,10 @@ export const LocationDropdown = ({
               {TS.string("resume", "resumeSelectedCountry")}
             </MenuItem>
           </TextField>
-        </InputContainer>
+        </FormItemContainer>
       )}
 
-      <InputContainer>
+      <FormItemContainer>
         <TextField
           select
           label={TS.string("form", "genericProvince")}
@@ -171,9 +171,9 @@ export const LocationDropdown = ({
 
           {onRenderProvincesList()}
         </TextField>
-      </InputContainer>
+      </FormItemContainer>
 
-      <InputContainer>
+      <FormItemContainer>
         <TextField
           label={TS.string("form", "genericCity")}
           select
@@ -187,7 +187,7 @@ export const LocationDropdown = ({
 
           {onRenderCityList()}
         </TextField>
-      </InputContainer>
+      </FormItemContainer>
     </>
   );
 };

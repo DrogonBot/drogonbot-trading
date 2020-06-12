@@ -47,8 +47,21 @@ export const PageContent = styled.div`
   padding-right: 0.8rem;
 `;
 
-export const InputContainer = styled.div`
+export const FormItemContainer = styled.div`
   margin-bottom: 1rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+`;
+
+export const PageList = styled.ul`
+  list-style: none;
+  color: ${colors.silver};
+  li {
+    margin-bottom: 0.5rem;
+  }
+  word-break: break-word;
+`;
+
+export const ToolTipText = styled.span`
+  font-size: 0.9rem;
 `;

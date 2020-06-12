@@ -110,6 +110,14 @@ export const userSchema: Schema = new Schema(
     emailSubscriptionStatus: {
       transactional: Boolean,
       marketing: Boolean
+    },
+    credits: {
+      type: Number,
+      default: 5
+    },
+    isJobPromoter: {
+      type: Boolean,
+      default: false
     }
   },
   {

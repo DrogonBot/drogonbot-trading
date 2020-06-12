@@ -4,16 +4,17 @@ import Menu, { MenuProps } from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-import { colors } from '../../../constants/UI/Colors.constant';
-import { ContainerDesktop } from '../../../constants/UI/Common.constant';
-import { TS } from '../../../helpers/LanguageHelper';
-import { userLogout } from '../../../store/actions/user.actions';
+import { colors } from '../../../../constants/UI/Colors.constant';
+import { ContainerDesktop } from '../../../../constants/UI/Common.constant';
+import { TS } from '../../../../helpers/LanguageHelper';
+import { userLogout } from '../../../../store/actions/user.actions';
 
 export const AccountDropdown = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,12 @@ export const AccountDropdown = () => {
 
     router.push({
       pathname: "/login",
+    });
+  };
+
+  const onHandlePromoterArea = () => {
+    router.push({
+      pathname: "/posts/advertise",
     });
   };
 
@@ -76,6 +83,13 @@ export const AccountDropdown = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        {renderMenuItem(
+          <DynamicFeedIcon fontSize="small" />,
+          <ListItemText
+            primary={TS.string("account", "PromoteJobsButtonText")}
+          />,
+          onHandlePromoterArea
+        )}
         {renderMenuItem(
           <MeetingRoomIcon fontSize="small" />,
           <ListItemText primary={TS.string("account", "logoutButtonText")} />,

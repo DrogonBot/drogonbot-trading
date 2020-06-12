@@ -5,7 +5,7 @@ import { TS } from '../../../helpers/LanguageHelper';
 import { updateNewAccount } from '../../../store/actions/form.actions';
 import { AppState } from '../../../store/reducers/index.reducers';
 import { INewAccount, UserType } from '../../../types/User.types';
-import { InputContainer } from '../../elements/common/layout';
+import { FormItemContainer } from '../../elements/common/layout';
 import { ILocation, LocationDropdown } from '../../elements/form/LocationDropdown';
 import { PositionsOfInterest } from '../../elements/form/PositionsOfInterest';
 
@@ -23,7 +23,7 @@ export const WizardSettingsStep = ({ jobRoles }: IProps) => {
   return (
     <Container>
       {newAccount.type === UserType.JobSeeker && (
-        <InputContainer>
+        <FormItemContainer>
           <PositionsOfInterest
             value={newAccount.genericPositionsOfInterest}
             jobRoles={jobRoles}
@@ -35,7 +35,7 @@ export const WizardSettingsStep = ({ jobRoles }: IProps) => {
               );
             }}
           />
-        </InputContainer>
+        </FormItemContainer>
       )}
       <Form>
         <LocationDropdown

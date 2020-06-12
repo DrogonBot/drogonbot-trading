@@ -16,7 +16,8 @@ import { TS } from '../../../../helpers/LanguageHelper';
 import { AppState } from '../../../../store/reducers/index.reducers';
 import { INavOption, NavPosition } from '../../../../types/UI.types';
 import { IUser } from '../../../../types/User.types';
-import { AccountDropdown } from '../../../elements/ui/AccountDropdown';
+import { AccountDropdown } from './AccountDropdown';
+import { CreditsDisplay } from './CreditsDisplay';
 import { DesktopNav } from './DesktopNav';
 import { MobileNav } from './MobileNav';
 
@@ -39,7 +40,7 @@ export const Header = () => {
       primary: true,
       position: NavPosition.NavLeft,
     },
-    !user && {
+    !user?._id && {
       // show only to logged out users
       href: "/register",
       text: TS.string("account", "registerButtonText"),
@@ -48,7 +49,7 @@ export const Header = () => {
       showIconOnDesktop: true,
       position: NavPosition.NavRight,
     },
-    !user && {
+    !user?._id && {
       href: "/login",
       text: TS.string("account", "loginButtonText"),
       icon: <AccountCircleIcon />,
@@ -66,7 +67,13 @@ export const Header = () => {
     },
     user && {
       // Only show this option on logged in users
-      href: "/account",
+      customComponent: <CreditsDisplay key="credits-display" />,
+      primary: true,
+      position: NavPosition.NavRight,
+    },
+
+    user && {
+      // Only show this option on logged in users
       customComponent: <AccountDropdown key="account-dropdown" />,
       primary: true,
       customColor: colors.accent,

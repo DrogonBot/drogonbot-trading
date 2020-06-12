@@ -168,4 +168,8 @@ export const strings = {
     ptBr:
       "Você deve ter um currículo selecionado para se candidatar a posições. Se você não o possui, crie um.",
   },
+  creditsSubmission: {
+    eng: "Resume Submission Credits",
+    ptBr: "Créditos de Envio de Currículo",
+  },
 };

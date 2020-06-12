@@ -194,5 +194,25 @@ export const strings = {
   cronPositionsOfInterestText: {
     eng: "",
     ptBr: ""
+  },
+  userCreditsConsumedSuccess: {
+    eng: "User credits consumed successfully!",
+    ptBr: "Créditos de usuário consumidos com sucesso!"
+  },
+  userCreditsInsuficient: {
+    eng: "You have not enough credits for this operation!",
+    ptBr: "Você não possui créditos suficientes para esta operação"
+  },
+  userCreditsError: {
+    eng: "Error while trying to manage your credits!",
+    ptBr: "Erro ao tentar gerenciar seus créditos!"
+  },
+  userClickAlreadyLogged: {
+    eng: "This user IP already clicked in our ads",
+    ptBr: "Este IP do usuário já clicou em nossos anúncios"
+  },
+  userClickComputed: {
+    eng: "New click computed successfully",
+    ptBr: "Novo clique computado com sucesso"
   }
 };

@@ -7,6 +7,7 @@ import { colors } from '../../../../constants/UI/Colors.constant';
 import { UI } from '../../../../constants/UI/UI.constant';
 import { DateHelper } from '../../../../helpers/DateHelper';
 import { TS } from '../../../../helpers/LanguageHelper';
+import { ToolTipText } from '../../../elements/common/layout';
 import { Breadcumb } from '../../../elements/ui/Breadcumb';
 
 interface IProps {
@@ -61,7 +62,11 @@ export const SearchItem = ({
 
 const VerifiedIcon = () => (
   <VerifiedIconContainer>
-    <Tooltip title={TS.string("post", "postTrustableSource")}>
+    <Tooltip
+      title={
+        <ToolTipText>{TS.string("post", "postTrustableSource")}</ToolTipText>
+      }
+    >
       <VerifiedUserIcon />
     </Tooltip>
   </VerifiedIconContainer>
