@@ -8,6 +8,7 @@ import multer from 'multer';
 import randomstring from 'randomstring';
 import sharp from 'sharp';
 
+import { USER_WEEKLY_CREDITS_THRESHOLD } from '../../constants/credits.constant';
 import { USER_PER_CLICK_CREDIT_MULTIPLIER } from '../../constants/user.constant';
 import { GenericEmailManager } from '../../emails/generic.email';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
@@ -921,7 +922,6 @@ userRouter.patch("/users/me", [userAuthMiddleware], async (req, res) => {
       "city",
       "professionalArea",
       "phone",
-      "isJobPromoter",
     ])
   ) {
     return res.status(400).send({
@@ -1066,6 +1066,29 @@ userRouter.post(
     }
   }
 );
+
+userRouter.post('/users/credits', async (req, res) => {
+
+  try {
+    const users = await User.find({});
+
+    for (const user of users) {
+      user.credits = USER_WEEKLY_CREDITS_THRESHOLD;
+      await user.save();
+    }
+
+    return res.status(200).send({
+      status: 'ok'
+    })
+
+  }
+  catch (error) {
+    console.error(error);
+  }
+
+
+
+})
 
 userRouter.post(
   "/users/validate-post-click",

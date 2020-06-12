@@ -1,8 +1,9 @@
 import cron from 'node-cron';
 
-import { USER_WEEKLY_CREDITS_THRESHOLD } from '../constants/user.constant';
+import { USER_WEEKLY_CREDITS_THRESHOLD } from '../constants/credits.constant';
 import { Log } from '../resources/Log/log.model';
 import { User } from '../resources/User/user.model';
+
 
 
 export class UsersCron {

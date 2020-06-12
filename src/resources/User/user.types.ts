@@ -54,5 +54,4 @@ export interface IUserDocument extends Document {
   lastNotification: any;
   emailSubscriptionStatus: IEmailSubscriptionStatus;
   credits: number;
-  isJobPromoter: boolean;
 }

@@ -20,7 +20,6 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
   credits: number;
-  isJobPromoter: boolean;
 }
 
 export interface INewAccount {

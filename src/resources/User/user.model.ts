@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Model, model, Schema } from 'mongoose';
 
+import { USER_WEEKLY_CREDITS_THRESHOLD } from '../../constants/credits.constant';
 import { AccountEmailManager } from '../../emails/account.email';
 import { MarketingEmailManager } from '../../emails/MarketingEmailManager';
 import { GenericHelper } from '../../utils/GenericHelper';
@@ -113,11 +114,7 @@ export const userSchema: Schema = new Schema(
     },
     credits: {
       type: Number,
-      default: 5
-    },
-    isJobPromoter: {
-      type: Boolean,
-      default: false
+      default: USER_WEEKLY_CREDITS_THRESHOLD
     }
   },
   {
