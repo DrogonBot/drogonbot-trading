@@ -42,7 +42,7 @@ export const AccountDropdown = () => {
 
   const onHandlePromoterArea = () => {
     router.push({
-      pathname: "/posts/advertise",
+      pathname: "/posts/share",
     });
   };
 

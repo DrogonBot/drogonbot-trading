@@ -71,7 +71,7 @@ export const PostCTA = ({ post }: IProps) => {
     if (isCreditConsumed) {
       return (window.location.href = CTAInfo.link);
     } else {
-      router.push("/posts/advertise");
+      router.push("/posts/share");
     }
   };
 
