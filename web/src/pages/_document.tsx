@@ -58,8 +58,9 @@ class MyDocument extends Document {
           />
 
           {/* Disable Cache */}
-          <meta http-equiv="Pragma" content="no-cache" />
-          <meta http-equiv="Expires" content="0" />
+          <meta http-equiv='cache-control' content='no-cache'>
+          <meta http-equiv='expires' content='0'>
+          <meta http-equiv='pragma' content='no-cache'></meta>
 
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
