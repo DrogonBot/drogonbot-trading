@@ -57,6 +57,10 @@ class MyDocument extends Document {
             href="https://api.empregourgente.com/feed/posts"
           />
 
+          {/* Disable Cache */}
+          <meta http-equiv="Pragma" content="no-cache" />
+          <meta http-equiv="Expires" content="0" />
+
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
           {/* PWA TAGS */}

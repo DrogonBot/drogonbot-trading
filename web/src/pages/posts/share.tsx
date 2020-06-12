@@ -119,7 +119,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
                 <Alert severity="info">
                   <LinkContainer>
                     <LinkColumnLeft>
-                      Seu link para divulgacao:{" "}
+                      Seu link para divulgação:{" "}
                       <a href={userShareableLink}>{userShareableLink}</a>{" "}
                     </LinkColumnLeft>
                     <LinkColumnRight>
