@@ -8,8 +8,7 @@ import multer from 'multer';
 import randomstring from 'randomstring';
 import sharp from 'sharp';
 
-import { USER_WEEKLY_CREDITS_THRESHOLD } from '../../constants/credits.constant';
-import { USER_PER_CLICK_CREDIT_MULTIPLIER } from '../../constants/user.constant';
+import { USER_PER_CLICK_CREDIT_MULTIPLIER, USER_WEEKLY_CREDITS_THRESHOLD } from '../../constants/credits.constant';
 import { GenericEmailManager } from '../../emails/generic.email';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { RequestMiddleware } from '../../middlewares/request.middleware';
