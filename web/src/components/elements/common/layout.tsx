@@ -20,6 +20,8 @@ export const Body = styled.main`
 `;
 
 export const PageContent = styled.div`
+  margin-bottom: 8rem;
+
   /*DESKTOP ONLY CODE*/
   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
     margin-left: 10%;
