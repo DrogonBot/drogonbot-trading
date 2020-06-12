@@ -36,7 +36,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
   const userShareableLink =
     user &&
-    `https://rebrand.ly/emprego-urgente/?stateCode=${user.stateCode}&pid=${user._id}`;
+    `https://rebrand.ly/emprego-urgente-share/?stateCode=${user.stateCode}&pid=${user._id}`;
 
   const messageVariations = [
     "Pessoal, acessem nosso grupo de vagas no WhatsApp! Postamos todos os dias!!",
