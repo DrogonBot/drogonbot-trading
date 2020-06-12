@@ -67,7 +67,7 @@ export const Header = () => {
     },
     user && {
       // Only show this option on logged in users
-      customComponent: <CreditsDisplay />,
+      customComponent: <CreditsDisplay key="credits-display" />,
       primary: true,
       position: NavPosition.NavRight,
     },

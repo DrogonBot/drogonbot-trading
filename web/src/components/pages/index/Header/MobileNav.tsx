@@ -70,13 +70,20 @@ export const MobileNav = ({ navOptions }: IProps) => {
     );
 
     return filteredOptions.map((navOption, index) => {
-      return (
-        <Link href={navOption.href} key={navOption.text}>
+      return navOption.href ? (
+        <Link href={navOption.href} key={`${navOption.text}_${index}`}>
           <ListItem button>
             <ListItemIcon>{navOption.icon}</ListItemIcon>
             <ListItemText primary={navOption.text} />
           </ListItem>
         </Link>
+      ) : (
+        <div key={`${navOption.text}_${index}`}>
+          <ListItem button>
+            {navOption.icon && <ListItemIcon>{navOption.icon}</ListItemIcon>}
+            <ListItemText primary={navOption.text} />
+          </ListItem>
+        </div>
       );
     });
   };
