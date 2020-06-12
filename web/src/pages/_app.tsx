@@ -22,13 +22,6 @@ import { store } from '../store/reducers/store';
 
 class MyApp extends App {
   public componentDidMount() {
-    // avoid cacheing application
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for (let registration of registrations) {
-        registration.unregister();
-      }
-    });
-
     // @ts-ignore
     if (!window.GA_INITIALIZED) {
       GAnalyticsHelper.initGA();
