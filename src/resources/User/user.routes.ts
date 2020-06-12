@@ -859,13 +859,6 @@ userRouter.post("/users/change-password", async (req, res) => {
   });
 });
 
-userRouter.get("/test", async (req, res) => {
-  return res.status(200).send({
-    status: "Success",
-    message: "Request processed!",
-  });
-});
-
 /*#############################################################|
 |  >>> ADMIN ONLY ROUTES
 *##############################################################*/
