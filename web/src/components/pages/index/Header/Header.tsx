@@ -40,7 +40,7 @@ export const Header = () => {
       primary: true,
       position: NavPosition.NavLeft,
     },
-    !user && {
+    !user?._id && {
       // show only to logged out users
       href: "/register",
       text: TS.string("account", "registerButtonText"),
@@ -49,7 +49,7 @@ export const Header = () => {
       showIconOnDesktop: true,
       position: NavPosition.NavRight,
     },
-    !user && {
+    !user?._id && {
       href: "/login",
       text: TS.string("account", "loginButtonText"),
       icon: <AccountCircleIcon />,

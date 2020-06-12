@@ -1,8 +1,12 @@
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Alert from '@material-ui/lab/Alert';
+import _ from 'lodash';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { Body, PageContainer, PageContent, PageList } from '../../components/elements/common/layout';
@@ -10,12 +14,13 @@ import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { appEnv } from '../../constants/Env.constant';
+import { groups } from '../../constants/groups';
+import { UI } from '../../constants/UI/UI.constant';
 import { TS } from '../../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
-import { userUpdateAttribute } from '../../store/actions/user.actions';
 import { AppState } from '../../store/reducers/index.reducers';
 import { IProvince } from '../../types/Form.types';
-import { AvailableLanguages } from '../../types/Global.types';
+import { IGroupItem } from '../../types/Groups.types';
 import { IUser } from '../../types/User.types';
 
 interface IProps {
@@ -25,7 +30,21 @@ interface IProps {
 const PostAdvertise = ({ provinces }: IProps) => {
   const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
   const router = useRouter();
-  const dispatch = useDispatch();
+  const classes = useStyles();
+
+  const [isShareableLinkCopied, setIsShareableLinkCopied] = useState(false);
+
+  const userShareableLink =
+    user &&
+    `https://rebrand.ly/emprego-urgente/?stateCode=${user.stateCode}&pid=${user._id}`;
+
+  const messageVariations = [
+    "Pessoal, acessem nosso grupo de vagas no WhatsApp! Postamos todos os dias!!",
+    "Ei gente! Entrem em nosso grupo exclusivo de VAGAS DE EMPREGO!",
+    "Pessoal, entrem em nosso grupo de empregos no WhatsApp! Todos os dias com vagas novas!",
+  ];
+
+  const userShareableLinkMessage = _.sample(messageVariations);
 
   if (process.browser) {
     if (!user) {
@@ -33,106 +52,32 @@ const PostAdvertise = ({ provinces }: IProps) => {
     }
   }
 
-  const onHandleStartAdvertising = async () => {
-    await dispatch(
-      userUpdateAttribute({
-        isJobPromoter: true,
-      })
+  const onHandleCopyClipboard = () => {
+    navigator.clipboard.writeText(
+      `${userShareableLinkMessage} ${userShareableLink}`
     );
+
+    setIsShareableLinkCopied(true);
   };
 
-  const onRenderJobPromoterCopy = () => {
-    switch (appEnv.language) {
-      case AvailableLanguages.ptBr:
-        return (
-          <>
-            <CopyContainer>
-              <h1>Divulgue Vagas de Emprego</h1>
-
-              <Alert severity="info">
-                Concorra a prêmios conforme o número de cliques em seus
-                anúncios: R$120 reais para o 1º lugar, R$ 60 reais para o 2.º e
-                R$ 20 reais do 3.º ao 5.º lugar. (Ranking calculador
-                mensalmente)
-              </Alert>
-
-              <p>
-                Quer ajudar ao próximo e ao mesmo tempo poder
-                <strong> restaurar seus créditos</strong> para enviar currículos
-                pelo nosso site, GRATUITAMENTE? Seja um divulgador!
-              </p>
-
-              <PageList>
-                <li>
-                  - Você <strong>não precisará pagar nada</strong> para se
-                  aderir.
-                </li>
-                <li>
-                  - Simples de realizar, iremos te orientar sobre os passos
-                  necessários.
-                </li>
-                <li>
-                  - Basta <strong>copiar e colar</strong> uma vaga de emprego em
-                  um grupo que iremos indicar. Simples assim!
-                </li>
-              </PageList>
-            </CopyContainer>
-          </>
-        );
-
-      case AvailableLanguages.eng:
-        return (
-          <>
-            <CopyContainer>
-              <h1> Promote Job Vacancies </h1>
-                  
-              <p>
-                       Want to help others and at the same time be able to {""}
-                       <strong> restore your credits </strong> to send resumes
-                at        our website for FREE? Be a promoter!     
-              </p>
-                  
-              <PageList>
-                       <li> You don't have to pay anything to join. </li>
-                      
-                <li>
-                           Simple to perform, we will guide you on the necessary
-                  steps.      
-                </li>
-                      
-                <li>
-                           Just copy and paste a job into a group that we will
-                           indicate. That simple!       
-                </li>
-                    
-              </PageList>
-            </CopyContainer>
-          </>
-        );
+  const onRenderGroups = () => {
+    try {
+      return groups[user.stateCode].map((group: IGroupItem, index) => (
+        <li key={index}>
+          <a target="_blank" href={group.link}>
+            - {group.name}
+          </a>
+        </li>
+      ));
+    } catch (error) {
+      return (
+        <p>
+          Nenhum grupo sugerido para seu estado! Por favor, procure manualmente
+          no Facebook!
+        </p>
+      );
     }
   };
-
-  const renderJoinJobsPromoterText = () => (
-    <>
-      {onRenderJobPromoterCopy()}
-
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={onHandleStartAdvertising}
-      >
-        {TS.string("account", "userStartAdvertising")}
-      </Button>
-    </>
-  );
-
-  const renderPromotionArea = () => (
-    <>
-      <p>Promotion Area => replace by component</p>
-    </>
-  );
 
   return (
     <>
@@ -154,9 +99,86 @@ const PostAdvertise = ({ provinces }: IProps) => {
         </PageContainer>
 
         <PageContent>
-          {!user?.isJobPromoter
-            ? renderJoinJobsPromoterText()
-            : renderPromotionArea()}
+          <CopyContainer>
+            <h1>Divulgue e Receba Créditos</h1>
+
+            <p>
+              Quer ajudar ao próximo e ao mesmo tempo poder
+              <strong>
+                {" "}
+                restaurar seus créditos de envio de currículos?
+              </strong>{" "}
+              Divulgue o link dos nossos grupos de WhatsApp abaixo! Você
+              receberá 1 crédito por clique único.
+            </p>
+
+            {user && (
+              <>
+                <h3>1. Copie seu link</h3>
+
+                <Alert severity="info">
+                  <LinkContainer>
+                    <LinkColumnLeft>
+                      Seu link para divulgacao:{" "}
+                      <a href={userShareableLink}>{userShareableLink}</a>{" "}
+                    </LinkColumnLeft>
+                    <LinkColumnRight>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        startIcon={<FileCopyIcon />}
+                        onClick={onHandleCopyClipboard}
+                      >
+                        Copiar Link
+                      </Button>
+                    </LinkColumnRight>
+                  </LinkContainer>
+                </Alert>
+
+                <br />
+                {isShareableLinkCopied && (
+                  <p>Link copiado com sucesso! Divulgue nos grupos abaixo!</p>
+                )}
+              </>
+            )}
+
+            {user && (
+              <>
+                <h3>2. Entre em grupos do Facebook</h3>
+
+                <p>
+                  Sugerimos que você primeiro{" "}
+                  <strong>solicite participação e aguarde ser aceito(a)</strong>{" "}
+                  nos seguintes grupos (ou qualquer outro grupo de empregos do
+                  seu estado)
+                </p>
+
+                <PageList>{onRenderGroups()}</PageList>
+              </>
+            )}
+
+            <h3>3. Divulgue nos comentários</h3>
+
+            <p>
+              Sugerimos que poste seu link na{" "}
+              <strong>seção de comentários</strong> dos posts. Não crie uma nova
+              publicação, pois provavelmente será banido dos grupos!
+            </p>
+
+            <AdvertiseImg
+              src="/images/advertise/advertise_example.png"
+              alt="advertisement example"
+            />
+
+            <h3>4. Aguarde clicarem em seu link</h3>
+
+            <p>
+              Aguarde um pouco até <strong>clicarem em seus links</strong> para
+              seus créditos aumentarem. Caso esteja demorando, repita o processo
+              (com intervalo de pelo menos 30 minutos, para não te banirem)
+            </p>
+          </CopyContainer>
         </PageContent>
       </Body>
       <Footer />
@@ -175,6 +197,40 @@ PostAdvertise.getInitialProps = async (ctx) => {
 
 export default PostAdvertise;
 
+const AdvertiseImg = styled.img`
+  width: 100%;
+  max-width: 400px;
+`;
+
+const LinkContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  word-break: break-word;
+`;
+
+const LinkColumnLeft = styled.div`
+  flex: 70%;
+`;
+
+const LinkColumnRight = styled.div`
+  flex: auto;
+
+  /*MOBILE ONLY CODE*/
+  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
 const CopyContainer = styled.div`
   margin-bottom: 2rem;
 `;
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    button: {
+      margin: theme.spacing(1),
+    },
+  })
+);

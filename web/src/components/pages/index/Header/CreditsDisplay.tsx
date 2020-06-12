@@ -16,7 +16,7 @@ export const CreditsDisplay = () => {
   const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
 
   return (
-    <Link href={"/account"}>
+    <Link href={"/posts/advertise"}>
       <Tooltip
         title={
           <ToolTipText>{TS.string("resume", "creditsSubmission")}</ToolTipText>
