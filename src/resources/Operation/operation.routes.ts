@@ -23,6 +23,7 @@ import { Post } from '../Post/post.model';
 import { IJobReminder } from '../Post/post.routes';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
+import { NotificationHelper } from './../../utils/NotificationHelper';
 
 
 
@@ -66,7 +67,7 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
     })
 
     if (post) {
-      await PostScrapperHelper.notifyUsersPushNotification(post)
+      await NotificationHelper.notifyUsersPushNotification(post)
     }
   }
   catch (error) {
@@ -284,6 +285,16 @@ operationRouter.get('/sendinblue', [userAuthMiddleware, UserMiddleware.restrictU
 
 
 });
+
+operationRouter.get('/report', async (req, res) => {
+
+  await NotificationHelper.generateJobReport()
+
+  return res.status(200).send({
+    status: 'report generated'
+  })
+
+})
 
 
 operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {

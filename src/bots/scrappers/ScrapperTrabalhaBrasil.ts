@@ -34,7 +34,6 @@ export class ScrapperTrabalhaBrasil {
     const rawContent = PostScrapperHelper.extractContent(html, '.job-text');
 
     const locationText = $('#txtCityQuery').attr('value');
-    console.log(locationText);
 
     const { stateCode, city } = await PostScrapperHelper.getProvinceAndCity(locationText, postDataOverride)
 

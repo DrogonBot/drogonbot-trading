@@ -1,7 +1,6 @@
 import UserAgent from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
-import { Lead } from '../../resources/Lead/lead.model';
 import { Post } from '../../resources/Post/post.model';
 import { IPost, PostSource } from '../../resources/Post/post.types';
 import { IUser, User } from '../../resources/User/user.model';
@@ -12,6 +11,7 @@ import { PostHelper } from '../../utils/PostHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ICrawlerFunctions, IProxyItem, PagePattern, ProxyType } from '../types/bots.types';
 import { ILeadModel } from './../../resources/Lead/lead.model';
+import { NotificationHelper } from './../../utils/NotificationHelper';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
 
@@ -166,7 +166,7 @@ export class BotHelper {
 
   }
 
-  private static _combineLeadsAndUsers = (users, leads): ILeadModel[] | IUser[] => {
+  public static combineLeadsAndUsers = (users, leads): ILeadModel[] | IUser[] => {
 
     let output: ILeadModel[] | IUser[] = users;
 
@@ -187,50 +187,7 @@ export class BotHelper {
 
   }
 
-  private static _notifyUsers = async (post: IPost) => {
 
-    console.log(`Trying to notify users about post slug ${post.slug}`);
-
-    // PUSH NOTIFICATION ========================================
-    // notify users that may be interested on this role, about this position
-
-    await PostScrapperHelper.notifyUsersPushNotification(post)
-
-    // EMAIL ========================================
-    // notify users and or leads that have this jobRole as position of interest
-    try {
-      const leads = await Lead.find({
-        stateCode: post.stateCode,
-        jobRoles: { "$in": [post.jobRoles[0]] }
-      })
-      const users = await User.find({
-        stateCode: post.stateCode,
-        genericPositionsOfInterest: { "$in": [post.jobRoles[0]] }
-      })
-
-      // combine users and leads into an unique array (no duplicate email!)
-      const targetedUsers = BotHelper._combineLeadsAndUsers(users, leads)
-
-      for (const targetedUser of targetedUsers) {
-
-        // make sure we have a post and an email!
-        if (post.slug && targetedUser.email) {
-
-          if (targetedUser.city && targetedUser.city !== post.city) {
-            console.log(`🤖: Skipping e-mail notification for the user ${targetedUser.email}, since his city (${targetedUser.city}) does not match with post's city (${post.city})`);
-            continue;
-          }
-
-          console.log(`🤖: Email notification: Notifying user ${targetedUser.email} about new post (${post.title}) - slug: ${post.slug}`);
-          await PostScrapperHelper.notifyUsersEmail(targetedUser, post)
-        }
-      }
-    }
-    catch (error) {
-      console.log('🤖:  Failed to run new post email notification');
-      console.error(error);
-    }
-  }
 
   private static _scrapFeed = async (link: string, crawlFeedFunction, postDataOverride?: Object, bypassPostContentFilter?: boolean, isTrustableSource?: boolean, redirectToSourceOnly?: boolean) => {
     console.log(`🤖: Scrapping data FEED from...${link}`);
@@ -262,16 +219,11 @@ export class BotHelper {
           }
         }
 
-
-
-
         const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
         await newPost.save()
         console.log(`🤖: Saving post: ${post.title}`);
 
-
-
-        await BotHelper._notifyUsers(newPost);
+        await NotificationHelper.newPostNotification(newPost);
 
         await GenericHelper.sleep(1000)
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Post saved on database! => ${newPost.title}`)
@@ -325,7 +277,7 @@ export class BotHelper {
 
           console.log(`${newPost.title} - ${newPost.stateCode}/${newPost.city} - ${newPost.externalUrl ? newPost.externalUrl : ''}`);
 
-          await BotHelper._notifyUsers(newPost);
+          await NotificationHelper.newPostNotification(newPost);
 
         }
         catch (error) {
