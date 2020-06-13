@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 import { BotHelper } from '../bots/helpers/BotHelper';
 import { AccountEmailManager } from '../emails/account.email';
 import { ILeadModel, Lead } from '../resources/Lead/lead.model';
+import { Log } from '../resources/Log/log.model';
 import { Post } from '../resources/Post/post.model';
 import { IPost } from '../resources/Post/post.types';
 import { IUser, User } from '../resources/User/user.model';
@@ -127,7 +128,7 @@ export class NotificationHelper {
         createdAt: { "$gte": yesterday }
       })
 
-      let output: IReportItem[] = []
+      let reportOutput: IReportItem[] = []
 
       // loop through every post
       for (const post of posts) {
@@ -149,23 +150,51 @@ export class NotificationHelper {
         for (const target of targeted) {
 
           // skip if target has a city and its not on the same post city
-          if (target.city && target.city !== post.city) {
-            continue;
+          if (target.city) {
+            if (target.city !== post.city) {
+              console.log(`🤖: Skipping report of ${post.slug} to  ${target.email}, since he's not on the same post's city`);
+              continue;
+            }
           }
 
-          output = [
-            ...output,
+
+
+          const postAlreadyReported = await Log.exists({
+            emitter: target.email,
+            action: 'REPORT_POST',
+            target: post.slug
+          })
+
+          // make sure we dont report the same post twice!
+          if (postAlreadyReported) {
+            console.log(`🤖: Skipping report of ${post.slug} to  ${target.email}, it was already reported`);
+            continue
+          }
+
+          // If post wasn't reported so far, lets generate an output with required info to compile it later
+          // this output will be compiled into a report
+          reportOutput = [
+            ...reportOutput,
             { postTitle: post.title, postSlug: post.slug, postSector: post.sector, email: target.email, jobRoles: post.jobRoles, userName: target.name, }
           ]
+
+          const newReportPost = new Log({
+            emitter: target.email,
+            action: 'REPORT_POST',
+            target: post.slug
+          })
+          await newReportPost.save()
         }
       }
 
-      const grouped = GenericHelper.groupBy(output, 'email');
+      // group all reports by Email
+      const groupedReports = GenericHelper.groupBy(reportOutput, 'email');
 
-      for (const key in grouped) { // lets use a FOR loop, to preserve our async (if we used forEach here, await would be simply ignored!)
-        if (grouped.hasOwnProperty(key)) {
+      // loop throgh object key => values. On this case, key is our target email and value is the info we need to generate the report.
+      for (const key in groupedReports) { // lets use a FOR loop, to preserve our async (if we used forEach here, await would be simply ignored!)
+        if (groupedReports.hasOwnProperty(key)) {
 
-          const value = grouped[key]
+          const value = groupedReports[key]
 
           // * Now, for every user/lead email, lets submit a list of potential posts
 
@@ -178,7 +207,7 @@ export class NotificationHelper {
 
           const postThumbnailsLinks = value.map((item: IReportItem) => {
             return `
-                <a href="https://empregourgente.com/posts/${item.postSlug}" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${item.postTitle}</a>
+                <a href="https://empregourgente.com/posts/${item.postSlug}?utm_source=empregourgente_sendgrid&utm_medium=email" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${item.postTitle}</a>
         `
           })
 
