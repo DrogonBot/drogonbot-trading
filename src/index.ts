@@ -80,9 +80,10 @@ switch (process.env.ENV) {
     RetentionCron.inactiveUserReminder()
 
 
-    JobsCron.submitApplications()
+    JobsCron.submitApplications();
     JobsCron.jobCrawlersCleaners();
     JobsCron.initializeJobCrawlers();
+    JobsCron.generateJobReports();
 
 
 
