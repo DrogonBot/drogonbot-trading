@@ -318,7 +318,7 @@ operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.res
 
 
     if (user && post) {
-      await PostScrapperHelper.notifyUsersEmail(user, post);
+      await NotificationHelper.notifyUsersEmail(user, post);
     }
   }
   catch (error) {

@@ -2,10 +2,11 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 
 import { BotHelper } from '../bots/helpers/BotHelper';
-import { Lead } from '../resources/Lead/lead.model';
+import { AccountEmailManager } from '../emails/account.email';
+import { ILeadModel, Lead } from '../resources/Lead/lead.model';
 import { Post } from '../resources/Post/post.model';
 import { IPost } from '../resources/Post/post.types';
-import { User } from '../resources/User/user.model';
+import { IUser, User } from '../resources/User/user.model';
 import { IReportItem } from '../typescript/report.types';
 import { GenericHelper } from './GenericHelper';
 import { LanguageHelper } from './LanguageHelper';
@@ -173,5 +174,42 @@ export class NotificationHelper {
       return false;
 
     }
+  }
+
+  public static notifyUsersEmail = async (user: IUser | ILeadModel, post: IPost) => {
+
+    const accountEmailManager = new AccountEmailManager();
+
+    // Randomize post content: Avoid spam filters thinking that your message is too repetitive. It will create some uniqueness!
+
+    const firstPhraseSample = _.sample(['jobsNotificationFirstPhrase', 'jobsNotificationFirstPhrase2', 'jobsNotificationFirstPhrase3', 'jobsNotificationFirstPhrase4'])
+    const secondPhraseSample = _.sample(['jobsNotificationSecondParagraph', 'jobsNotificationSecondParagraph2', 'jobsNotificationSecondParagraph3', 'jobsNotificationSecondParagraph4'])
+    const closingSample = _.sample(['jobsNotificationClosing', 'jobsNotificationClosing2', 'jobsNotificationClosing3'])
+
+    await accountEmailManager.sendEmail(
+      user.email,
+      LanguageHelper.getLanguageString('post', 'jobsNotificationSubject', { jobRole: post.jobRoles[0], postTitle: post.title }),
+      "job-notification", {
+      jobsNotificationFirstPhrase: LanguageHelper.getLanguageString('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: user.name || "" }),
+      jobsNotificationSecondParagraph: LanguageHelper.getLanguageString('post', secondPhraseSample || 'jobsNotificationSecondParagraph'),
+      jobsNotificationClosing: LanguageHelper.getLanguageString('post', closingSample || 'jobsNotificationClosing', {
+        postUrl: `https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_sendgrid&utm_medium=email`
+      }),
+
+      postSummary: `
+      <tr>
+      ${post.title}
+      </tr>
+      <br />
+      <br />
+    <tr>
+    <td align="center" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px;">
+    <a href="https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_sendgrid&utm_medium=email" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">${LanguageHelper.getLanguageString('post', 'jobsNotificationPostCTA')}</a>
+  </td>
+  </tr>
+      `
+    }
+    );
+
   }
 }

@@ -174,7 +174,7 @@ userSchema.methods.registerUser = async function (req?) {
 
   // Send transactional email
 
-  await accountEmailManager.newAccount(
+  await accountEmailManager.sendEmail(
     user.email,
     LanguageHelper.getLanguageString('user', 'newAccountEmailSubject', {
       userName: firstName,
