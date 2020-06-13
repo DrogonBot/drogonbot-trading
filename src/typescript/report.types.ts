@@ -1,7 +1,9 @@
 
 
 export interface IReportItem {
-  slug: string;
+  postSlug: string;
+  postSector: string;
+  postTitle: string;
   email: string;
   jobRoles: string[];
   userName: string;

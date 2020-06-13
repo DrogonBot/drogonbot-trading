@@ -1,4 +1,3 @@
-import { EnvType } from '../constants/types/env.types';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
 
@@ -11,12 +10,12 @@ export class AccountEmailManager extends TransactionalEmailManager {
     customVars: object
   ) {
 
-    if (process.env.ENV === EnvType.Development) {
-      console.log(
-        "Skipping sending new account email... Option only available in production."
-      );
-      return
-    }
+    // if (process.env.ENV === EnvType.Development) {
+    //   console.log(
+    //     "Skipping sending new account email... Option only available in production."
+    //   );
+    //   return
+    // }
 
     console.log("Sending new account email...");
     const htmlEmail = this.loadTemplate(

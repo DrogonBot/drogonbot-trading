@@ -155,7 +155,7 @@ export class NotificationHelper {
 
           output = [
             ...output,
-            { slug: post.slug, email: target.email, jobRoles: post.jobRoles, userName: target.name }
+            { postTitle: post.title, postSlug: post.slug, postSector: post.sector, email: target.email, jobRoles: post.jobRoles, userName: target.name, }
           ]
         }
       }
@@ -170,11 +170,26 @@ export class NotificationHelper {
 
 
         const targetEmail = key;
-        const slugs = _.map(value, 'slug');
+        const slugs = _.map(value, 'postSlug');
         const userName = Array.from(new Set(_.map(value, 'userName')))[0]
         const jobRoles = Array.from(new Set(_.flatten(_.map(value, 'jobRoles'))));
 
+        const postThumbnailsLinks = value.map((item: IReportItem) => {
+
+          console.log('rendering...');
+          console.log(item);
+
+          const html = `
+                  <a href="https://empregourgente.com/posts/${item.postSlug}" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${item.postTitle}</a>
+          `
+
+          console.log(html);
+
+          return html
+        })
+
         console.log(`🤖: Job Report: Generating for ${targetEmail}`);
+        console.log(value);
         console.log(userName);
         console.log(slugs);
         console.log(jobRoles);
@@ -203,7 +218,7 @@ export class NotificationHelper {
           'job-report', {
           jobReportFirstPhrase,
           jobReportSecondPhrase,
-          postSummary: "[LIST HERE]",
+          postSummary: postThumbnailsLinks.join(''),
           jobReportClosing
         }
         );
