@@ -162,7 +162,7 @@ export class NotificationHelper {
 
       const grouped = GenericHelper.groupBy(output, 'email');
 
-      for (const key in grouped) {
+      for (const key in grouped) { // lets use a FOR loop, to preserve our async (if we used forEach here, await would be simply ignored!)
         if (grouped.hasOwnProperty(key)) {
 
           const value = grouped[key]
