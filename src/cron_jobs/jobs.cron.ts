@@ -177,7 +177,7 @@ export class JobsCron {
 
   public static generateJobReports = () => {
 
-    cron.schedule("* * * * *", async () => {
+    cron.schedule("* 0 * * *", async () => {
       console.log("🕒  JobsCron: generateJobReports() 🕒");
 
       await NotificationHelper.generateJobReport()

@@ -137,13 +137,13 @@ export class NotificationHelper {
         const leads = await Lead.find({
           stateCode: post.stateCode,
           genericPositionsOfInterest: { "$in": post.jobRoles },
-          email: "admin@empregourgente.com"
+
         })
 
         const users = await User.find({
           stateCode: post.stateCode,
           genericPositionsOfInterest: { "$in": post.jobRoles },
-          email: "admin@empregourgente.com"
+
         })
 
         const targeted = BotHelper.combineLeadsAndUsers(users, leads);

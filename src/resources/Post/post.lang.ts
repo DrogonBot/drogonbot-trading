@@ -150,8 +150,8 @@ export const strings = {
     ptBr: "Novas vagas para {{jobRolesString}}"
   },
   reportNotificationSubjectSingular: {
-    eng: "New position for {{jobRoleString}}",
-    ptBr: "Nova vaga para {{jobRoleString}}"
+    eng: "New position for {{jobRolesString}}",
+    ptBr: "Nova vaga para {{jobRolesString}}"
   },
 
   // Jobs notification email ========================================
