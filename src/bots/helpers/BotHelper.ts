@@ -4,13 +4,14 @@ import { EnvType } from '../../constants/types/env.types';
 import { Lead } from '../../resources/Lead/lead.model';
 import { Post } from '../../resources/Post/post.model';
 import { IPost, PostSource } from '../../resources/Post/post.types';
-import { User } from '../../resources/User/user.model';
+import { IUser, User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { LanguageHelper } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ICrawlerFunctions, IProxyItem, PagePattern, ProxyType } from '../types/bots.types';
+import { ILeadModel } from './../../resources/Lead/lead.model';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
 
@@ -165,6 +166,27 @@ export class BotHelper {
 
   }
 
+  private static _combineLeadsAndUsers = (users, leads): ILeadModel[] | IUser[] => {
+
+    let output: ILeadModel[] | IUser[] = users;
+
+    for (const lead of leads) {
+
+      const hasInUsers = users.some((user) => user.email === lead.email)
+
+      if (!hasInUsers) {
+        output = [
+          ...output,
+          lead
+        ]
+      }
+
+    }
+
+    return output;
+
+  }
+
   private static _notifyUsers = async (post: IPost) => {
 
     console.log(`Trying to notify users about post slug ${post.slug}`);
@@ -186,12 +208,8 @@ export class BotHelper {
         genericPositionsOfInterest: { "$in": [post.jobRoles[0]] }
       })
 
-      const targetedUsers = [
-        ...leads,
-        ...users
-      ]
-
-
+      // combine users and leads into an unique array (no duplicate email!)
+      const targetedUsers = BotHelper._combineLeadsAndUsers(users, leads)
 
       for (const targetedUser of targetedUsers) {
 
