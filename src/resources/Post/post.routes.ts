@@ -3,8 +3,8 @@ import _ from 'lodash';
 import RSS from 'rss';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { TS } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
+import { TS } from '../../utils/TS';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { Resume } from '../Resume/resume.model';
 import { Post } from './post.model';

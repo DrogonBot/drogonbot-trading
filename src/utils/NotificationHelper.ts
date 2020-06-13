@@ -9,8 +9,8 @@ import { IPost } from '../resources/Post/post.types';
 import { IUser, User } from '../resources/User/user.model';
 import { IReportItem } from '../typescript/report.types';
 import { GenericHelper } from './GenericHelper';
-import { TS } from './LanguageHelper';
 import { PushNotificationHelper } from './PushNotificationHelper';
+import { TS } from './TS';
 
 
 export class NotificationHelper {

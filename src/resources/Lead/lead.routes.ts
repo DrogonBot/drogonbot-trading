@@ -1,7 +1,7 @@
 import cheerio from 'cheerio';
 import { Router } from 'express';
 
-import { TS } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/TS';
 import { UserType } from '../User/user.types';
 import { Lead } from './lead.model';
 

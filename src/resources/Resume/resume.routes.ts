@@ -1,8 +1,8 @@
 import express from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { TS } from '../../utils/LanguageHelper';
 import { RouterHelper } from '../../utils/RouterHelper';
+import { TS } from '../../utils/TS';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { Resume } from './resume.model';
 import { IResumeAttachment } from './resume.types';

@@ -2,9 +2,9 @@ import express from 'express';
 import _ from 'lodash';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { TS } from '../../utils/LanguageHelper';
 import { SectorHelper } from '../../utils/SectorHelper';
 import { TextHelper } from '../../utils/TextHelper';
+import { TS } from '../../utils/TS';
 import { Sector } from './sector.model';
 
 

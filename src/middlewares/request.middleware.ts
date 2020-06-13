@@ -1,7 +1,7 @@
 import requestIp from 'request-ip';
 
-import { TS } from '../utils/LanguageHelper';
 import { RouterHelper } from '../utils/RouterHelper';
+import { TS } from '../utils/TS';
 
 export class RequestMiddleware {
 

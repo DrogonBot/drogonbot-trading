@@ -1,5 +1,5 @@
-import { TS } from '../utils/LanguageHelper';
 import { MiddlewareHelper } from '../utils/MiddlewareHelper';
+import { TS } from '../utils/TS';
 
 const userAuthMiddleware = async (req, res, next) => {
   try {

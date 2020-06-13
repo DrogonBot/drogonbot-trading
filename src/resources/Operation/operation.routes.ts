@@ -14,9 +14,9 @@ import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedule
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
-import { TS } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
+import { TS } from '../../utils/TS';
 import { Lead } from '../Lead/lead.model';
 import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';

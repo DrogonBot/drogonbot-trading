@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { TS } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/TS';
 import { User } from '../User/user.model';
 import { Conversation } from './conversation.model';
 

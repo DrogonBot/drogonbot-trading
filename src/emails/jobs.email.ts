@@ -8,7 +8,7 @@ import {
 } from '../resources/Resume/resume.types';
 import { IUser } from '../resources/User/user.model';
 import { DateTimeHelper } from '../utils/DateTimeHelper';
-import { TS } from '../utils/LanguageHelper';
+import { TS } from '../utils/TS';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
 export class JobsEmailManager extends TransactionalEmailManager {

@@ -8,7 +8,7 @@ import { Post } from '../resources/Post/post.model';
 import { IPostApplication, IPostApplicationStatus } from '../resources/Post/post.types';
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
-import { TS } from '../utils/LanguageHelper';
+import { TS } from '../utils/TS';
 
 
 export class JobsCron {

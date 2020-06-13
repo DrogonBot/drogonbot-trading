@@ -2,8 +2,8 @@ import DateDiff from 'date-diff';
 import cron from 'node-cron';
 
 import { IUser, User } from '../resources/User/user.model';
-import { TS } from '../utils/LanguageHelper';
 import { PushNotificationHelper } from '../utils/PushNotificationHelper';
+import { TS } from '../utils/TS';
 
 
 

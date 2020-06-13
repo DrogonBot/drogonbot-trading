@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { TS } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/TS';
 import { Country } from './country.model';
 
 // @ts-ignore

@@ -1,5 +1,5 @@
 import { globalStrings } from '../lang/global.lang';
-import { TextHelper } from '../utils/TextHelper';
+import { TextHelper } from './TextHelper';
 
 
 export class TS {

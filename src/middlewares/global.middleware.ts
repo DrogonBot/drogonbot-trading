@@ -1,4 +1,4 @@
-import { TS } from '../utils/LanguageHelper';
+import { TS } from '../utils/TS';
 
 export class GlobalMiddleware {
   public static checkMethods = (req, res, next) => {

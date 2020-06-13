@@ -6,9 +6,9 @@ import { USER_WEEKLY_CREDITS_THRESHOLD } from '../../constants/credits.constant'
 import { AccountEmailManager } from '../../emails/account.email';
 import { MarketingEmailManager } from '../../emails/MarketingEmailManager';
 import { GenericHelper } from '../../utils/GenericHelper';
-import { TS } from '../../utils/LanguageHelper';
 import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { TextHelper } from '../../utils/TextHelper';
+import { TS } from '../../utils/TS';
 import { AuthType, IUserDocument, UserType } from './user.types';
 
 /*#############################################################|

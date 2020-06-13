@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { TS } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
+import { TS } from '../../utils/TS';
 import { Post } from '../Post/post.model';
 
 // @ts-ignore

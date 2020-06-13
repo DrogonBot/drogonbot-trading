@@ -6,8 +6,8 @@ import { Lead } from '../resources/Lead/lead.model';
 import { Log } from '../resources/Log/log.model';
 import { User } from '../resources/User/user.model';
 import { EncryptionHelper } from '../utils/EncryptionHelper';
-import { TS } from '../utils/LanguageHelper';
 import { TextHelper } from '../utils/TextHelper';
+import { TS } from '../utils/TS';
 
 export enum EmailType {
   Html = "Html",
