@@ -131,36 +131,32 @@ export class NotificationHelper {
 
       let reportOutput: IReportItem[] = []
 
+      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Compiling reports for ${posts.length} posts... Please, wait.`)
+
       // loop through every post
       for (const post of posts) {
 
-        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Generating reports about: ${post.slug}`)
 
         // * First step: Compile a list of leads/users who may think this post interesting!
 
         const leads = await Lead.find({
           stateCode: post.stateCode,
           jobRoles: { "$in": post.jobRoles },
+          type: "JobSeeker",
+          $or: [{ city: post.city }, { city: null }],
+          emailSubscription: null,
+          email: { $ne: null }
         })
 
         const users = await User.find({
           stateCode: post.stateCode,
           genericPositionsOfInterest: { "$in": post.jobRoles },
+          city: post.city
         })
 
         const targeted = BotHelper.combineLeadsAndUsers(users, leads);
 
         for (const target of targeted) {
-
-          // skip if target has a city and its not on the same post city
-          if (target.city) {
-            if (target.city !== post.city) {
-              console.log(`🤖: Skipping report of ${post.slug} to  ${target.email}, since he's not on the same post's city`);
-              continue;
-            }
-          }
-
-
 
           const postAlreadyReported = await Log.exists({
             emitter: target.email,
@@ -251,7 +247,7 @@ export class NotificationHelper {
           }
           );
 
-          await GenericHelper.sleep(3000);
+
 
 
 
@@ -259,7 +255,7 @@ export class NotificationHelper {
       }
 
 
-
+      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished sending reports!`)
 
 
       return true
