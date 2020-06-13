@@ -181,13 +181,9 @@ export class NotificationHelper {
           console.log('rendering...');
           console.log(item);
 
-          const html = `
+          return `
                   <a href="https://empregourgente.com/posts/${item.postSlug}" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${item.postTitle}</a>
           `
-
-          console.log(html);
-
-          return html
         })
 
         console.log(`🤖: Job Report: Generating for ${targetEmail}`);
