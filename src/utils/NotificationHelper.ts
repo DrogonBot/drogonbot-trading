@@ -137,13 +137,11 @@ export class NotificationHelper {
         const leads = await Lead.find({
           stateCode: post.stateCode,
           genericPositionsOfInterest: { "$in": post.jobRoles },
-
         })
 
         const users = await User.find({
           stateCode: post.stateCode,
           genericPositionsOfInterest: { "$in": post.jobRoles },
-
         })
 
         const targeted = BotHelper.combineLeadsAndUsers(users, leads);
@@ -164,67 +162,71 @@ export class NotificationHelper {
 
       const grouped = GenericHelper.groupBy(output, 'email');
 
+      for (const key in grouped) {
+        if (grouped.hasOwnProperty(key)) {
 
-      // * Now, for every user/lead email, lets submit a list of potential posts
+          const value = grouped[key]
 
-      // forOwn will allow us to iterate on the previously created "grouped" object, through its properties
-      await _.forOwn(grouped, async (value, key) => {
+          // * Now, for every user/lead email, lets submit a list of potential posts
+
+          // forOwn will allow us to iterate on the previously created "grouped" object, through its properties
+
+          const targetEmail = key;
+          const slugs = _.map(value, 'postSlug');
+          const userName = Array.from(new Set(_.map(value, 'userName')))[0]
+          const jobRoles = Array.from(new Set(_.flatten(_.map(value, 'jobRoles'))));
+
+          const postThumbnailsLinks = value.map((item: IReportItem) => {
+            return `
+                <a href="https://empregourgente.com/posts/${item.postSlug}" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${item.postTitle}</a>
+        `
+          })
+
+          console.log(`🤖: Job Report: Generating for ${targetEmail}`);
+          console.log(value);
+          console.log(userName);
+          console.log(slugs);
+          console.log(jobRoles);
+
+          // * With our lead email and slugs prepared, lets submit an e-mail!
+
+          const accountEmailManager = new AccountEmailManager();
+
+          // Randomize post content: Avoid spam filters thinking that your message is too repetitive. It will create some uniqueness!
+
+          const firstPhraseSample = _.sample(['jobsNotificationFirstPhrase', 'jobsNotificationFirstPhrase2', 'jobsNotificationFirstPhrase3', 'jobsNotificationFirstPhrase4'])
+          const secondPhraseSample = _.sample(['jobReportSecondPhrase', 'jobReportSecondPhrase2', 'jobReportSecondPhrase3', 'jobReportSecondPhrase4'])
+          const closingSample = _.sample(['jobsNotificationClosing', 'jobsNotificationClosing2', 'jobsNotificationClosing3'])
+
+          const jobReportFirstPhrase = TS.string('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: userName || "" })
+          const jobReportSecondPhrase = TS.string('post', secondPhraseSample || 'jobsNotificationSecondParagraph')
+          const jobReportClosing = TS.string('post', closingSample || 'jobsNotificationClosing')
+
+          await accountEmailManager.sendEmail(
+            targetEmail,
+            jobRoles.length === 1 ? TS.string('post', 'reportNotificationSubjectSingular', {
+              jobRolesString: NotificationHelper._generateJobRolesString(jobRoles)
+            }) : TS.string('post', 'reportNotificationSubjectPlural', {
+              jobRolesString: NotificationHelper._generateJobRolesString(jobRoles)
+            }),
+            'job-report', {
+            jobReportFirstPhrase,
+            jobReportSecondPhrase,
+            postSummary: postThumbnailsLinks.join(''),
+            jobReportClosing
+          }
+          );
+
+          await GenericHelper.sleep(3000);
 
 
-        const targetEmail = key;
-        const slugs = _.map(value, 'postSlug');
-        const userName = Array.from(new Set(_.map(value, 'userName')))[0]
-        const jobRoles = Array.from(new Set(_.flatten(_.map(value, 'jobRoles'))));
 
-        const postThumbnailsLinks = value.map((item: IReportItem) => {
-
-          console.log('rendering...');
-          console.log(item);
-
-          return `
-                  <a href="https://empregourgente.com/posts/${item.postSlug}" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${item.postTitle}</a>
-          `
-        })
-
-        console.log(`🤖: Job Report: Generating for ${targetEmail}`);
-        console.log(value);
-        console.log(userName);
-        console.log(slugs);
-        console.log(jobRoles);
-
-        // * With our lead email and slugs prepared, lets submit an e-mail!
-
-        const accountEmailManager = new AccountEmailManager();
-
-        // Randomize post content: Avoid spam filters thinking that your message is too repetitive. It will create some uniqueness!
-
-        const firstPhraseSample = _.sample(['jobsNotificationFirstPhrase', 'jobsNotificationFirstPhrase2', 'jobsNotificationFirstPhrase3', 'jobsNotificationFirstPhrase4'])
-        const secondPhraseSample = _.sample(['jobReportSecondPhrase', 'jobReportSecondPhrase2', 'jobReportSecondPhrase3', 'jobReportSecondPhrase4'])
-        const closingSample = _.sample(['jobsNotificationClosing', 'jobsNotificationClosing2', 'jobsNotificationClosing3'])
-
-        const jobReportFirstPhrase = TS.string('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: userName || "" })
-        const jobReportSecondPhrase = TS.string('post', secondPhraseSample || 'jobsNotificationSecondParagraph')
-        const jobReportClosing = TS.string('post', closingSample || 'jobsNotificationClosing')
-
-        await accountEmailManager.sendEmail(
-          targetEmail,
-          jobRoles.length === 1 ? TS.string('post', 'reportNotificationSubjectSingular', {
-            jobRolesString: NotificationHelper._generateJobRolesString(jobRoles)
-          }) : TS.string('post', 'reportNotificationSubjectPlural', {
-            jobRolesString: NotificationHelper._generateJobRolesString(jobRoles)
-          }),
-          'job-report', {
-          jobReportFirstPhrase,
-          jobReportSecondPhrase,
-          postSummary: postThumbnailsLinks.join(''),
-          jobReportClosing
         }
-        );
-
-        await GenericHelper.sleep(3000);
+      }
 
 
-      })
+
+
 
       return true
     }

@@ -29,7 +29,7 @@ export class AccountEmailManager extends TransactionalEmailManager {
       customVars
     );
 
-    this.smartSend(
+    await this.smartSend(
       to,
       process.env.ADMIN_EMAIL,
       subject,
