@@ -143,7 +143,7 @@ export class NotificationHelper {
 
           output = [
             ...output,
-            { slug: post.slug, email: target.email }
+            { slug: post.slug, email: target.email, jobRoles: post.jobRoles }
           ]
         }
       }
@@ -159,8 +159,10 @@ export class NotificationHelper {
         console.log(key);
 
         const slugs = _.map(value, 'slug');
+        const jobRoles = Array.from(_.flatten(_.map(value, 'jobRoles')));
 
         console.log(slugs);
+        console.log(jobRoles);
 
         // * With our lead email and slugs prepared, lets submit an e-mail!
 
