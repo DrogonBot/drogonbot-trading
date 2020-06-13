@@ -18,7 +18,6 @@ export class AccountEmailManager extends TransactionalEmailManager {
       return
     }
 
-    console.log("Sending new account email...");
     const htmlEmail = this.loadTemplate(
       EmailType.Html,
       template,

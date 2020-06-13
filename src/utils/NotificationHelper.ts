@@ -168,7 +168,7 @@ export class NotificationHelper {
       // * Now, for every user/lead email, lets submit a list of potential posts
 
       // forOwn will allow us to iterate on the previously created "grouped" object, through its properties
-      _.forOwn(grouped, async (value, key) => {
+      await _.forOwn(grouped, async (value, key) => {
 
 
         const targetEmail = key;
@@ -220,6 +220,8 @@ export class NotificationHelper {
           jobReportClosing
         }
         );
+
+        await GenericHelper.sleep(3000);
 
 
       })
