@@ -47,7 +47,7 @@ export class JobsCron {
 
     cron.schedule("*/10 * * * *", async () => {
 
-      console.log("🕒  JobsCron: submitApplications() 🕒");
+
 
       // find all posts with pending application status (email not submitted yet!)
       const jobPosts = await Post.find({
@@ -56,6 +56,8 @@ export class JobsCron {
       });
 
       for (const post of jobPosts) {
+
+        console.log("🕒  JobsCron: submitApplications() 🕒");
 
         console.log(`JobsCron => Processing ${post.title}`);
 
