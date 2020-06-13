@@ -144,6 +144,16 @@ export const strings = {
     ptBr: "Sem dados"
   },
 
+  // Job report
+  reportNotificationSubjectPlural: {
+    eng: "New positions for {{jobRolesString}}",
+    ptBr: "Novas vagas para {{jobRolesString}}"
+  },
+  reportNotificationSubjectSingular: {
+    eng: "New position for {{jobRoleString}}",
+    ptBr: "Nova vaga para {{jobRoleString}}"
+  },
+
   // Jobs notification email ========================================
 
   jobsNotificationSubject: {
@@ -171,7 +181,7 @@ export const strings = {
     ptBr: "Ei, {{userName}}! Temos boas notícias ..."
   },
   jobsNotificationSecondParagraph: {
-    eng: "We've found a job post that may interest you",
+    eng: "We've found some job posts that may interest you",
     ptBr: "Encontramos uma vaga que pode ser de seu interesse:"
   },
   jobsNotificationSecondParagraph2: {
@@ -183,7 +193,7 @@ export const strings = {
     ptBr: "Encontramos essa vaga que se relaciona com sua busca de emprego:"
   },
   jobsNotificationSecondParagraph4: {
-    eng: "There's a really job match with your interests:",
+    eng: "There's a job position that matches  your interests:",
     ptBr: "Encontramos uma vaga que provavelmente lhe interessa:"
   },
   jobsNotificationClosing: {
@@ -295,6 +305,22 @@ Boa sorte!
   postIsRedirectOnlyMessage: {
     eng: "[ Click on post's link to apply ]",
     ptBr: "[ Clique no link do post para aplicar ]"
+  },
+  jobReportSecondPhrase: {
+    eng: "We've found some open positions that may interest you!",
+    ptBr: "Encontramos algumas vagas que podem lhe interessar:"
+  },
+  jobReportSecondPhrase2: {
+    eng: "Our system has found some job openings that fit your profile",
+    ptBr: "Nosso sistema encontrou algumas vagas de emprego que se encaixam em seu perfil:"
+  },
+  jobReportSecondPhrase3: {
+    eng: "There're some open job positions that matches your interests:",
+    ptBr: "Existem algumas vagas que se encaixam muito bem em seu perfil:"
+  },
+  jobReportSecondPhrase4: {
+    eng: "Today there're some job vacancies that have been posted and fit your profile",
+    ptBr: "Hoje foram postadas algumas vagas de emprego que se encaixam em seu perfil:"
   }
 
 

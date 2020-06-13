@@ -104,6 +104,18 @@ export class NotificationHelper {
     // }
   }
 
+  public static _generateJobRolesString = (jobRoles: string[]) => {
+
+    if (jobRoles.length === 1) {
+      return jobRoles[0];
+    }
+    if (jobRoles.length === 2) {
+      return `${jobRoles[0]} ${TS.string(null, 'globalGenericAnd')} ${jobRoles[1]}`
+    } else {
+      return jobRoles.join(', ').replace(/, ([^,]*)$/, ` ${TS.string(null, 'globalGenericAnd')} $1`);
+    }
+  }
+
   public static generateJobReport = async () => {
     try {
 
@@ -143,7 +155,7 @@ export class NotificationHelper {
 
           output = [
             ...output,
-            { slug: post.slug, email: target.email, jobRoles: post.jobRoles }
+            { slug: post.slug, email: target.email, jobRoles: post.jobRoles, userName: target.name }
           ]
         }
       }
@@ -154,17 +166,47 @@ export class NotificationHelper {
       // * Now, for every user/lead email, lets submit a list of potential posts
 
       // forOwn will allow us to iterate on the previously created "grouped" object, through its properties
-      _.forOwn(grouped, (value, key) => {
+      _.forOwn(grouped, async (value, key) => {
 
-        console.log(key);
 
+        const targetEmail = key;
         const slugs = _.map(value, 'slug');
-        const jobRoles = Array.from(_.flatten(_.map(value, 'jobRoles')));
+        const userName = Array.from(new Set(_.map(value, 'userName')))[0]
+        const jobRoles = Array.from(new Set(_.flatten(_.map(value, 'jobRoles'))));
 
+        console.log(`🤖: Job Report: Generating for ${targetEmail}`);
+        console.log(userName);
         console.log(slugs);
         console.log(jobRoles);
 
         // * With our lead email and slugs prepared, lets submit an e-mail!
+
+        const accountEmailManager = new AccountEmailManager();
+
+        // Randomize post content: Avoid spam filters thinking that your message is too repetitive. It will create some uniqueness!
+
+        const firstPhraseSample = _.sample(['jobsNotificationFirstPhrase', 'jobsNotificationFirstPhrase2', 'jobsNotificationFirstPhrase3', 'jobsNotificationFirstPhrase4'])
+        const secondPhraseSample = _.sample(['jobReportSecondPhrase', 'jobReportSecondPhrase2', 'jobReportSecondPhrase3', 'jobReportSecondPhrase4'])
+        const closingSample = _.sample(['jobsNotificationClosing', 'jobsNotificationClosing2', 'jobsNotificationClosing3'])
+
+        const jobReportFirstPhrase = TS.string('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: userName || "" })
+        const jobReportSecondPhrase = TS.string('post', secondPhraseSample || 'jobsNotificationSecondParagraph')
+        const jobReportClosing = TS.string('post', closingSample || 'jobsNotificationClosing')
+
+        await accountEmailManager.sendEmail(
+          targetEmail,
+          jobRoles.length === 1 ? TS.string('post', 'reportNotificationSubjectSingular', {
+            jobRolesString: NotificationHelper._generateJobRolesString(jobRoles)
+          }) : TS.string('post', 'reportNotificationSubjectPlural', {
+            jobRolesString: NotificationHelper._generateJobRolesString(jobRoles)
+          }),
+          'job-report', {
+          jobReportFirstPhrase,
+          jobReportSecondPhrase,
+          postSummary: "[LIST HERE]",
+          jobReportClosing
+        }
+        );
 
 
       })

@@ -44,5 +44,9 @@ export const globalStrings = {
   globalInvalidValueForField: {
     eng: "Invalid value for the field: {{invalidField}}",
     ptBr: "Valor inválido para o campo: {{invalidField}}"
+  },
+  globalGenericAnd: {
+    eng: "and",
+    ptBr: "e"
   }
 };
