@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { User } from '../User/user.model';
 import { Conversation } from './conversation.model';
 
@@ -68,7 +68,7 @@ conversationRouter.post('/conversations', userAuthMiddleware, async (req, res) =
         // in other words, if conversation already exists, return an error
         return res.status(400).send({
           status: 'error',
-          message: LanguageHelper.getLanguageString('conversation', 'conversationAlreadyExistsError')
+          message: TS.string('conversation', 'conversationAlreadyExistsError')
         })
       }
     }
@@ -106,7 +106,7 @@ conversationRouter.post('/conversations', userAuthMiddleware, async (req, res) =
     console.error(error);
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('conversation', 'conversationCreationError'),
+      message: TS.string('conversation', 'conversationCreationError'),
       details: error.message
     })
   }
@@ -128,7 +128,7 @@ conversationRouter.delete('/conversations/:id', userAuthMiddleware, async (req, 
   if (!conversation) {
     return res.status(404).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('conversation', 'conversationNotFound')
+      message: TS.string('conversation', 'conversationNotFound')
     })
   }
 
@@ -141,7 +141,7 @@ conversationRouter.delete('/conversations/:id', userAuthMiddleware, async (req, 
   if (!conversation.senderId.equals(user._id)) {
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('conversation', 'conversationDeletionErrorNotOwner')
+      message: TS.string('conversation', 'conversationDeletionErrorNotOwner')
     })
   }
 
@@ -157,7 +157,7 @@ conversationRouter.delete('/conversations/:id', userAuthMiddleware, async (req, 
     console.error(error);
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('conversation', 'conversationDeletionError'),
+      message: TS.string('conversation', 'conversationDeletionError'),
       details: error.message
     })
   }

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import RSS from 'rss';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { Resume } from '../Resume/resume.model';
@@ -123,7 +123,7 @@ postRouter.get('/post', async (req, res) => {
       } else {
         return res.status(401).send({
           status: 'error',
-          message: LanguageHelper.getLanguageString('post', 'postNotFound')
+          message: TS.string('post', 'postNotFound')
         })
       }
 
@@ -135,7 +135,7 @@ postRouter.get('/post', async (req, res) => {
       console.error(error);
       return res.status(401).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('post', 'postFetchError')
+        message: TS.string('post', 'postFetchError')
       })
     }
 
@@ -188,7 +188,7 @@ postRouter.get('/post', async (req, res) => {
     if (!searchPosts) {
       return res.status(200).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('post', 'postNotFound')
+        message: TS.string('post', 'postNotFound')
       })
     }
 
@@ -217,7 +217,7 @@ postRouter.post('/post/like', userAuthMiddleware, async (req, res) => {
     if (!post) {
       return res.status(401).send({
         status: 'Error',
-        message: LanguageHelper.getLanguageString('post', 'postNotFound')
+        message: TS.string('post', 'postNotFound')
       })
     }
 
@@ -256,7 +256,7 @@ postRouter.post('/post/like', userAuthMiddleware, async (req, res) => {
 
     return res.status(401).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('post', 'postLikeError'),
+      message: TS.string('post', 'postLikeError'),
       details: error.message
     })
 
@@ -282,7 +282,7 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
     if (!appliedToPost) {
       return res.status(401).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('post', 'postNotFound')
+        message: TS.string('post', 'postNotFound')
       })
     }
 
@@ -293,7 +293,7 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
     if (!resume) {
       return res.status(200).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('post', 'postResumeDoesNotExists')
+        message: TS.string('post', 'postResumeDoesNotExists')
       })
     }
 
@@ -302,7 +302,7 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
     if (appliedToPost.applications.some((application) => application.resumeId === resumeId)) {
       return res.status(200).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('post', 'postApplicationUserAlreadyApplied')
+        message: TS.string('post', 'postApplicationUserAlreadyApplied')
       })
     }
 
@@ -329,7 +329,7 @@ postRouter.post('/post/apply', userAuthMiddleware, async (req, res) => {
 
     return res.status(401).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('post', 'postApplicationError'),
+      message: TS.string('post', 'postApplicationError'),
       details: error.message
     })
 
@@ -353,7 +353,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
   if (!email && !phone) {
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('post', 'postEmailAndPhoneNotFound')
+      message: TS.string('post', 'postEmailAndPhoneNotFound')
     })
   }
 
@@ -433,7 +433,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
           case UploadOutputResult.UnallowedExtension:
             return res.status(400).send({
               status: 'error',
-              message: LanguageHelper.getLanguageString(null, 'globalFileTypeError', {
+              message: TS.string(null, 'globalFileTypeError', {
                 extension: result.extension,
                 acceptedTypes: options.allowedFileExtensions
               })
@@ -441,7 +441,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
           case UploadOutputResult.MaxFileSize:
             return res.status(400).send({
               status: 'error',
-              message: LanguageHelper.getLanguageString(null, 'globalFileMaximumSize', {
+              message: TS.string(null, 'globalFileMaximumSize', {
                 size: options.maxFileSizeInMb
               })
             })
@@ -460,7 +460,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
     catch (error) {
       return res.status(400).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString(null, 'globalFileUploadError')
+        message: TS.string(null, 'globalFileUploadError')
       })
     }
 
@@ -470,7 +470,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
     console.error(error);
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('post', 'postCreationError'),
+      message: TS.string('post', 'postCreationError'),
       details: error.message
     })
   }
@@ -493,7 +493,7 @@ postRouter.delete('/post/:id', userAuthMiddleware, async (req, res) => {
   if (!post) {
     return res.status(404).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('post', 'postNotFound')
+      message: TS.string('post', 'postNotFound')
     })
   }
 
@@ -503,7 +503,7 @@ postRouter.delete('/post/:id', userAuthMiddleware, async (req, res) => {
   if (!(post.owner._id).equals(user._id)) {
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('post', 'postNotOwner')
+      message: TS.string('post', 'postNotOwner')
     })
   }
 
@@ -519,7 +519,7 @@ postRouter.delete('/post/:id', userAuthMiddleware, async (req, res) => {
     console.error(error);
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('post', 'postDeletionError'),
+      message: TS.string('post', 'postDeletionError'),
       details: error.message
     })
   }
@@ -542,7 +542,7 @@ postRouter.get('/post/marketing/:stateCode', userAuthMiddleware, async (req, res
     if (!posts.length) {
       return res.status(200).send({
         status: "error",
-        message: LanguageHelper.getLanguageString('post', 'postNotFound')
+        message: TS.string('post', 'postNotFound')
       })
     }
 

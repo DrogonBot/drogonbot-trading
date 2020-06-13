@@ -2,7 +2,7 @@ import express from 'express';
 import _ from 'lodash';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { SectorHelper } from '../../utils/SectorHelper';
 import { TextHelper } from '../../utils/TextHelper';
 import { Sector } from './sector.model';
@@ -26,7 +26,7 @@ sectorRouter.get("/sectors/:country", userAuthMiddleware, async (req, res) => {
 
     res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('sector', 'sectorsLoadError')
+      message: TS.string('sector', 'sectorsLoadError')
     })
 
   }
@@ -49,7 +49,7 @@ sectorRouter.get("/sectors/keywords/all", async (req, res) => {
     console.error(error);
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('sector', 'sectorKeywordAllError')
+      message: TS.string('sector', 'sectorKeywordAllError')
     })
   }
 
@@ -83,7 +83,7 @@ sectorRouter.get("/sectors/search/:keyword", userAuthMiddleware, async (req, res
     console.error(error);
     res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('sector', 'sectorKeywordError')
+      message: TS.string('sector', 'sectorKeywordError')
     })
   }
 

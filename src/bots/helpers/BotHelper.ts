@@ -6,7 +6,7 @@ import { IPost, PostSource } from '../../resources/Post/post.types';
 import { IUser, User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ICrawlerFunctions, IProxyItem, PagePattern, ProxyType } from '../types/bots.types';
@@ -268,9 +268,9 @@ export class BotHelper {
 
           // hide all contact data from page source, if this is a redirectOnly page
           if (redirectToSourceOnly) {
-            newPost.content = newPost.content.replace(new RegExp(/\S+@\S+\.\S+/, 'ig'), LanguageHelper.getLanguageString('post', 'postIsRedirectOnlyMessage'));
+            newPost.content = newPost.content.replace(new RegExp(/\S+@\S+\.\S+/, 'ig'), TS.string('post', 'postIsRedirectOnlyMessage'));
 
-            newPost.content = newPost.content.replace(new RegExp(/(\(?\d{2}\)?\.?\s?)?(\d{4,5}(\-?|\s?)\d{4})/, 'g'), LanguageHelper.getLanguageString('post', 'postIsRedirectOnlyMessage'));
+            newPost.content = newPost.content.replace(new RegExp(/(\(?\d{2}\)?\.?\s?)?(\d{4,5}(\-?|\s?)\d{4})/, 'g'), TS.string('post', 'postIsRedirectOnlyMessage'));
           }
 
           await newPost.save()

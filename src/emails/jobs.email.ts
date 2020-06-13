@@ -8,7 +8,7 @@ import {
 } from '../resources/Resume/resume.types';
 import { IUser } from '../resources/User/user.model';
 import { DateTimeHelper } from '../utils/DateTimeHelper';
-import { LanguageHelper } from '../utils/LanguageHelper';
+import { TS } from '../utils/LanguageHelper';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
 export class JobsEmailManager extends TransactionalEmailManager {
@@ -23,26 +23,26 @@ export class JobsEmailManager extends TransactionalEmailManager {
     const jobName = application.jobRole
 
     const customVars = {
-      jobsEmailTitle: LanguageHelper.getLanguageString('post', 'jobsEmailTitle', {
+      jobsEmailTitle: TS.string('post', 'jobsEmailTitle', {
         jobName
       }),
-      jobsEmailDearHiringManager: LanguageHelper.getLanguageString('post', 'jobsEmailDearHiringManager'),
-      jobsEmailMyNameIs: LanguageHelper.getLanguageString('post', 'jobsEmailMyNameIs', {
+      jobsEmailDearHiringManager: TS.string('post', 'jobsEmailDearHiringManager'),
+      jobsEmailMyNameIs: TS.string('post', 'jobsEmailMyNameIs', {
         userName: user.name,
         jobName,
       }),
-      jobsEmailHeresMyResume: LanguageHelper.getLanguageString('post', 'jobsEmailHeresMyResume', {
+      jobsEmailHeresMyResume: TS.string('post', 'jobsEmailHeresMyResume', {
         userEmail: user.email,
         userPhone: resume.phone
       }),
-      jobsEmailHighlights: LanguageHelper.getLanguageString('post', 'jobsEmailHighlights'),
-      jobsEmailLocation: LanguageHelper.getLanguageString('post', 'jobsEmailLocation'),
-      jobsEmailAddress: LanguageHelper.getLanguageString("post", 'jobsEmailAddress'),
-      jobsEmailPhone: LanguageHelper.getLanguageString("post", "jobsEmailPhone"),
-      jobsEmailEducation: LanguageHelper.getLanguageString("post", "jobsEmailEducation"),
-      jobsEmailExperiences: LanguageHelper.getLanguageString("post", "jobsEmailExperiences"),
-      jobsEmailAwards: LanguageHelper.getLanguageString("post", "jobsEmailAwards"),
-      jobsEmailAdditionalInfos: LanguageHelper.getLanguageString("post", "jobsEmailAdditionalInfos"),
+      jobsEmailHighlights: TS.string('post', 'jobsEmailHighlights'),
+      jobsEmailLocation: TS.string('post', 'jobsEmailLocation'),
+      jobsEmailAddress: TS.string("post", 'jobsEmailAddress'),
+      jobsEmailPhone: TS.string("post", "jobsEmailPhone"),
+      jobsEmailEducation: TS.string("post", "jobsEmailEducation"),
+      jobsEmailExperiences: TS.string("post", "jobsEmailExperiences"),
+      jobsEmailAwards: TS.string("post", "jobsEmailAwards"),
+      jobsEmailAdditionalInfos: TS.string("post", "jobsEmailAdditionalInfos"),
       jobName,
       resumeHighlights: resume.highlights,
       resumeCity: resume.city,
@@ -136,22 +136,22 @@ export class JobsEmailManager extends TransactionalEmailManager {
   private _generateExperiences(resumeExperiences: IResumeExperience[], emailType: EmailType) {
 
     if (resumeExperiences.length === 0) {
-      return LanguageHelper.getLanguageString('post', 'jobsEmailNoData')
+      return TS.string('post', 'jobsEmailNoData')
     }
 
     let htmlOutput = "";
 
     for (const resumeExperience of resumeExperiences) {
-      const endingDate = resumeExperience.inProgress ? LanguageHelper.getLanguageString('post', 'jobsEmailInProgress') : DateTimeHelper.convertNodeTSToDate(resumeExperience.endingDate, LanguageHelper.getLanguageString(null, 'globalDateFormat'))
+      const endingDate = resumeExperience.inProgress ? TS.string('post', 'jobsEmailInProgress') : DateTimeHelper.convertNodeTSToDate(resumeExperience.endingDate, TS.string(null, 'globalDateFormat'))
 
 
       htmlOutput += `
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailCompany'), resumeExperience.company, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailPosition'), resumeExperience.position, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailLocation'), resumeExperience.location, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailStartingDate'), DateTimeHelper.convertNodeTSToDate(resumeExperience.startingDate, LanguageHelper.getLanguageString(null, 'globalDateFormat')), emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailEndingDate'), endingDate, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailDetails'), resumeExperience.details, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailCompany'), resumeExperience.company, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailPosition'), resumeExperience.position, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailLocation'), resumeExperience.location, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailStartingDate'), DateTimeHelper.convertNodeTSToDate(resumeExperience.startingDate, TS.string(null, 'globalDateFormat')), emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailEndingDate'), endingDate, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailDetails'), resumeExperience.details, emailType)}
    `
 
       htmlOutput += `<br/>`
@@ -165,22 +165,22 @@ export class JobsEmailManager extends TransactionalEmailManager {
   private _generateEducations(resumeEducations: IResumeEducation[], emailType: EmailType) {
 
     if (resumeEducations.length === 0) {
-      return LanguageHelper.getLanguageString('post', 'jobsEmailNoData')
+      return TS.string('post', 'jobsEmailNoData')
     }
 
     let htmlOutput = "";
 
     for (const resumeEducation of resumeEducations) {
 
-      const endingDate = resumeEducation.inProgress ? LanguageHelper.getLanguageString('post', 'jobsEmailInProgress') : DateTimeHelper.convertNodeTSToDate(resumeEducation.endingDate, LanguageHelper.getLanguageString(null, 'globalDateFormat'))
+      const endingDate = resumeEducation.inProgress ? TS.string('post', 'jobsEmailInProgress') : DateTimeHelper.convertNodeTSToDate(resumeEducation.endingDate, TS.string(null, 'globalDateFormat'))
 
       htmlOutput += `
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobEmailEducationTitleString'), resumeEducation.title, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailInstitution'), resumeEducation.institution, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailLocation'), resumeEducation.location, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString("post", 'jobsEmailStartingDate'), DateTimeHelper.convertNodeTSToDate(resumeEducation.startingDate, LanguageHelper.getLanguageString(null, 'globalDateFormat')), emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailEndingDate'), endingDate, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailDetails'), resumeEducation.details, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobEmailEducationTitleString'), resumeEducation.title, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailInstitution'), resumeEducation.institution, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailLocation'), resumeEducation.location, emailType)}
+      ${this._generateResumeItem(TS.string("post", 'jobsEmailStartingDate'), DateTimeHelper.convertNodeTSToDate(resumeEducation.startingDate, TS.string(null, 'globalDateFormat')), emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailEndingDate'), endingDate, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailDetails'), resumeEducation.details, emailType)}
   `
 
       htmlOutput += emailType === EmailType.Html ? `<br/>` : `\n`
@@ -193,7 +193,7 @@ export class JobsEmailManager extends TransactionalEmailManager {
 
   private _generateAwards(resumeAwards: IResumeAward[], emailType: EmailType) {
     if (resumeAwards.length === 0) {
-      return LanguageHelper.getLanguageString('post', 'jobsEmailNoData')
+      return TS.string('post', 'jobsEmailNoData')
     }
 
     let htmlOutput = "";
@@ -201,8 +201,8 @@ export class JobsEmailManager extends TransactionalEmailManager {
     for (const resumeAward of resumeAwards) {
 
       htmlOutput += `
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobEmailEducationTitleString'), resumeAward.title, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailDescription'), resumeAward.description, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobEmailEducationTitleString'), resumeAward.title, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailDescription'), resumeAward.description, emailType)}
   `
       htmlOutput += emailType === EmailType.Html ? `<br/>` : `\n`
     }
@@ -213,7 +213,7 @@ export class JobsEmailManager extends TransactionalEmailManager {
   private _generateAdditionalInfos(resumeAdditionalInfos: IResumeAdditionalInfo[], emailType: EmailType) {
 
     if (resumeAdditionalInfos.length === 0) {
-      return LanguageHelper.getLanguageString('post', 'jobsEmailNoData')
+      return TS.string('post', 'jobsEmailNoData')
     }
 
     let htmlOutput = "";
@@ -221,9 +221,9 @@ export class JobsEmailManager extends TransactionalEmailManager {
     for (const resumeAdditionalInfo of resumeAdditionalInfos) {
 
       htmlOutput += `
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobEmailEducationTitleString'), resumeAdditionalInfo.title, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobEmailEducationTitleString'), resumeAdditionalInfo.title, emailType)}
-      ${this._generateResumeItem(LanguageHelper.getLanguageString('post', 'jobsEmailDescription'), resumeAdditionalInfo.description, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobEmailEducationTitleString'), resumeAdditionalInfo.title, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobEmailEducationTitleString'), resumeAdditionalInfo.title, emailType)}
+      ${this._generateResumeItem(TS.string('post', 'jobsEmailDescription'), resumeAdditionalInfo.description, emailType)}
   `
       htmlOutput += emailType === EmailType.Html ? `<br/>` : `\n`
     }

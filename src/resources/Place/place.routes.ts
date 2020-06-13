@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { TextHelper } from '../../utils/TextHelper';
 import { Place } from './place.model';
 
@@ -28,7 +28,7 @@ placeRouter.get("/places/:country/:stateCode", async (req, res) => {
     });
 
     if (!place) {
-      throw new Error(LanguageHelper.getLanguageString('place', 'placesNotfound'))
+      throw new Error(TS.string('place', 'placesNotfound'))
     }
 
     if (citiesOnly) {
@@ -50,7 +50,7 @@ placeRouter.get("/places/:country/:stateCode", async (req, res) => {
 
     res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('place', 'placesLoadError')
+      message: TS.string('place', 'placesLoadError')
     })
 
   }
@@ -89,7 +89,7 @@ placeRouter.get("/places/:country", async (req, res) => {
 
     res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('place', 'placesLoadError')
+      message: TS.string('place', 'placesLoadError')
     })
 
   }

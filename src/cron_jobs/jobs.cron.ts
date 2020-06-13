@@ -8,7 +8,7 @@ import { Post } from '../resources/Post/post.model';
 import { IPostApplication, IPostApplicationStatus } from '../resources/Post/post.types';
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
-import { LanguageHelper } from '../utils/LanguageHelper';
+import { TS } from '../utils/LanguageHelper';
 
 
 export class JobsCron {
@@ -92,7 +92,7 @@ export class JobsCron {
 
               const jobsEmailManager = new JobsEmailManager();
 
-              await jobsEmailManager.sendResume(user.email, LanguageHelper.getLanguageString('post', 'jobsEmailTitle', {
+              await jobsEmailManager.sendResume(user.email, TS.string('post', 'jobsEmailTitle', {
                 jobName: application.jobRole
               }), 'resume', resume,
                 post, user, application)

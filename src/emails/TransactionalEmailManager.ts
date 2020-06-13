@@ -6,7 +6,7 @@ import { Lead } from '../resources/Lead/lead.model';
 import { Log } from '../resources/Log/log.model';
 import { User } from '../resources/User/user.model';
 import { EncryptionHelper } from '../utils/EncryptionHelper';
-import { LanguageHelper } from '../utils/LanguageHelper';
+import { TS } from '../utils/LanguageHelper';
 import { TextHelper } from '../utils/TextHelper';
 
 export enum EmailType {
@@ -68,7 +68,7 @@ export class TransactionalEmailManager {
           const encryptionHelper = new EncryptionHelper();
           const encryptedEmail = encryptionHelper.encrypt(to);
 
-          htmlWithUnsubscribeLink = html.replace('[Unsubscribe Link]', LanguageHelper.getLanguageString(null, 'unsubscribeLink', {
+          htmlWithUnsubscribeLink = html.replace('[Unsubscribe Link]', TS.string(null, 'unsubscribeLink', {
             unsubscribeUrl: `${process.env.API_URL}/unsubscribe?hashEmail=${encryptedEmail}&lang=${process.env.LANGUAGE}`
           }))
 

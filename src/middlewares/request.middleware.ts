@@ -1,6 +1,6 @@
 import requestIp from 'request-ip';
 
-import { LanguageHelper } from '../utils/LanguageHelper';
+import { TS } from '../utils/LanguageHelper';
 import { RouterHelper } from '../utils/RouterHelper';
 
 export class RequestMiddleware {
@@ -15,7 +15,7 @@ export class RequestMiddleware {
       if (forbiddenKeys) {
         return res.status(400).send({
           status: "error",
-          message: LanguageHelper.getLanguageString(
+          message: TS.string(
             null,
             "globalInvalidKeys", {
             forbiddenKeys

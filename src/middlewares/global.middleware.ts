@@ -1,4 +1,4 @@
-import { LanguageHelper } from '../utils/LanguageHelper';
+import { TS } from '../utils/LanguageHelper';
 
 export class GlobalMiddleware {
   public static checkMethods = (req, res, next) => {
@@ -7,7 +7,7 @@ export class GlobalMiddleware {
     if (method === "GET") {
       return res.status(401).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(null, "methodNotAllowed")
+        message: TS.string(null, "methodNotAllowed")
       });
     } else {
       console.log(`Express Middleware => ${method} / ${path}`);
@@ -20,7 +20,7 @@ export class GlobalMiddleware {
     console.log('Refusing connection - maintenance mode');
     return res.status(401).send({
       status: "error",
-      message: LanguageHelper.getLanguageString(null, "appMaintenanceMode")
+      message: TS.string(null, "appMaintenanceMode")
     });
   };
 

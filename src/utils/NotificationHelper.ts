@@ -9,7 +9,7 @@ import { IPost } from '../resources/Post/post.types';
 import { IUser, User } from '../resources/User/user.model';
 import { IReportItem } from '../typescript/report.types';
 import { GenericHelper } from './GenericHelper';
-import { LanguageHelper } from './LanguageHelper';
+import { TS } from './LanguageHelper';
 import { PushNotificationHelper } from './PushNotificationHelper';
 
 
@@ -35,7 +35,7 @@ export class NotificationHelper {
 
         await PushNotificationHelper.sendPush([user.pushToken], {
           sound: "default",
-          body: LanguageHelper.getLanguageString('post', 'postNotification', {
+          body: TS.string('post', 'postNotification', {
             jobRole
           }),
           data: {
@@ -190,11 +190,11 @@ export class NotificationHelper {
 
     await accountEmailManager.sendEmail(
       user.email,
-      LanguageHelper.getLanguageString('post', 'jobsNotificationSubject', { jobRole: post.jobRoles[0], postTitle: post.title }),
+      TS.string('post', 'jobsNotificationSubject', { jobRole: post.jobRoles[0], postTitle: post.title }),
       "job-notification", {
-      jobsNotificationFirstPhrase: LanguageHelper.getLanguageString('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: user.name || "" }),
-      jobsNotificationSecondParagraph: LanguageHelper.getLanguageString('post', secondPhraseSample || 'jobsNotificationSecondParagraph'),
-      jobsNotificationClosing: LanguageHelper.getLanguageString('post', closingSample || 'jobsNotificationClosing', {
+      jobsNotificationFirstPhrase: TS.string('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: user.name || "" }),
+      jobsNotificationSecondParagraph: TS.string('post', secondPhraseSample || 'jobsNotificationSecondParagraph'),
+      jobsNotificationClosing: TS.string('post', closingSample || 'jobsNotificationClosing', {
         postUrl: `https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_sendgrid&utm_medium=email`
       }),
 
@@ -206,7 +206,7 @@ export class NotificationHelper {
       <br />
     <tr>
     <td align="center" style="word-break: break-word; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 16px;">
-    <a href="https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_sendgrid&utm_medium=email" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">${LanguageHelper.getLanguageString('post', 'jobsNotificationPostCTA')}</a>
+    <a href="https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_sendgrid&utm_medium=email" class="f-fallback button" target="_blank" style="color: #FFF; border-color: #3869d4; border-style: solid; border-width: 10px 18px; background-color: #3869D4; display: inline-block; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); -webkit-text-size-adjust: none; box-sizing: border-box;">${TS.string('post', 'jobsNotificationPostCTA')}</a>
   </td>
   </tr>
       `

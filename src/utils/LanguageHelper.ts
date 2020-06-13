@@ -2,7 +2,7 @@ import { globalStrings } from '../lang/global.lang';
 import { TextHelper } from '../utils/TextHelper';
 
 
-export class LanguageHelper {
+export class TS {
 
 
   public static replaceTemplateStrings = (str: string, customVars: object) => {
@@ -17,14 +17,14 @@ export class LanguageHelper {
 
   }
 
-  public static getLanguageString = (
+  public static string = (
     model: any = null,
     key: string,
     customVars: object = {}
   ) => {
     if (!model) {
       // pass only the global strings
-      return LanguageHelper.replaceTemplateStrings(globalStrings[key][process.env.LANGUAGE], customVars)
+      return TS.replaceTemplateStrings(globalStrings[key][process.env.LANGUAGE], customVars)
 
     }
 

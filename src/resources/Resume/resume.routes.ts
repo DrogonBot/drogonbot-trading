@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { RouterHelper } from '../../utils/RouterHelper';
 import { IFileSaveOptions, ISaveFileToFolderResult, UploadHelper, UploadOutputResult } from '../../utils/UploadHelper';
 import { Resume } from './resume.model';
@@ -25,7 +25,7 @@ resumeRouter.get('/resumes', userAuthMiddleware, async (req, res) => {
   catch (error) {
     res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('resume', 'resumesNotFoundError')
+      message: TS.string('resume', 'resumesNotFoundError')
     })
   }
 })
@@ -46,7 +46,7 @@ resumeRouter.get("/resume/:resumeId", userAuthMiddleware, async (req, res) => {
   catch (error) {
     res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('resume', 'resumeNotFound')
+      message: TS.string('resume', 'resumeNotFound')
     })
 
   }
@@ -69,7 +69,7 @@ resumeRouter.post('/resume', userAuthMiddleware, async (req, res) => {
   catch (error) {
     res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('resume', 'resumeCreationError'),
+      message: TS.string('resume', 'resumeCreationError'),
       details: error.message
     })
   }
@@ -90,7 +90,7 @@ resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => 
     if (!resume) {
       return res.status(400).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('resume', 'resumeNotFound'),
+        message: TS.string('resume', 'resumeNotFound'),
       })
     }
 
@@ -101,7 +101,7 @@ resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => 
 
       return res.status(400).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('resume', 'resumeUserNotAuthorized'),
+        message: TS.string('resume', 'resumeUserNotAuthorized'),
       })
     }
 
@@ -111,7 +111,7 @@ resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => 
     ) {
       return res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           "resume",
           "resumePatchForbiddenKeys"
         )
@@ -134,7 +134,7 @@ resumeRouter.patch('/resume/:resumeId', userAuthMiddleware, async (req, res) => 
 
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('resume', 'resumeUpdateError'),
+      message: TS.string('resume', 'resumeUpdateError'),
       details: error.message
     })
 
@@ -163,7 +163,7 @@ resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (re
   if (!resume) {
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('resume', 'resumeNotFound')
+      message: TS.string('resume', 'resumeNotFound')
     })
   }
 
@@ -172,7 +172,7 @@ resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (re
   if (!resume.ownerId.equals(user._id)) {
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('resume', 'resumeUserNotAuthorized')
+      message: TS.string('resume', 'resumeUserNotAuthorized')
     })
   }
 
@@ -201,7 +201,7 @@ resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (re
   if (!uploadedFileResult) {
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('resume', 'resumeAttachmentNotFound')
+      message: TS.string('resume', 'resumeAttachmentNotFound')
     })
   }
 
@@ -216,7 +216,7 @@ resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (re
         case UploadOutputResult.UnallowedExtension:
           return res.status(400).send({
             status: 'error',
-            message: LanguageHelper.getLanguageString(null, 'globalFileTypeError', {
+            message: TS.string(null, 'globalFileTypeError', {
               extension: result.extension,
               acceptedTypes: options.allowedFileExtensions
             })
@@ -224,7 +224,7 @@ resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (re
         case UploadOutputResult.MaxFileSize:
           return res.status(400).send({
             status: 'error',
-            message: LanguageHelper.getLanguageString(null, 'globalFileMaximumSize', {
+            message: TS.string(null, 'globalFileMaximumSize', {
               size: options.maxFileSizeInMb
             })
           })
@@ -254,7 +254,7 @@ resumeRouter.post('/resume/:resumeId/attachments', userAuthMiddleware, async (re
   catch (error) {
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('resume', 'resumeFileUploadError'),
+      message: TS.string('resume', 'resumeFileUploadError'),
       details: error.message
     })
   }
@@ -291,7 +291,7 @@ resumeRouter.delete("/resume/:resumeId", userAuthMiddleware, async (req, res) =>
       if (!resume.ownerId.equals(user._id)) {
         return res.status(400).send({
           status: 'error',
-          message: LanguageHelper.getLanguageString('post', 'postNotOwner')
+          message: TS.string('post', 'postNotOwner')
         })
       }
 
@@ -303,14 +303,14 @@ resumeRouter.delete("/resume/:resumeId", userAuthMiddleware, async (req, res) =>
     } else {
       res.status(400).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('resume', 'resumeNotFound')
+        message: TS.string('resume', 'resumeNotFound')
       });
     }
 
   } catch (error) {
     res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('resume', 'resumeDeletionError'),
+      message: TS.string('resume', 'resumeDeletionError'),
       details: error.message
     });
   }

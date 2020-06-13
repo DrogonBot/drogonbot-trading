@@ -6,7 +6,7 @@ import { USER_WEEKLY_CREDITS_THRESHOLD } from '../../constants/credits.constant'
 import { AccountEmailManager } from '../../emails/account.email';
 import { MarketingEmailManager } from '../../emails/MarketingEmailManager';
 import { GenericHelper } from '../../utils/GenericHelper';
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { TextHelper } from '../../utils/TextHelper';
 import { AuthType, IUserDocument, UserType } from './user.types';
@@ -176,7 +176,7 @@ userSchema.methods.registerUser = async function (req?) {
 
   await accountEmailManager.sendEmail(
     user.email,
-    LanguageHelper.getLanguageString('user', 'newAccountEmailSubject', {
+    TS.string('user', 'newAccountEmailSubject', {
       userName: firstName,
       appName: process.env.APP_NAME
     }),
@@ -187,17 +187,17 @@ userSchema.methods.registerUser = async function (req?) {
       userEmail: user.email,
       support_email: process.env.SUPPORT_EMAIL,
       action_url: process.env.WEB_APP_URL,
-      newAccountEmailFirstParagraph: LanguageHelper.getLanguageString('user', 'newAccountEmailFirstParagraph', {
+      newAccountEmailFirstParagraph: TS.string('user', 'newAccountEmailFirstParagraph', {
         appName: process.env.APP_NAME
       }),
-      newAccountEmailTitle: LanguageHelper.getLanguageString('user', 'newAccountEmailTitle', {
+      newAccountEmailTitle: TS.string('user', 'newAccountEmailTitle', {
         firstName
       }),
-      newAccountEmailForReference: LanguageHelper.getLanguageString('user', 'newAccountEmailForReference'),
-      newAccountEmailBottom: LanguageHelper.getLanguageString('user', 'newAccountEmailBottom', {
+      newAccountEmailForReference: TS.string('user', 'newAccountEmailForReference'),
+      newAccountEmailBottom: TS.string('user', 'newAccountEmailBottom', {
         appName: process.env.APP_NAME
       }),
-      newAccountWhatsAppGroup: LanguageHelper.getLanguageString('user', 'newAccountWhatsAppGroup')
+      newAccountWhatsAppGroup: TS.string('user', 'newAccountWhatsAppGroup')
     }
   );
 
@@ -261,7 +261,7 @@ userSchema.statics.findByCredentials = async (
 
   if (!user) {
     throw new Error(
-      LanguageHelper.getLanguageString("user", "userNotFoundOnLogin")
+      TS.string("user", "userNotFoundOnLogin")
     );
   }
 
@@ -270,7 +270,7 @@ userSchema.statics.findByCredentials = async (
 
   if (!isMatch) {
     throw new Error(
-      LanguageHelper.getLanguageString("user", "userWrongPassword")
+      TS.string("user", "userWrongPassword")
     );
   }
 

@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { Country } from './country.model';
 
 // @ts-ignore
@@ -12,7 +12,7 @@ countryRouter.get("/country", async (req, res) => {
     const countries = await Country.find({})
 
     if (!countries) {
-      throw new Error(LanguageHelper.getLanguageString('country', 'countryNotFound'))
+      throw new Error(TS.string('country', 'countryNotFound'))
     }
 
 
@@ -27,7 +27,7 @@ countryRouter.get("/country", async (req, res) => {
 
     return res.status(400).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('country', 'countryGetError')
+      message: TS.string('country', 'countryGetError')
     })
 
   }

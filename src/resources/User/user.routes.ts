@@ -14,7 +14,7 @@ import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { RequestMiddleware } from '../../middlewares/request.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { EncryptionHelper } from '../../utils/EncryptionHelper';
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { RouterHelper } from '../../utils/RouterHelper';
 import { TextHelper } from '../../utils/TextHelper';
@@ -188,7 +188,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
         if (emailAlreadyExists) {
           return res.status(400).send({
             status: "error",
-            message: LanguageHelper.getLanguageString(
+            message: TS.string(
               "user",
               "userEmailAlreadyRegistered"
             ),
@@ -218,7 +218,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
 
         return res.status(400).send({
           status: "error",
-          message: LanguageHelper.getLanguageString(
+          message: TS.string(
             "user",
             "userFailedLoginOAuth"
           ),
@@ -252,7 +252,7 @@ userRouter.post("/users/login/google-oauth", async (req, res) => {
   verify().catch((error) => {
     return res.status(400).send({
       status: "error",
-      message: LanguageHelper.getLanguageString("user", "userFailedLoginOAuth"),
+      message: TS.string("user", "userFailedLoginOAuth"),
       details: error.message,
     });
   });
@@ -295,7 +295,7 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
       if (emailAlreadyExists) {
         return res.status(400).send({
           status: "error",
-          message: LanguageHelper.getLanguageString(
+          message: TS.string(
             "user",
             "userEmailAlreadyRegistered"
           ),
@@ -322,7 +322,7 @@ userRouter.post("/users/login/facebook-oauth", async (req, res) => {
     } catch (error) {
       return res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           "user",
           "userFailedLoginOAuth"
         ),
@@ -379,7 +379,7 @@ userRouter.post("/users/reset-password", async (req, res) => {
   if (!user) {
     return res.status(400).send({
       status: "error",
-      message: LanguageHelper.getLanguageString("user", "userNotFound"),
+      message: TS.string("user", "userNotFound"),
     });
   }
 
@@ -404,7 +404,7 @@ userRouter.post("/users/reset-password", async (req, res) => {
 
   return res.status(200).send({
     status: "success",
-    message: LanguageHelper.getLanguageString(
+    message: TS.string(
       "user",
       "userForgotPasswordResetLink"
     ),
@@ -480,11 +480,11 @@ userRouter.post(
     if (stateCode && stateCode === "default") {
       return res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           null,
           "globalInvalidValueForField",
           {
-            invalidField: LanguageHelper.getLanguageString(
+            invalidField: TS.string(
               "resume",
               "genericProvince"
             ),
@@ -496,11 +496,11 @@ userRouter.post(
     if (city && city === "default") {
       return res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           null,
           "globalInvalidValueForField",
           {
-            invalidField: LanguageHelper.getLanguageString(
+            invalidField: TS.string(
               "resume",
               "genericCity"
             ),
@@ -513,7 +513,7 @@ userRouter.post(
       if (password !== passwordConfirmation) {
         return res.status(400).send({
           status: "error",
-          message: LanguageHelper.getLanguageString(
+          message: TS.string(
             "user",
             "userPasswordConfirmationDontMatch"
           ),
@@ -530,7 +530,7 @@ userRouter.post(
 
         return res.status(400).send({
           status: "error",
-          message: LanguageHelper.getLanguageString(
+          message: TS.string(
             "user",
             "userEmailAlreadyRegistered"
           ),
@@ -553,7 +553,7 @@ userRouter.post(
     } catch (error) {
       res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString("user", "userCreationError"),
+        message: TS.string("user", "userCreationError"),
         details: error.message,
       });
     }
@@ -573,7 +573,7 @@ userRouter.post(
 
       return res.status(200).send({
         status: "success",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           "user",
           "userPushNotificationSaveSuccess"
         ),
@@ -582,7 +582,7 @@ userRouter.post(
       console.error(error);
       return res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           "user",
           "userPushNotificationSaveError"
         ),
@@ -613,12 +613,12 @@ userRouter.post("/users/logout", userAuthMiddleware, async (req, res) => {
 
     return res.status(200).send({
       status: "success",
-      message: LanguageHelper.getLanguageString("user", "userLogoutSuccess"),
+      message: TS.string("user", "userLogoutSuccess"),
     });
   } catch (error) {
     return res.status(400).send({
       status: "error",
-      message: LanguageHelper.getLanguageString("user", "userLogoutError"),
+      message: TS.string("user", "userLogoutError"),
       details: error.message,
     });
   }
@@ -636,13 +636,13 @@ userRouter.post("/users/logout/all", userAuthMiddleware, async (req, res) => {
 
     return res.status(200).send({
       status: "success",
-      message: LanguageHelper.getLanguageString("user", "userLogoutAllSuccess"),
+      message: TS.string("user", "userLogoutAllSuccess"),
     });
   } catch (error) {
     console.log(error);
     return res.status(500).send({
       status: "error",
-      message: LanguageHelper.getLanguageString("user", "userLogoutAllError"),
+      message: TS.string("user", "userLogoutAllError"),
       details: error.message,
     });
   }
@@ -665,7 +665,7 @@ const upload = multer({
       // reject file callback
       return cb(
         new Error(
-          LanguageHelper.getLanguageString(
+          TS.string(
             "user",
             "userErrorFileUploadFormat",
             {
@@ -706,13 +706,13 @@ userRouter.post(
 
     return res.status(200).send({
       status: "success",
-      message: LanguageHelper.getLanguageString("user", "userAvatarUploaded"),
+      message: TS.string("user", "userAvatarUploaded"),
     });
   },
   (error, req, res, next) => {
     return res.status(500).send({
       status: "error",
-      message: LanguageHelper.getLanguageString(
+      message: TS.string(
         "user",
         "userAvatarErrorUpload"
       ),
@@ -732,7 +732,7 @@ userRouter.get("/user/:id/profile", async (req, res) => {
     if (!user || !user.avatar) {
       return res.status(500).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           "user",
           "userAvatarUploadEmpty"
         ),
@@ -758,7 +758,7 @@ userRouter.delete("/users/profile/me", userAuthMiddleware, async (req, res) => {
 
     return res.status(200).send({
       status: "success",
-      message: LanguageHelper.getLanguageString(
+      message: TS.string(
         "user",
         "userAvatarUploadDeleted"
       ),
@@ -766,7 +766,7 @@ userRouter.delete("/users/profile/me", userAuthMiddleware, async (req, res) => {
   } catch (error) {
     res.status(400).send({
       status: "error",
-      message: LanguageHelper.getLanguageString(
+      message: TS.string(
         "user",
         "userAvatarUploadDeletedError"
       ),
@@ -787,7 +787,7 @@ userRouter.get("/users/profile", userAuthMiddleware, async (req, res) => {
   } catch (error) {
     return res.status(500).send({
       status: "error",
-      message: LanguageHelper.getLanguageString("user", "userProfileGetError"),
+      message: TS.string("user", "userProfileGetError"),
       details: error.message,
     });
   }
@@ -811,7 +811,7 @@ userRouter.post("/users/change-password", async (req, res) => {
     console.error(error);
     return res.status(400).send({
       status: "error",
-      message: LanguageHelper.getLanguageString(
+      message: TS.string(
         "user",
         "userInvalidCredentials"
       ),
@@ -825,7 +825,7 @@ userRouter.post("/users/change-password", async (req, res) => {
   if (!isMatch) {
     return res.status(400).send({
       status: "error",
-      message: LanguageHelper.getLanguageString(
+      message: TS.string(
         "user",
         "userCurrentPasswordIncorrect"
       ),
@@ -837,7 +837,7 @@ userRouter.post("/users/change-password", async (req, res) => {
   if (newPassword !== repeatNewPassword) {
     return res.status(400).send({
       status: "error",
-      message: LanguageHelper.getLanguageString(
+      message: TS.string(
         "user",
         "userNewPasswordsDoesntMatch"
       ),
@@ -852,7 +852,7 @@ userRouter.post("/users/change-password", async (req, res) => {
 
   return res.status(200).send({
     status: "success",
-    message: LanguageHelper.getLanguageString(
+    message: TS.string(
       "user",
       "userPasswordChangedSuccess"
     ),
@@ -900,7 +900,7 @@ userRouter.delete(
       console.log(error);
       return res.status(500).send({
         status: "error",
-        message: LanguageHelper.getLanguageString("user", "userDeleteError"),
+        message: TS.string("user", "userDeleteError"),
         details: error.message,
       });
     }
@@ -925,7 +925,7 @@ userRouter.patch("/users/me", [userAuthMiddleware], async (req, res) => {
   ) {
     return res.status(400).send({
       status: "error",
-      message: LanguageHelper.getLanguageString(
+      message: TS.string(
         "user",
         "userPatchForbiddenKeys"
       ),
@@ -962,7 +962,7 @@ userRouter.patch(
     if (!RouterHelper.checkRequestKeysAllowed(req.body, ["name", "email"])) {
       return res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           "user",
           "userPatchForbiddenKeys"
         ),
@@ -980,7 +980,7 @@ userRouter.patch(
       if (!user) {
         return res.status(400).send({
           status: "error",
-          message: LanguageHelper.getLanguageString("user", "userNotFound"),
+          message: TS.string("user", "userNotFound"),
         });
       }
 
@@ -1000,7 +1000,7 @@ userRouter.patch(
       console.log(error);
       return res.status(400).send({
         status: "error",
-        message: LanguageHelper.getLanguageString("user", "userFailedUpdate"),
+        message: TS.string("user", "userFailedUpdate"),
         details: error.message,
       });
     }
@@ -1019,7 +1019,7 @@ userRouter.post(
       if (!user.credits || user.credits <= 0) {
         return res.status(200).send({
           status: "error",
-          message: LanguageHelper.getLanguageString(
+          message: TS.string(
             "user",
             "userCreditsInsuficient"
           ),
@@ -1042,7 +1042,7 @@ userRouter.post(
 
         return res.status(200).send({
           status: "success",
-          message: LanguageHelper.getLanguageString(
+          message: TS.string(
             "user",
             "userCreditsConsumedSuccess"
           ),
@@ -1051,13 +1051,13 @@ userRouter.post(
         console.error(error);
         return res.status(200).send({
           status: "error",
-          message: LanguageHelper.getLanguageString("user", "userCreditsError"),
+          message: TS.string("user", "userCreditsError"),
         });
       }
     } else {
       return res.status(200).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           "user",
           "userNotFoundByToken"
         ),
@@ -1081,7 +1081,7 @@ userRouter.post(
     if (!user) {
       return res.status(200).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           "user",
           "userNotFoundByToken"
         ),
@@ -1096,7 +1096,7 @@ userRouter.post(
     if (checkClickAlreadyLoggedByThisUser) {
       return res.status(200).send({
         status: "error",
-        message: LanguageHelper.getLanguageString(
+        message: TS.string(
           "user",
           "userClickAlreadyLogged"
         ),
@@ -1118,7 +1118,7 @@ userRouter.post(
 
     return res.status(200).send({
       status: "success",
-      message: LanguageHelper.getLanguageString("user", "userClickComputed"),
+      message: TS.string("user", "userClickComputed"),
     });
   }
 );

@@ -1,4 +1,4 @@
-import { LanguageHelper } from '../utils/LanguageHelper';
+import { TS } from '../utils/LanguageHelper';
 import { MiddlewareHelper } from '../utils/MiddlewareHelper';
 
 const userAuthMiddleware = async (req, res, next) => {
@@ -9,7 +9,7 @@ const userAuthMiddleware = async (req, res, next) => {
     if (!user) {
       return res.status(401).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('user', 'userNotFoundByToken')
+        message: TS.string('user', 'userNotFoundByToken')
       });
     }
 
@@ -20,7 +20,7 @@ const userAuthMiddleware = async (req, res, next) => {
   } catch (error) {
     return res.status(401).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('user', 'userNotAuthenticated')
+      message: TS.string('user', 'userNotAuthenticated')
     });
   }
 };

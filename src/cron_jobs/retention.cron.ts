@@ -2,7 +2,7 @@ import DateDiff from 'date-diff';
 import cron from 'node-cron';
 
 import { IUser, User } from '../resources/User/user.model';
-import { LanguageHelper } from '../utils/LanguageHelper';
+import { TS } from '../utils/LanguageHelper';
 import { PushNotificationHelper } from '../utils/PushNotificationHelper';
 
 
@@ -29,7 +29,7 @@ export class RetentionCron {
 
           PushNotificationHelper.sendPush([user.pushToken], {
             sound: "default",
-            body: LanguageHelper.getLanguageString('user', 'cronInactiveUserReminderText', {
+            body: TS.string('user', 'cronInactiveUserReminderText', {
               firstName: user.givenName || user.name
             }),
           })

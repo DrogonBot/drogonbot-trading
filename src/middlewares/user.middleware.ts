@@ -1,4 +1,4 @@
-import { LanguageHelper } from '../utils/LanguageHelper';
+import { TS } from '../utils/LanguageHelper';
 import { MiddlewareHelper } from '../utils/MiddlewareHelper';
 
 
@@ -16,7 +16,7 @@ export class UserMiddleware {
 
           return res.status(401).send({
             status: 'error',
-            message: LanguageHelper.getLanguageString('user', 'userTypeUnauthorized')
+            message: TS.string('user', 'userTypeUnauthorized')
           });
         }
       }

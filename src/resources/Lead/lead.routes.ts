@@ -1,7 +1,7 @@
 import cheerio from 'cheerio';
 import { Router } from 'express';
 
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { UserType } from '../User/user.types';
 import { Lead } from './lead.model';
 
@@ -21,7 +21,7 @@ leadsRouter.post('/leads/save', async (req, res) => {
     if (leadExists) {
       return res.status(200).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('lead', 'leadAlreadyExists')
+        message: TS.string('lead', 'leadAlreadyExists')
       })
     }
 
@@ -35,7 +35,7 @@ leadsRouter.post('/leads/save', async (req, res) => {
 
     return res.status(200).send({
       status: 'success',
-      message: LanguageHelper.getLanguageString('lead', 'leadSaved')
+      message: TS.string('lead', 'leadSaved')
     })
 
   }
@@ -43,7 +43,7 @@ leadsRouter.post('/leads/save', async (req, res) => {
     console.error(error);
     return res.status(200).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('lead', 'leadSavingFailed')
+      message: TS.string('lead', 'leadSavingFailed')
     })
   }
 

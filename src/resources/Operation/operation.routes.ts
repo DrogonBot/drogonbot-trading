@@ -14,7 +14,7 @@ import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedule
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { Lead } from '../Lead/lead.model';
@@ -454,7 +454,7 @@ operationRouter.get('/admin/test', [userAuthMiddleware, UserMiddleware.restrictU
 
             PushNotificationHelper.sendPush([jobReminder.userPush], {
               sound: "default",
-              body: LanguageHelper.getLanguageString('user', 'cronInactiveUserReminderText', {
+              body: TS.string('user', 'cronInactiveUserReminderText', {
                 firstName: user.givenName || user.name
               }),
               data: {

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { LanguageHelper } from '../../utils/LanguageHelper';
+import { TS } from '../../utils/LanguageHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { Post } from '../Post/post.model';
 
@@ -26,7 +26,7 @@ affiliateRouter.get('/affiliate', async (req, res) => {
     } else {
       return res.status(200).send({
         status: 'error',
-        message: LanguageHelper.getLanguageString('post', 'postNotFound')
+        message: TS.string('post', 'postNotFound')
       })
     }
 
@@ -38,7 +38,7 @@ affiliateRouter.get('/affiliate', async (req, res) => {
     console.error(error);
     return res.status(200).send({
       status: 'error',
-      message: LanguageHelper.getLanguageString('post', 'postFetchError')
+      message: TS.string('post', 'postFetchError')
     })
   }
 
