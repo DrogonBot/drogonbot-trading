@@ -134,11 +134,13 @@ export class NotificationHelper {
       // loop through every post
       for (const post of posts) {
 
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Generating reports about: ${post.slug}`)
+
         // * First step: Compile a list of leads/users who may think this post interesting!
 
         const leads = await Lead.find({
           stateCode: post.stateCode,
-          genericPositionsOfInterest: { "$in": post.jobRoles },
+          jobRoles: { "$in": post.jobRoles },
         })
 
         const users = await User.find({
@@ -168,8 +170,13 @@ export class NotificationHelper {
 
           // make sure we dont report the same post twice!
           if (postAlreadyReported) {
-            console.log(`🤖: Skipping report of ${post.slug} to  ${target.email}, it was already reported`);
+            // console.log(`🤖: Skipping report of ${post.slug} to  ${target.email}, it was already reported`);
             continue
+          }
+
+          if (!target.email) {
+            // skip report generation if no email is set, by any reason...
+            continue;
           }
 
           // If post wasn't reported so far, lets generate an output with required info to compile it later
@@ -202,7 +209,7 @@ export class NotificationHelper {
           // forOwn will allow us to iterate on the previously created "grouped" object, through its properties
 
           const targetEmail = key;
-          const slugs = _.map(value, 'postSlug');
+
           const userName = Array.from(new Set(_.map(value, 'userName')))[0]
           const jobRoles = Array.from(new Set(_.flatten(_.map(value, 'jobRoles'))));
 
@@ -212,7 +219,7 @@ export class NotificationHelper {
         `
           })
 
-          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Generating for ${targetEmail}`)
+          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Compiling report for ${targetEmail}...`)
           console.log(value);
 
           // * With our lead email and slugs prepared, lets submit an e-mail!
