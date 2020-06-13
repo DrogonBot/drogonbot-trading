@@ -9,6 +9,7 @@ import { Post } from '../resources/Post/post.model';
 import { IPost } from '../resources/Post/post.types';
 import { IUser, User } from '../resources/User/user.model';
 import { IReportItem } from '../typescript/report.types';
+import { ConsoleColor, ConsoleHelper } from './ConsoleHelper';
 import { GenericHelper } from './GenericHelper';
 import { PushNotificationHelper } from './PushNotificationHelper';
 import { TS } from './TS';
@@ -211,11 +212,8 @@ export class NotificationHelper {
         `
           })
 
-          console.log(`🤖: Job Report: Generating for ${targetEmail}`);
+          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Generating for ${targetEmail}`)
           console.log(value);
-          console.log(userName);
-          console.log(slugs);
-          console.log(jobRoles);
 
           // * With our lead email and slugs prepared, lets submit an e-mail!
 
