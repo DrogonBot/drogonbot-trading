@@ -259,7 +259,7 @@ export class BotHelper {
         continue;
       }
 
-      ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🤖:Adding post ${post.slug} to user's (${lead.email}) report list`)
+      ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🤖:Adding post ${post.slug} to lead's (${lead.email}) report list`)
 
 
       lead.postReportItems = [

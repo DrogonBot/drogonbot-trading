@@ -5,7 +5,7 @@ import SibApiV3Sdk from 'sib-api-v3-sdk';
 
 export interface IEmailProvider {
   key: string,
-  freeTierThreshold: number
+  credits: number
   emailSendingFunction: Function
 }
 
@@ -13,7 +13,7 @@ export interface IEmailProvider {
 export const emailProviders: IEmailProvider[] = [
   {
     // TODO: SENDGRID Free tier is 100 only
-    key: "SENDGRID", freeTierThreshold: 3500, emailSendingFunction: async (to, from, subject, html, text) => {
+    key: "SENDGRID", credits: 3500, emailSendingFunction: async (to, from, subject, html, text) => {
       // @ts-ignore
       sgMail.setApiKey(process.env.SENDGRID_API_KEY)
       sgMail.send({
@@ -27,7 +27,7 @@ export const emailProviders: IEmailProvider[] = [
   },
   {
     key: "SENDINBLUE",
-    freeTierThreshold: 300,
+    credits: 300,
     emailSendingFunction: async (to, from, subject, html, text) => {
       const defaultClient = SibApiV3Sdk.ApiClient.instance;
 
@@ -70,7 +70,7 @@ export const emailProviders: IEmailProvider[] = [
 
   , {
     key: "MAILJET",
-    freeTierThreshold: 200,
+    credits: 200,
     emailSendingFunction: async (to, from, subject, html, text) => {
       const mailjetClient = mailjet.connect(
         process.env.MAILJET_API_KEY_PUBLIC,

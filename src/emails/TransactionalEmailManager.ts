@@ -38,13 +38,13 @@ export class TransactionalEmailManager {
         })
 
 
-        if (providerEmailsToday.length < emailProvider.freeTierThreshold) {
+        if (providerEmailsToday.length < emailProvider.credits) {
 
           console.log('Smart sending email...');
 
           console.log(`Using ${emailProvider.key} to submit email...`);
 
-          console.log(`Credits balance today: ${providerEmailsToday.length}/${emailProvider.freeTierThreshold}`);
+          console.log(`Credits balance today: ${providerEmailsToday.length}/${emailProvider.credits}`);
 
           // Unsubscribed users: check if we should skip this user submission or not
 

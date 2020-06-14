@@ -1,9 +1,13 @@
 import _ from 'lodash';
+import moment from 'moment-timezone';
 
 import { AccountEmailManager } from '../emails/account.email';
 import { ILeadModel } from '../resources/Lead/lead.model';
+import { Log } from '../resources/Log/log.model';
 import { IPost } from '../resources/Post/post.types';
 import { IUser, User } from '../resources/User/user.model';
+import { emailProviders } from './../constants/emailProviders.constant';
+import { JobsCron } from './../cron_jobs/jobs.cron';
 import { Lead } from './../resources/Lead/lead.model';
 import { ConsoleColor, ConsoleHelper } from './ConsoleHelper';
 import { PushNotificationHelper } from './PushNotificationHelper';
@@ -100,6 +104,30 @@ export class NotificationHelper {
     // }
   }
 
+  public static areThereEmailCredits = async () => {
+
+    const today = moment.tz(new Date(), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+
+
+    for (const emailProvider of emailProviders) {
+      try {
+        const providerEmailsToday = await Log.find({
+          action: `${emailProvider.key}_EMAIL_SUBMISSION`,
+          createdAt: { "$gte": today }
+        })
+        if (providerEmailsToday.length < emailProvider.credits) {
+          return true
+        }
+      }
+      catch (error) {
+        console.error(error);
+        return false
+      }
+
+      return false;
+    }
+  }
+
   public static _generateJobRolesString = (jobRoles: string[]) => {
 
     if (jobRoles.length === 1) {
@@ -138,6 +166,16 @@ export class NotificationHelper {
       const jobReportFirstPhrase = TS.string('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: target!.name || "" })
       const jobReportSecondPhrase = TS.string('post', secondPhraseSample || 'jobsNotificationSecondParagraph')
       const jobReportClosing = TS.string('post', closingSample || 'jobsNotificationClosing')
+
+      // check if there're credits left
+      const areThereEmailCredits = await NotificationHelper.areThereEmailCredits()
+
+      if (!areThereEmailCredits) {
+        ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Stopping cron job because there're no credits left!`)
+        JobsCron.reportsCron?.stop();
+        return
+      }
+
 
       const submitted = await accountEmailManager.sendEmail(
         target.email!,
