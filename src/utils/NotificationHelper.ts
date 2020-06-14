@@ -139,6 +139,7 @@ export class NotificationHelper {
     }
 
     let postThumbnailsLinks: string[] = []
+    let reportedPostsJobRoles: string[] = []
 
     // generate post reporting list
     for (const post of interestingPosts) {
@@ -159,6 +160,11 @@ export class NotificationHelper {
         `<a href="https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_sendgrid&utm_medium=email" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${post.title}</a>`
       ]
 
+      reportedPostsJobRoles = [
+        ...reportedPostsJobRoles,
+        ...post.jobRoles
+      ]
+
       // make sure we add on logs that we're reporting this post for this user
       const newReportPost = new Log({
         emitter: email,
@@ -175,7 +181,7 @@ export class NotificationHelper {
     if (postThumbnailsLinks.length >= 1) { // if there's something to send!
       // submit post
 
-      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Submitting report to ${email} about ${interestingPosts.length} posts (${jobRoles})`)
+      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Submitting report to ${email} about ${interestingPosts.length} posts (${reportedPostsJobRoles})`)
 
 
       // * With our lead email and slugs prepared, lets submit an e-mail!
@@ -195,9 +201,9 @@ export class NotificationHelper {
       await accountEmailManager.sendEmail(
         email!,
         jobRoles!.length === 1 ? TS.string('post', 'reportNotificationSubjectSingular', {
-          jobRolesString: NotificationHelper._generateJobRolesString(jobRoles!)
+          jobRolesString: NotificationHelper._generateJobRolesString(reportedPostsJobRoles!)
         }) : TS.string('post', 'reportNotificationSubjectPlural', {
-          jobRolesString: NotificationHelper._generateJobRolesString(jobRoles!)
+          jobRolesString: NotificationHelper._generateJobRolesString(reportedPostsJobRoles!)
         }),
         'job-report', {
         jobReportFirstPhrase,
@@ -206,6 +212,8 @@ export class NotificationHelper {
         jobReportClosing
       }
       );
+    } else {
+      console.log(`🤖: Hmm... nothing interesting to report!`);
     }
   }
 
