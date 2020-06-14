@@ -242,9 +242,18 @@ export class NotificationHelper {
     try {
 
 
-      const users = await User.find({
+      let users = await User.find({
         postReportItems: { $exists: true, $not: { $size: 0 } }
       })
+
+      users = users.sort((a, b) => {
+        if (a.postReportItems.length > b.postReportItems.length) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+      )
 
       for (const user of users) {
 
@@ -259,9 +268,18 @@ export class NotificationHelper {
 
       }
 
-      const leads = await Lead.find({
+      let leads = await Lead.find({
         postReportItems: { $exists: true, $not: { $size: 0 } }
       })
+
+      leads = leads.sort((a, b) => {
+        if (a.postReportItems.length > b.postReportItems.length) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+      )
 
       for (const lead of leads) {
 
