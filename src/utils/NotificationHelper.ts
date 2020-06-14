@@ -127,8 +127,8 @@ export class NotificationHelper {
         return false
       }
 
-      return false;
     }
+    return false;
   }
 
   public static _generateJobRolesString = (jobRoles: string[]) => {
