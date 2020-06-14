@@ -87,7 +87,7 @@ switch (process.env.ENV) {
 
 
 
-    // ! Schedulers and posters inactivated temporarely
+    // ! Schedulers and posters inactivated temporarily
 
     // Job posters
     // JobsCron.initPostersBot();

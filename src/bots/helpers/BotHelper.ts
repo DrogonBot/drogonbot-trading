@@ -1,6 +1,7 @@
 import UserAgent from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
+import { Lead } from '../../resources/Lead/lead.model';
 import { Post } from '../../resources/Post/post.model';
 import { IPost, PostSource } from '../../resources/Post/post.types';
 import { User } from '../../resources/User/user.model';
@@ -200,6 +201,8 @@ export class BotHelper {
 
         const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
         await newPost.save()
+        await BotHelper.addToUsersReport(newPost)
+
         console.log(`🤖: Saving post: ${post.title}`);
 
         await NotificationHelper.newPostNotification(newPost);
@@ -212,6 +215,57 @@ export class BotHelper {
       console.log(`🤖: User with e-mail ${process.env.ADMIN_EMAIL} not found! It's necessary for saving our posts!`)
       console.log(`🤖: Failed to scrap data from ${link}!`)
     }
+
+  }
+  public static addToUsersReport = async (post: IPost) => {
+
+    // * This function will add the post slug to an attribute from users/leads called postReportItems. We'll use it later to generate our reports!
+
+    // fetch users who might be interested on it
+
+    const users = await User.find({
+      stateCode: post.stateCode,
+      $or: [{ type: "JobSeeker" }, { type: "Admin" }],
+      genericPositionsOfInterest: { "$in": post.jobRoles },
+      city: post.city,
+    })
+
+    let reportedUsers: string[] = []
+
+    for (const user of users) {
+      console.log(`🤖:Adding post ${post.slug} to user's (${user.email}) report list`);
+      user.postReportItems = [
+        ...user.postReportItems,
+        { slug: post.slug, title: post.title, jobRoles: post.jobRoles }
+      ]
+      await user.save();
+      reportedUsers = [...reportedUsers, user.email]
+    }
+
+    // now, check leads
+
+    const leads = await Lead.find({
+      stateCode: post.stateCode,
+      jobRoles: { "$in": post.jobRoles },
+      type: "JobSeeker",
+      $or: [{ city: post.city }, { city: null }],
+    })
+
+    for (const lead of leads) {
+      if (reportedUsers.includes(lead.email)) {
+        // duplicated email (same as user)
+        continue;
+      }
+
+      console.log(`🤖:Adding post ${post.slug} to leads's (${lead.email}) report list`);
+
+      lead.postReportItems = [
+        ...lead.postReportItems,
+        { slug: post.slug, title: post.title, jobRoles: post.jobRoles }
+      ]
+      await lead.save();
+    }
+
 
   }
 
@@ -253,6 +307,8 @@ export class BotHelper {
           }
 
           await newPost.save()
+
+          await BotHelper.addToUsersReport(newPost)
 
           console.log(`${newPost.title} - ${newPost.stateCode}/${newPost.city} - ${newPost.externalUrl ? newPost.externalUrl : ''}`);
 

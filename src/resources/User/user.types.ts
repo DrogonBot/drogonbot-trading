@@ -1,6 +1,8 @@
 import { Binary } from 'mongodb';
 import { Document } from 'mongoose';
 
+import { IReportItem } from './../../typescript/report.types';
+
 export interface ILoginData {
   email: string;
   password: string;
@@ -54,4 +56,5 @@ export interface IUserDocument extends Document {
   lastNotification: any;
   emailSubscriptionStatus: IEmailSubscriptionStatus;
   credits: number;
+  postReportItems: IReportItem[]
 }

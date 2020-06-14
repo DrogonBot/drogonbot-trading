@@ -89,6 +89,14 @@ export const userSchema: Schema = new Schema(
       type: String
     },
 
+    postReportItems: [
+      {
+        slug: String,
+        title: String,
+        jobRoles: [String]
+      }
+    ],
+
     tokens: [
       // this will allow multi device sign in (different devices with different tokens)
       {

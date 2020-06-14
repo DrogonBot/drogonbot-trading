@@ -2,6 +2,7 @@ import { Router } from 'express';
 import _ from 'lodash';
 import RSS from 'rss';
 
+import { BotHelper } from '../../bots/helpers/BotHelper';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { PostHelper } from '../../utils/PostHelper';
 import { TS } from '../../utils/TS';
@@ -377,6 +378,9 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
 
     await newPost.save();
 
+    await BotHelper.addToUsersReport(newPost)
+
+
     // send push notification to users about new post: //TODO: customize user groups who will receive this notification
 
     // const users = await User.find({})
@@ -455,6 +459,7 @@ postRouter.post('/post', userAuthMiddleware, async (req, res) => {
       const newPostImages = uploadedFileResult.map((result) => result.uri)
       newPost.images = newPostImages
       await newPost.save()
+
       return res.status(200).send(newPost)
     }
     catch (error) {

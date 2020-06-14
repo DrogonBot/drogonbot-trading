@@ -38,6 +38,14 @@ const leadSchema = new mongoose.Schema({
     type: String,
 
   },
+  postReportItems: [
+    {
+      slug: String,
+      title: String,
+      jobRoles: [String]
+    }
+  ],
+
 
   emailSubscriptionStatus: {
     transactional: Boolean,
