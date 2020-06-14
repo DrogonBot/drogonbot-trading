@@ -33,9 +33,11 @@ export class ScrapperTrabalhaBrasil {
 
     const rawContent = PostScrapperHelper.extractContent(html, '.job-text');
 
-    const locationText = $('#txtCityQuery').attr('value');
+    const locationText = $('#txtCityQuery').attr('value') || $('.breadcrumb-item a[title*=Vagas]').text().split(' em ')[1];
+
 
     const { stateCode, city } = await PostScrapperHelper.getProvinceAndCity(locationText, postDataOverride)
+
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 

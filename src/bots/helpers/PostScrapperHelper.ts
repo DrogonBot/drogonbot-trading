@@ -141,7 +141,6 @@ export class PostScrapperHelper {
       content = content.replace('/', ' ')
     }
 
-    console.log(content);
 
     try {
       const places = await Place.find({})
@@ -151,36 +150,44 @@ export class PostScrapperHelper {
         // loop until we find the matching stateCode
         const stateCodeFound = new RegExp(`\\b${place.stateCode}\\b`, 'gi').test(content)
 
+
         if (stateCodeFound) {
+
           // once we find this stateCode, search for the city
           // Here we test every city against our post content. If we find it, then that's because this post is probably associated with it
           for (const city of place.cities) {
-            const cityFound = new RegExp(`\\b${city.cityName}\\b`, 'gi').test(content)
+
+            const cityFound = new RegExp(`\\b${city.cityName}*\\b`, 'gi').test(content)
+
             if (cityFound) {
+
               return {
                 city: city.cityName,
                 stateCode: place.stateCode
               };
             }
-            continue;
+
           }
         }
-        // if no stateCode is found, lets use the postDataOverride one
 
-        const inferedPlaces = await Place.findOne({ stateCode: postDataOverride.stateCode })
-
-        for (const city of inferedPlaces!.cities) {
-          const cityFound = new RegExp(`\\b${city.cityName}\\b`, 'gi').test(content)
-          if (cityFound) {
-            return {
-              city: city.cityName,
-              stateCode: postDataOverride.stateCode
-            };
-          }
-          continue;
-        }
 
       }
+
+      // if no stateCode is found, lets use the postDataOverride one
+      console.log('using postDataOverride...');
+
+      const inferedPlaces = await Place.findOne({ stateCode: postDataOverride.stateCode })
+
+      for (const city of inferedPlaces!.cities) {
+        const cityFound = new RegExp(`\\b${city.cityName}\\b`, 'gi').test(content)
+        if (cityFound) {
+          return {
+            city: city.cityName,
+            stateCode: postDataOverride.stateCode
+          };
+        }
+      }
+
       // if nothing is found, default to post data override
       return { stateCode: postDataOverride.stateCode, city: postDataOverride.city }
 
