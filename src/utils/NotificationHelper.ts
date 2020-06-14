@@ -281,11 +281,10 @@ export class NotificationHelper {
       ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished sending reports!`)
 
 
-      return true
     }
     catch (error) {
       console.error(error);
-      return false;
+
 
     }
   }
