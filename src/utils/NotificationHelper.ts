@@ -172,8 +172,8 @@ export class NotificationHelper {
 
       if (!areThereEmailCredits) {
         ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Stopping cron job because there're no credits left!`)
-        JobsCron.reportsCron?.stop();
-        return
+        JobsCron.reportsCron.stop();
+        return false
       }
 
 
@@ -197,7 +197,7 @@ export class NotificationHelper {
         await target.save();
       }
 
-
+      return true
 
 
     } else {
@@ -244,8 +244,11 @@ export class NotificationHelper {
         const { postThumbnailsLinks, reportedPostsJobRoles } = NotificationHelper._getReportItemsAndJobRoles(user)
 
         // then submit
-        await NotificationHelper._submitReport(postThumbnailsLinks, reportedPostsJobRoles, user)
+        const status = await NotificationHelper._submitReport(postThumbnailsLinks, reportedPostsJobRoles, user)
 
+        if (!status) {
+          return
+        }
 
       }
 
@@ -258,8 +261,12 @@ export class NotificationHelper {
         const { postThumbnailsLinks, reportedPostsJobRoles } = NotificationHelper._getReportItemsAndJobRoles(lead)
 
         // then submit
-        await NotificationHelper._submitReport(postThumbnailsLinks, reportedPostsJobRoles, lead)
+        const status = await NotificationHelper._submitReport(postThumbnailsLinks, reportedPostsJobRoles, lead)
 
+
+        if (!status) {
+          return
+        }
 
 
       }
