@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { AccountEmailManager } from '../emails/account.email';
-import { ILeadModel, Lead } from '../resources/Lead/lead.model';
+import { ILeadModel } from '../resources/Lead/lead.model';
 import { IPost } from '../resources/Post/post.types';
 import { IUser, User } from '../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from './ConsoleHelper';
@@ -117,20 +117,20 @@ export class NotificationHelper {
 
       // fetch all users/leads
 
-      const leads = await Lead.find({
-        stateCode: post.stateCode,
-        jobRoles: { "$in": post.jobRoles },
-        type: "JobSeeker",
-        $or: [{ city: post.city }, { city: null }], // has a specified city, or no city specified at all (exclude the ones with specified AND different city)
-        emailSubscription: null, // not an unsubscribed user
-        email: { $ne: null } // has an email
-      })
+      // const leads = await Lead.find({
+      //   stateCode: post.stateCode,
+      //   jobRoles: { "$in": post.jobRoles },
+      //   type: "JobSeeker",
+      //   $or: [{ city: post.city }, { city: null }], // has a specified city, or no city specified at all (exclude the ones with specified AND different city)
+      //   emailSubscription: null, // not an unsubscribed user
+      //   email: { $ne: null } // has an email
+      // })
 
-      const users = await User.find({
-        stateCode: post.stateCode,
-        genericPositionsOfInterest: { "$in": post.jobRoles },
-        city: post.city
-      })
+      // const users = await User.find({
+      //   stateCode: post.stateCode,
+      //   genericPositionsOfInterest: { "$in": post.jobRoles },
+      //   city: post.city
+      // })
 
 
       // // get positions that were posted between now and yesterday
