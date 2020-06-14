@@ -233,7 +233,9 @@ export class BotHelper {
     let reportedUsers: string[] = []
 
     for (const user of users) {
-      console.log(`🤖:Adding post ${post.slug} to user's (${user.email}) report list`);
+
+      ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🤖:Adding post ${post.slug} to user's (${user.email}) report list`)
+
       user.postReportItems = [
         ...user.postReportItems,
         { slug: post.slug, title: post.title, jobRoles: post.jobRoles }
@@ -257,7 +259,8 @@ export class BotHelper {
         continue;
       }
 
-      console.log(`🤖:Adding post ${post.slug} to leads's (${lead.email}) report list`);
+      ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🤖:Adding post ${post.slug} to user's (${lead.email}) report list`)
+
 
       lead.postReportItems = [
         ...lead.postReportItems,
