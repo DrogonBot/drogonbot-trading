@@ -124,7 +124,6 @@ export class NotificationHelper {
       }
       catch (error) {
         console.error(error);
-        return false
       }
 
     }
