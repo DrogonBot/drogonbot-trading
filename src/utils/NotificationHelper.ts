@@ -1,16 +1,10 @@
 import _ from 'lodash';
-import moment from 'moment-timezone';
 
-import { BotHelper } from '../bots/helpers/BotHelper';
 import { AccountEmailManager } from '../emails/account.email';
 import { ILeadModel, Lead } from '../resources/Lead/lead.model';
-import { Log } from '../resources/Log/log.model';
-import { Post } from '../resources/Post/post.model';
 import { IPost } from '../resources/Post/post.types';
 import { IUser, User } from '../resources/User/user.model';
-import { IReportItem } from '../typescript/report.types';
 import { ConsoleColor, ConsoleHelper } from './ConsoleHelper';
-import { GenericHelper } from './GenericHelper';
 import { PushNotificationHelper } from './PushNotificationHelper';
 import { TS } from './TS';
 
@@ -121,138 +115,156 @@ export class NotificationHelper {
   public static generateJobReport = async () => {
     try {
 
-      // get positions that were posted between now and yesterday
+      // fetch all users/leads
 
-      const yesterday = moment.tz(moment().subtract(1, 'days'), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
-
-      const posts = await Post.find({
-        createdAt: { "$gte": yesterday }
+      const leads = await Lead.find({
+        stateCode: post.stateCode,
+        jobRoles: { "$in": post.jobRoles },
+        type: "JobSeeker",
+        $or: [{ city: post.city }, { city: null }], // has a specified city, or no city specified at all (exclude the ones with specified AND different city)
+        emailSubscription: null, // not an unsubscribed user
+        email: { $ne: null } // has an email
       })
 
-      let reportOutput: IReportItem[] = []
-
-      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Compiling reports for ${posts.length} posts... Please, wait.`)
-
-      // loop through every post
-      for (const post of posts) {
-
-
-        // * First step: Compile a list of leads/users who may think this post interesting!
-
-        const leads = await Lead.find({
-          stateCode: post.stateCode,
-          jobRoles: { "$in": post.jobRoles },
-          type: "JobSeeker",
-          $or: [{ city: post.city }, { city: null }],
-          emailSubscription: null,
-          email: { $ne: null }
-        })
-
-        const users = await User.find({
-          stateCode: post.stateCode,
-          genericPositionsOfInterest: { "$in": post.jobRoles },
-          city: post.city
-        })
-
-        const targeted = BotHelper.combineLeadsAndUsers(users, leads);
-
-        for (const target of targeted) {
-
-          const postAlreadyReported = await Log.exists({
-            emitter: target.email,
-            action: 'REPORT_POST',
-            target: post.slug
-          })
-
-          // make sure we dont report the same post twice!
-          if (postAlreadyReported) {
-            // console.log(`🤖: Skipping report of ${post.slug} to  ${target.email}, it was already reported`);
-            continue
-          }
-
-          if (!target.email) {
-            // skip report generation if no email is set, by any reason...
-            continue;
-          }
-
-          // If post wasn't reported so far, lets generate an output with required info to compile it later
-          // this output will be compiled into a report
-          reportOutput = [
-            ...reportOutput,
-            { postTitle: post.title, postSlug: post.slug, postSector: post.sector, email: target.email, jobRoles: post.jobRoles, userName: target.name, }
-          ]
-
-          const newReportPost = new Log({
-            emitter: target.email,
-            action: 'REPORT_POST',
-            target: post.slug
-          })
-          await newReportPost.save()
-        }
-      }
-
-      // group all reports by Email
-      const groupedReports = GenericHelper.groupBy(reportOutput, 'email');
-
-      // loop throgh object key => values. On this case, key is our target email and value is the info we need to generate the report.
-      for (const key in groupedReports) { // lets use a FOR loop, to preserve our async (if we used forEach here, await would be simply ignored!)
-        if (groupedReports.hasOwnProperty(key)) {
-
-          const value = groupedReports[key]
-
-          // * Now, for every user/lead email, lets submit a list of potential posts
-
-          // forOwn will allow us to iterate on the previously created "grouped" object, through its properties
-
-          const targetEmail = key;
-
-          const userName = Array.from(new Set(_.map(value, 'userName')))[0]
-          const jobRoles = Array.from(new Set(_.flatten(_.map(value, 'jobRoles'))));
-
-          const postThumbnailsLinks = value.map((item: IReportItem) => {
-            return `
-                <a href="https://empregourgente.com/posts/${item.postSlug}?utm_source=empregourgente_sendgrid&utm_medium=email" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${item.postTitle}</a>
-        `
-          })
-
-          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Compiling report for ${targetEmail}...`)
-          console.log(value);
-
-          // * With our lead email and slugs prepared, lets submit an e-mail!
-
-          const accountEmailManager = new AccountEmailManager();
-
-          // Randomize post content: Avoid spam filters thinking that your message is too repetitive. It will create some uniqueness!
-
-          const firstPhraseSample = _.sample(['jobsNotificationFirstPhrase', 'jobsNotificationFirstPhrase2', 'jobsNotificationFirstPhrase3', 'jobsNotificationFirstPhrase4'])
-          const secondPhraseSample = _.sample(['jobReportSecondPhrase', 'jobReportSecondPhrase2', 'jobReportSecondPhrase3', 'jobReportSecondPhrase4'])
-          const closingSample = _.sample(['jobsNotificationClosing', 'jobsNotificationClosing2', 'jobsNotificationClosing3'])
-
-          const jobReportFirstPhrase = TS.string('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: userName || "" })
-          const jobReportSecondPhrase = TS.string('post', secondPhraseSample || 'jobsNotificationSecondParagraph')
-          const jobReportClosing = TS.string('post', closingSample || 'jobsNotificationClosing')
-
-          await accountEmailManager.sendEmail(
-            targetEmail,
-            jobRoles.length === 1 ? TS.string('post', 'reportNotificationSubjectSingular', {
-              jobRolesString: NotificationHelper._generateJobRolesString(jobRoles)
-            }) : TS.string('post', 'reportNotificationSubjectPlural', {
-              jobRolesString: NotificationHelper._generateJobRolesString(jobRoles)
-            }),
-            'job-report', {
-            jobReportFirstPhrase,
-            jobReportSecondPhrase,
-            postSummary: postThumbnailsLinks.join(''),
-            jobReportClosing
-          }
-          );
+      const users = await User.find({
+        stateCode: post.stateCode,
+        genericPositionsOfInterest: { "$in": post.jobRoles },
+        city: post.city
+      })
 
 
+      // // get positions that were posted between now and yesterday
+
+      // const yesterday = moment.tz(moment().subtract(1, 'days'), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
+
+      // const posts = await Post.find({
+      //   createdAt: { "$gte": yesterday }
+      // })
+
+      // let reportOutput: IReportItem[] = []
+
+      // ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Compiling reports for ${posts.length} posts... Please, wait.`)
+
+      // // loop through every post
+      // for (const post of posts) {
+
+
+      //   // * First step: Compile a list of leads/users who may think this post interesting!
+
+      //   const leads = await Lead.find({
+      //     stateCode: post.stateCode,
+      //     jobRoles: { "$in": post.jobRoles },
+      //     type: "JobSeeker",
+      //     $or: [{ city: post.city }, { city: null }], // has a specified city, or no city specified at all (exclude the ones with specified AND different city)
+      //     emailSubscription: null, // not an unsubscribed user
+      //     email: { $ne: null } // has an email
+      //   })
+
+      //   const users = await User.find({
+      //     stateCode: post.stateCode,
+      //     genericPositionsOfInterest: { "$in": post.jobRoles },
+      //     city: post.city
+      //   })
+
+      //   const targeted = BotHelper.combineLeadsAndUsers(users, leads);
+
+      //   for (const target of targeted) {
+
+      //     const postAlreadyReported = await Log.exists({
+      //       emitter: target.email,
+      //       action: 'REPORT_POST',
+      //       target: post.slug
+      //     })
+
+      //     // make sure we dont report the same post twice!
+      //     if (postAlreadyReported) {
+      //       // console.log(`🤖: Skipping report of ${post.slug} to  ${target.email}, it was already reported`);
+      //       continue
+      //     }
+
+      //     if (!target.email) {
+      //       // skip report generation if no email is set, by any reason...
+      //       continue;
+      //     }
+
+      //     // If post wasn't reported so far, lets generate an output with required info to compile it later
+      //     // this output will be compiled into a report
+      //     reportOutput = [
+      //       ...reportOutput,
+      //       { postTitle: post.title, postSlug: post.slug, postSector: post.sector, email: target.email, jobRoles: post.jobRoles, userName: target.name, }
+      //     ]
+
+      //     const newReportPost = new Log({
+      //       emitter: target.email,
+      //       action: 'REPORT_POST',
+      //       target: post.slug
+      //     })
+      //     await newReportPost.save()
+      //   }
+      // }
+
+      // // group all reports by Email
+      // const groupedReports = GenericHelper.groupBy(reportOutput, 'email');
+
+      // // loop throgh object key => values. On this case, key is our target email and value is the info we need to generate the report.
+      // for (const key in groupedReports) { // lets use a FOR loop, to preserve our async (if we used forEach here, await would be simply ignored!)
+      //   if (groupedReports.hasOwnProperty(key)) {
+
+      //     const value = groupedReports[key]
+
+      //     // * Now, for every user/lead email, lets submit a list of potential posts
+
+      //     // forOwn will allow us to iterate on the previously created "grouped" object, through its properties
+
+      //     const targetEmail = key;
+
+      //     const userName = Array.from(new Set(_.map(value, 'userName')))[0]
+      //     const jobRoles = Array.from(new Set(_.flatten(_.map(value, 'jobRoles'))));
+
+      //     const postThumbnailsLinks = value.map((item: IReportItem) => {
+      //       return `
+      //           <a href="https://empregourgente.com/posts/${item.postSlug}?utm_source=empregourgente_sendgrid&utm_medium=email" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${item.postTitle}</a>
+      //   `
+      //     })
+
+      //     ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Compiling report for ${targetEmail}...`)
+      //     console.log(value);
+
+      //     // * With our lead email and slugs prepared, lets submit an e-mail!
+
+      //     const accountEmailManager = new AccountEmailManager();
+
+      //     // Randomize post content: Avoid spam filters thinking that your message is too repetitive. It will create some uniqueness!
+
+      //     const firstPhraseSample = _.sample(['jobsNotificationFirstPhrase', 'jobsNotificationFirstPhrase2', 'jobsNotificationFirstPhrase3', 'jobsNotificationFirstPhrase4'])
+      //     const secondPhraseSample = _.sample(['jobReportSecondPhrase', 'jobReportSecondPhrase2', 'jobReportSecondPhrase3', 'jobReportSecondPhrase4'])
+      //     const closingSample = _.sample(['jobsNotificationClosing', 'jobsNotificationClosing2', 'jobsNotificationClosing3'])
+
+      //     const jobReportFirstPhrase = TS.string('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: userName || "" })
+      //     const jobReportSecondPhrase = TS.string('post', secondPhraseSample || 'jobsNotificationSecondParagraph')
+      //     const jobReportClosing = TS.string('post', closingSample || 'jobsNotificationClosing')
+
+      //     await accountEmailManager.sendEmail(
+      //       targetEmail,
+      //       jobRoles.length === 1 ? TS.string('post', 'reportNotificationSubjectSingular', {
+      //         jobRolesString: NotificationHelper._generateJobRolesString(jobRoles)
+      //       }) : TS.string('post', 'reportNotificationSubjectPlural', {
+      //         jobRolesString: NotificationHelper._generateJobRolesString(jobRoles)
+      //       }),
+      //       'job-report', {
+      //       jobReportFirstPhrase,
+      //       jobReportSecondPhrase,
+      //       postSummary: postThumbnailsLinks.join(''),
+      //       jobReportClosing
+      //     }
+      //     );
 
 
 
-        }
-      }
+
+
+      //   }
+      // }
 
 
       ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished sending reports!`)

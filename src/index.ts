@@ -83,7 +83,7 @@ switch (process.env.ENV) {
     JobsCron.submitApplications();
     JobsCron.jobCrawlersCleaners();
     JobsCron.initializeJobCrawlers();
-    JobsCron.generateJobReports();
+    // JobsCron.generateJobReports();
 
 
 
