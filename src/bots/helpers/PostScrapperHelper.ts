@@ -137,7 +137,9 @@ export class PostScrapperHelper {
 
   public static getProvinceAndCity = async (content, postDataOverride) => {
 
-    content = content.replace('/', ' ')
+    if (content.includes('/')) {
+      content = content.replace('/', ' ')
+    }
 
     console.log(content);
 
