@@ -2,16 +2,19 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 
 import { AccountEmailManager } from '../emails/account.email';
-import { ILeadModel } from '../resources/Lead/lead.model';
+import { ILead } from '../resources/Lead/lead.types';
 import { Log } from '../resources/Log/log.model';
 import { IPost } from '../resources/Post/post.types';
 import { IUser, User } from '../resources/User/user.model';
 import { emailProviders } from './../constants/emailProviders.constant';
 import { JobsCron } from './../cron_jobs/jobs.cron';
-import { Lead } from './../resources/Lead/lead.model';
+import { ILeadModel, Lead } from './../resources/Lead/lead.model';
+import { IUserDocument } from './../resources/User/user.types';
 import { ConsoleColor, ConsoleHelper } from './ConsoleHelper';
 import { PushNotificationHelper } from './PushNotificationHelper';
 import { TS } from './TS';
+
+
 
 export class NotificationHelper {
 
@@ -140,9 +143,12 @@ export class NotificationHelper {
     }
   }
 
-  private static _submitReport = async (postThumbnailsLinks, reportedPostsJobRoles, target) => {
+  private static _submitReport = async (postThumbnailsLinks, reportedPostsJobRoles, user?: IUserDocument | null, lead?: ILead | null) => {
 
-    const jobRoles = target.jobRoles || target.genericPositionsOfInterest
+    const target = user! || lead!
+
+    // @ts-ignore
+    const jobRoles = target.genericPositionsOfInterest || target.jobRoles
 
     if (postThumbnailsLinks.length >= 1) { // if there's something to send!
 
@@ -196,6 +202,7 @@ export class NotificationHelper {
         target.postReportItems = []
         await target.save();
       }
+
 
       return true
 
@@ -261,7 +268,7 @@ export class NotificationHelper {
         const { postThumbnailsLinks, reportedPostsJobRoles } = NotificationHelper._getReportItemsAndJobRoles(lead)
 
         // then submit
-        const status = await NotificationHelper._submitReport(postThumbnailsLinks, reportedPostsJobRoles, lead)
+        const status = await NotificationHelper._submitReport(postThumbnailsLinks, reportedPostsJobRoles, null, lead)
 
 
         if (!status) {
