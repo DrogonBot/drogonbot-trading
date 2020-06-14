@@ -33,22 +33,9 @@ export class ScrapperTrabalhaBrasil {
 
     const rawContent = PostScrapperHelper.extractContent(html, '.job-text');
 
-    let stateCode;
-    let city;
-    try {
-      const locationText = $('#txtCityQuery').attr('value');
-      const data = await PostScrapperHelper.getProvinceAndCity(locationText, postDataOverride)
-      stateCode = data.stateCode;
-      city = data.city
-    }
-    catch (error) {
-      console.error(error);
+    const locationText = $('#txtCityQuery').attr('value');
 
-      const data = await PostScrapperHelper.getProvinceAndCity(`${title} - ${rawContent}`, postDataOverride)
-      stateCode = data.stateCode;
-      city = data.city
-    }
-
+    const { stateCode, city } = await PostScrapperHelper.getProvinceAndCity(locationText, postDataOverride)
 
     const { sector, jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(rawContent, title)
 
