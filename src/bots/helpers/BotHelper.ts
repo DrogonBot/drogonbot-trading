@@ -3,14 +3,13 @@ import UserAgent from 'user-agents';
 import { EnvType } from '../../constants/types/env.types';
 import { Post } from '../../resources/Post/post.model';
 import { IPost, PostSource } from '../../resources/Post/post.types';
-import { IUser, User } from '../../resources/User/user.model';
+import { User } from '../../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { TS } from '../../utils/TS';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ICrawlerFunctions, IProxyItem, PagePattern, ProxyType } from '../types/bots.types';
-import { ILeadModel } from './../../resources/Lead/lead.model';
 import { NotificationHelper } from './../../utils/NotificationHelper';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
@@ -166,26 +165,6 @@ export class BotHelper {
 
   }
 
-  public static combineLeadsAndUsers = (users, leads): ILeadModel[] | IUser[] => {
-
-    let output: ILeadModel[] | IUser[] = users;
-
-    for (const lead of leads) {
-
-      const hasInUsers = users.some((user) => user.email === lead.email)
-
-      if (!hasInUsers) {
-        output = [
-          ...output,
-          lead
-        ]
-      }
-
-    }
-
-    return output;
-
-  }
 
 
 

@@ -1,13 +1,15 @@
 import _ from 'lodash';
+import moment from 'moment-timezone';
 
 import { AccountEmailManager } from '../emails/account.email';
-import { ILeadModel } from '../resources/Lead/lead.model';
+import { ILeadModel, Lead } from '../resources/Lead/lead.model';
+import { Log } from '../resources/Log/log.model';
+import { Post } from '../resources/Post/post.model';
 import { IPost } from '../resources/Post/post.types';
 import { IUser, User } from '../resources/User/user.model';
 import { ConsoleColor, ConsoleHelper } from './ConsoleHelper';
 import { PushNotificationHelper } from './PushNotificationHelper';
 import { TS } from './TS';
-
 
 export class NotificationHelper {
 
@@ -112,25 +114,136 @@ export class NotificationHelper {
     }
   }
 
+  private static _generateReportForUser = async (posts: IPost[], user?: IUser | null, lead?: ILeadModel | null) => {
+    const target = user || lead;
+    const email = target!.email
+    const jobRoles = user?.genericPositionsOfInterest || lead?.jobRoles
+
+    let interestingPosts: IPost[] = [];
+
+    for (const jobRole of jobRoles!) {
+      for (const post of posts) {
+        if (post.jobRoles.includes(jobRole)) {
+          interestingPosts = [
+            ...interestingPosts,
+            post
+          ]
+        }
+      }
+    }
+
+    let postThumbnailsLinks: string[] = []
+
+    // generate post reporting list
+    for (const post of interestingPosts) {
+      const postAlreadyReported = await Log.exists({
+        emitter: email,
+        action: 'REPORT_POST',
+        target: post.slug
+      })
+
+      // make sure we dont report the same post twice!
+      if (postAlreadyReported) {
+        console.log(`🤖: Skipping report of ${post.slug} to  ${email}, it was already reported`);
+        continue
+      }
+
+      postThumbnailsLinks = [
+        ...postThumbnailsLinks,
+        `<a href="https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_sendgrid&utm_medium=email" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${post.title}</a>`
+      ]
+
+      // make sure we add on logs that we're reporting this post for this user
+      const newReportPost = new Log({
+        emitter: email,
+        action: 'REPORT_POST',
+        target: post.slug
+      })
+      await newReportPost.save()
+
+
+
+    }
+
+
+    if (postThumbnailsLinks.length >= 1) { // if there's something to send!
+      // submit post
+
+      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Submitting report to ${email} about ${interestingPosts.length} posts (${jobRoles})`)
+
+
+      // * With our lead email and slugs prepared, lets submit an e-mail!
+
+      const accountEmailManager = new AccountEmailManager();
+
+      // Randomize post content: Avoid spam filters thinking that your message is too repetitive. It will create some uniqueness!
+
+      const firstPhraseSample = _.sample(['jobsNotificationFirstPhrase', 'jobsNotificationFirstPhrase2', 'jobsNotificationFirstPhrase3', 'jobsNotificationFirstPhrase4'])
+      const secondPhraseSample = _.sample(['jobReportSecondPhrase', 'jobReportSecondPhrase2', 'jobReportSecondPhrase3', 'jobReportSecondPhrase4'])
+      const closingSample = _.sample(['jobsNotificationClosing', 'jobsNotificationClosing2', 'jobsNotificationClosing3'])
+
+      const jobReportFirstPhrase = TS.string('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: target!.name || "" })
+      const jobReportSecondPhrase = TS.string('post', secondPhraseSample || 'jobsNotificationSecondParagraph')
+      const jobReportClosing = TS.string('post', closingSample || 'jobsNotificationClosing')
+
+      await accountEmailManager.sendEmail(
+        email!,
+        jobRoles!.length === 1 ? TS.string('post', 'reportNotificationSubjectSingular', {
+          jobRolesString: NotificationHelper._generateJobRolesString(jobRoles!)
+        }) : TS.string('post', 'reportNotificationSubjectPlural', {
+          jobRolesString: NotificationHelper._generateJobRolesString(jobRoles!)
+        }),
+        'job-report', {
+        jobReportFirstPhrase,
+        jobReportSecondPhrase,
+        postSummary: postThumbnailsLinks.join(''),
+        jobReportClosing
+      }
+      );
+    }
+  }
+
   public static generateJobReport = async () => {
     try {
 
-      // fetch all users/leads
+      // get yesterday posts
 
-      // const leads = await Lead.find({
-      //   stateCode: post.stateCode,
-      //   jobRoles: { "$in": post.jobRoles },
-      //   type: "JobSeeker",
-      //   $or: [{ city: post.city }, { city: null }], // has a specified city, or no city specified at all (exclude the ones with specified AND different city)
-      //   emailSubscription: null, // not an unsubscribed user
-      //   email: { $ne: null } // has an email
-      // })
+      const yesterday = moment.tz(moment().subtract(1, 'days'), process.env.TIMEZONE).format('YYYY-MM-DD[T00:00:00.000Z]');
 
-      // const users = await User.find({
-      //   stateCode: post.stateCode,
-      //   genericPositionsOfInterest: { "$in": post.jobRoles },
-      //   city: post.city
-      // })
+      const posts = await Post.find({
+        createdAt: { "$gte": yesterday }
+      })
+
+      const postsJobRoles = _.flatten(posts.map((post) => post.jobRoles));
+      const postsStateCodes = Array.from(new Set((posts.map((post) => post.stateCode))))
+      const postsCities = Array.from(new Set((posts.map((post) => post.city))))
+
+      const users = await User.find({
+        stateCode: { "$in": postsStateCodes },
+        $or: [{ type: "JobSeeker" }, { type: "Admin" }],
+        genericPositionsOfInterest: { "$in": postsJobRoles },
+        city: { "$in": postsCities },
+      })
+
+      for (const user of users) {
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖:Generating reports for ${user.email}`)
+        await NotificationHelper._generateReportForUser(posts, user, null)
+      }
+
+      const leads = await Lead.find({
+        stateCode: { "$in": postsStateCodes },
+        jobRoles: { "$in": postsJobRoles },
+        type: "JobSeeker",
+        $or: [{ city: { "$in": postsCities } }, { city: null }],
+      })
+
+      for (const lead of leads) {
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖:Generating reports for ${lead.email}`)
+        await NotificationHelper._generateReportForUser(posts, null, lead)
+      }
+
+
+
 
 
       // // get positions that were posted between now and yesterday
@@ -278,6 +391,28 @@ export class NotificationHelper {
 
     }
   }
+
+  public static combineLeadsAndUsers = (users, leads): ILeadModel[] | IUser[] => {
+
+    let output: ILeadModel[] | IUser[] = users;
+
+    for (const lead of leads) {
+
+      const hasInUsers = users.some((user) => user.email === lead.email)
+
+      if (!hasInUsers) {
+        output = [
+          ...output,
+          lead
+        ]
+      }
+
+    }
+
+    return output;
+
+  }
+
 
   public static notifyUsersEmail = async (user: IUser | ILeadModel, post: IPost) => {
 
