@@ -115,7 +115,7 @@ export class NotificationHelper {
   }
 
   private static _generateReportForUser = async (posts: IPost[], user?: IUser | null, lead?: ILeadModel | null) => {
-    const target = user || lead;
+    const target = user! || lead!;
     const email = target!.email
     const jobRoles = user?.genericPositionsOfInterest || lead?.jobRoles
 
@@ -123,7 +123,13 @@ export class NotificationHelper {
 
     for (const jobRole of jobRoles!) {
       for (const post of posts) {
-        if (post.jobRoles.includes(jobRole)) {
+        if (post.jobRoles.includes(jobRole) && post.stateCode === target.stateCode) {
+
+          // make sure we always report posts that are within the same city!
+          if (target.city && target.city !== post.city) {
+            continue;
+          }
+
           interestingPosts = [
             ...interestingPosts,
             post
