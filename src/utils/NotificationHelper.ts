@@ -177,8 +177,13 @@ export class NotificationHelper {
 
     }
 
+    // make report post job roles unique!
+
 
     if (postThumbnailsLinks.length >= 1) { // if there's something to send!
+
+      reportedPostsJobRoles = Array.from(new Set(reportedPostsJobRoles))
+
       // submit post
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Job Report: Submitting report to ${email} about ${interestingPosts.length} posts (${reportedPostsJobRoles})`)
