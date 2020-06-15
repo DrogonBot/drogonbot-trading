@@ -14,10 +14,8 @@ import {
   faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Link } from '@material-ui/core';
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import { Link } from '@material-ui/core';
 import { JobPostingJsonLd } from 'next-seo';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Linkify from 'react-linkify';
 import Slider from 'react-slick';
@@ -47,6 +45,7 @@ import { postReadFeed, postReadOne } from '../../store/actions/post.action';
 import { AdsenseAdsTypes } from '../../types/Ads.types';
 import { IProvince } from '../../types/Form.types';
 import { IPost, PostBenefits, PostCategory, PostPositionType } from '../../types/Post.types';
+import Register from '../register';
 
 interface IProps {
   post: IPost;
@@ -73,13 +72,10 @@ IProps) => {
   //  human readable date -
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
-    if (router.query.promoter) {
-      // if we have a promoter, lets compute a new click to this user.
-      // TODO: Stopped here
-    }
+    console.log(`Referrer: ${document.referrer}`);
   }, []);
 
   const onRenderPositionType = () => {
@@ -242,44 +238,7 @@ IProps) => {
           <AlertModal
             alertKey="whatsapp-modal"
             title="Grupo de Vagas no WhatsApp"
-            content={
-              <>
-                <a
-                  href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
-                  target="_blank"
-                >
-                  <WhatsAppLogoContainer>
-                    <WhatsAppLogo
-                      src={"/images/logos/whatsapp.svg"}
-                      alt="WhatsApp Logo"
-                    />
-                  </WhatsAppLogoContainer>
-                </a>
-                <p>
-                  Participe do nosso grupo exclusivo de vagas no WhatsApp e
-                  receba diariamente oportunidades exclusivas em seu celular!
-                </p>
-                <p>
-                  Também enviaremos emails com vagas de seu interesse assim que
-                  estiverem disponíveis!
-                </p>
-
-                <AlertModalContainer>
-                  <a
-                    href={`https://rebrand.ly/emprego-urgente/?stateCode=${post.stateCode.toUpperCase()}`}
-                    target="_blank"
-                  >
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      startIcon={<WhatsAppIcon />}
-                    >
-                      Acessar Grupo
-                    </Button>
-                  </a>
-                </AlertModalContainer>
-              </>
-            }
+            content={<Register provinces={provinces} jobRoles={[]} />}
             showDontShowAgain={true}
           />
         </>
@@ -314,11 +273,11 @@ IProps) => {
       return (
         <>
           {post.content.length > 1000
-            ? post.content.substr(0, 1000)
-            : post.content.substr(0, post.content.length - 15)}
-          <p>
+            ? post.content.substr(0, 1000) + "..."
+            : post.content.substr(0, post.content.length - 15) + "..."}
+          <>
             <SeeMore />
-          </p>
+          </>
         </>
       );
     }
@@ -546,18 +505,20 @@ const LeftColumn = styled.div`
 
 const SeeMoreLink = styled.a`
   color: ${colors.accent};
+  display: block;
+  margin-top: 1.5rem;
 `;
 
-const WhatsAppLogoContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-height: 100px;
-`;
+// const WhatsAppLogoContainer = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: center;
+//   max-height: 100px;
+// `;
 
-const WhatsAppLogo = styled.img`
-  max-width: 100px;
-`;
+// const WhatsAppLogo = styled.img`
+//   max-width: 100px;
+// `;
 
 const MainCTAContainer = styled.div`
   display: flex;
@@ -627,10 +588,10 @@ const ContentArea = styled.p`
   white-space: pre-wrap;
 `;
 
-const AlertModalContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1.5rem;
-`;
+// const AlertModalContainer = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: center;
+//   align-items: center;
+//   margin-top: 1.5rem;
+// `;
