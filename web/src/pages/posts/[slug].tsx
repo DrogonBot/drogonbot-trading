@@ -17,7 +17,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@material-ui/core';
 import { JobPostingJsonLd } from 'next-seo';
 import { useEffect } from 'react';
-import Linkify from 'react-linkify';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 
@@ -30,6 +29,7 @@ import { Header } from '../../components/pages/index/Header/Header';
 import { FlagPost } from '../../components/pages/posts/post/FlagPost';
 import { JoinCommunities } from '../../components/pages/posts/post/JoinCommunities';
 import { PostCard } from '../../components/pages/posts/post/PostCard';
+import { PostContent } from '../../components/pages/posts/post/PostContent';
 import { PostCTA } from '../../components/pages/posts/post/PostCTA';
 import { WhatsAppLeadModal } from '../../components/pages/posts/post/WhatsAppLeadModal';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
@@ -232,35 +232,6 @@ IProps) => {
   //   ));
   // };
 
-  const onRenderPostContent = () => {
-    // if it has an email or phone, its a fully scrapped page. Lets just display everything
-    if (post.email || post.phone) {
-      return post.content;
-    }
-
-    // if its an indexed page, lets add this "see more" info to redirect user to the destination page
-    if (post.externalUrl) {
-      const SeeMore = () => (
-        <SeeMoreLink href={post.externalUrl} target="_blank">
-          <strong>{TS.string("post", "postMoreInfoDestinationPage")}...</strong>
-        </SeeMoreLink>
-      );
-
-      return (
-        <>
-          {post.content.length > 1000
-            ? post.content.substr(0, 1000) + "..."
-            : post.content.substr(0, post.content.length - 15) + "..."}
-          <>
-            <SeeMore />
-          </>
-        </>
-      );
-    }
-
-    return post.content;
-  };
-
   return (
     <>
       <Header />
@@ -317,11 +288,7 @@ IProps) => {
 
             <Breadcumb parent={post.sector} child={post.jobRoles.join(", ")} />
             <Small>{humanDate}</Small>
-            <ContentArea>
-              <Linkify properties={{ target: "_blank" }}>
-                {onRenderPostContent()}
-              </Linkify>
-            </ContentArea>
+            <PostContent post={post} />
 
             <InfoTagsContainer>
               <InfoTag
@@ -479,12 +446,6 @@ const LeftColumn = styled.div`
 //   }
 // `;
 
-const SeeMoreLink = styled.a`
-  color: ${colors.accent};
-  display: block;
-  margin-top: 1.5rem;
-`;
-
 const MainCTAContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -546,9 +507,4 @@ const InfoTagsContainer = styled.div`
   @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
     justify-content: center;
   }
-`;
-
-const ContentArea = styled.p`
-  color: ${colors.silver};
-  white-space: pre-wrap;
 `;
