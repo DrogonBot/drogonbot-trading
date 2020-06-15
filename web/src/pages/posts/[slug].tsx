@@ -10,11 +10,11 @@ import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
 import { FlagPost } from '../../components/pages/posts/post/FlagPost';
 import { JoinCommunities } from '../../components/pages/posts/post/JoinCommunities';
+import { LeadModal } from '../../components/pages/posts/post/LeadModal';
 import { PostContent } from '../../components/pages/posts/post/PostContent';
 import { PostCTA } from '../../components/pages/posts/post/PostCTA';
 import { PostInfoTag } from '../../components/pages/posts/post/PostInfoTag';
 import { RelatedPosts } from '../../components/pages/posts/post/RelatedPosts';
-import { WhatsAppLeadModal } from '../../components/pages/posts/post/WhatsAppLeadModal';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { NextSEOPost } from '../../components/seo/NextSEOPost';
 import { appEnv } from '../../constants/Env.constant';
@@ -23,7 +23,7 @@ import { H1, Small } from '../../constants/UI/Common.constant';
 import { UI } from '../../constants/UI/UI.constant';
 import { DateHelper } from '../../helpers/DateHelper';
 import { TS } from '../../helpers/LanguageHelper';
-import { loadCountryProvinces } from '../../store/actions/form.actions';
+import { loadAllJobRoles, loadCountryProvinces } from '../../store/actions/form.actions';
 import { postReadFeed, postReadOne } from '../../store/actions/post.action';
 import { AdsenseAdsTypes } from '../../types/Ads.types';
 import { IProvince } from '../../types/Form.types';
@@ -33,6 +33,7 @@ interface IProps {
   post: IPost;
   provinces: IProvince[];
   relatedPosts: IPost[];
+  jobRoles: string[];
   // affiliatedProducts: IAffiliateProduct[];
 }
 
@@ -40,6 +41,7 @@ const IndividualPage = ({
   post,
   provinces,
   relatedPosts,
+  jobRoles,
 }: // affiliatedProducts,
 IProps) => {
   //  human readable date -
@@ -172,7 +174,7 @@ IProps) => {
           type={RelatedPostType.Mobile}
         />
 
-        <WhatsAppLeadModal post={post} />
+        <LeadModal post={post} jobRoles={jobRoles} />
       </Body>
       <Footer />
     </>
@@ -182,10 +184,12 @@ IProps) => {
 IndividualPage.getInitialProps = async (ctx) => {
   const { slug } = ctx.query;
 
+  await ctx.store.dispatch(loadAllJobRoles());
   await ctx.store.dispatch(loadCountryProvinces(appEnv.appCountry));
   await ctx.store.dispatch(postReadOne(null, slug));
   const provinces = await ctx.store.getState().formReducer.states;
   const post: IPost = await ctx.store.getState().postReducer.post;
+  const jobRoles = ctx.store.getState().formReducer.jobRoles;
 
   // await ctx.store.dispatch(postReadAffiliatedProducts(post));
 
@@ -207,6 +211,7 @@ IndividualPage.getInitialProps = async (ctx) => {
     post,
     provinces,
     relatedPosts,
+    jobRoles,
     // affiliatedProducts,
   };
 };

@@ -213,12 +213,17 @@ export const strings = {
     ptBr: "Vagas",
   },
   postTrustableSource: {
-    eng: "Trustable Source",
-    ptBr: "Fonte Confiável",
+    eng: "Potentially Trustable Source",
+    ptBr: "Fonte Potencialmente Confiável",
   },
   postMoreInfoDestinationPage: {
     eng:
       "See more information and apply for this position on the destination page",
     ptBr: "Veja mais informações e aplique para vaga na página destino",
+  },
+
+  postShare: {
+    eng: "Share this Post",
+    ptBr: "Compartilhar Vaga",
   },
 };

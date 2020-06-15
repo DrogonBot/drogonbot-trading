@@ -25,33 +25,10 @@ export const SearchResults = ({ posts }: IProps) => {
           return index % 2 === 0 ? (
             <div key={post._id}>
               {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
-              <SearchItem
-                id={post._id}
-                category={post.sector}
-                tags={post.jobRoles.join(",")}
-                title={post.title}
-                date={post.createdAt}
-                description={post.content}
-                slug={post.slug}
-                stateCode={post.stateCode}
-                city={post.city}
-                isTrustableSource={post.isTrustableSource}
-              />
+              <SearchItem post={post} />
             </div>
           ) : (
-            <SearchItem
-              id={post._id}
-              key={post._id}
-              category={post.sector}
-              tags={post.jobRoles.join(",")}
-              title={post.title}
-              date={post.createdAt}
-              description={post.content}
-              slug={post.slug}
-              stateCode={post.stateCode}
-              city={post.city}
-              isTrustableSource={post.isTrustableSource}
-            />
+            <SearchItem post={post} />
           );
         })}
       </Container>

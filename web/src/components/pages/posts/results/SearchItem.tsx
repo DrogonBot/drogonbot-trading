@@ -1,4 +1,4 @@
-import Tooltip from '@material-ui/core/Tooltip';
+import ShareIcon from '@material-ui/icons/Share';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -7,75 +7,80 @@ import { colors } from '../../../../constants/UI/Colors.constant';
 import { UI } from '../../../../constants/UI/UI.constant';
 import { DateHelper } from '../../../../helpers/DateHelper';
 import { TS } from '../../../../helpers/LanguageHelper';
-import { ToolTipText } from '../../../elements/common/layout';
+import { IPost } from '../../../../types/Post.types';
 import { Breadcumb } from '../../../elements/ui/Breadcumb';
+import { ToolTipIcon } from '../../../elements/ui/ToolTipIcon';
 
 interface IProps {
-  id: string;
-  category: string;
-  tags: string;
-  title: string;
-  date: string;
-  description: string;
-  slug: string;
-  stateCode: string;
-  city: string;
-  isTrustableSource: boolean;
+  post: IPost;
 }
 
-export const SearchItem = ({
-  id,
-  category,
-  tags,
-  title,
-  date,
-  description,
-  slug,
-  stateCode,
-  city,
-  isTrustableSource,
-}: IProps) => {
-  const humanDate = DateHelper.displayHumanDate(date);
+export const SearchItem = ({ post }: IProps) => {
+  const humanDate = DateHelper.displayHumanDate(post.createdAt);
+
+  const tags = post.jobRoles.join(",");
+
+  const postLink = `/posts/${post.slug}`;
 
   return (
     <Container>
-      <Breadcumb parent={`${stateCode} › ${city} › ${category}`} child={tags} />
-      <Link href={`/posts/[slug]`} passHref as={`/posts/${slug}`}>
+      <Breadcumb
+        parent={`${post.stateCode} › ${post.city} › ${post.sector}`}
+        child={tags}
+      />
+      <Link href={`/posts/[slug]`} passHref as={postLink}>
         <Title>
-          {title}
-          {isTrustableSource && <VerifiedIcon />}
+          {post.title}
+          {post.isTrustableSource && <VerifiedIcon />}
         </Title>
       </Link>
+      <ActionsContainer>
+        <ShareAction postLink={postLink} />
+      </ActionsContainer>
       <MobileDate>{humanDate}</MobileDate>
-      <Link href={`/posts/[slug]`} passHref as={`/posts/${slug}`}>
+      <Link href={`/posts/[slug]`} passHref as={postLink}>
         <Description>
           <DesktopDate>
             {humanDate}
             {" - "}
           </DesktopDate>
-          {description}
+          {post.content}
         </Description>
       </Link>
     </Container>
   );
 };
 
+const ShareAction = ({ postLink }) => (
+  <ShareContainer
+    href={`whatsapp://send?text=${postLink}?ref=whatsapp`}
+    data-action="share/whatsapp/share"
+  >
+    <ToolTipIcon text={TS.string("post", "postShare")}>
+      <ShareIcon />
+    </ToolTipIcon>
+  </ShareContainer>
+);
+
 const VerifiedIcon = () => (
   <VerifiedIconContainer>
-    <Tooltip
-      title={
-        <ToolTipText>{TS.string("post", "postTrustableSource")}</ToolTipText>
-      }
-    >
+    <ToolTipIcon text={TS.string("post", "postTrustableSource")}>
       <VerifiedUserIcon />
-    </Tooltip>
+    </ToolTipIcon>
   </VerifiedIconContainer>
 );
+
+const ShareContainer = styled.a`
+  font-size: 0.8rem;
+  svg {
+    color: ${colors.primary};
+  }
+`;
 
 const VerifiedIconContainer = styled.div`
   position: relative;
   top: -0.1rem;
-  font-size: 1.3rem;
+  font-size: 1rem;
   margin-left: 0.3rem;
   svg {
     color: ${colors.green};
@@ -103,7 +108,7 @@ const Container = styled.div`
 const Title = styled.a`
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
   font-size: 18px;
   margin-top: 1rem;
   font-weight: 300;
@@ -157,4 +162,9 @@ const DesktopDate = styled.span`
   }
 
   display: none;
+`;
+
+const ActionsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;

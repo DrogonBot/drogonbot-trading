@@ -1,17 +1,45 @@
 import { Button } from '@material-ui/core';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
 
+import { TS } from '../../../../helpers/LanguageHelper';
 import { IPost } from '../../../../types/Post.types';
 import { AlertModal } from '../../../elements/ui/AlertModal';
+import { RegisterWizard } from '../../register/RegisterWizard';
 
 interface IProps {
   post: IPost;
+  jobRoles: string[];
 }
 
-export const WhatsAppLeadModal = ({ post }: IProps) => {
-  if (typeof window !== "undefined") {
+export const LeadModal = ({ post, jobRoles }: IProps) => {
+  const router = useRouter();
+  const { ref, modal } = router.query;
+
+  if (ref === "whatsapp" || modal === "register") {
+    // if we're being referred by whatsapp, lets just open the register modal...
+
+    if (process.browser) {
+      if (localStorage.getItem("register-modal") === "dont-show") {
+        return null;
+      }
+    }
+
+    return (
+      <AlertModal
+        alertKey="register-modal"
+        title={TS.string("account", "registerCreateYourAccount")}
+        content={<RegisterWizard jobRoles={jobRoles} />}
+        showDontShowAgain={true}
+      />
+    );
+  }
+
+  // otherwise, capture a lead through WhatsApp
+
+  if (process.browser) {
     const whatsAppModal = localStorage.getItem("whatsapp-modal");
 
     if (whatsAppModal === "dont-show") {
