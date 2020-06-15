@@ -13,7 +13,7 @@ export const RelatedPosts = ({ relatedPosts }: IProps) => {
   }
 
   return (
-    <>
+    <div>
       {relatedPosts.map((relatedPost) => (
         <PostCard
           key={relatedPost._id}
@@ -25,6 +25,6 @@ export const RelatedPosts = ({ relatedPosts }: IProps) => {
           city={relatedPost.city}
         />
       ))}
-    </>
+    </div>
   );
 };

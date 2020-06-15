@@ -1,19 +1,3 @@
-import {
-  faBriefcase,
-  faBriefcaseMedical,
-  faBusAlt,
-  faBusinessTime,
-  faClock,
-  faDrumstickBite,
-  faMagic,
-  faMapMarkedAlt,
-  faMoneyBill,
-  faTicketAlt,
-  faUser,
-  faUserClock,
-  faUserTie,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@material-ui/core';
 import { JobPostingJsonLd } from 'next-seo';
 import { useEffect } from 'react';
@@ -23,7 +7,6 @@ import styled from 'styled-components';
 import { AdsenseHelper } from '../../components/ads/AdsenseAds';
 import { Body, PageContainer } from '../../components/elements/common/layout';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
-import { InfoTag } from '../../components/elements/ui/InfoTag';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
 import { FlagPost } from '../../components/pages/posts/post/FlagPost';
@@ -31,6 +14,7 @@ import { JoinCommunities } from '../../components/pages/posts/post/JoinCommuniti
 import { PostCard } from '../../components/pages/posts/post/PostCard';
 import { PostContent } from '../../components/pages/posts/post/PostContent';
 import { PostCTA } from '../../components/pages/posts/post/PostCTA';
+import { PostInfoTag } from '../../components/pages/posts/post/PostInfoTag';
 import { WhatsAppLeadModal } from '../../components/pages/posts/post/WhatsAppLeadModal';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { NextSEOPost } from '../../components/seo/NextSEOPost';
@@ -44,7 +28,7 @@ import { loadCountryProvinces } from '../../store/actions/form.actions';
 import { postReadFeed, postReadOne } from '../../store/actions/post.action';
 import { AdsenseAdsTypes } from '../../types/Ads.types';
 import { IProvince } from '../../types/Form.types';
-import { IPost, PostBenefits, PostCategory, PostPositionType } from '../../types/Post.types';
+import { IPost, PostPositionType } from '../../types/Post.types';
 
 interface IProps {
   post: IPost;
@@ -76,124 +60,6 @@ IProps) => {
   useEffect(() => {
     console.log(`Referrer: ${document.referrer}`);
   }, []);
-
-  const onRenderPositionType = () => {
-    switch (post.positionType) {
-      case PostPositionType.FullTime:
-        return (
-          <InfoTag
-            icon={<FontAwesomeIcon icon={faBriefcase} />}
-            text={TS.string("post", "postPositionTypeFullTime")}
-          />
-        );
-
-      case PostPositionType.PartTime:
-        return (
-          <InfoTag
-            icon={<FontAwesomeIcon icon={faClock} />}
-            text={TS.string("post", "postPositionTypePartTime")}
-          />
-        );
-
-      case PostPositionType.Custom:
-        return (
-          <InfoTag
-            icon={<FontAwesomeIcon icon={faUserClock} />}
-            text={TS.string("post", "postPositionTypeCustom")}
-          />
-        );
-    }
-  };
-
-  const onRenderExperienceRequired = () => {
-    if (post.experienceRequired) {
-      return (
-        <InfoTag
-          icon={<FontAwesomeIcon icon={faMagic} />}
-          text={TS.string("post", "postExperienceNotRequired")}
-        />
-      );
-    }
-
-    return null;
-  };
-
-  const onRenderCategory = () => {
-    switch (post.category) {
-      case PostCategory.Job:
-        return (
-          <InfoTag
-            icon={<FontAwesomeIcon icon={faUserTie} />}
-            text={TS.string("post", "postCategoryJob")}
-          />
-        );
-      case PostCategory.Internship:
-        return (
-          <InfoTag
-            icon={<FontAwesomeIcon icon={faUser} />}
-            text={TS.string("post", "postCategoryInternship")}
-          />
-        );
-
-      case PostCategory.Temporary:
-        return (
-          <InfoTag
-            icon={<FontAwesomeIcon icon={faBusinessTime} />}
-            text={TS.string("post", "postCategoryTemporary")}
-          />
-        );
-    }
-  };
-
-  const onRenderBenefits = () => {
-    return post.benefits?.map((benefit) => {
-      switch (benefit) {
-        case PostBenefits.FoodTicket:
-          return (
-            <InfoTag
-              key={benefit}
-              icon={<FontAwesomeIcon icon={faTicketAlt} />}
-              text={TS.string("post", "postBenefitFoodTicket")}
-            />
-          );
-        case PostBenefits.HealthCare:
-          return (
-            <InfoTag
-              key={benefit}
-              icon={<FontAwesomeIcon icon={faBriefcaseMedical} />}
-              text={TS.string("post", "postBenefitHealthCare")}
-            />
-          );
-        case PostBenefits.Meal:
-          return (
-            <InfoTag
-              key={benefit}
-              icon={<FontAwesomeIcon icon={faDrumstickBite} />}
-              text={TS.string("post", "postBenefitMeal")}
-            />
-          );
-        case PostBenefits.Transportation:
-          return (
-            <InfoTag
-              key={benefit}
-              icon={<FontAwesomeIcon icon={faBusAlt} />}
-              text={TS.string("post", "postBenefitTransportation")}
-            />
-          );
-      }
-    });
-  };
-
-  const onRenderSalary = () => {
-    return (
-      post.monthlySalary && (
-        <InfoTag
-          icon={<FontAwesomeIcon icon={faMoneyBill} />}
-          text={`${TS.string("post", "currency")} ${post.monthlySalary}`}
-        />
-      )
-    );
-  };
 
   const getJobJsonLDType = () => {
     switch (post.positionType) {
@@ -290,21 +156,9 @@ IProps) => {
             <Small>{humanDate}</Small>
             <PostContent post={post} />
 
-            <InfoTagsContainer>
-              <InfoTag
-                icon={<FontAwesomeIcon icon={faMapMarkedAlt} />}
-                text={`${post.city}, ${post.stateCode}`}
-              />
-              {onRenderPositionType()}
-              {onRenderExperienceRequired()}
-              {onRenderCategory()}
-              {onRenderBenefits()}
-              {onRenderSalary()}
-            </InfoTagsContainer>
+            <PostInfoTag post={post} />
 
-            <MainCTAContainer>
-              <PostCTA post={post} />
-            </MainCTAContainer>
+            <PostCTA post={post} />
 
             <TOSContainer>
               <Link href={`/terms?language=${appEnv.language}`}>
@@ -446,11 +300,6 @@ const LeftColumn = styled.div`
 //   }
 // `;
 
-const MainCTAContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
 const RelatedPosts = styled.div`
   margin-top: 3rem;
 `;
@@ -493,18 +342,4 @@ const TitleContainer = styled.div`
   align-items: center;
 
   margin-bottom: 1.5rem;
-`;
-
-const InfoTagsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: flex-start;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-
-  /*MOBILE ONLY CODE*/
-  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
-    justify-content: center;
-  }
 `;

@@ -92,7 +92,10 @@ export const PostCTA = ({ post }: IProps) => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 const CTALink = styled.div`
   cursor: pointer;
