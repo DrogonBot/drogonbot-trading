@@ -11,6 +11,14 @@ interface IProps {
 }
 
 export const WhatsAppLeadModal = ({ post }: IProps) => {
+  if (typeof window !== "undefined") {
+    const whatsAppModal = localStorage.getItem("whatsapp-modal");
+
+    if (whatsAppModal === "dont-show") {
+      return null;
+    }
+  }
+
   return (
     <AlertModal
       alertKey="whatsapp-modal"

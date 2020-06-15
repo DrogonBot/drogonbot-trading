@@ -224,24 +224,6 @@ IProps) => {
     ));
   };
 
-  const onShowWhatsAppLeadCaptureAlert = () => {
-    if (typeof window !== "undefined") {
-      const whatsAppModal = localStorage.getItem("whatsapp-modal");
-
-      if (whatsAppModal === "dont-show") {
-        return null;
-      }
-
-      return (
-        <>
-          <WhatsAppLeadModal post={post} />
-        </>
-      );
-    } else {
-      return null;
-    }
-  };
-
   // const onRenderAffiliateProducts = () => {
   //   return affiliatedProducts.map((product, i) => (
   //     <div key={i}>
@@ -409,7 +391,7 @@ IProps) => {
           ) : null}
         </ContainerMobile>
 
-        {onShowWhatsAppLeadCaptureAlert()}
+        <WhatsAppLeadModal post={post} />
       </Body>
       <Footer />
     </>
