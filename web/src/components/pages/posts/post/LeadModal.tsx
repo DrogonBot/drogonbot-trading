@@ -2,10 +2,13 @@ import { Button } from '@material-ui/core';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { TS } from '../../../../helpers/LanguageHelper';
+import { AppState } from '../../../../store/reducers/index.reducers';
 import { IPost } from '../../../../types/Post.types';
+import { IUser } from '../../../../types/User.types';
 import { AlertModal } from '../../../elements/ui/AlertModal';
 import { RegisterWizard } from '../../register/RegisterWizard';
 
@@ -16,10 +19,16 @@ interface IProps {
 
 export const LeadModal = ({ post, jobRoles }: IProps) => {
   const router = useRouter();
+  const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
   const { ref, modal } = router.query;
 
   if (ref === "whatsapp" || modal === "register") {
     // if we're being referred by whatsapp, lets just open the register modal...
+
+    if (user) {
+      // if user is already logged in, do nothing
+      return null;
+    }
 
     if (process.browser) {
       if (localStorage.getItem("register-modal") === "dont-show") {
