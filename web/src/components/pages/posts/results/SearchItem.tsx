@@ -3,6 +3,7 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Link from 'next/link';
 import styled from 'styled-components';
 
+import { appEnv } from '../../../../constants/Env.constant';
 import { colors } from '../../../../constants/UI/Colors.constant';
 import { UI } from '../../../../constants/UI/UI.constant';
 import { DateHelper } from '../../../../helpers/DateHelper';
@@ -53,7 +54,7 @@ export const SearchItem = ({ post }: IProps) => {
 
 const ShareAction = ({ postLink }) => (
   <ShareContainer
-    href={`whatsapp://send?text=${postLink}?ref=whatsapp`}
+    href={`whatsapp://send?text=${appEnv.appUrl}${postLink}?ref=whatsapp`}
     data-action="share/whatsapp/share"
   >
     <ToolTipIcon text={TS.string("post", "postShare")}>
