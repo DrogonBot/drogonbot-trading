@@ -74,3 +74,8 @@ export interface IPost {
   requisites?: string;
   experienceRequired?: boolean;
 }
+
+export enum RelatedPostType {
+  Mobile = "Mobile",
+  Desktop = "Desktop",
+}

@@ -28,7 +28,7 @@ export const JoinCommunities = ({ post }: IProps) => {
   return (
     <Container>
       <a
-        href={`http://bit.ly/emprego-urgente-${post.stateCode.toLowerCase()}4`}
+        href={`https://emprego-urgente.netlify.app/?userType=JobSeeker&stateCode=${post.stateCode}&city=${post.city}`}
         target="_blank"
       >
         <Button

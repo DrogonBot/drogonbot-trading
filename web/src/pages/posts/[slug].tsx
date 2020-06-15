@@ -1,7 +1,6 @@
 import { Link } from '@material-ui/core';
 import { JobPostingJsonLd } from 'next-seo';
 import { useEffect } from 'react';
-import Slider from 'react-slick';
 import styled from 'styled-components';
 
 import { AdsenseHelper } from '../../components/ads/AdsenseAds';
@@ -11,16 +10,16 @@ import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
 import { FlagPost } from '../../components/pages/posts/post/FlagPost';
 import { JoinCommunities } from '../../components/pages/posts/post/JoinCommunities';
-import { PostCard } from '../../components/pages/posts/post/PostCard';
 import { PostContent } from '../../components/pages/posts/post/PostContent';
 import { PostCTA } from '../../components/pages/posts/post/PostCTA';
 import { PostInfoTag } from '../../components/pages/posts/post/PostInfoTag';
+import { RelatedPosts } from '../../components/pages/posts/post/RelatedPosts';
 import { WhatsAppLeadModal } from '../../components/pages/posts/post/WhatsAppLeadModal';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { NextSEOPost } from '../../components/seo/NextSEOPost';
 import { appEnv } from '../../constants/Env.constant';
 import { colors } from '../../constants/UI/Colors.constant';
-import { ContainerDesktop, ContainerMobile, H1, H2, Small } from '../../constants/UI/Common.constant';
+import { H1, Small } from '../../constants/UI/Common.constant';
 import { UI } from '../../constants/UI/UI.constant';
 import { DateHelper } from '../../helpers/DateHelper';
 import { TS } from '../../helpers/LanguageHelper';
@@ -28,7 +27,7 @@ import { loadCountryProvinces } from '../../store/actions/form.actions';
 import { postReadFeed, postReadOne } from '../../store/actions/post.action';
 import { AdsenseAdsTypes } from '../../types/Ads.types';
 import { IProvince } from '../../types/Form.types';
-import { IPost, PostPositionType } from '../../types/Post.types';
+import { IPost, PostPositionType, RelatedPostType } from '../../types/Post.types';
 
 interface IProps {
   post: IPost;
@@ -36,15 +35,6 @@ interface IProps {
   relatedPosts: IPost[];
   // affiliatedProducts: IAffiliateProduct[];
 }
-
-const carouselSettings = {
-  className: "center",
-  centerMode: true,
-  infinite: true,
-  centerPadding: "60px",
-  slidesToShow: 1,
-  speed: 500,
-};
 
 const IndividualPage = ({
   post,
@@ -70,24 +60,6 @@ IProps) => {
       default:
         return "OTHER";
     }
-  };
-
-  const onRenderRelatedPosts = () => {
-    if (!relatedPosts) {
-      return null;
-    }
-
-    return relatedPosts.map((relatedPost) => (
-      <PostCard
-        key={relatedPost._id}
-        title={relatedPost.title}
-        sector={relatedPost.sector}
-        content={relatedPost.content}
-        slug={relatedPost.slug}
-        stateCode={relatedPost.stateCode}
-        city={relatedPost.city}
-      />
-    ));
   };
 
   // const onRenderAffiliateProducts = () => {
@@ -171,20 +143,12 @@ IProps) => {
             <FlagPost post={post} />
 
             <JoinCommunities post={post} />
-
-            <ContainerDesktop>
-              {relatedPosts?.length ? (
-                <InternalContainer>
-                  <RelatedPosts>
-                    <H2>{TS.string("post", "postSimilar")}</H2>
-                    <RelatedPostsContainer>
-                      {onRenderRelatedPosts()}
-                    </RelatedPostsContainer>
-                  </RelatedPosts>
-                </InternalContainer>
-              ) : null}
-            </ContainerDesktop>
           </LeftColumn>
+
+          <RelatedPosts
+            relatedPosts={relatedPosts}
+            type={RelatedPostType.Desktop}
+          />
 
           {/* <RightColumn>
             <H2> {TS.string("post", "postImproveSkills")}</H2>
@@ -203,14 +167,10 @@ IProps) => {
           <Slider {...carouselSettings}>{onRenderAffiliateProducts()}</Slider>
         </AffiliateProductsContainerMobile> */}
 
-        <ContainerMobile>
-          {relatedPosts?.length ? (
-            <InternalContainer>
-              <H2>{TS.string("post", "postSimilar")}</H2>
-              <Slider {...carouselSettings}> {onRenderRelatedPosts()}</Slider>
-            </InternalContainer>
-          ) : null}
-        </ContainerMobile>
+        <RelatedPosts
+          relatedPosts={relatedPosts}
+          type={RelatedPostType.Mobile}
+        />
 
         <WhatsAppLeadModal post={post} />
       </Body>
@@ -252,10 +212,6 @@ IndividualPage.getInitialProps = async (ctx) => {
 };
 
 export default IndividualPage;
-
-const InternalContainer = styled.div`
-  padding: 1.5rem;
-`;
 
 const MainContainer = styled.div`
   display: flex;
@@ -299,20 +255,6 @@ const LeftColumn = styled.div`
 //     display: none;
 //   }
 // `;
-
-const RelatedPosts = styled.div`
-  margin-top: 3rem;
-`;
-
-const RelatedPostsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-
-  /*MOBILE ONLY CODE*/
-  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
-    justify-content: center;
-  }
-`;
 
 const Cover = styled.div`
   width: 100%;
