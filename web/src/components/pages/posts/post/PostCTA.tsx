@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-import { TS } from '../../../helpers/LanguageHelper';
-import { userConsumeCredit, userGetProfileInfo } from '../../../store/actions/user.actions';
-import { IPost } from '../../../types/Post.types';
+import { TS } from '../../../../helpers/LanguageHelper';
+import { userConsumeCredit, userGetProfileInfo } from '../../../../store/actions/user.actions';
+import { IPost } from '../../../../types/Post.types';
 
 interface IProps {
   post: IPost;

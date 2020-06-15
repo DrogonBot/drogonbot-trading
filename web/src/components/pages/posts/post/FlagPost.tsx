@@ -3,9 +3,9 @@ import FlagIcon from '@material-ui/icons/Flag';
 import React from 'react';
 import styled from 'styled-components';
 
-import { appEnv } from '../../../constants/Env.constant';
-import { TS } from '../../../helpers/LanguageHelper';
-import { IPost } from '../../../types/Post.types';
+import { appEnv } from '../../../../constants/Env.constant';
+import { TS } from '../../../../helpers/LanguageHelper';
+import { IPost } from '../../../../types/Post.types';
 
 interface IProps {
   post: IPost;

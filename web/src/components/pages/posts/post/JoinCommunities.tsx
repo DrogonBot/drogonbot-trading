@@ -5,10 +5,10 @@ import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import React from 'react';
 import styled from 'styled-components';
 
-import { colors } from '../../../constants/UI/Colors.constant';
-import { UI } from '../../../constants/UI/UI.constant';
-import { TS } from '../../../helpers/LanguageHelper';
-import { IPost } from '../../../types/Post.types';
+import { colors } from '../../../../constants/UI/Colors.constant';
+import { UI } from '../../../../constants/UI/UI.constant';
+import { TS } from '../../../../helpers/LanguageHelper';
+import { IPost } from '../../../../types/Post.types';
 
 interface IProps {
   post: IPost;

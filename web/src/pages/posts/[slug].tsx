@@ -23,15 +23,15 @@ import styled from 'styled-components';
 
 import { AdsenseHelper } from '../../components/ads/AdsenseAds';
 import { Body, PageContainer } from '../../components/elements/common/layout';
-import { AlertModal } from '../../components/elements/ui/AlertModal';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { InfoTag } from '../../components/elements/ui/InfoTag';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
-import { FlagPost } from '../../components/pages/posts/FlagPost';
-import { JoinCommunities } from '../../components/pages/posts/JoinCommunities';
-import { PostCard } from '../../components/pages/posts/PostCard';
-import { PostCTA } from '../../components/pages/posts/PostCTA';
+import { FlagPost } from '../../components/pages/posts/post/FlagPost';
+import { JoinCommunities } from '../../components/pages/posts/post/JoinCommunities';
+import { PostCard } from '../../components/pages/posts/post/PostCard';
+import { PostCTA } from '../../components/pages/posts/post/PostCTA';
+import { WhatsAppLeadModal } from '../../components/pages/posts/post/WhatsAppLeadModal';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { NextSEOPost } from '../../components/seo/NextSEOPost';
 import { appEnv } from '../../constants/Env.constant';
@@ -45,7 +45,6 @@ import { postReadFeed, postReadOne } from '../../store/actions/post.action';
 import { AdsenseAdsTypes } from '../../types/Ads.types';
 import { IProvince } from '../../types/Form.types';
 import { IPost, PostBenefits, PostCategory, PostPositionType } from '../../types/Post.types';
-import Register from '../register';
 
 interface IProps {
   post: IPost;
@@ -235,12 +234,7 @@ IProps) => {
 
       return (
         <>
-          <AlertModal
-            alertKey="whatsapp-modal"
-            title="Grupo de Vagas no WhatsApp"
-            content={<Register provinces={provinces} jobRoles={[]} />}
-            showDontShowAgain={true}
-          />
+          <WhatsAppLeadModal post={post} />
         </>
       );
     } else {
@@ -509,17 +503,6 @@ const SeeMoreLink = styled.a`
   margin-top: 1.5rem;
 `;
 
-// const WhatsAppLogoContainer = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-//   justify-content: center;
-//   max-height: 100px;
-// `;
-
-// const WhatsAppLogo = styled.img`
-//   max-width: 100px;
-// `;
-
 const MainCTAContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -587,11 +570,3 @@ const ContentArea = styled.p`
   color: ${colors.silver};
   white-space: pre-wrap;
 `;
-
-// const AlertModalContainer = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-//   justify-content: center;
-//   align-items: center;
-//   margin-top: 1.5rem;
-// `;

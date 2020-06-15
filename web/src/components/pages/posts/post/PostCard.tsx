@@ -8,7 +8,7 @@ import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 
-import { TS } from '../../../helpers/LanguageHelper';
+import { TS } from '../../../../helpers/LanguageHelper';
 
 interface IProps {
   title: string;
