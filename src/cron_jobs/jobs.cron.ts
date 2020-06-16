@@ -170,7 +170,7 @@ export class JobsCron {
   public static initializeJobCrawlers = () => {
 
     // at 8am UTC = 5am Brasilia = 1am Vancouver
-    cron.schedule("0 8 * * *", async () => {
+    cron.schedule("0 */12 * * *", async () => {
       JobsCron._executeCrawlers()
     });
 
