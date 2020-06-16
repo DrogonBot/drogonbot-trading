@@ -151,7 +151,10 @@ export class ConnectionHelper {
         const ip = splittedItem[0];
         const port = splittedItem[1];
 
-        proxyList = [...proxyList, { ip, port }];
+        if (ip && port) {
+          proxyList = [...proxyList, { ip, port }];
+        }
+
 
       }
 
