@@ -5,7 +5,7 @@ import rp from 'request-promise';
 import UserAgent from 'user-agents';
 import util from 'util';
 
-import { botTempDirectory } from '../..';
+import { botsTempDirectory } from '../..';
 import { Log } from '../../resources/Log/log.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
@@ -140,8 +140,8 @@ export class ConnectionHelper {
       // on this specific case, the request returns a .txt file, so the handling will be different than an usual html response.
 
       // write into a file and read it sequentially, since reading directly was causing some issues.
-      fs.writeFileSync(`${botTempDirectory}/ips.txt`, txt);
-      const file = fs.readFileSync(`${botTempDirectory}/ips.txt`, { encoding: "utf8" })
+      fs.writeFileSync(`${botsTempDirectory}/ips.txt`, txt);
+      const file = fs.readFileSync(`${botsTempDirectory}/ips.txt`, { encoding: "utf8" })
 
       const data = file.split(/\r?\n/)
 

@@ -1,6 +1,8 @@
 import cheerio from 'cheerio';
 import { Router } from 'express';
+import ObjectsToCsv from 'objects-to-csv';
 
+import { publicDirectory } from '../..';
 import { TS } from '../../utils/TS';
 import { UserType } from '../User/user.types';
 import { Lead } from './lead.model';
@@ -50,6 +52,64 @@ leadsRouter.post('/leads/save', async (req, res) => {
 })
 
 
+leadsRouter.get('/leads/export/:stateCode', async (req, res) => {
+
+  const { stateCode } = req.params;
+
+  const leads = await Lead.find({ stateCode })
+
+  let output: string[] = []
+
+  for (const lead of leads) {
+
+    const data = lead;
+
+    if (lead.phone) {
+      data.phone = lead.phone.replace('+55 ', "").replace(' ', '').replace('-', '').replace('(', '').replace(')', '')
+
+      output = [
+        ...output,
+        data.toObject() // convert mongoose model to javascript object (csv lib requirement)
+      ]
+    }
+  }
+
+
+  const csv = new ObjectsToCsv(output)
+
+  await csv.toDisk(`${publicDirectory}/export/leads.csv`)
+
+  return res.status(200).send({
+    status: 'success',
+    message: "Leads exported successfully!"
+  })
+
+
+
+
+});
+
+
+// operationRouter.get('/fix-leads', async (req, res) => {
+
+//   const leads = await Lead.find({})
+
+//   for (const lead of leads) {
+
+//     if (lead.phone && !lead.city) {
+//       const isMG = /\(3\d\)/.test(lead.phone)
+//       if (isMG) {
+//         lead.city = "Belo Horizonte"
+//       }
+
+//       const isSP = /\(1\d\)/.test(lead.phone)
+//       if (isSP) {
+//         lead.city = "São Paulo"
+//       }
+
+//       await lead.save()
+//     }
+//   }
 
 
 leadsRouter.post('/leads/whatsapp/scrap', async (req, res) => {

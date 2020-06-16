@@ -296,34 +296,6 @@ operationRouter.get('/report', async (req, res) => {
 
 })
 
-operationRouter.get('/fix-leads', async (req, res) => {
-
-  const leads = await Lead.find({})
-
-  for (const lead of leads) {
-
-    if (lead.phone && !lead.city) {
-      const isMG = /\(3\d\)/.test(lead.phone)
-      if (isMG) {
-        lead.city = "Belo Horizonte"
-      }
-
-      const isSP = /\(1\d\)/.test(lead.phone)
-      if (isSP) {
-        lead.city = "São Paulo"
-      }
-
-      await lead.save()
-    }
-  }
-
-
-  return res.status(200).send({
-    status: 'fixed'
-  })
-
-
-})
 
 
 operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {

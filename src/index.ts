@@ -51,7 +51,7 @@ const io = socketio(server); // now we pass this server variable to our server
 export const publicDirectory = path.join(__dirname, './public')
 export const backupsDirectory = path.join(__dirname, '../backups')
 export const scriptsPath = path.join(__dirname, '../scripts')
-export const botTempDirectory = path.join(__dirname, './bots/temp')
+export const botsTempDirectory = path.join(__dirname, './bots/temp')
 
 app.use(cors())
 
