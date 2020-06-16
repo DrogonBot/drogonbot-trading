@@ -15,7 +15,7 @@ export class ScrapperMaisVagasES {
 
     console.log(`🤖: Crawling links for ${externalSource}`);
 
-    const html = await ConnectionHelper.requestHtml(
+    const html = await ConnectionHelper.request(
       externalSource
     );
 
@@ -25,7 +25,7 @@ export class ScrapperMaisVagasES {
   public static crawlPageData = async (link: string, postDataOverride?) => {
 
     console.log(`Requesting html from link ${link}`);
-    const html = await ConnectionHelper.requestHtml(link)
+    const html = await ConnectionHelper.request(link)
 
     const $ = cheerio.load(html);
 

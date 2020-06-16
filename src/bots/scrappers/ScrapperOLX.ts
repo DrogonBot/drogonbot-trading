@@ -17,7 +17,7 @@ export class ScrapperOLX {
 
     console.log(`🤖: Crawling links for ${externalSource}`);
 
-    const html = await ConnectionHelper.requestHtml(
+    const html = await ConnectionHelper.request(
       externalSource
     );
 
@@ -49,7 +49,7 @@ export class ScrapperOLX {
 
   public static crawlPageData = async (link: string, postDataOverride?) => {
 
-    const html = await ConnectionHelper.requestHtml(link)
+    const html = await ConnectionHelper.request(link)
 
     const $ = cheerio.load(html);
 

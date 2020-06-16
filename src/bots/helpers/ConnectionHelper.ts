@@ -1,4 +1,3 @@
-import cheerio from 'cheerio';
 import fs from 'fs';
 import moment from 'moment-timezone';
 import path from 'path';
@@ -6,6 +5,7 @@ import rp from 'request-promise';
 import UserAgent from 'user-agents';
 import util from 'util';
 
+import { botTempDirectory } from '../..';
 import { Log } from '../../resources/Log/log.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
@@ -21,7 +21,7 @@ export class ConnectionHelper {
     return readFile(path.join(__dirname, location), 'utf8');
   };
 
-  public static requestHtml = async (
+  public static request = async (
     url: string,
     noProxy?: boolean
   ) => {
@@ -30,6 +30,7 @@ export class ConnectionHelper {
 
       if (noProxy) {
         return await rp(url, {
+
           strictSSL: false,
           timeout: 15000,
           headers: {
@@ -129,20 +130,54 @@ export class ConnectionHelper {
   public static fetchFreeProxyList = async () => {
     console.log('🤖: Fetching proxy list...');
 
-    const html = await ConnectionHelper.requestHtml('https://sslproxies.org/', true)
-
-    const $ = cheerio.load(html);
-
-    const proxyTableRows = $('#proxylisttable tbody tr');
 
     let proxyList: IProxyItem[] = [];
 
-    proxyTableRows.each((i, el) => {
-      const ip = $(el.children[0]).text();
-      const port = $(el.children[1]).text();
 
-      proxyList = [...proxyList, { ip, port }];
-    });
+    try {
+      const txt = await ConnectionHelper.request('https://api.proxyscrape.com/?request=getproxies&proxytype=http&timeout=10000&country=all&ssl=all&anonymity=anonymous', true)
+
+      // on this specific case, the request returns a .txt file, so the handling will be different than an usual html response.
+
+      // write into a file and read it sequentially, since reading directly was causing some issues.
+      fs.writeFileSync(`${botTempDirectory}/ips.txt`, txt);
+      const file = fs.readFileSync(`${botTempDirectory}/ips.txt`, { encoding: "utf8" })
+
+      const data = file.split(/\r?\n/)
+
+      console.log(data);
+
+      for (const item of data) {
+
+        const splittedItem = item.split(':');
+        const ip = splittedItem[0];
+        const port = splittedItem[1];
+
+        proxyList = [...proxyList, { ip, port }];
+
+      }
+
+
+    }
+    catch (error) {
+      console.error(error);
+
+    }
+
+
+
+    // const html = await ConnectionHelper.request('https://sslproxies.org/', true)
+
+    // const $ = cheerio.load(html);
+
+    // const proxyTableRows = $('#proxylisttable tbody tr');
+
+    // proxyTableRows.each((i, el) => {
+    //   const ip = $(el.children[0]).text();
+    //   const port = $(el.children[1]).text();
+
+    //   proxyList = [...proxyList, { ip, port }];
+    // });
     console.log(`🤖: Done, proxy list loaded! => ${proxyList.length} proxies found!`);
     return proxyList;
   };
