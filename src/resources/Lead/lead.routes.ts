@@ -3,6 +3,8 @@ import { Router } from 'express';
 import ObjectsToCsv from 'objects-to-csv';
 
 import { publicDirectory } from '../..';
+import { userAuthMiddleware } from '../../middlewares/auth.middleware';
+import { UserMiddleware } from '../../middlewares/user.middleware';
 import { TS } from '../../utils/TS';
 import { UserType } from '../User/user.types';
 import { Lead } from './lead.model';
@@ -52,7 +54,7 @@ leadsRouter.post('/leads/save', async (req, res) => {
 })
 
 
-leadsRouter.get('/leads/export/:stateCode', async (req, res) => {
+leadsRouter.get('/leads/export/:stateCode', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
   const { stateCode } = req.params;
 
