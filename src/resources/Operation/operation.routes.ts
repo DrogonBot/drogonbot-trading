@@ -296,7 +296,7 @@ operationRouter.get('/report', async (req, res) => {
 
 })
 
-operationRouter.get('/fix/leads', async (req, res) => {
+operationRouter.get('/fix-leads', async (req, res) => {
 
   const leads = await Lead.find({})
 
