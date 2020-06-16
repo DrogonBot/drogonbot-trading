@@ -145,8 +145,6 @@ export class ConnectionHelper {
 
       const data = file.split(/\r?\n/)
 
-      console.log(data);
-
       for (const item of data) {
 
         const splittedItem = item.split(':');
