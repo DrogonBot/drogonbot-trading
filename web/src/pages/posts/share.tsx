@@ -40,7 +40,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
   const messageVariations = [
     "Pessoal, acessem nosso grupo de vagas no WhatsApp! Postamos todos os dias!!",
-    "Ei gente! Entrem em nosso grupo exclusivo de VAGAS DE EMPREGO!",
+    "Ei gente! Entrem em nosso grupo exclusivo de VAGAS DE EMPREGO no WhatsApp!",
     "Pessoal, entrem em nosso grupo de empregos no WhatsApp! Todos os dias com vagas novas!",
   ];
 
