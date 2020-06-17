@@ -169,8 +169,12 @@ export class JobsCron {
 
   public static initializeJobCrawlers = () => {
 
-    // at 8am UTC = 5am Brasilia = 1am Vancouver
-    cron.schedule("0 */12 * * *", async () => {
+    // at 6am UTC = 5am Brasilia (Vagas para 8am Brasilia)
+    cron.schedule("0 6 * * *", async () => {
+      JobsCron._executeCrawlers()
+    });
+    // at 6pm UTC = 3pm Brasilia (Vagas para 7pm Brasilia)
+    cron.schedule("0 18 * * *", async () => {
       JobsCron._executeCrawlers()
     });
 
