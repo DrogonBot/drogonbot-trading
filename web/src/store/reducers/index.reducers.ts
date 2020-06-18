@@ -22,7 +22,7 @@ const rootReducerPersistConfig = {
 const uiPersistConfig = {
   key: "uiReducer",
   storage,
-  whitelist: ["searchProvince"],
+  whitelist: ["searchProvince", "searchCity"],
   blacklist: ["isLoading"],
 };
 

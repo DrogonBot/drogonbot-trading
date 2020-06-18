@@ -152,4 +152,8 @@ export const globalStrings = {
     eng: "Jobs App",
     ptBr: "App de Vagas",
   },
+  genericLoading: {
+    eng: "Loading...",
+    ptBr: "Carregando...",
+  },
 };
