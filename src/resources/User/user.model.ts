@@ -116,10 +116,7 @@ export const userSchema: Schema = new Schema(
       data: Object,
       visualized: Boolean
     },
-    emailSubscriptionStatus: {
-      transactional: Boolean,
-      marketing: Boolean
-    },
+    unsubscribed: Boolean,
     credits: {
       type: Number,
       default: USER_WEEKLY_CREDITS_THRESHOLD

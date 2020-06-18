@@ -45,12 +45,7 @@ const leadSchema = new mongoose.Schema({
       jobRoles: [String]
     }
   ],
-
-
-  emailSubscriptionStatus: {
-    transactional: Boolean,
-    marketing: Boolean
-  }
+  unsubscribed: Boolean
 }, {
   timestamps: true
 })

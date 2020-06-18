@@ -82,15 +82,14 @@ userRouter.get("/unsubscribe", async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user) {
-    user.emailSubscriptionStatus.transactional = false;
-    user.emailSubscriptionStatus.marketing = false;
+    user.unsubscribed = true;
+
     await user.save();
   } else {
     const lead = await Lead.findOne({ email });
 
     if (lead) {
-      lead.emailSubscriptionStatus.transactional = false;
-      lead.emailSubscriptionStatus.marketing = false;
+      lead.unsubscribed = true;
       await lead.save();
     }
   }

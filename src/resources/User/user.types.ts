@@ -27,10 +27,7 @@ export interface IUserNotification {
   jobRoles: string[]
 }
 
-export interface IEmailSubscriptionStatus {
-  transactional: boolean,
-  marketing: boolean
-}
+
 
 export interface IUserDocument extends Document {
   name: string;
@@ -54,7 +51,7 @@ export interface IUserDocument extends Document {
   createdAt: string;
   updatedAt: string;
   lastNotification: any;
-  emailSubscriptionStatus: IEmailSubscriptionStatus;
+  unsubscribed: boolean;
   credits: number;
   postReportItems: IReportItem[]
 }

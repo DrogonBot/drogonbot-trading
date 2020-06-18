@@ -1,5 +1,5 @@
 import { IReportItem } from '../../typescript/report.types';
-import { IEmailSubscriptionStatus, UserType } from '../User/user.types';
+import { UserType } from '../User/user.types';
 
 
 export interface ILead {
@@ -11,7 +11,7 @@ export interface ILead {
   jobRoles: string[],
   phone?: string;
   city?: string;
-  emailSubscriptionStatus: IEmailSubscriptionStatus
+  unsubscribed: boolean;
   postReportItems: IReportItem[]
 }
 
