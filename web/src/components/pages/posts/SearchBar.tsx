@@ -7,7 +7,7 @@ import { UI } from '../../../constants/UI/UI.constant';
 import { GAnalyticsHelper } from '../../../helpers/GAnalyticsHelper';
 import { setSearchKey } from '../../../store/actions/ui.action';
 import { IProvince } from '../../../types/Form.types';
-import { ProvinceSelector } from '../../elements/form/ProvinceSelector';
+import { ProvinceCityDropdown } from '../../elements/form/ProvinceCityDropdown';
 
 interface IProps {
   provinces: IProvince[];
@@ -56,7 +56,7 @@ export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
       </SearchBarInputContainer>
 
       <ProvinceContainer>
-        <ProvinceSelector
+        <ProvinceCityDropdown
           provinces={provinces}
           defaultProvince={defaultProvince}
         />
@@ -66,6 +66,7 @@ export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
 };
 
 const FormContainer = styled.form`
+  padding: 1rem;
   flex: 100%;
   margin-bottom: 1rem;
   display: flex;
@@ -86,10 +87,10 @@ const FormContainer = styled.form`
 `;
 
 const ProvinceContainer = styled.div`
-  flex: 20%;
+  flex: 40%;
   display: flex;
   justify-content: center;
-  max-width: 70px;
+  /* max-width: 70px; */
   height: 3.3rem;
 
   /*DESKTOP ONLY CODE*/
