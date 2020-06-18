@@ -11,8 +11,8 @@ export class UsersCron {
   public static refreshUserCredits = () => {
 
 
-    // “At 00:00 on Sunday.”
-    cron.schedule("0 0 * * 0", async () => {
+    // “At 00:00 on Friday.”
+    cron.schedule("0 0 * * FRI", async () => {
       console.log("🕒  UsersCron => Refreshing user credits... 🕒");
 
       const users = await User.find({})

@@ -1,26 +1,47 @@
 import { MenuItem, Select } from '@material-ui/core';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import { appEnv } from '../../../constants/Env.constant';
 import { colors } from '../../../constants/UI/Colors.constant';
 import { UI } from '../../../constants/UI/UI.constant';
+import { TS } from '../../../helpers/LanguageHelper';
+import { loadProvinceCities } from '../../../store/actions/form.actions';
 import { setSearchKey } from '../../../store/actions/ui.action';
-import { IProvince } from '../../../types/Form.types';
+import { AppState } from '../../../store/reducers/index.reducers';
+import { ICity, IProvince } from '../../../types/Form.types';
 
 interface IProps {
   provinces: IProvince[];
   defaultProvince?: string;
 }
 
-export const ProvinceSelector = ({ provinces, defaultProvince }: IProps) => {
+export const ProvinceCityDropdown = ({
+  provinces,
+  defaultProvince,
+}: IProps) => {
   const dispatch = useDispatch();
 
   const router = useRouter();
 
   const { searchKeyword } = router.query;
 
-  const { searchProvince } = useSelector<any, any>((state) => state.uiReducer);
+  const { searchProvince, searchCity } = useSelector<AppState, any>(
+    (state) => state.uiReducer
+  );
+
+  const cities = useSelector<AppState, ICity[]>(
+    (state) => state.formReducer.cities
+  );
+
+  useEffect(() => {
+    // when loading component or changing our searchProvince, fetch all respective cities
+
+    //  fetch cities corresponding to this new province
+    dispatch(loadProvinceCities(appEnv.appCountry, searchProvince));
+  }, [searchProvince]);
 
   const onChangeProvince = async (e) => {
     console.log(`changing province to ${e.target.value}`);
@@ -47,6 +68,21 @@ export const ProvinceSelector = ({ provinces, defaultProvince }: IProps) => {
       </MenuItem>
     ));
   };
+  const onRenderCities = () => {
+    if (!cities) {
+      return (
+        <MenuItem key={"loading"} value={""}>
+          {TS.string("global", "genericLoading")}
+        </MenuItem>
+      );
+    }
+
+    return cities.map((city: ICity) => (
+      <MenuItem key={city.name} value={city.name}>
+        {city.name}
+      </MenuItem>
+    ));
+  };
 
   return (
     <Container>
@@ -55,6 +91,9 @@ export const ProvinceSelector = ({ provinces, defaultProvince }: IProps) => {
         onChange={onChangeProvince}
       >
         {onRenderProvinces()}
+      </Select>
+      <Select value={searchCity} onChange={null}>
+        {onRenderCities()}
       </Select>
     </Container>
   );

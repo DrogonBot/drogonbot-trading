@@ -265,6 +265,11 @@ export class NotificationHelper {
 
         const { postThumbnailsLinks, reportedPostsJobRoles } = NotificationHelper._getReportItemsAndJobRoles(user)
 
+        if (user.emailSubscriptionStatus) { // if user has this field, its because he unsubscribed
+
+          continue;
+        }
+
         // then submit
         const status = await NotificationHelper._submitReport(postThumbnailsLinks, reportedPostsJobRoles, user)
 
@@ -290,6 +295,10 @@ export class NotificationHelper {
       for (const lead of leads) {
 
         const { postThumbnailsLinks, reportedPostsJobRoles } = NotificationHelper._getReportItemsAndJobRoles(lead)
+
+        if (lead.emailSubscriptionStatus) { // if user has this field, its because he unsubscribed
+          continue;
+        }
 
         // then submit
         const status = await NotificationHelper._submitReport(postThumbnailsLinks, reportedPostsJobRoles, null, lead)
