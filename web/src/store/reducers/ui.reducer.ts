@@ -1,5 +1,6 @@
 interface IState {
   searchProvince: string | null;
+  searchCity: string | null;
   searchKeyword: string | null;
   isLoading: {
     status: boolean;
@@ -19,6 +20,7 @@ interface IState {
 
 const INITIAL_STATE = {
   searchProvince: "ES",
+  searchCity: null,
   searchKeyword: null,
   isLoading: {
     status: false,
