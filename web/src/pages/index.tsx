@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { Body } from '../components/elements/common/layout';
-import { ProvinceSelector } from '../components/elements/form/ProvinceSelector';
+import { ProvinceCityDropdown } from '../components/elements/form/ProvinceCityDropdown';
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { Logo } from '../components/pages/index/Logo';
@@ -66,7 +66,7 @@ const Home = (props: IProps) => {
 
         <Form id="search-form" onSubmit={onSubmit}>
           <SearchBarContainer>
-            <ProvinceSelector provinces={props.provinces} />
+            <ProvinceCityDropdown provinces={props.provinces} />
 
             <SearchInput
               type="text"
