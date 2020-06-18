@@ -51,7 +51,7 @@ export class TransactionalEmailManager {
           const user = await User.findOne({ email: to })
           const lead = await Lead.findOne({ email: to })
 
-          if ((user?.unsubscribed) || (!lead?.unsubscribed)) {
+          if ((user?.unsubscribed === true) || (!lead?.unsubscribed === true)) {
             console.log(`Skipping email submission to unsubscribed user`);
             return true
           }
