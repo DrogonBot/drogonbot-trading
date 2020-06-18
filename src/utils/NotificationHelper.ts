@@ -198,8 +198,15 @@ export class NotificationHelper {
       );
 
       if (submitted) {
-        target.postReportItems = []
-        await target.save();
+
+        // Here we update the model directly using updateOne instead of .save(), because it was causing some concurrency issues.
+        // https://stackoverflow.com/a/57834827/3192151
+        if (lead) {
+          await Lead.updateOne({ email: lead.email }, { postReportItems: [] })
+        }
+        if (user) {
+          await User.updateOne({ email: user.email }, { postReportItems: [] })
+        }
       }
 
 
