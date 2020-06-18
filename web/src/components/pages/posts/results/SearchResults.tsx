@@ -25,10 +25,10 @@ export const SearchResults = ({ posts }: IProps) => {
           return index % 2 === 0 ? (
             <div key={post._id}>
               {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
-              <SearchItem post={post} />
+              <SearchItem post={post} key={index} />
             </div>
           ) : (
-            <SearchItem post={post} />
+            <SearchItem post={post} key={index} />
           );
         })}
       </Container>
