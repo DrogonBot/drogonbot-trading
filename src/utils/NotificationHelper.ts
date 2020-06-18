@@ -249,7 +249,8 @@ export class NotificationHelper {
 
 
       let users = await User.find({
-        postReportItems: { $exists: true, $not: { $size: 0 } }
+        postReportItems: { $exists: true, $not: { $size: 0 } },
+        emailSubscriptionStatus: { $exists: false }
       })
 
       users = users.sort((a, b) => {
@@ -266,7 +267,6 @@ export class NotificationHelper {
         const { postThumbnailsLinks, reportedPostsJobRoles } = NotificationHelper._getReportItemsAndJobRoles(user)
 
         if (user.emailSubscriptionStatus) { // if user has this field, its because he unsubscribed
-
           continue;
         }
 
@@ -280,7 +280,8 @@ export class NotificationHelper {
       }
 
       let leads = await Lead.find({
-        postReportItems: { $exists: true, $not: { $size: 0 } }
+        postReportItems: { $exists: true, $not: { $size: 0 } },
+        emailSubscriptionStatus: { $exists: false }
       })
 
       leads = leads.sort((a, b) => {
