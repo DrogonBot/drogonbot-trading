@@ -58,7 +58,7 @@ leadsRouter.get('/leads/export/:stateCode', [userAuthMiddleware, UserMiddleware.
 
   const { stateCode } = req.params;
 
-  const leads = await Lead.find({ stateCode })
+  const leads = await Lead.find({ stateCode, type: "SMSLead", $or: [{ unsubscribed: { $exists: false } }, { unsubscribed: { $exists: true, $eq: false } }], })
 
   let output: string[] = []
 
