@@ -198,7 +198,7 @@ IndividualPage.getInitialProps = async (ctx) => {
 
   if (post?.jobRoles?.length > 0) {
     await ctx.store.dispatch(
-      postReadFeed(1, 10, post.stateCode, post.jobRoles[0], false)
+      postReadFeed(1, 10, post.stateCode, post.city, post.jobRoles[0], false)
     );
   }
 
