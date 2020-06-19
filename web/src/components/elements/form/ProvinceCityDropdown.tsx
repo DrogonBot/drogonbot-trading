@@ -57,7 +57,7 @@ export const ProvinceCityDropdown = ({
 
   // If updated searchCity or searchProvince, lets do a router push to update user data statically
   useEffect(() => {
-    if (router.pathname.includes("/posts")) {
+    if (router.pathname.includes("/posts?")) {
       router.push({
         pathname: "/posts",
         query: {
