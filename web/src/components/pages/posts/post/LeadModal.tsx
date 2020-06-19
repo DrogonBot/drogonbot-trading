@@ -59,7 +59,7 @@ export const LeadModal = ({ post, jobRoles }: IProps) => {
   return (
     <AlertModal
       alertKey="whatsapp-modal"
-      title="Grupo de Vagas no WhatsApp"
+      title="Grupo de Vagas no Telegram/WhatsApp"
       content={
         <>
           <a
@@ -68,18 +68,26 @@ export const LeadModal = ({ post, jobRoles }: IProps) => {
           >
             <WhatsAppLogoContainer>
               <WhatsAppLogo
-                src={"/images/logos/whatsapp.svg"}
-                alt="WhatsApp Logo"
+                src={"/images/logos/telegram_whatsapp.png"}
+                alt="WhatsApp and Telegram Logo"
               />
             </WhatsAppLogoContainer>
           </a>
           <p>
-            Participe do nosso grupo exclusivo de vagas no WhatsApp e receba
-            diariamente oportunidades exclusivas em seu celular!
+            Participe do nosso grupo exclusivo de vagas no Telegram ou WhatsApp
+            e receba diariamente oportunidades exclusivas em seu celular!
           </p>
           <p>
             Também enviaremos emails com vagas de seu interesse assim que
             estiverem disponíveis!
+          </p>
+
+          <p>
+            <strong>
+              Por favor, preferencialmente acesse o grupo de Telegram
+            </strong>{" "}
+            pois não possui limite de membros e postamos vagas exclusivas por
+            lá!
           </p>
 
           <AlertModalContainer>
@@ -107,11 +115,10 @@ const WhatsAppLogoContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  max-height: 100px;
 `;
 
 const WhatsAppLogo = styled.img`
-  max-width: 100px;
+  max-width: 70%;
 `;
 
 const AlertModalContainer = styled.div`
