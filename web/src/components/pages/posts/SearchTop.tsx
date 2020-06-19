@@ -7,14 +7,23 @@ import { SearchLogo } from './SearchLogo';
 
 interface IProps {
   provinces: IProvince[];
+  redirectOnSearch?: boolean;
   defaultProvince?: string | string[];
 }
 
-export const SearchTop = ({ provinces, defaultProvince }: IProps) => {
+export const SearchTop = ({
+  provinces,
+  defaultProvince,
+  redirectOnSearch = false,
+}: IProps) => {
   return (
     <SearchHeader>
       <SearchLogo />
-      <SearchBar provinces={provinces} defaultProvince={defaultProvince} />
+      <SearchBar
+        provinces={provinces}
+        defaultProvince={defaultProvince}
+        redirectOnSearch={redirectOnSearch}
+      />
     </SearchHeader>
   );
 };

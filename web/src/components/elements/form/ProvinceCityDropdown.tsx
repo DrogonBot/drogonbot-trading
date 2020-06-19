@@ -15,12 +15,14 @@ import { ICity, IProvince } from '../../../types/Form.types';
 
 interface IProps {
   provinces: IProvince[];
+  redirectOnSearch: boolean;
   defaultProvince?: string;
 }
 
 export const ProvinceCityDropdown = ({
   provinces,
   defaultProvince,
+  redirectOnSearch,
 }: IProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -57,7 +59,7 @@ export const ProvinceCityDropdown = ({
 
   // If updated searchCity or searchProvince, lets do a router push to update user data statically
   useEffect(() => {
-    if (router.pathname.includes("/posts?")) {
+    if (redirectOnSearch) {
       router.push({
         pathname: "/posts",
         query: {

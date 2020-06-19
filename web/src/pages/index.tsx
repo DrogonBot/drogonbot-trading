@@ -66,7 +66,10 @@ const Home = (props: IProps) => {
 
         <Form id="search-form" onSubmit={onSubmit}>
           <SearchBarContainer>
-            <ProvinceCityDropdown provinces={props.provinces} />
+            <ProvinceCityDropdown
+              redirectOnSearch={false}
+              provinces={props.provinces}
+            />
 
             <SearchInput
               type="text"

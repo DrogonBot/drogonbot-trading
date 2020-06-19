@@ -11,10 +11,15 @@ import { ProvinceCityDropdown } from '../../elements/form/ProvinceCityDropdown';
 
 interface IProps {
   provinces: IProvince[];
+  redirectOnSearch: boolean;
   defaultProvince?: any;
 }
 
-export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
+export const SearchBar = ({
+  provinces,
+  defaultProvince,
+  redirectOnSearch,
+}: IProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -48,6 +53,7 @@ export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
     <FormContainer onSubmit={onSubmit}>
       <ProvinceContainer>
         <ProvinceCityDropdown
+          redirectOnSearch={redirectOnSearch}
           provinces={provinces}
           defaultProvince={defaultProvince}
         />
