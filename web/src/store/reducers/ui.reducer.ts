@@ -20,7 +20,7 @@ interface IState {
 
 const INITIAL_STATE = {
   searchProvince: "ES",
-  searchCity: "Vila Velha",
+  searchCity: "all",
   searchKeyword: null,
   isLoading: {
     status: false,

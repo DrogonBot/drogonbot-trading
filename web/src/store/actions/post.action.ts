@@ -11,13 +11,15 @@ export const postRead = (
   page?: number,
   limit?: number,
   keyword?: string | null,
-  stateCode?: string | null // filter by province stateCode
+  stateCode?: string | null,
+  city?: string | null
 ) => async (dispatch) => {
   const postUrl = GenericHelper.generateUrlParams("/post", {
     page,
     limit,
     keyword,
     stateCode,
+    city,
   });
 
   const response: any = await APIHelper.request(
@@ -46,12 +48,13 @@ export const postReadFeed = (
   page: number,
   limit: number,
   provinceData: string,
+  city: string,
   keywordData?: string,
   addToEnd?: boolean
 ) => async (dispatch) => {
   // @ts-ignore
   const payload: IPaginationData = await dispatch(
-    postRead(addToEnd, page, limit, keywordData, provinceData)
+    postRead(addToEnd, page, limit, keywordData, provinceData, city)
   );
   await dispatch(setPaginationKeyValues(payload)); // save new pagination loading values
 };

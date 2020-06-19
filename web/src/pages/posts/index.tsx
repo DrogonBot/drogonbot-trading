@@ -103,9 +103,14 @@ Posts.getInitialProps = async (ctx) => {
 
   console.log("Loading pagination data...");
   const { searchProvince, searchKeyword, page = 1 } = ctx.query;
+  let { searchCity } = ctx.query;
+
+  if (searchCity === "all") {
+    searchCity = null;
+  }
   console.log(ctx.query);
   await ctx.store.dispatch(
-    postReadFeed(page, 40, searchProvince, searchKeyword, false)
+    postReadFeed(page, 40, searchProvince, searchCity, searchKeyword, false)
   );
 
   const { posts } = ctx.store.getState().postReducer;

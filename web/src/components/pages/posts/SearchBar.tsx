@@ -18,7 +18,7 @@ export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { searchProvince } = router.query;
+  const { searchProvince, searchCity } = router.query;
 
   const [hookSearchInput, setHookSearchInput] = useState<string>("");
 
@@ -38,6 +38,7 @@ export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
       query: {
         searchProvince: searchProvince || defaultProvince,
         searchKeyword: hookSearchInput,
+        searchCity,
         page: 1, // since its a new search, page will be always 1!
       },
     });
@@ -45,6 +46,13 @@ export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
 
   return (
     <FormContainer onSubmit={onSubmit}>
+      <ProvinceContainer>
+        <ProvinceCityDropdown
+          provinces={provinces}
+          defaultProvince={defaultProvince}
+        />
+      </ProvinceContainer>
+
       <SearchBarInputContainer>
         <SearchBarInput
           type="text"
@@ -54,13 +62,6 @@ export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
         />
         <SearchBarInputIcon onClick={onSubmit} />
       </SearchBarInputContainer>
-
-      <ProvinceContainer>
-        <ProvinceCityDropdown
-          provinces={provinces}
-          defaultProvince={defaultProvince}
-        />
-      </ProvinceContainer>
     </FormContainer>
   );
 };
@@ -71,7 +72,7 @@ const FormContainer = styled.form`
   margin-bottom: 1rem;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row-reverse;
+  flex-direction: row;
   max-width: 100%;
 
   /*DESKTOP ONLY CODE*/
@@ -87,16 +88,37 @@ const FormContainer = styled.form`
 `;
 
 const ProvinceContainer = styled.div`
-  flex: 40%;
-  display: flex;
-  justify-content: center;
-  /* max-width: 70px; */
-  height: 3.3rem;
+  flex: 100%;
+
+  text-align: center;
+
+  /*MOBILE ONLY CODE*/
+  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
+    margin-bottom: 1rem;
+  }
 
   /*DESKTOP ONLY CODE*/
   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
     width: 100%;
-    max-width: 70px;
+    max-width: 200px;
+    display: flex;
+    flex-wrap: wrap;
+
+    [class*="ProvinceCityDropdown__Container"] {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      justify-content: space-evenly;
+
+      [class*="ProvincesContainer"] {
+        margin-right: 0.5rem;
+      }
+
+      [class*="CitiesContainer"] {
+        max-width: 120px;
+        text-align: center;
+      }
+    }
   }
 
   [class*="MuiInput"] {
