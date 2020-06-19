@@ -122,11 +122,20 @@ const SearchBarContainer = styled.div`
 
   flex: 10;
 
-  .MuiInput-root {
+  [class*="ProvinceCityDropdown__Container"] {
     position: absolute;
     top: 0;
     left: 21px;
     height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    [class*="ProvincesContainer"] {
+      margin-right: 0.5rem;
+    }
+    [class*="CitiesContainer"] [class*="MuiInputBase-root"] {
+      max-width: 120px;
+    }
   }
 
   label {
@@ -157,7 +166,7 @@ const SearchInput = styled.input`
   padding: 0.7em;
   width: 100%;
   flex: 8;
-  padding-left: 6rem;
+  padding-left: 14.8rem;
 
   /*MOBILE ONLY CODE*/
   @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
