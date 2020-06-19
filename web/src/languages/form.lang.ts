@@ -43,4 +43,8 @@ export const strings = {
     eng: "Province",
     ptBr: "Estado",
   },
+  locationAllCities: {
+    eng: "All cities...",
+    ptBr: "Todas as cidades...",
+  },
 };

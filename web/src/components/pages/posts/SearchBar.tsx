@@ -45,6 +45,13 @@ export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
 
   return (
     <FormContainer onSubmit={onSubmit}>
+      <ProvinceContainer>
+        <ProvinceCityDropdown
+          provinces={provinces}
+          defaultProvince={defaultProvince}
+        />
+      </ProvinceContainer>
+
       <SearchBarInputContainer>
         <SearchBarInput
           type="text"
@@ -54,13 +61,6 @@ export const SearchBar = ({ provinces, defaultProvince }: IProps) => {
         />
         <SearchBarInputIcon onClick={onSubmit} />
       </SearchBarInputContainer>
-
-      <ProvinceContainer>
-        <ProvinceCityDropdown
-          provinces={provinces}
-          defaultProvince={defaultProvince}
-        />
-      </ProvinceContainer>
     </FormContainer>
   );
 };
@@ -87,11 +87,9 @@ const FormContainer = styled.form`
 `;
 
 const ProvinceContainer = styled.div`
-  flex: 40%;
-  display: flex;
-  justify-content: center;
-  /* max-width: 70px; */
-  height: 3.3rem;
+  flex: 100%;
+  margin-bottom: 1rem;
+  text-align: center;
 
   /*DESKTOP ONLY CODE*/
   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {

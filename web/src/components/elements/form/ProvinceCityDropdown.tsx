@@ -1,6 +1,6 @@
 import { MenuItem, Select } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -23,7 +23,6 @@ export const ProvinceCityDropdown = ({
   defaultProvince,
 }: IProps) => {
   const dispatch = useDispatch();
-
   const router = useRouter();
 
   const { searchKeyword } = router.query;
@@ -32,34 +31,44 @@ export const ProvinceCityDropdown = ({
     (state) => state.uiReducer
   );
 
+  // const [hookProvince, setHookProvince] = useState<string>(searchProvince);
+  // const [hookCity, setHookCity] = useState<string>(searchCity);
+  // const [hookKeyword, setHookKeyword] = useState<string>("");
+
+  const [firstCityOption, setFirstCityOption] = useState<string>("");
+
   const cities = useSelector<AppState, ICity[]>(
     (state) => state.formReducer.cities
   );
 
+  // on component load, fetch cities
   useEffect(() => {
-    // when loading component or changing our searchProvince, fetch all respective cities
-
-    //  fetch cities corresponding to this new province
     dispatch(loadProvinceCities(appEnv.appCountry, searchProvince));
-  }, [searchProvince]);
+  }, []);
 
-  const onChangeProvince = async (e) => {
-    console.log(`changing province to ${e.target.value}`);
-    const selectedProvince = e.target.value;
+  // set first city option, when fetching cities
+  useEffect(() => {
+    if (!cities.includes(searchCity)) {
+      console.log("SETTING CITY TO ALL");
+      setFirstCityOption("all");
+      // dispatch(setSearchKey("searchCity", "all"));
+    }
+  }, [cities]);
 
-    //  update our redux (we'll need this info for our post requests)
-    await dispatch(setSearchKey("searchProvince", selectedProvince));
-    await dispatch(setSearchKey("searchKeyword", ""));
-
-    router.push({
-      pathname: "/posts",
-      query: {
-        searchProvince: e.target.value,
-        searchKeyword,
-        page: 1, // since its a new search, page will be always 1!
-      },
-    });
-  };
+  // If updated searchCity or searchProvince, lets do a router push to update user data statically
+  useEffect(() => {
+    if (router.pathname.includes("/posts")) {
+      router.push({
+        pathname: "/posts",
+        query: {
+          searchProvince,
+          searchCity,
+          searchKeyword,
+          page: 1, // since its a new search, page will be always 1!
+        },
+      });
+    }
+  }, [searchCity, searchProvince]);
 
   const onRenderProvinces = () => {
     return provinces.map((province: IProvince) => (
@@ -69,14 +78,6 @@ export const ProvinceCityDropdown = ({
     ));
   };
   const onRenderCities = () => {
-    if (!cities) {
-      return (
-        <MenuItem key={"loading"} value={""}>
-          {TS.string("global", "genericLoading")}
-        </MenuItem>
-      );
-    }
-
     return cities.map((city: ICity) => (
       <MenuItem key={city.name} value={city.name}>
         {city.name}
@@ -84,20 +85,49 @@ export const ProvinceCityDropdown = ({
     ));
   };
 
+  const onChangeProvince = (e) => {
+    dispatch(setSearchKey("searchProvince", e.target.value));
+    dispatch(setSearchKey("searchCity", "all"));
+    dispatch(loadProvinceCities(appEnv.appCountry, e.target.value));
+  };
+
+  const onChangeCity = (e) => {
+    dispatch(setSearchKey("searchCity", e.target.value));
+  };
+
   return (
     <Container>
-      <Select
-        value={defaultProvince || searchProvince}
-        onChange={onChangeProvince}
-      >
-        {onRenderProvinces()}
-      </Select>
-      <Select value={searchCity} onChange={null}>
-        {onRenderCities()}
-      </Select>
+      <ProvincesContainer>
+        <Select
+          value={defaultProvince || searchProvince}
+          onChange={onChangeProvince}
+        >
+          {onRenderProvinces()}
+        </Select>
+      </ProvincesContainer>
+      <CitiesContainer>
+        <Select
+          value={searchCity || firstCityOption || ""}
+          onChange={onChangeCity}
+        >
+          <MenuItem key={"all"} value={"all"}>
+            {TS.string("form", "locationAllCities")}
+          </MenuItem>
+          {onRenderCities()}
+        </Select>
+      </CitiesContainer>
     </Container>
   );
 };
+
+const ProvincesContainer = styled.div`
+  /*MOBILE ONLY CODE*/
+  @media screen and (max-width: ${UI.mediumLayoutBreak}) {
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const CitiesContainer = styled.div``;
 
 const Container = styled.div`
   /*DESKTOP ONLY CODE*/
