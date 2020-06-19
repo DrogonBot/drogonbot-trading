@@ -63,7 +63,11 @@ const Posts = ({ provinces, posts, paginationData }: IProps) => {
       )}
 
       <Body>
-        <SearchTop provinces={provinces} defaultProvince={searchProvince} />
+        <SearchTop
+          provinces={provinces}
+          defaultProvince={searchProvince}
+          redirectOnSearch={true}
+        />
 
         <PageContent>
           <SearchTabs />
