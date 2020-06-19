@@ -33,10 +33,6 @@ export const ProvinceCityDropdown = ({
     (state) => state.uiReducer
   );
 
-  // const [hookProvince, setHookProvince] = useState<string>(searchProvince);
-  // const [hookCity, setHookCity] = useState<string>(searchCity);
-  // const [hookKeyword, setHookKeyword] = useState<string>("");
-
   const [firstCityOption, setFirstCityOption] = useState<string>("");
 
   const cities = useSelector<AppState, ICity[]>(

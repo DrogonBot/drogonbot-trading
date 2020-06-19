@@ -11,7 +11,6 @@ import {
   IUser,
 } from '../../types/User.types';
 import { USER_LOGIN, USER_LOGOUT, USER_REFRESH_INFO, USER_SET_ONBOARDING, USER_UPDATE } from '../reducers/user.reducer';
-import { setSearchKey } from './ui.action';
 
 export const userLogin = (
   payload: ICredentials | IGoogleAuthPayload | IFacebookAuthPayload,
@@ -172,11 +171,6 @@ export const userGetProfileInfo = () => async (dispatch) => {
     const user: IUser = response.data.user;
     const token: string = response.data.token;
     if (user) {
-      // Update our UI province dropdown
-      if (user.stateCode) {
-        await dispatch(setSearchKey("searchProvince", user.stateCode));
-      }
-
       console.log("User profile info refreshed!");
       await dispatch({
         type: USER_REFRESH_INFO,
