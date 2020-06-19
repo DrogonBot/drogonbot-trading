@@ -7,7 +7,6 @@ import { Log } from '../resources/Log/log.model';
 import { IPost } from '../resources/Post/post.types';
 import { IUser, User } from '../resources/User/user.model';
 import { emailProviders } from './../constants/emailProviders.constant';
-import { JobsCron } from './../cron_jobs/jobs.cron';
 import { ILeadModel, Lead } from './../resources/Lead/lead.model';
 import { IUserDocument } from './../resources/User/user.types';
 import { ConsoleColor, ConsoleHelper } from './ConsoleHelper';
@@ -177,7 +176,6 @@ export class NotificationHelper {
 
       if (!areThereEmailCredits) {
         ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Stopping cron job because there're no credits left!`)
-        JobsCron.reportsCron.stop();
         return false
       }
 
