@@ -5,7 +5,6 @@ import rp from 'request-promise';
 import UserAgent from 'user-agents';
 import util from 'util';
 
-import { botsTempDirectory } from '../..';
 import { Log } from '../../resources/Log/log.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { GenericHelper } from '../../utils/GenericHelper';
@@ -135,17 +134,11 @@ export class ConnectionHelper {
 
 
     try {
-      const txt = await ConnectionHelper.request('https://api.proxyscrape.com/?request=getproxies&proxytype=http&timeout=10000&country=all&ssl=all&anonymity=anonymous', true)
+      const txtResponse = await ConnectionHelper.request('https://api.proxyscrape.com/?request=getproxies&proxytype=http&timeout=10000&country=all&ssl=all&anonymity=anonymous', true)
 
-      // on this specific case, the request returns a .txt file, so the handling will be different than an usual html response.
+      const data = txtResponse.toString();
 
-      // write into a file and read it sequentially, since reading directly was causing some issues.
-      fs.writeFileSync(`${botsTempDirectory}/ips.txt`, txt);
-      const file = fs.readFileSync(`${botsTempDirectory}/ips.txt`, { encoding: "utf8" })
-
-      const data = file.split(/\r?\n/)
-
-      for (const item of data) {
+      for (const item of data.split(/\r?\n/)) {
 
         const splittedItem = item.split(':');
         const ip = splittedItem[0];
