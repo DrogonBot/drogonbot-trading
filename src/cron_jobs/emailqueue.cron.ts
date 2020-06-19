@@ -9,10 +9,10 @@ import { GenericHelper } from '../utils/GenericHelper';
 export class EmailQueueCron {
   public static submitQueueEmails() {
 
-    console.log("🕒  EmailQueueCron: Initializing... 🕒");
-
     // Once per hour
     cron.schedule("0 * * * *", async () => {
+
+      console.log("🕒  EmailQueueCron: Initializing... 🕒");
 
       const allEmails = await EmailQueue.find({}).limit(MAX_JOB_NOTIFICATIONS_PER_HOUR_INTERVAL);
 
