@@ -14,7 +14,7 @@ import { TS } from '../utils/TS';
 
 export class JobsCron {
 
-
+  public static reportsCron;
 
 
   private static _executeCrawlers = async () => {
@@ -184,11 +184,12 @@ export class JobsCron {
   public static generateJobReports = async () => {
 
     // at 5am UTC = 2am Brasilia = 10pm Vancouver
-    cron.schedule("0 5 * * *", async () => {
+    JobsCron.reportsCron = await cron.schedule("0 5 * * *", async () => {
       console.log("🕒  JobsCron: generateJobReports() 🕒");
 
       await NotificationHelper.generateJobReport()
     });
+    JobsCron.reportsCron();
 
   }
 
