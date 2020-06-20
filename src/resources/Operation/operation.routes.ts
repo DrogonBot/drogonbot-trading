@@ -494,8 +494,6 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 
       for (const post of posts) {
 
-
-
         const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
         console.log(msg);
 
