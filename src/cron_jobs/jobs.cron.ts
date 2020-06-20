@@ -49,8 +49,11 @@ export class JobsCron {
 
     console.log("🕒  JobsCron: _telegramBotPost() 🕒");
 
+    const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "");
 
-    const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+    if (bot.isPolling()) {
+      await bot.stopPolling();
+    }
 
     let telegramChannels: ITelegramChannel[] = [
       {
@@ -96,9 +99,12 @@ export class JobsCron {
 
         for (const post of posts) {
 
+
           if (!post.isPostedOnTelegram) {
+            await bot.startPolling();
             const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
             console.log(msg);
+            await bot.stopPolling();
           }
           post.isPostedOnTelegram = true;
           await post.save()
