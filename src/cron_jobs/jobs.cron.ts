@@ -54,8 +54,8 @@ export class JobsCron {
 
     console.log("🕒  JobsCron: _telegramBotPost() 🕒");
 
-    const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "", { polling: true });
 
+    const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "", { polling: true });
 
     let telegramChannels: ITelegramChannel[] = [
       {
@@ -85,6 +85,7 @@ export class JobsCron {
     try {
       for (const channel of telegramChannels) {
 
+
         // fetch related posts
         const query: { stateCode: string, city?: string } = {
           stateCode: channel.stateCode
@@ -97,15 +98,17 @@ export class JobsCron {
           ...query
         }).limit(10).sort({ 'createdAt': 'descending' })
 
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${posts.length} posts on channel: ${channel.stateCode}/${channel.city}`)
+
         // now start looping through posts...
 
         for (const post of posts) {
-
 
           if (!post.isPostedOnTelegram) {
 
             const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
             console.log(msg);
+
 
           }
           post.isPostedOnTelegram = true;
@@ -115,13 +118,18 @@ export class JobsCron {
         }
       }
 
-      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Saved!')
+      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on Telegram Groups!')
+
+
 
     }
     catch (error) {
       console.error(error);
 
     }
+
+
+
 
 
   }

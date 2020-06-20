@@ -446,8 +446,6 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 
   const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "", { polling: true });
 
-
-
   let telegramChannels: ITelegramChannel[] = [
     {
       stateCode: "ES",
@@ -476,6 +474,7 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
   try {
     for (const channel of telegramChannels) {
 
+
       // fetch related posts
       const query: { stateCode: string, city?: string } = {
         stateCode: channel.stateCode
@@ -487,6 +486,8 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
       const posts = await Post.find({
         ...query
       }).limit(10).sort({ 'createdAt': 'descending' })
+
+      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${posts.length} posts on channel: ${channel.stateCode}/${channel.city}`)
 
       // now start looping through posts...
 
