@@ -484,7 +484,8 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
       }
 
       const posts = await Post.find({
-        ...query
+        ...query,
+        $or: [{ isPostedOnTelegram: { $exists: false } }, { isPostedOnTelegram: { $exists: true, $eq: false } }]
       }).limit(10).sort({ 'createdAt': 'descending' })
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${posts.length} posts on channel: ${channel.stateCode}/${channel.city}`)
@@ -493,13 +494,11 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 
       for (const post of posts) {
 
-        if (!post.isPostedOnTelegram) {
-
-          const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
-          console.log(msg);
 
 
-        }
+        const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
+        console.log(msg);
+
         post.isPostedOnTelegram = true;
         await post.save()
 
