@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { Router } from 'express';
 import moment from 'moment-timezone';
 import mailjet from 'node-mailjet';
+import TelegramBot from 'node-telegram-bot-api';
 import SibApiV3Sdk from 'sib-api-v3-sdk';
 
 import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
@@ -13,19 +13,18 @@ import { RecurPostSocialSchedulerBot } from '../../bots/schedulers/RecurPostSoci
 import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
+import { ITelegramChannel } from '../../typescript/telegrambot.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
 import { TS } from '../../utils/TS';
-import { Lead } from '../Lead/lead.model';
 import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
 import { IJobReminder } from '../Post/post.routes';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
+import { GenericHelper } from './../../utils/GenericHelper';
 import { NotificationHelper } from './../../utils/NotificationHelper';
-
-
 
 // @ts-ignore
 const operationRouter = new Router();
@@ -81,83 +80,6 @@ operationRouter.get('/push', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 
 })
 
-operationRouter.get('/leads-add', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  const response = await axios.get(`https://app-bo.firebaseio.com/.json`);
-
-  const { leads } = response.data;
-
-  // change BH to MG, since we need the stateCode
-  leads.ptbr.mg = leads.ptbr.bh;
-  delete leads.ptbr.bh;
-
-
-  const states = Object.keys(leads.ptbr);
-
-  for (const state of states) {
-
-    for (const [key, value] of Object.entries(leads.ptbr[state])) {
-
-      const leadInfo: any = value;
-      // value is what matter to us (user data)
-
-      // check if lead is already saved on database
-
-      try {
-
-        const leadExists = await Lead.exists({ email: leadInfo.email });
-
-        if (leadExists) {
-          console.log(`Skipping ${leadInfo.email} because it's already in our database`);
-          continue
-        }
-
-        // define job roles
-
-        const rawPOIs = leadInfo.position.split(',')
-
-        let jobRolesFound: string[] = []
-
-        // based on what the user has typed in "position" key, lets try to guess what jobRole tag he mean't
-        for (let POI of rawPOIs) {
-          POI = POI.trim();
-          const { jobRoleBestMatch } = await PostScrapperHelper.findJobRolesAndSector(POI);
-          jobRolesFound = [
-            ...jobRolesFound,
-            jobRoleBestMatch
-          ]
-        }
-
-        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Adding lead ${leadInfo.email} (${leadInfo.name}) to our database!`)
-
-        const stateCode = state.toUpperCase()
-
-        const newLead = new Lead({
-          stateCode,
-          country: "Brazil",
-          email: leadInfo.email,
-          name: leadInfo.name,
-          jobRoles: jobRolesFound
-        })
-        await newLead.save()
-
-      }
-      catch (error) {
-        console.error(error);
-
-      }
-
-    }
-  }
-
-  return res.status(200).send({
-    'status': 'ok'
-  })
-
-
-
-});
-
 operationRouter.get('/fb-poster', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
   PosterFacebook.triggerMarketingPost()
@@ -166,7 +88,6 @@ operationRouter.get('/fb-poster', [userAuthMiddleware, UserMiddleware.restrictUs
     status: 'ok'
   })
 });
-
 
 operationRouter.get('/scheduler', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
@@ -295,8 +216,6 @@ operationRouter.get('/report', async (req, res) => {
   })
 
 })
-
-
 
 operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
@@ -514,6 +433,75 @@ operationRouter.get('/posts/clean/forbidden', [userAuthMiddleware, UserMiddlewar
   return res.status(200).send({
     status: 'ok'
   })
+})
+
+operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+  const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+
+  const telegramChannels: ITelegramChannel[] = [{
+    stateCode: "ES",
+    city: "all",
+    chatId: '@empregourgenteESc'
+  }, {
+    stateCode: "MG",
+    city: "Belo Horizonte",
+    chatId: '@empregourgenteMGc'
+  },
+  {
+    stateCode: "SP",
+    city: "São Paulo",
+    chatId: "@empregourgenteSPc"
+  }
+  ]
+
+  try {
+    for (const channel of telegramChannels) {
+
+      // fetch related posts
+      const query: { stateCode: string, city?: string } = {
+        stateCode: channel.stateCode
+      }
+      if (channel.city !== "all") {
+        query.city = channel.city
+      }
+
+      const posts = await Post.find({
+        ...query
+      }).limit(10).sort({ 'createdAt': 'descending' })
+
+      // now start looping through posts...
+
+      for (const post of posts) {
+
+        if (!post.isPostedOnTelegram) {
+          await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
+        }
+        post.isPostedOnTelegram = true;
+        await post.save()
+
+        await GenericHelper.sleep(3000);
+      }
+    }
+
+    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Saved!')
+
+    return res.status(200).send({
+      status: 'success'
+    })
+
+
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(200).send({
+      status: 'error'
+    })
+  }
+
+
+
+
 })
 
 

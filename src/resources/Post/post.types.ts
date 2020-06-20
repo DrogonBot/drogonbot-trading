@@ -75,7 +75,8 @@ export interface IPost {
   createdAt: string,
   updatedAt: string,
   active: boolean,
-  views: number
+  views: number,
+  isPostedOnTelegram: boolean,
 }
 
 export interface ISimilarityMatch {

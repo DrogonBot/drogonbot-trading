@@ -1,5 +1,6 @@
 import moment from 'moment';
 import cron from 'node-cron';
+import TelegramBot from 'node-telegram-bot-api';
 
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
 import { TargetPriority } from '../bots/types/bots.types';
@@ -8,9 +9,11 @@ import { Post } from '../resources/Post/post.model';
 import { IPostApplication, IPostApplicationStatus } from '../resources/Post/post.types';
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
+import { ITelegramChannel } from '../typescript/telegrambot.types';
+import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
+import { GenericHelper } from '../utils/GenericHelper';
 import { NotificationHelper } from '../utils/NotificationHelper';
 import { TS } from '../utils/TS';
-
 
 export class JobsCron {
 
@@ -39,6 +42,69 @@ export class JobsCron {
       ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "MG"),
       ...ScrappingTargetHelper.getScrappingTargetList(TargetPriority.Low, true, "RJ"),
     ]);
+  }
+
+  private static _telegramBotPost = async () => {
+
+    console.log("🕒  JobsCron: _telegramBotPost() 🕒");
+
+
+    const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+
+    const telegramChannels: ITelegramChannel[] = [{
+      stateCode: "ES",
+      city: "all",
+      chatId: '@empregourgenteESc'
+    }, {
+      stateCode: "MG",
+      city: "Belo Horizonte",
+      chatId: '@empregourgenteMGc'
+    },
+    {
+      stateCode: "SP",
+      city: "São Paulo",
+      chatId: "@empregourgenteSPc"
+    }
+    ]
+
+    try {
+      for (const channel of telegramChannels) {
+
+        // fetch related posts
+        const query: { stateCode: string, city?: string } = {
+          stateCode: channel.stateCode
+        }
+        if (channel.city !== "all") {
+          query.city = channel.city
+        }
+
+        const posts = await Post.find({
+          ...query
+        }).limit(10).sort({ 'createdAt': 'descending' })
+
+        // now start looping through posts...
+
+        for (const post of posts) {
+
+          if (!post.isPostedOnTelegram) {
+            await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
+          }
+          post.isPostedOnTelegram = true;
+          await post.save()
+
+          await GenericHelper.sleep(3000);
+        }
+      }
+
+      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Saved!')
+
+    }
+    catch (error) {
+      console.error(error);
+
+    }
+
+
   }
 
 
@@ -188,6 +254,31 @@ export class JobsCron {
 
       await NotificationHelper.generateJobReport()
     });
+
+
+  }
+
+
+  public static telegramBotPoster = () => {
+
+    // UTC 11 (8 am Brasilia)
+    // UTC 15 (12pm Brasilia)
+    // UTC 19 (4pm Brasilia)
+    // UTC 22 (7pm Brasilia)
+
+    cron.schedule("0 11 * * *", async () => {
+      await JobsCron._telegramBotPost()
+    })
+    cron.schedule("0 15 * * *", async () => {
+      await JobsCron._telegramBotPost()
+    })
+    cron.schedule("0 19 * * *", async () => {
+      await JobsCron._telegramBotPost()
+    })
+    cron.schedule("0 22 * * *", async () => {
+      await JobsCron._telegramBotPost()
+    })
+
 
 
   }

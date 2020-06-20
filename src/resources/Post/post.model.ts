@@ -192,6 +192,9 @@ const postSchema = new mongoose.Schema({
   views: {
     type: Number,
     default: 0
+  },
+  isPostedOnTelegram: {
+    type: Boolean
   }
 }, {
   timestamps: true

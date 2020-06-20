@@ -85,6 +85,7 @@ switch (process.env.ENV) {
     JobsCron.jobCrawlersCleaners();
     JobsCron.initializeJobCrawlers();
     JobsCron.generateJobReports();
+    JobsCron.telegramBotPoster();
 
 
 
