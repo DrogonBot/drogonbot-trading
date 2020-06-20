@@ -25,6 +25,7 @@ import { Post } from '../Post/post.model';
 import { IJobReminder } from '../Post/post.routes';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
+import { EnvType } from './../../constants/types/env.types';
 import { GenericHelper } from './../../utils/GenericHelper';
 import { NotificationHelper } from './../../utils/NotificationHelper';
 
@@ -454,23 +455,23 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
     {
       stateCode: "ES",
       city: "all",
-      chatId: '@empregourgenteESc'
+      chatId: '@empregourgentetest'
     },
     {
       stateCode: "RJ",
       city: "Rio de Janeiro",
-      chatId: "@empregourgenteRJc"
+      chatId: "@empregourgentetest"
     },
-    {
-      stateCode: "MG",
-      city: "Belo Horizonte",
-      chatId: '@empregourgenteMGc'
-    },
-    {
-      stateCode: "SP",
-      city: "São Paulo",
-      chatId: "@empregourgenteSPc"
-    },
+    // {
+    //   stateCode: "MG",
+    //   city: "Belo Horizonte",
+    //   chatId: '@empregourgenteMGc'
+    // },
+    // {
+    //   stateCode: "SP",
+    //   city: "São Paulo",
+    //   chatId: "@empregourgenteSPc"
+    // },
   ]
 
   telegramChannels = _.shuffle(telegramChannels)
@@ -502,8 +503,10 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
         const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
         console.log(msg);
 
-        post.isPostedOnTelegram = true;
-        await post.save()
+        if (process.env.ENV === EnvType.Production) {
+          post.isPostedOnTelegram = true;
+          await post.save()
+        }
 
         await bot.stopPolling();
 
