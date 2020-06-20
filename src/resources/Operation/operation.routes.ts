@@ -452,6 +452,11 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
     stateCode: "SP",
     city: "São Paulo",
     chatId: "@empregourgenteSPc"
+  },
+  {
+    stateCode: "RJ",
+    city: "Rio de Janeiro",
+    chatId: "@empregourgenteRJc"
   }
   ]
 
@@ -484,7 +489,7 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
       }
     }
 
-    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Saved!')
+    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on Telegram Groups!')
 
     return res.status(200).send({
       status: 'success'
