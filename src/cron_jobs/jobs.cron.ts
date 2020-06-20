@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import _ from 'lodash';
 import moment from 'moment';
 import cron from 'node-cron';
@@ -16,6 +17,10 @@ import { GenericHelper } from '../utils/GenericHelper';
 import { NotificationHelper } from '../utils/NotificationHelper';
 import { TS } from '../utils/TS';
 
+// Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310
+Promise.config({
+  cancellation: true
+});
 export class JobsCron {
 
 
@@ -49,11 +54,8 @@ export class JobsCron {
 
     console.log("🕒  JobsCron: _telegramBotPost() 🕒");
 
-    const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "");
+    const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "", { polling: true });
 
-    if (bot.isPolling()) {
-      await bot.stopPolling();
-    }
 
     let telegramChannels: ITelegramChannel[] = [
       {
@@ -101,10 +103,10 @@ export class JobsCron {
 
 
           if (!post.isPostedOnTelegram) {
-            await bot.startPolling();
+
             const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
             console.log(msg);
-            await bot.stopPolling();
+
           }
           post.isPostedOnTelegram = true;
           await post.save()

@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import { Router } from 'express';
 import _ from 'lodash';
 import moment from 'moment-timezone';
@@ -26,6 +27,11 @@ import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
 import { GenericHelper } from './../../utils/GenericHelper';
 import { NotificationHelper } from './../../utils/NotificationHelper';
+
+// Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310
+Promise.config({
+  cancellation: true
+});
 
 // @ts-ignore
 const operationRouter = new Router();
@@ -438,11 +444,9 @@ operationRouter.get('/posts/clean/forbidden', [userAuthMiddleware, UserMiddlewar
 
 operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "");
+  const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "", { polling: true });
 
-  if (bot.isPolling()) {
-    await bot.stopPolling();
-  }
+
 
   let telegramChannels: ITelegramChannel[] = [
     {
@@ -489,10 +493,10 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
       for (const post of posts) {
 
         if (!post.isPostedOnTelegram) {
-          await bot.startPolling();
+
           const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
           console.log(msg);
-          await bot.stopPolling();
+
 
         }
         post.isPostedOnTelegram = true;
