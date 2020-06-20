@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import moment from 'moment';
 import cron from 'node-cron';
 import TelegramBot from 'node-telegram-bot-api';
@@ -51,21 +52,30 @@ export class JobsCron {
 
     const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 
-    const telegramChannels: ITelegramChannel[] = [{
-      stateCode: "ES",
-      city: "all",
-      chatId: '@empregourgenteESc'
-    }, {
-      stateCode: "MG",
-      city: "Belo Horizonte",
-      chatId: '@empregourgenteMGc'
-    },
-    {
-      stateCode: "SP",
-      city: "São Paulo",
-      chatId: "@empregourgenteSPc"
-    }
+    let telegramChannels: ITelegramChannel[] = [
+      {
+        stateCode: "ES",
+        city: "all",
+        chatId: '@empregourgenteESc'
+      },
+      {
+        stateCode: "RJ",
+        city: "Rio de Janeiro",
+        chatId: "@empregourgenteRJc"
+      },
+      {
+        stateCode: "MG",
+        city: "Belo Horizonte",
+        chatId: '@empregourgenteMGc'
+      },
+      {
+        stateCode: "SP",
+        city: "São Paulo",
+        chatId: "@empregourgenteSPc"
+      },
     ]
+
+    telegramChannels = _.shuffle(telegramChannels)
 
     try {
       for (const channel of telegramChannels) {
@@ -87,7 +97,8 @@ export class JobsCron {
         for (const post of posts) {
 
           if (!post.isPostedOnTelegram) {
-            await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
+            const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
+            console.log(msg);
           }
           post.isPostedOnTelegram = true;
           await post.save()
