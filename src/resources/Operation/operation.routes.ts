@@ -444,7 +444,11 @@ operationRouter.get('/posts/clean/forbidden', [userAuthMiddleware, UserMiddlewar
 
 operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "", { polling: true });
+  const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "");
+
+  if (bot.isPolling()) {
+    await bot.stopPolling()
+  }
 
   let telegramChannels: ITelegramChannel[] = [
     {
@@ -493,12 +497,15 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
       // now start looping through posts...
 
       for (const post of posts) {
+        await bot.startPolling();
 
         const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
         console.log(msg);
 
         post.isPostedOnTelegram = true;
         await post.save()
+
+        await bot.stopPolling();
 
         await GenericHelper.sleep(3000);
       }
