@@ -497,8 +497,8 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 
       // now start looping through posts...
 
+      await bot.startPolling();
       for (const post of posts) {
-        await bot.startPolling();
 
         const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
         console.log(msg);
@@ -508,10 +508,10 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
           await post.save()
         }
 
-        await bot.stopPolling();
 
         await GenericHelper.sleep(3000);
       }
+      await bot.stopPolling();
     }
 
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on Telegram Groups!')
