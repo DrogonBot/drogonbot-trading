@@ -111,7 +111,12 @@ export class JobsCron {
         await bot.startPolling();
         for (const post of posts) {
 
-          const msg = await bot.sendMessage(channel.chatId, `https://empregourgente.com/posts/${post.slug}`)
+          const postTitle = post.title.length >= 35 ? post.title.substr(0, 35) + "..." : post.title
+          const content = `
+          👇 ${postTitle} 👇
+          https://empregourgente.com/posts/${post.slug}
+          `
+          const msg = await bot.sendMessage(channel.chatId, content)
           console.log(msg);
 
           if (process.env.ENV === EnvType.Production) {
