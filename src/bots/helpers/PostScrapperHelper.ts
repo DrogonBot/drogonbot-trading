@@ -283,7 +283,7 @@ export class PostScrapperHelper {
         // Try through similarity on title only
         const similarTitle: ISimilarityMatch = stringSimilarity.findBestMatch(title.toLowerCase(), lowerCaseKeywords).bestMatch;
         console.log(similarTitle);
-        if (similarTitle.rating > 0.3) {
+        if (similarTitle.rating >= 0.4) {
           console.log('SIMILAR TITLE');
           console.log(`${title} => ${similarTitle.target}`);
           const sectorKeyword = await PostScrapperHelper._getSector(similarTitle.target);
