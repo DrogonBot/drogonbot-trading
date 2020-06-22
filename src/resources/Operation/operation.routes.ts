@@ -539,7 +539,7 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 
 })
 
-operationRouter.get('/posts/hide-contacts', async (req, res) => {
+operationRouter.get('/posts-hide-contacts', async (req, res) => {
 
 
   const posts = await Post.find({})
