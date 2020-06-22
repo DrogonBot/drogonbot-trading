@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
+import { GenericHelper } from '../../../../helpers/GenericHelper';
 import { TS } from '../../../../helpers/LanguageHelper';
 import { userConsumeCredit, userGetProfileInfo } from '../../../../store/actions/user.actions';
 import { IPost } from '../../../../types/Post.types';
@@ -69,7 +70,7 @@ export const PostCTA = ({ post }: IProps) => {
     const isCreditConsumed = await dispatch(userConsumeCredit(post));
 
     if (isCreditConsumed) {
-      return (window.location.href = CTAInfo.link);
+      return GenericHelper.crossBrowserUrlRedirect(CTAInfo.link);
     } else {
       router.push("/posts/share");
     }

@@ -78,7 +78,7 @@ export class APIHelper {
         window.localStorage.clear();
 
         // NavigationHelper.navigate("Auth", null);
-        window.location.href = `/login`;
+        GenericHelper.crossBrowserUrlRedirect("/login");
       }
 
       clearTimeout(timeoutCallback);

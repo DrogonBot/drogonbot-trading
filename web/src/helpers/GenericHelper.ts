@@ -40,4 +40,33 @@ export class GenericHelper {
 
     return baseUrl;
   };
+
+  public static crossBrowserUrlRedirect = (url: string, newPage?: false) => {
+    if (newPage) {
+      GenericHelper.windowOpen(url);
+    }
+
+    // https://stackoverflow.com/a/31223302/3192151
+    setTimeout(function() {
+      document.location.href = url;
+    }, 250);
+  };
+
+  public static windowOpen(url: string) {
+    // Reference: https://stackoverflow.com/questions/20696041/window-openurl-blank-not-working-on-imac-safari
+
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+    if (isSafari) {
+      // Safari doesn't like window.open, so lets use this alternative method.
+
+      window.location.assign(url);
+      return;
+    }
+
+    // for all other *decent* browsers, lets use window.open
+    window.open(url);
+
+    return;
+  }
 }

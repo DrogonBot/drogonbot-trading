@@ -1,5 +1,6 @@
 import { appEnv } from '../../constants/Env.constant';
 import { APIHelper } from '../../helpers/APIHelper';
+import { GenericHelper } from '../../helpers/GenericHelper';
 import { TS } from '../../helpers/LanguageHelper';
 import { IRequestDefaultError, RequestTypes } from '../../types/Request.types';
 import {
@@ -79,7 +80,7 @@ export const userLogin = (
         await dispatch({ type: USER_LOGIN, payload: response.data });
 
         if (process.browser) {
-          window.location.pathname = "/";
+          GenericHelper.crossBrowserUrlRedirect("/");
         }
       }
     }
