@@ -303,8 +303,8 @@ Boa sorte!
     `
   },
   postIsRedirectOnlyMessage: {
-    eng: "[ Click on post's link to apply ]",
-    ptBr: "[ Clique no link do post para aplicar ]"
+    eng: "[ Apply to reveal the contact ]",
+    ptBr: "[ Aplique para liberar o contato ]"
   },
   jobReportSecondPhrase: {
     eng: "We've found some open positions that may interest you!",

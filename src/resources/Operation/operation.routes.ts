@@ -539,5 +539,26 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 
 })
 
+operationRouter.get('/posts/hide-contacts', async (req, res) => {
+
+
+  const posts = await Post.find({})
+
+  for (const post of posts) {
+    post.content = post.content.replace(new RegExp(/\S+@\S+\.\S+/, 'ig'), TS.string('post', 'postIsRedirectOnlyMessage'));
+
+    post.content = post.content.replace(new RegExp(/(\(?\d{2}\)?\.?\s?)?(\d{4,5}(\-?|\s?)\d{4})/, 'g'), TS.string('post', 'postIsRedirectOnlyMessage'));
+
+    await post.save();
+  }
+
+
+  return res.status(200).send({
+    status: "ok"
+  })
+
+
+})
+
 
 export { operationRouter }
