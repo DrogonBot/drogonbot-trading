@@ -200,6 +200,10 @@ export class BotHelper {
         }
 
         const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
+
+        newPost.content = BotHelper._hideContactDetails(newPost);
+
+
         await newPost.save()
         await BotHelper.addToUsersReport(newPost)
 
@@ -272,6 +276,12 @@ export class BotHelper {
 
   }
 
+  private static _hideContactDetails = (post: IPost): string => {
+    let content = post.content.replace(new RegExp(/\S+@\S+\.\S+/, 'ig'), TS.string('post', 'postIsRedirectOnlyMessage'));
+    content = post.content.replace(new RegExp(/(\(?\d{2}\)?\.?\s?)?(\d{4,5}(\-?|\s?)\d{4})/, 'g'), TS.string('post', 'postIsRedirectOnlyMessage'));
+    return content;
+  }
+
   private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?, bypassPostContentFilter?: boolean, isTrustableSource?: boolean, redirectToSourceOnly?: boolean) => {
     try {
       console.log(`🤖: Scrapping data from ...${link}`);
@@ -302,12 +312,10 @@ export class BotHelper {
         try {
           const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
 
-          // hide all contact data from page source, if this is a redirectOnly page
-          if (redirectToSourceOnly) {
-            newPost.content = newPost.content.replace(new RegExp(/\S+@\S+\.\S+/, 'ig'), TS.string('post', 'postIsRedirectOnlyMessage'));
+          // hide all contact data from page source
 
-            newPost.content = newPost.content.replace(new RegExp(/(\(?\d{2}\)?\.?\s?)?(\d{4,5}(\-?|\s?)\d{4})/, 'g'), TS.string('post', 'postIsRedirectOnlyMessage'));
-          }
+          newPost.content = BotHelper._hideContactDetails(newPost);
+
 
           await newPost.save()
 
