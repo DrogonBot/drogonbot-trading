@@ -6,6 +6,8 @@ import xml2Js from 'xml2js';
 
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { TS } from '../../utils/TS';
+import { User } from '../User/user.model';
+import { PRICE_PER_CREDIT } from './../../constants/credits.constant';
 import { Transaction } from './transaction.model';
 import { TransactionStatus } from './transaction.types';
 
@@ -39,6 +41,7 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
   console.log(pagseguroTransaction);
 
   // Update transaction status!
+  const pagseguroTransactionStatus = pagseguroTransaction.status[0]
 
   // our system's transactions.
   const ourTransaction = await Transaction.findOne({
@@ -46,9 +49,27 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
   })
 
   if (ourTransaction) {
-    ourTransaction.status = pagseguroTransaction.status[0]
+    // sync our transaction status with the status being sent by pagseguro...
+    ourTransaction.status = pagseguroTransactionStatus
     await ourTransaction.save();
+
+    switch (pagseguroTransactionStatus) {
+      case TransactionStatus.PAID:
+
+        // fetch corresponding user and update credits
+        const user = await User.findOne({ _id: ourTransaction.userId })
+
+        if (user) {
+          user.credits += Number(ourTransaction.amount) * PRICE_PER_CREDIT;
+        }
+
+        break;
+    }
+
+
   }
+
+
 
   return res.status(200).send({
     status: 'ok'
@@ -131,22 +152,30 @@ transactionRouter.post('/transaction/checkout', userAuthMiddleware, async (req, 
 
       const checkoutCode = parsedXml.checkout.code;
 
-      // create new transaction record
 
-      const newTransaction = new Transaction({
-        userId: user._id,
-        reference: transactionReference,
-        status: TransactionStatus.PENDING,
-        amount: transactionAmount
-      })
-      await newTransaction.save();
+      if (checkoutCode) {
+        // create new transaction record
 
-      const paymentUrl = `${process.env.PAGSEGURO_REDIRECT_CHECKOUT_URL}?code=${checkoutCode}`
+        const newTransaction = new Transaction({
+          userId: user._id,
+          reference: transactionReference,
+          status: TransactionStatus.PENDING,
+          amount: transactionAmount
+        })
+        await newTransaction.save();
 
+        const paymentUrl = `${process.env.PAGSEGURO_REDIRECT_CHECKOUT_URL}?code=${checkoutCode}`
+
+        return res.status(200).send({
+          checkoutCode,
+          paymentUrl
+        })
+      }
       return res.status(200).send({
-        checkoutCode,
-        paymentUrl
+        status: "error",
+        message: TS.string('transaction', 'transactionError')
       })
+
     }
     catch (error) {
       console.error(error);

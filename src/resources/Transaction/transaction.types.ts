@@ -1,9 +1,9 @@
 
 export interface ITransaction {
   userId: string,
-  reference: String,
-  status: Boolean,
-  amount: Number,
+  reference: string,
+  status: string,
+  amount: number,
 }
 
 export enum TransactionStatus {
