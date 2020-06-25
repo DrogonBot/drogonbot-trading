@@ -21,13 +21,13 @@ import { countryRouter } from './resources/Country/country.routes';
 import { CountrySeeder } from './resources/Country/country.seed';
 import { leadsRouter } from './resources/Lead/lead.routes';
 import { operationRouter } from './resources/Operation/operation.routes';
-import { paymentRouter } from './resources/Payment/payment.routes';
 import { placeRouter } from './resources/Place/place.routes';
 import { PlaceSeeder } from './resources/Place/place.seeder';
 import { postRouter } from './resources/Post/post.routes';
 import { resumeRouter } from './resources/Resume/resume.routes';
 import { sectorRouter } from './resources/Sector/sector.routes';
 import { SectorSeeder } from './resources/Sector/sector.seeder';
+import { transactionRouter } from './resources/Transaction/transaction.routes';
 import { userRouter } from './resources/User/user.routes';
 import { ConsoleColor, ConsoleHelper } from './utils/ConsoleHelper';
 import { MixpanelHelper } from './utils/MixpanelHelper';
@@ -157,7 +157,7 @@ app.use(resumeRouter)
 app.use(countryRouter)
 app.use(operationRouter)
 app.use(affiliateRouter)
-app.use(paymentRouter)
+app.use(transactionRouter)
 
 server.listen(process.env.NODE_API_PORT, async () => {
 
