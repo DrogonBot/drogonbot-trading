@@ -27,7 +27,7 @@ paymentRouter.post("/payment/notification/", async (req, res) => {
     url: `${process.env.PAGSEGURO_API_URL}/v2/transactions/notifications/${notificationCode}?email=${process.env.PAGSEGURO_SELLER_EMAIL}&token=${process.env.PAGSEGURO_SELLER_TOKEN}`
   })
 
-  const parsedXml = await xml2Js.parseStringPromise(response)
+  const parsedXml = await xml2Js.parseStringPromise(response.data)
 
   console.log(parsedXml);
 
