@@ -22,6 +22,7 @@ import { ScrapperSociiRHMG } from '../scrappers/ScrapperSociiRHMG';
 import { ScrapperVagasDeEmpregoGV } from '../scrappers/ScrapperVagasDeEmpregoGV';
 import { ScrapperVagasUrgentesMG } from '../scrappers/ScrapperVagasUrgentesMG';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
+import { ScrapperEmpregoJaSP } from './../scrappers/ScrapperEmpregoJaSP';
 import { ScrapperTrabalhaBrasil } from './../scrappers/ScrapperTrabalhaBrasil';
 import { ScrapperVeroRH } from './../scrappers/ScrapperVeroRHSP';
 
@@ -606,6 +607,21 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperRandstad,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "EmpregoJa - SP",
+    externalSource: "https://www.empregojasudeste.com/search?q=S%C3%A3o+paulo&max-results=7&by-date=true",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "São Paulo"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperEmpregoJaSP,
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
