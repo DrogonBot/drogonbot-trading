@@ -30,11 +30,11 @@ export const Footer = () => {
             <PartnerListTitle>
               {TS.string("global", "genericPartners")}
             </PartnerListTitle>
-            <PartnerListItem>
+            {/* <PartnerListItem>
               <a href="https://www.navizinhanca.com/" target="_blank">
                 <img src="/images/partners/na_vizinhanca.png" />
               </a>
-            </PartnerListItem>
+            </PartnerListItem> */}
             <PartnerListItem>
               <a href="https://www.seujobs.com/" target="_blank">
                 <img src="/images/partners/seu_jobs.png" />
