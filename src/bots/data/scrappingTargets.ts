@@ -23,6 +23,7 @@ import { ScrapperVagasDeEmpregoGV } from '../scrappers/ScrapperVagasDeEmpregoGV'
 import { ScrapperVagasUrgentesMG } from '../scrappers/ScrapperVagasUrgentesMG';
 import { IScrappingTarget, PagePattern, TargetPriority } from '../types/bots.types';
 import { ScrapperEmpregoJaSP } from './../scrappers/ScrapperEmpregoJaSP';
+import { ScrapperEmpregoSP } from './../scrappers/ScrapperEmpregoSP';
 import { ScrapperTrabalhaBrasil } from './../scrappers/ScrapperTrabalhaBrasil';
 import { ScrapperVeroRH } from './../scrappers/ScrapperVeroRHSP';
 
@@ -39,6 +40,21 @@ export const scrappingTargets: IScrappingTarget[] = [
     source: PostSource.Blog,
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperSeuJobs,
+    bypassPostContentFilter: true,
+    redirectToSourceOnly: true,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "São Paulo"
+    },
+  },
+  {
+    name: "Emprego-sp.com",
+    externalSource: "https://www.emprego-sp.com/",
+    priority: TargetPriority.High,
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperEmpregoSP,
     bypassPostContentFilter: true,
     redirectToSourceOnly: true,
     postDataOverride: {
