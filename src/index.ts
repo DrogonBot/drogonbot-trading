@@ -21,6 +21,7 @@ import { countryRouter } from './resources/Country/country.routes';
 import { CountrySeeder } from './resources/Country/country.seed';
 import { leadsRouter } from './resources/Lead/lead.routes';
 import { operationRouter } from './resources/Operation/operation.routes';
+import { paymentRouter } from './resources/Payment/payment.routes';
 import { placeRouter } from './resources/Place/place.routes';
 import { PlaceSeeder } from './resources/Place/place.seeder';
 import { postRouter } from './resources/Post/post.routes';
@@ -156,6 +157,7 @@ app.use(resumeRouter)
 app.use(countryRouter)
 app.use(operationRouter)
 app.use(affiliateRouter)
+app.use(paymentRouter)
 
 server.listen(process.env.NODE_API_PORT, async () => {
 
