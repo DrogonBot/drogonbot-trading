@@ -16,7 +16,7 @@ import { TransactionStatus } from './transaction.types';
 const transactionRouter = new express.Router();
 
 
-// ! This route is triggered by our payment provider (Pagseguro), whenever a transaction update occurs
+// ! This route is triggered by our payment provider (WireCard), whenever a transaction update occurs
 transactionRouter.post("/transaction/notification/", async (req, res) => {
 
   console.log(req.body);
@@ -35,7 +35,7 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
   })
 
   if (ourTransaction) {
-    // sync our transaction status with the status being sent by pagseguro...
+    // sync our transaction status with the status being sent by WireCard...
     ourTransaction.status = event
     await ourTransaction.save();
 
@@ -79,7 +79,7 @@ transactionRouter.post('/transaction/checkout/:method', userAuthMiddleware, asyn
 
   let orderId: string | null = null;
   try {
-    orderId = await PaymentHelper.generateOrder(transactionAmount, user._id, buyerName, buyerEmail, buyerBirthDate, buyerCPF, buyerPhoneAreaCode, buyerPhoneAreaCode, buyerStreetAddress, buyerStreetNumber, buyerStreetComplement, buyerDistrict, buyerCity, buyerState, buyerPostalCode)
+    orderId = await PaymentHelper.generateOrder(transactionAmount, user._id, buyerName, buyerEmail, buyerBirthDate, buyerCPF, buyerPhoneAreaCode, buyerPhoneNumber, buyerStreetAddress, buyerStreetNumber, buyerStreetComplement, buyerDistrict, buyerCity, buyerState, buyerPostalCode)
   }
   catch (error) {
     console.log('failed while trying to create your order');
