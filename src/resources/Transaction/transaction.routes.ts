@@ -61,7 +61,7 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
 
         if (user) {
           console.log(`Updating credits for user ${user.email}`);
-          user.credits += Math.floor(ourTransaction.amount * PRICE_PER_CREDIT);
+          user.credits += Math.floor(ourTransaction.amount / PRICE_PER_CREDIT);
 
           await user.save();
         }
