@@ -17,20 +17,9 @@ import { RouterEventsWatcher } from '../components/elements/ui/RouterEvents';
 import { AppWrapper } from '../components/pages/AppWrapper';
 import { NextSEOApp } from '../components/seo/NextSEOApp';
 import { MUITheme } from '../constants/UI/Theme.constant';
-import { GAnalyticsHelper } from '../helpers/GAnalyticsHelper';
 import { store } from '../store/reducers/store';
 
 class MyApp extends App {
-  public componentDidMount() {
-    // @ts-ignore
-    if (!window.GA_INITIALIZED) {
-      GAnalyticsHelper.initGA();
-      // @ts-ignore
-      window.GA_INITIALIZED = true;
-    }
-    GAnalyticsHelper.logPageView();
-  }
-
   public static async getInitialProps({ Component, ctx }) {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
