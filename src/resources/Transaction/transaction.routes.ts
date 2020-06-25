@@ -40,7 +40,7 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
     await ourTransaction.save();
 
     switch (event) {
-      case TransactionStatus.CREATED:
+      case TransactionStatus.PAID:
 
         // fetch corresponding user and update credits
         const user = await User.findOne({ _id: ourTransaction.userId })
