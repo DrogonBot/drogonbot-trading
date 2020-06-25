@@ -102,6 +102,13 @@ const PostAdvertise = ({ provinces }: IProps) => {
           <CopyContainer>
             <h1>Divulgue e Receba Créditos</h1>
 
+            <ShareExplanationVideo
+              src="https://www.youtube.com/embed/zZzMIWTQa2A"
+              frameBorder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+
             <p>
               Quer ajudar ao próximo e ao mesmo tempo poder
               <strong>
@@ -196,6 +203,11 @@ PostAdvertise.getInitialProps = async (ctx) => {
 };
 
 export default PostAdvertise;
+
+const ShareExplanationVideo = styled.iframe`
+  width: 100%;
+  height: 315px;
+`;
 
 const AdvertiseImg = styled.img`
   width: 100%;
