@@ -2,7 +2,7 @@
 export interface ITransaction {
   userId: string,
   reference: string,
-  status: number,
+  status: string,
   amount: number,
 }
 

@@ -25,6 +25,8 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
 
   const orderId = resource.order.id
 
+  console.log('##### WIRECARD HOOK RECEIVED #####');
+
   console.log(orderId);
   console.log(event);
 
@@ -103,11 +105,12 @@ transactionRouter.post('/transaction/checkout/:method', userAuthMiddleware, asyn
       return res.status(200).send({
         url
       })
+    } else {
+      return res.status(200).send({
+        status: "error",
+        message: TS.string('transaction', 'transactionError')
+      })
     }
-    return res.status(200).send({
-      status: "error",
-      message: TS.string('transaction', 'transactionError')
-    })
 
 
   }

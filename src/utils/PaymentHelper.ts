@@ -2,6 +2,7 @@ import moipSdk from 'moip-sdk-node';
 import moment from 'moment';
 
 import { PaymentAvailableMethods } from '../resources/Transaction/transaction.types';
+import { ConsoleColor, ConsoleHelper } from './ConsoleHelper';
 
 
 export class PaymentHelper {
@@ -34,6 +35,8 @@ export class PaymentHelper {
 
 
   public static generateOrder = async (amount: number, buyerId: string, buyerName: string, buyerEmail: string, buyerBirthDate: string, buyerCPF: string, buyerPhoneAreaCode: string, buyerPhoneNumber: string, buyerStreetAddress: string, buyerStreetNumber: string, buyerStreetComplement: string, buyerDistrict: string, buyerCity: string, buyerState: string, buyerPostalCode: string): Promise<string> => {
+
+
 
     const response = await PaymentHelper._moip.order.create({
       ownId: buyerId,
@@ -75,9 +78,8 @@ export class PaymentHelper {
         }
       }
     })
-    console.log('order created...');
 
-    console.log(response.body);
+    ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `💰: Wirecard - Creating payment order`)
 
     return response.body.id;
 
@@ -86,10 +88,10 @@ export class PaymentHelper {
 
   public static generatePayment = async (orderId: string | null, paymentMethod: PaymentAvailableMethods) => {
 
-    const add30Days = moment().add(30, 'days').format('YYYY-MM-DD')
+    ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `💰: Wirecard - Generating payment through ${paymentMethod}`)
 
-    console.log('30 days from now....');
-    console.log(add30Days);
+
+    const add30Days = moment().add(30, 'days').format('YYYY-MM-DD')
 
     switch (paymentMethod) {
       case PaymentAvailableMethods.Boleto:
@@ -110,6 +112,8 @@ export class PaymentHelper {
         });
 
         console.log(response.body);
+
+        ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `💰: Wirecard - Created ${paymentMethod} payment!`)
 
         return { paymentId: response.body.id, url: response.body._links.payBoleto.printHref };
     }
