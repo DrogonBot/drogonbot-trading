@@ -19,13 +19,13 @@ const transactionRouter = new express.Router();
 // ! This route is triggered by our payment provider (WireCard), whenever a transaction update occurs
 transactionRouter.post("/transaction/notification/", async (req, res) => {
 
+  console.log('##### WIRECARD HOOK RECEIVED #####');
   console.log(req.body);
 
   const { resource, event } = req.body;
 
   const orderId = resource.order.id
 
-  console.log('##### WIRECARD HOOK RECEIVED #####');
 
   console.log(orderId);
   console.log(event);
