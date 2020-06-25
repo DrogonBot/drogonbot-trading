@@ -43,7 +43,7 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
   // Update transaction status!
   const pagseguroTransactionStatus = Number(pagseguroTransaction.status[0])
 
-  // our system's transactions.
+  // our system's transactions
   const ourTransaction = await Transaction.findOne({
     reference: pagseguroTransaction.reference[0]
   })
@@ -61,7 +61,7 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
 
         if (user) {
           console.log(`Updating credits for user ${user.email}`);
-          user.credits += Math.floor(ourTransaction.amount / PRICE_PER_CREDIT);
+          user.credits += Math.ceil(ourTransaction.amount / PRICE_PER_CREDIT);
 
           await user.save();
         }
