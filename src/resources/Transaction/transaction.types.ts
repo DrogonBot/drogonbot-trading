@@ -7,11 +7,9 @@ export interface ITransaction {
 }
 
 export enum TransactionStatus {
-  PENDING = 1,
-  ANALYZING = 2,
-  PAID = 3,
-  AVAILABLE = 4,
-  DISPUTE = 5,
-  RETURNED = 6,
-  CANCELLED = 7
+  CREATED = "ORDER.CREATED",
+  WAITING = "ORDER.WAITING",
+  PAID = "ORDER.PAID",
+  NOT_PAID = "ORDER.NOT_PAID",
+  REVERTED = "ORDER.REVERTED"
 }
