@@ -36,6 +36,11 @@ export const Footer = () => {
               </a>
             </PartnerListItem> */}
             <PartnerListItem>
+              <a href="https://www.emprego-sp.com/" target="_blank">
+                <img src="/images/partners/emprego_sp.png" />
+              </a>
+            </PartnerListItem>
+            <PartnerListItem>
               <a href="https://www.seujobs.com/" target="_blank">
                 <img src="/images/partners/seu_jobs.png" />
               </a>
