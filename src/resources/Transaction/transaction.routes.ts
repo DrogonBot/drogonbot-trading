@@ -87,7 +87,7 @@ transactionRouter.post('/transaction/checkout/:method', userAuthMiddleware, asyn
   }
 
   try {
-    const { paymentId, printUrl } = await PaymentHelper.generatePayment(orderId)
+    const { paymentId, url } = await PaymentHelper.generatePayment(orderId, method)
 
     if (paymentId) {
       // create new transaction record
@@ -101,7 +101,7 @@ transactionRouter.post('/transaction/checkout/:method', userAuthMiddleware, asyn
       await newTransaction.save();
 
       return res.status(200).send({
-        printUrl
+        url
       })
     }
     return res.status(200).send({

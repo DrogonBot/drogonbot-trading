@@ -1,6 +1,8 @@
 import moipSdk from 'moip-sdk-node';
 import moment from 'moment';
 
+import { PaymentAvailableMethods } from '../resources/Transaction/transaction.types';
+
 
 export class PaymentHelper {
 
@@ -82,32 +84,40 @@ export class PaymentHelper {
 
   }
 
-  public static generatePayment = async (orderId: string | null) => {
+  public static generatePayment = async (orderId: string | null, paymentMethod: PaymentAvailableMethods) => {
 
     const add30Days = moment().add(30, 'days').format('YYYY-MM-DD')
 
     console.log('30 days from now....');
     console.log(add30Days);
 
-    const response = await PaymentHelper._moip.payment.create(orderId, {
-      installmentCount: 1,
-      fundingInstrument: {
-        method: "BOLETO",
-        boleto: {
-          expirationDate: add30Days,
-          instructionLines: {
-            first: "Pagável preferencialmente em qualquer banco até a data de vencimento",
-            // second: "Segunda linha do boleto",
-            // third: "Terceira linha do boleto"
-          },
-          logoUri: PaymentHelper._storeLogo
-        }
-      }
-    });
+    switch (paymentMethod) {
+      case PaymentAvailableMethods.Boleto:
+        const response = await PaymentHelper._moip.payment.create(orderId, {
+          installmentCount: 1,
+          fundingInstrument: {
+            method: "BOLETO",
+            boleto: {
+              expirationDate: add30Days,
+              instructionLines: {
+                first: "Pagável preferencialmente em qualquer banco até a data de vencimento",
+                // second: "Segunda linha do boleto",
+                // third: "Terceira linha do boleto"
+              },
+              logoUri: PaymentHelper._storeLogo
+            }
+          }
+        });
 
-    console.log(response.body);
+        console.log(response.body);
 
-    return { paymentId: response.body.id, printUrl: response.body._links.payBoleto.printHref };
+        return { paymentId: response.body.id, url: response.body._links.payBoleto.printHref };
+    }
+
+
+    return { paymentId: "INVALID", url: "INVALID" };
+
+
 
 
   }

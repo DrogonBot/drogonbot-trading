@@ -13,3 +13,9 @@ export enum TransactionStatus {
   NOT_PAID = "ORDER.NOT_PAID",
   REVERTED = "ORDER.REVERTED"
 }
+
+export enum PaymentAvailableMethods {
+  Boleto = "boleto",
+  CreditCard = "creditcard",
+  DebitCard = "debitcard"
+}
