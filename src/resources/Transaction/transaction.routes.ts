@@ -60,7 +60,9 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
         const user = await User.findOne({ _id: ourTransaction.userId })
 
         if (user) {
-          user.credits += Number(ourTransaction.amount) * PRICE_PER_CREDIT;
+          user.credits += Math.floor(ourTransaction.amount * PRICE_PER_CREDIT);
+
+          await user.save();
         }
 
         break;
