@@ -60,6 +60,7 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
         const user = await User.findOne({ _id: ourTransaction.userId })
 
         if (user) {
+          console.log(`Updating credits for user ${user.email}`);
           user.credits += Math.floor(ourTransaction.amount * PRICE_PER_CREDIT);
 
           await user.save();
