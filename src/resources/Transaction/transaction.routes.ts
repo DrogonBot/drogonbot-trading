@@ -41,7 +41,7 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
   console.log(pagseguroTransaction);
 
   // Update transaction status!
-  const pagseguroTransactionStatus = pagseguroTransaction.status[0]
+  const pagseguroTransactionStatus = Number(pagseguroTransaction.status[0])
 
   // our system's transactions.
   const ourTransaction = await Transaction.findOne({
