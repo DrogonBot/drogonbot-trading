@@ -21,7 +21,7 @@ const transactionRouter = new express.Router();
 transactionRouter.post("/transaction/notification/", async (req, res) => {
 
   ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `💰: Wirecard - Webhook Post received`)
-  console.log(req.body);
+  console.log(JSON.stringify(req.body));
 
   const { resource, event } = req.body;
 
