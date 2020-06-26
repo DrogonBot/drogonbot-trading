@@ -21,68 +21,68 @@ const transactionRouter = new express.Router();
 transactionRouter.post("/transaction/notification/", async (req, res) => {
 
   ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `💰: Wirecard - Webhook Post received`)
-  console.log(req.body);
 
   const { resource, event } = req.body;
 
-  const orderId = resource.order.id
+  if (resource.order) { // If its notifying us about an ORDER
 
-  console.log(`OrderId: ${orderId} / event: ${event}`);
+    const orderId = resource.order.id
 
-  // Check if transaction already exists
+    console.log(`OrderId: ${orderId} / event: ${event}`);
 
-  const transaction = await Transaction.exists({
-    reference: orderId
-  })
-
-  // if it doesnt, create a new one
-  if (!transaction) {
-    const newTransaction = new Transaction({
-      userId: resource.order.ownId,
-      reference: orderId,
-      status: event,
-      amount: resource.order.amount.total
-    })
-    await newTransaction.save();
-  }
-
-  // if it exists, update its status!
-
-  // our system's transactions
-  const existentTransaction = await Transaction.findOne({
-    reference: orderId
-  })
-
-
-  if (existentTransaction) {
-    // sync our transaction status with the status being sent by WireCard...
-    existentTransaction.status = event
-    await existentTransaction.save();
 
     switch (event) {
+      case TransactionStatus.CREATED:
+        const newTransaction = new Transaction({
+          userId: resource.order.ownId,
+          reference: orderId,
+          status: event,
+          amount: resource.order.amount.total
+        })
+        await newTransaction.save();
+
+
+        break;
+
+      case TransactionStatus.WAITING:
+        // if it exists, update its status!
+
+        // our system's transactions
+        const waitingTransaction = await Transaction.findOne({
+          reference: orderId
+        })
+        if (waitingTransaction) {
+          waitingTransaction.status = event;
+          await waitingTransaction.save();
+        }
+
+        break;
+
+
       case TransactionStatus.PAID:
 
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `💰: Wirecard - Received payment for order ${orderId}`)
 
+        // our system's transactions
+        const paidTransaction = await Transaction.findOne({
+          reference: orderId
+        })
+        if (paidTransaction) {
+          paidTransaction.status = event;
+          await paidTransaction.save();
 
-        // fetch corresponding user and update credits
-        const user = await User.findOne({ _id: existentTransaction.userId })
+          // fetch corresponding user and update credits
+          const user = await User.findOne({ _id: paidTransaction.userId })
 
-        if (user) {
-          console.log(`Updating credits for user ${user.email}`);
-          user.credits += Math.ceil(existentTransaction.amount / PRICE_PER_CREDIT);
-
-          await user.save();
+          if (user) {
+            console.log(`Updating credits for user ${user.email}`);
+            user.credits += Math.ceil((paidTransaction.amount / 100) / PRICE_PER_CREDIT);
+            await user.save();
+          }
         }
-
         break;
     }
-
-
   }
-
-
-
   return res.status(200).send({
     status: 'ok'
   })
