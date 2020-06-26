@@ -2,6 +2,7 @@ import express from 'express';
 
 import { PRICE_PER_CREDIT } from '../../constants/credits.constant';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
+import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { PaymentHelper } from '../../utils/PaymentHelper';
 import { TS } from '../../utils/TS';
 import { User } from '../User/user.model';
@@ -19,22 +20,23 @@ const transactionRouter = new express.Router();
 // ! This route is triggered by our payment provider (WireCard), whenever a transaction update occurs
 transactionRouter.post("/transaction/notification/", async (req, res) => {
 
-  console.log('##### WIRECARD HOOK RECEIVED #####');
+  ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `💰: Wirecard - Webhook Post received`)
   console.log(req.body);
 
   const { resource, event } = req.body;
 
   const orderId = resource.order.id
 
-
-  console.log(orderId);
-  console.log(event);
-
+  console.log(`OrderId: ${orderId} / event: ${event}`);
 
   // our system's transactions
   const ourTransaction = await Transaction.findOne({
     reference: orderId
   })
+
+  if (!ourTransaction) {
+    console.log('Transaction not found!');
+  }
 
   if (ourTransaction) {
     // sync our transaction status with the status being sent by WireCard...
@@ -67,6 +69,16 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
   })
 });
 
+transactionRouter.get('/transaction/webhook', async (req, res) => {
+
+  await PaymentHelper.initWebHook();
+
+
+
+  return res.status(200).send({
+    status: 'ok'
+  })
+})
 
 transactionRouter.post('/transaction/checkout/:method', userAuthMiddleware, async (req, res) => {
 

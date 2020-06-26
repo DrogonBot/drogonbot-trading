@@ -18,19 +18,25 @@ export class PaymentHelper {
 
     // ! Be careful to not run this method twice, creating multiple hook entries on Wirecard
 
+    // const notifications = await PaymentHelper._moip.notification.getAll()
 
-    const response = await PaymentHelper._moip.notification.create({
-      events: [
-        'ORDER.*',
-        'PAYMENT.AUTHORIZED',
-        'PAYMENT.CANCELLED',
-        'PAYMENT.REFUNDED', 'PAYMENT.REVERSED'
-      ],
-      target: 'http://api.empregourgente.com/transaction/notification',
-      media: 'WEBHOOK'
-    })
+    const notifications = await PaymentHelper._moip.notification.getAll();
 
-    console.log(response.body);
+    console.log(notifications.body);
+
+
+    // const response = await PaymentHelper._moip.notification.create({
+    //   events: [
+    //     'ORDER.*',
+    //     'PAYMENT.AUTHORIZED',
+    //     'PAYMENT.CANCELLED',
+    //     'PAYMENT.REFUNDED', 'PAYMENT.REVERSED'
+    //   ],
+    //   target: 'https://api.empregourgente.com/transaction/notification/',
+    //   media: 'WEBHOOK'
+    // })
+
+    // console.log(response.body);
   }
 
 
