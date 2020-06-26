@@ -38,7 +38,7 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
   // if it doesnt, create a new one
   if (!transaction) {
     const newTransaction = new Transaction({
-      userId: resource.customer.ownId,
+      userId: resource.order.ownId,
       reference: orderId,
       status: event,
       amount: resource.amount.total
