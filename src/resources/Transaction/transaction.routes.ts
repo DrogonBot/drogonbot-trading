@@ -17,6 +17,8 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
 
   ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `💰:  Webhook Post received`)
 
+  console.log(JSON.stringify(req.body));
+
   return res.status(200).send({
     status: 'ok'
   })
@@ -41,7 +43,7 @@ transactionRouter.post('/transaction/checkout/', userAuthMiddleware, async (req,
       }
     })
 
-    console.log(response.data);
+    console.log(JSON.stringify(response.data));
 
     return res.status(200).send(response.data)
 
