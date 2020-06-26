@@ -29,29 +29,48 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
 
   console.log(`OrderId: ${orderId} / event: ${event}`);
 
-  // our system's transactions
-  const ourTransaction = await Transaction.findOne({
+  // Check if transaction already exists
+
+  const transaction = await Transaction.exists({
     reference: orderId
   })
 
-  if (!ourTransaction) {
-    console.log('Transaction not found!');
+  // if it doesnt, create a new one
+  if (!transaction) {
+    const newTransaction = new Transaction({
+      userId: resource.customer.ownId,
+      reference: orderId,
+      status: event,
+      amount: resource.amount.total
+    })
+    await newTransaction.save();
   }
 
-  if (ourTransaction) {
+  // if it exists, update its status!
+
+  // our system's transactions
+  const existentTransaction = await Transaction.findOne({
+    reference: orderId
+  })
+
+
+  if (existentTransaction) {
     // sync our transaction status with the status being sent by WireCard...
-    ourTransaction.status = event
-    await ourTransaction.save();
+    existentTransaction.status = event
+    await existentTransaction.save();
 
     switch (event) {
       case TransactionStatus.PAID:
 
+        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `💰: Wirecard - Received payment for order ${orderId}`)
+
+
         // fetch corresponding user and update credits
-        const user = await User.findOne({ _id: ourTransaction.userId })
+        const user = await User.findOne({ _id: existentTransaction.userId })
 
         if (user) {
           console.log(`Updating credits for user ${user.email}`);
-          user.credits += Math.ceil(ourTransaction.amount / PRICE_PER_CREDIT);
+          user.credits += Math.ceil(existentTransaction.amount / PRICE_PER_CREDIT);
 
           await user.save();
         }
@@ -104,16 +123,6 @@ transactionRouter.post('/transaction/checkout/:method', userAuthMiddleware, asyn
     const { paymentId, url } = await PaymentHelper.generatePayment(orderId, method)
 
     if (paymentId) {
-      // create new transaction record
-
-      const newTransaction = new Transaction({
-        userId: user._id,
-        reference: orderId,
-        status: TransactionStatus.CREATED,
-        amount: transactionAmount
-      })
-      await newTransaction.save();
-
       return res.status(200).send({
         url
       })
