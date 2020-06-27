@@ -109,6 +109,7 @@ export class WhatsAppBotHelper {
 
         await GenericHelper.sleep(1000 * _.random(10))
       }
+      await GenericHelper.sleep(1000 * _.random(60 * 3))
     }
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on WhatsApp Groups!')
 
