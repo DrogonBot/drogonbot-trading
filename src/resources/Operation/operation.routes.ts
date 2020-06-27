@@ -327,9 +327,12 @@ operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restri
 
   // const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
 
-  // console.log(chatList.data);
+
 
   await WhatsAppBotHelper.postOnGroups()
+
+
+
 
 
 

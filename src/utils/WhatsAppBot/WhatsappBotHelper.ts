@@ -1,4 +1,6 @@
+import axios from 'axios';
 import _ from 'lodash';
+import sharp from 'sharp';
 
 import { EnvType } from '../../constants/types/env.types';
 import { Post } from '../../resources/Post/post.model';
@@ -6,8 +8,6 @@ import { ConsoleColor, ConsoleHelper } from '../ConsoleHelper';
 import { GenericHelper } from '../GenericHelper';
 import { whatsappAxios } from './whatsappbot.constants';
 import { whatsAppGroups } from './whatsappGroups.constants';
-
-
 
 export class WhatsAppBotHelper {
 
@@ -20,6 +20,21 @@ export class WhatsAppBotHelper {
     })
 
     return response;
+  }
+
+  public static getBase64Thumbnail = async (url: string) => {
+
+    const response = await axios
+      .get(url, {
+        responseType: 'arraybuffer'
+      })
+
+    const imageBuffer = Buffer.from(response.data, 'binary')
+
+    const resizedImage = await sharp(imageBuffer).resize(150, 150).toBuffer();
+
+    return resizedImage.toString('base64')
+
   }
 
   public static postOnGroups = async () => {
@@ -89,14 +104,14 @@ export class WhatsAppBotHelper {
         if (process.env.ENV === EnvType.Production) {
 
           const postTitle = post.title.length >= 35 ? post.title.substr(0, 35) + "..." : post.title
-          const content = `
-        👇 ${postTitle} 👇
-        https://empregourgente.com/posts/${post.slug}
-        `
 
-          const response = await WhatsAppBotHelper.request("POST", "/sendMessage", {
+          const imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(`${process.env.WEB_APP_URL}/images/seo/${post.sector}.jpg`)
+
+          const response = await WhatsAppBotHelper.request("POST", "/sendLink", {
             chatId: group.chatId,
-            body: content
+            title: postTitle,
+            body: `${process.env.WEB_APP_URL}/posts/${post.slug}`,
+            previewBase64: `data:image/jpeg;base64,${imageBase64}`
           })
 
           console.log(response.data);
@@ -107,7 +122,7 @@ export class WhatsAppBotHelper {
           await post.save();
         }
 
-        await GenericHelper.sleep(1000 * _.random(10))
+        await GenericHelper.sleep(1000 * _.random(20))
       }
       await GenericHelper.sleep(1000 * _.random(60 * 3))
     }
