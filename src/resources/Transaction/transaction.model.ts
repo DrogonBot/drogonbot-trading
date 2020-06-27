@@ -8,10 +8,13 @@ export interface ITransactionModel extends ITransaction, Document {
 }
 
 const transactionSchema = new mongoose.Schema({
+  orderId: String,
   userId: ObjectId,
-  reference: String,
+  code: String,
   status: String,
   amount: Number,
+  boletoLink: String,
+  dueDate: Date,
 }, {
   timestamps: true
 })

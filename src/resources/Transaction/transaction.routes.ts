@@ -2,7 +2,11 @@ import express from 'express';
 
 import { JunoPaymentHelper } from '../../JunoPayment/JunoPaymentHelper';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
+import { PaymentMiddleware } from '../../middlewares/payment.middleware';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
+import { TS } from '../../utils/TS';
+import { Transaction } from './transaction.model';
+import { PaymentAvailableMethods, TransactionStatus } from './transaction.types';
 
 /*#############################################################|
 |  >>> PROTECTED ROUTES
@@ -11,13 +15,46 @@ import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 // @ts-ignore
 const transactionRouter = new express.Router();
 
+// ! Juno Payment Webhook route
+transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAuthorize, async (req, res) => {
 
-// ! This route is triggered by our payment provider (WireCard), whenever a transaction update occurs
-transactionRouter.post("/transaction/notification/", async (req, res) => {
+  const { paymentToken, chargeReference, chargeCode } = req.body;
 
-  ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `💰:  Webhook Post received`)
+  ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `💰: Juno Webhook Post received`)
 
-  console.log(JSON.stringify(req.body));
+  console.log('Checking order status...');
+
+  const fetchTransaction = await Transaction.findOne({
+    code: chargeCode,
+    status: TransactionStatus.CREATED
+  })
+
+  if (fetchTransaction) {
+    try {
+      const response = await JunoPaymentHelper.request("GET", `/charges/${fetchTransaction.orderId}`, null)
+
+
+      const { payments } = response.data;
+
+
+
+
+      // chceck if order was paid
+
+      // update transaction status to PAID
+
+      // increase user credits
+
+      return res.status(200).send(response.data)
+
+    }
+    catch (error) {
+      console.error(error);
+
+
+    }
+  }
+
 
   return res.status(200).send({
     status: 'ok'
@@ -26,39 +63,44 @@ transactionRouter.post("/transaction/notification/", async (req, res) => {
 
 
 
-transactionRouter.post('/transaction/checkout/', userAuthMiddleware, async (req, res) => {
 
+transactionRouter.post('/transaction/checkout/:paymentMethod', [userAuthMiddleware, PaymentMiddleware.JunoAuthorize], async (req, res) => {
 
-  await JunoPaymentHelper.initialize();
+  const { paymentMethod } = req.params;
 
   try {
-    const response = await JunoPaymentHelper.request("POST", "/charges", {
-      charge: {
-        description: "Cobranca teste",
-        amount: 19.90,
-      },
-      billing: {
-        name: "Comprador teste",
-        document: "14001372762"
-      }
+
+
+    switch (paymentMethod) {
+
+      case PaymentAvailableMethods.Boleto:
+        const result = await JunoPaymentHelper.generateBoletoPaymentRequest(req);
+
+        if (result) {
+          return res.status(200).send(result)
+        }
+
+
+        break;
+
+
+    }
+
+
+    return res.status(200).send({
+      status: "error",
+      message: TS.string('transaction', 'transactionError'),
+      details: 'Payment method not found'
     })
-
-    console.log(JSON.stringify(response.data));
-
-    return res.status(200).send(response.data)
 
   }
   catch (error) {
     console.error(error);
-
+    return res.status(200).send({
+      status: "error",
+      message: TS.string('transaction', 'transactionError')
+    })
   }
-
-
-
-
-  return res.status(200).send({
-    status: 'ok'
-  })
 })
 
 

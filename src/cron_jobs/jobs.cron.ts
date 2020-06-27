@@ -102,7 +102,7 @@ export class JobsCron {
         const posts = await Post.find({
           ...query,
           $or: [{ isPostedOnTelegram: { $exists: false } }, { isPostedOnTelegram: { $exists: true, $eq: false } }]
-        }).limit(10).sort({ 'createdAt': 'descending' })
+        }).limit(20).sort({ 'createdAt': 'descending' })
 
         ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${posts.length} posts on channel: ${channel.stateCode}/${channel.city}`)
 
@@ -303,7 +303,7 @@ export class JobsCron {
     // UTC 11 (8 am Brasilia)
     // UTC 15 (12pm Brasilia)
     // UTC 19 (4pm Brasilia)
-    // UTC 22 (7pm Brasilia)
+
 
     cron.schedule("0 11 * * *", async () => {
       await JobsCron._telegramBotPost()
@@ -314,9 +314,7 @@ export class JobsCron {
     cron.schedule("0 19 * * *", async () => {
       await JobsCron._telegramBotPost()
     })
-    cron.schedule("0 22 * * *", async () => {
-      await JobsCron._telegramBotPost()
-    })
+
 
 
 

@@ -1,9 +1,12 @@
 
 export interface ITransaction {
+  orderId: string
   userId: string,
-  reference: string,
+  code: string,
   status: string,
   amount: number,
+  boletoLink: string,
+  dueDate: Date,
 }
 
 export enum TransactionStatus {

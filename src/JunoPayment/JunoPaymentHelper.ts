@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { base64encode } from 'nodejs-base64';
 
+import { Transaction } from '../resources/Transaction/transaction.model';
+import { TransactionStatus } from '../resources/Transaction/transaction.types';
+import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { junoAxiosRequest } from './junopayment.constants';
 import { IJunoAccessTokenResponse } from './junopayment.types';
 
@@ -8,7 +11,7 @@ export class JunoPaymentHelper {
 
   public static accessToken: string;
 
-  public static initialize = async (): Promise<IJunoAccessTokenResponse> => {
+  public static getAccessToken = async (): Promise<IJunoAccessTokenResponse> => {
 
     const basicToken = base64encode(`${process.env.JUNO_CLIENT_ID}:${process.env.JUNO_SECRET}`)
 
@@ -46,6 +49,41 @@ export class JunoPaymentHelper {
 
 
     return response
+  }
+
+  public static generateBoletoPaymentRequest = async (req) => {
+
+    const response = await JunoPaymentHelper.request("POST", "/charges", req.body)
+
+    const { _embedded } = response.data;
+    const order = _embedded.charges[0];
+
+    // if order was generated successfully, lets create a transaction in our db
+    if (order.code) {
+
+      try {
+        const newTransaction = new Transaction({
+          orderId: order.id,
+          userId: req.user._id,
+          code: order.code,
+          status: TransactionStatus.CREATED,
+          amount: order.amount,
+          boletoLink: order.link,
+          dueDate: order.dueDate,
+        })
+        await newTransaction.save();
+
+        return order;
+      }
+      catch (error) {
+        ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `💰: Juno - Failed while trying to generate your transaction!`)
+        console.error(error);
+        return false
+      }
+
+    }
+
+
   }
 
 
