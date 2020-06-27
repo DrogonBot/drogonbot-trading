@@ -1,10 +1,9 @@
 import axios from 'axios';
 import { base64encode } from 'nodejs-base64';
 
-import { Transaction } from '../resources/Transaction/transaction.model';
-import { TransactionStatus } from '../resources/Transaction/transaction.types';
-import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
-import { TransactionTypes } from './../resources/Transaction/transaction.types';
+import { Transaction } from '../../resources/Transaction/transaction.model';
+import { TransactionStatus, TransactionTypes } from '../../resources/Transaction/transaction.types';
+import { ConsoleColor, ConsoleHelper } from '../ConsoleHelper';
 import { junoAxiosRequest } from './junopayment.constants';
 import { IJunoAccessTokenResponse } from './junopayment.types';
 

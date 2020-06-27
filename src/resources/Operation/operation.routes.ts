@@ -2,13 +2,10 @@ import Promise from 'bluebird';
 import { Router } from 'express';
 import _ from 'lodash';
 import moment from 'moment-timezone';
-import mailjet from 'node-mailjet';
 import TelegramBot from 'node-telegram-bot-api';
-import SibApiV3Sdk from 'sib-api-v3-sdk';
 
 import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
 import { RECURPOST_CREDENTIALS_SP, ZOHO_SOCIAL_ES_CREDENTIALS } from '../../bots/data/loginCredentials';
-import { PostScrapperHelper } from '../../bots/helpers/PostScrapperHelper';
 import { ScrappingTargetHelper } from '../../bots/helpers/ScrappingTargetHelper';
 import { PosterFacebook } from '../../bots/posters/PosterFacebook';
 import { RecurPostSocialSchedulerBot } from '../../bots/schedulers/RecurPostSocialSchedulerBot';
@@ -18,16 +15,14 @@ import { UserMiddleware } from '../../middlewares/user.middleware';
 import { ITelegramChannel } from '../../typescript/telegrambot.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { PostHelper } from '../../utils/PostHelper';
-import { PushNotificationHelper } from '../../utils/PushNotificationHelper';
-import { TS } from '../../utils/TS';
 import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
-import { IJobReminder } from '../Post/post.routes';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
 import { EnvType } from './../../constants/types/env.types';
 import { GenericHelper } from './../../utils/GenericHelper';
 import { NotificationHelper } from './../../utils/NotificationHelper';
+import { WhatsAppBotHelper } from './../../utils/WhatsAppBot/WhatsappBotHelper';
 
 // Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310
 Promise.config({
@@ -168,53 +163,6 @@ operationRouter.get('/logs', [userAuthMiddleware, UserMiddleware.restrictUserTyp
 
 })
 
-operationRouter.get('/sendinblue', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  const defaultClient = SibApiV3Sdk.ApiClient.instance;
-
-  // Configure API key authorization: api-key
-  const apiKey = defaultClient.authentications['api-key'];
-  apiKey.apiKey = process.env.SENDINBLUE_API_KEY
-  // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-  // apiKey.apiKeyPrefix['api-key'] = "Token"
-
-  // Configure API key authorization: partner-key
-  const partnerKey = defaultClient.authentications['partner-key'];
-  partnerKey.apiKey = process.env.SENDINBLUE_API_KEY
-  // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-  // partnerKey.apiKeyPrefix['partner-key'] = "Token"
-
-
-  const apiInstance = new SibApiV3Sdk.SMTPApi();
-
-  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-
-  sendSmtpEmail.to = [{ email: process.env.ADMIN_EMAIL }]
-  sendSmtpEmail.sender = { email: process.env.ADMIN_EMAIL }
-  sendSmtpEmail.htmlContent = 'hello world'
-  sendSmtpEmail.textContent = 'hi there'
-  sendSmtpEmail.subject = 'test'
-
-  try {
-    const sendInBlueRequest = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log('SendInBlue: API called successfully. Returned data: ');
-    console.log(JSON.stringify(sendInBlueRequest, null, 2));
-
-  }
-  catch (error) {
-    console.log('Error in SendInBlue request!');
-    console.error(error);
-
-  }
-
-
-  return res.status(200).send({
-    status: 'ok'
-  })
-
-
-});
-
 operationRouter.get('/report', async (req, res) => {
 
   await NotificationHelper.generateJobReport()
@@ -262,52 +210,6 @@ operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.res
 
 });
 
-operationRouter.get('/mailjet', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-
-
-
-  const mailjetClient = mailjet.connect(
-    process.env.MAILJET_API_KEY_PUBLIC,
-    process.env.MAILJET_API_KEY_PRIVATE
-  );
-
-  try {
-    await mailjetClient.post("send", { version: 'v3.1' }).request(
-      {
-        "Messages": [
-          {
-            "From": {
-              "Email": "admin@empregourgente.com",
-              "Name": "Mailjet Pilot"
-            },
-            "To": [
-              {
-                "Email": "admin@empregourgente.com",
-                "Name": "passenger 1"
-              }
-            ],
-            "Subject": "Your email flight plan!",
-            "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
-            "HTMLPart": "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!"
-          }
-        ]
-      }
-    );
-  }
-  catch (error) {
-    console.error(error);
-
-  }
-
-  return res.status(200).send({
-    status: 'ok'
-  })
-
-
-
-});
-
 
 operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
@@ -323,125 +225,6 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
 
 });
 
-operationRouter.get('/admin/test', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  try {
-    // loop through all users with generic positions of interest
-    const users = await User.find({
-      "genericPositionsOfInterest": { "$gt": 0 }
-    })
-    for (const user of users) {
-
-      // for each user, verify if there's a potential position of interest that he wasnt notified about yet
-
-      let jobsReminders: IJobReminder[] = []
-
-      for (const genericPositionOfInterest of user.genericPositionsOfInterest) {
-
-        const positionsFound = await Post.find({ jobRoles: { "$in": [genericPositionOfInterest] }, active: true })
-
-        console.log(`Found some jobs for ${user.name}...`);
-
-
-        // loop through positions found
-
-        for (const position of positionsFound) {
-          // check the user's log
-          const jobNotification = await Log.findOne({
-            emitter: user._id,
-            action: 'USER_JOB_NOTIFICATION',
-            target: position._id
-          })
-
-
-          // if we haven't warned the user about this position...
-          if (!jobNotification) {
-            // add it to our output report
-            jobsReminders = [
-              ...jobsReminders,
-              {
-                userPush: user.pushToken,
-                jobs: positionsFound
-              }
-            ]
-
-            // and then add notification to our logs
-            const newNotification = new Log({
-              emitter: user._id,
-              action: 'USER_JOB_NOTIFICATION',
-              target: position._id
-            })
-            await newNotification.save()
-          } else {
-            console.log(`Skipping job notification ${jobNotification._id}`);
-          }
-
-          // now, let's submit the push notifications regarding these positions
-
-          for (const jobReminder of jobsReminders) {
-
-            PushNotificationHelper.sendPush([jobReminder.userPush], {
-              sound: "default",
-              body: TS.string('user', 'cronInactiveUserReminderText', {
-                firstName: user.givenName || user.name
-              }),
-              data: {
-                jobs: jobReminder.jobs
-              }
-            })
-
-
-
-          }
-
-
-
-
-        }
-
-      }
-    }
-
-    return res.status(200).send(users)
-
-
-
-
-    // then check also for resumes
-
-    // make sure that job posts do not repeat
-  }
-  catch (error) {
-    console.error(error);
-
-  }
-
-  return res.status(200).send({
-    status: 'ok'
-  })
-})
-
-operationRouter.get('/posts/clean/forbidden', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-  // Clean posts with forbidden keywords, that somehow ended up in our database
-  try {
-    const dbPosts = await Post.find({})
-
-    for (const post of dbPosts) {
-      if (PostScrapperHelper.checkForBannedWords(post.title) || PostScrapperHelper.checkForBannedWords(post.content)) {
-        // Post is completely removed, since it's probably garbage.
-        console.log(`🤖: Deleting post ${post.title}`);
-        await post.remove();
-      }
-    }
-  }
-  catch (error) {
-    console.error(error);
-  }
-
-  return res.status(200).send({
-    status: 'ok'
-  })
-})
 
 operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
@@ -539,6 +322,24 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 
 })
 
+operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+
+  // const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
+
+  // console.log(chatList.data);
+
+  await WhatsAppBotHelper.postOnGroups()
+
+
+
+
+  return res.status(200).send({
+    status: 'success'
+  })
+
+
+})
 
 
 

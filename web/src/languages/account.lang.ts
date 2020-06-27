@@ -264,4 +264,8 @@ export const strings = {
     eng: "Start Promoting",
     ptBr: "Quero ser Divulgador",
   },
+  noAccountCredits: {
+    eng: "Oops! No Account Credits",
+    ptBr: "Oops! Você não possui créditos!",
+  },
 };
