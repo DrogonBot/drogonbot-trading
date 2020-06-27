@@ -10,7 +10,6 @@ import { ProvinceCityDropdown } from '../components/elements/form/ProvinceCityDr
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
 import { Logo } from '../components/pages/index/Logo';
-import { CreditsModal } from '../components/pages/posts/post/CreditsModal';
 import { NextSEOIndex } from '../components/seo/NextSEOIndex';
 import { appEnv } from '../constants/Env.constant';
 import { colors } from '../constants/UI/Colors.constant';
@@ -63,7 +62,6 @@ const Home = (props: IProps) => {
       <NextSEOIndex />
 
       <Body>
-        <CreditsModal />
         <Logo />
 
         <Form id="search-form" onSubmit={onSubmit}>
