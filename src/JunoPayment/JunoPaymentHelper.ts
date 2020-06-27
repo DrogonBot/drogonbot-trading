@@ -4,6 +4,7 @@ import { base64encode } from 'nodejs-base64';
 import { Transaction } from '../resources/Transaction/transaction.model';
 import { TransactionStatus } from '../resources/Transaction/transaction.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
+import { TransactionTypes } from './../resources/Transaction/transaction.types';
 import { junoAxiosRequest } from './junopayment.constants';
 import { IJunoAccessTokenResponse } from './junopayment.types';
 
@@ -66,6 +67,8 @@ export class JunoPaymentHelper {
           orderId: order.id,
           userId: req.user._id,
           code: order.code,
+          type: TransactionTypes.BOLETO,
+          reference: order.reference,
           status: TransactionStatus.CREATED,
           amount: order.amount,
           boletoLink: order.link,

@@ -10,6 +10,8 @@ export interface ITransactionModel extends ITransaction, Document {
 const transactionSchema = new mongoose.Schema({
   orderId: String,
   userId: ObjectId,
+  type: String,
+  reference: String,
   code: String,
   status: String,
   amount: Number,
