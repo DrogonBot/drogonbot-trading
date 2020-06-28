@@ -13,6 +13,101 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
 
   // ! ES GROUPS
 
+  // Niche groups ========================================
+  {
+    name: "Vagas Adm & Atend ES 1",
+    chatId: "17788467427-1590869680@g.us",
+    sectors: ["Administração", "Atendimento ao cliente", "Finanças, Ciências Contábeis, Estatística e Matemática"],
+    stateCode: "ES",
+  },
+  {
+    name: "Vagas Adm & Atend ES 2",
+    chatId: "17788467427-1593220862@g.us",
+    sectors: ["Administração", "Atendimento ao cliente", "Finanças, Ciências Contábeis, Estatística e Matemática"],
+    stateCode: "ES",
+
+  },
+  {
+    name: "Vagas Estética - ES 1",
+    chatId: "17788467427-1590869891@g.us",
+    sectors: ["Beleza & Estética"],
+    stateCode: "ES",
+
+  },
+
+  {
+    name: "Constr, Indust, Log ES 1",
+    chatId: "17788467427-1590870112@g.us",
+    sectors: ["Desenho Industrial", "Decoração", "Engenharia", "Construção Civil", "Indústria, Offshore e Metalurgia", "Logística, Transporte e Operações"],
+    stateCode: "ES",
+
+  },
+  {
+    name: "Emprego Urgente - AdGroup",
+    chatId: "5527999333180-1593282827@g.us",
+    sectors: ["Desenho Industrial", "Engenharia", "Indústria, Offshore e Metalurgia"],
+    stateCode: "ES",
+  },
+  {
+    name: "Saude, Limp, Cuidad ES 1",
+    chatId: "17788467427-1590870214@g.us",
+    sectors: ["Saúde & Cuidados", "Limpeza"],
+    stateCode: "ES",
+
+  },
+  {
+    name: "Vagas Segur & Patr ES 1",
+    chatId: "17788467427-1590870335@g.us",
+    sectors: ["Segurança & Patrimônio"],
+    stateCode: "ES",
+
+  },
+  {
+    name: "Vagas - Vend & Comer ES 1",
+    chatId: "17788467427-1590870592@g.us",
+    sectors: ["Vendas & Comércio"],
+    stateCode: "ES",
+
+  },
+
+  // ES Partners ========================================
+
+
+  {
+    name: "ES Emprego #2",
+    chatId: "5527999617786-1553625058@g.us",
+    stateCode: "ES",
+    isPartnerGroup: true,
+
+  },
+  {
+    name: "ES Emprego #3",
+    chatId: "5527999617786-1561151568@g.us",
+    stateCode: "ES",
+    isPartnerGroup: true,
+
+  },
+  {
+    name: "ES Emprego #4",
+    chatId: "5527999617786-1564846362@g.us",
+    stateCode: "ES",
+    isPartnerGroup: true,
+
+  },
+  {
+    name: "ES Emprego #5",
+    chatId: "5527999617786-1567613230@g.us",
+    stateCode: "ES",
+    isPartnerGroup: true,
+
+  },
+  {
+    name: "ES Emprego #6",
+    chatId: "5527999617786-1571064828@g.us",
+    stateCode: "ES",
+    isPartnerGroup: true,
+
+  },
 
 
   {
@@ -46,160 +141,26 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     chatId: "17788467427-1593200580@g.us",
     stateCode: "ES",
   },
+  // LAST GROUPS FROM PROVINCE SHOULD HAVE END OF LINEAGE SET TO TRUE, TO PREVENT POSTING THE SAME THING AGAIN
   {
     name: "EmpregoUrgente.com ES #7",
     chatId: "17788467427-1593200947@g.us",
     stateCode: "ES",
     isEndOfLineage: true
   },
-  {
-    name: "Vagas Adm & Atend ES 1",
-    chatId: "17788467427-1590869680@g.us",
-    sectors: ["Administração", "Atendimento ao cliente", "Finanças, Ciências Contábeis, Estatística e Matemática"],
-    stateCode: "ES",
-  },
-  {
-    name: "Vagas Adm & Atend ES 2",
-    chatId: "17788467427-1593220862@g.us",
-    sectors: ["Administração", "Atendimento ao cliente", "Finanças, Ciências Contábeis, Estatística e Matemática"],
-    stateCode: "ES",
-    isEndOfLineage: true
-  },
-  {
-    name: "Vagas Estética - ES 1",
-    chatId: "17788467427-1590869891@g.us",
-    sectors: ["Beleza & Estética"],
-    stateCode: "ES",
-    isEndOfLineage: true
-  },
-
-  {
-    name: "Constr, Indust, Log ES 1",
-    chatId: "17788467427-1590870112@g.us",
-    sectors: ["Desenho Industrial", "Decoração", "Engenharia", "Construção Civil", "Indústria, Offshore e Metalurgia", "Logística, Transporte e Operações"],
-    stateCode: "ES",
-    isEndOfLineage: true
-  },
-  {
-    name: "Emprego Urgente - AdGroup",
-    chatId: "5527999333180-1593282827@g.us",
-    sectors: ["Desenho Industrial", "Engenharia", "Indústria, Offshore e Metalurgia"],
-    stateCode: "ES",
-  },
-  {
-    name: "Saude, Limp, Cuidad ES 1",
-    chatId: "17788467427-1590870214@g.us",
-    sectors: ["Saúde & Cuidados", "Limpeza"],
-    stateCode: "ES",
-    isEndOfLineage: true
-  },
-  {
-    name: "Vagas Segur & Patr ES 1",
-    chatId: "17788467427-1590870335@g.us",
-    sectors: ["Segurança & Patrimônio"],
-    stateCode: "ES",
-    isEndOfLineage: true
-  },
-  {
-    name: "Vagas - Vend & Comer ES 1",
-    chatId: "17788467427-1590870592@g.us",
-    sectors: ["Vendas & Comércio"],
-    stateCode: "ES",
-    isEndOfLineage: true
-  },
-
-  // ES Partners ========================================
-
-
-  {
-    name: "ES Emprego #2",
-    chatId: "5527999617786-1553625058@g.us",
-    stateCode: "ES",
-    isPartnerGroup: true,
-    isEndOfLineage: true
-  },
-  {
-    name: "ES Emprego #3",
-    chatId: "5527999617786-1561151568@g.us",
-    stateCode: "ES",
-    isPartnerGroup: true,
-    isEndOfLineage: true
-  },
-  {
-    name: "ES Emprego #4",
-    chatId: "5527999617786-1564846362@g.us",
-    stateCode: "ES",
-    isPartnerGroup: true,
-    isEndOfLineage: true
-  },
-  {
-    name: "ES Emprego #5",
-    chatId: "5527999617786-1567613230@g.us",
-    stateCode: "ES",
-    isPartnerGroup: true,
-    isEndOfLineage: true
-  },
-  {
-    name: "ES Emprego #6",
-    chatId: "5527999617786-1571064828@g.us",
-    stateCode: "ES",
-    isPartnerGroup: true,
-    isEndOfLineage: true
-  },
 
 
   // ! SP GROUPS
 
-  {
-    name: "EmpregoUrgente.com SP #1",
-    chatId: "17788467427-1579925753@g.us",
-    stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
-  },
-  {
-    name: "EmpregoUrgente.com SP #2",
-    chatId: "17788467427-1579925840@g.us",
-    stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
-  },
-  {
-    name: "EmpregoUrgente.com SP #3",
-    chatId: "17788467427-1581563654@g.us",
-    stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
-  },
-  {
-    name: "EmpregoUrgente.com SP #4",
-    chatId: "17788467427-1582860789@g.us",
-    stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
-  },
-  {
-    name: "EmpregoUrgente.com SP #5",
-    chatId: "17788467427-1592927861@g.us",
-    stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
-  },
-  {
-    name: "EmpregoUrgente.com SP #6",
-    chatId: "17788467427-1593035467@g.us",
-    stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
-  },
-  {
-    name: "EmpregoUrgente.com SP #7",
-    chatId: "17788467427-1593035676@g.us",
-    stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"],
-    isEndOfLineage: true
-  },
+  // Niche groups ========================================
+
   {
     name: "Vagas Adm & Atend SP 1",
     chatId: "17788467427-1590871268@g.us",
     sectors: ["Administração", "Atendimento ao cliente", "Finanças, Ciências Contábeis, Estatística e Matemática"],
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isEndOfLineage: true
+
   },
   {
     name: "Vagas Estética - SP 1",
@@ -207,7 +168,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     sectors: ["Beleza & Estética"],
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isEndOfLineage: true
+
   },
   {
     name: "Constr, Indust, Log SP 1",
@@ -215,7 +176,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     sectors: ["Desenho Industrial", "Decoração", "Engenharia", "Construção Civil", "Indústria, Offshore e Metalurgia", "Logística, Transporte e Operações"],
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isEndOfLineage: true
+
   },
   {
     name: "Vagas Segur & Patr SP 1",
@@ -223,7 +184,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     sectors: ["Segurança & Patrimônio"],
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isEndOfLineage: true
+
   },
   {
     name: "Vagas - Vend & Comer SP 1",
@@ -231,7 +192,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     sectors: ["Vendas & Comércio"],
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isEndOfLineage: true
+
   },
   {
     name: "Saude, Limp, Cuidad SP 1",
@@ -239,7 +200,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     sectors: ["Saúde & Cuidados", "Limpeza"],
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isEndOfLineage: true
+
   },
 
   // SP Partners ========================================
@@ -371,12 +332,113 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
     isPartnerGroup: true,
-    isEndOfLineage: true // ! LAST PARTNER RECEIVES END OF LINEAGE!
   },
+
+  // General groups ========================================
+
+  {
+    name: "EmpregoUrgente.com SP #1",
+    chatId: "17788467427-1579925753@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"]
+  },
+  {
+    name: "EmpregoUrgente.com SP #2",
+    chatId: "17788467427-1579925840@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"]
+  },
+  {
+    name: "EmpregoUrgente.com SP #3",
+    chatId: "17788467427-1581563654@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"]
+  },
+  {
+    name: "EmpregoUrgente.com SP #4",
+    chatId: "17788467427-1582860789@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"]
+  },
+  {
+    name: "EmpregoUrgente.com SP #5",
+    chatId: "17788467427-1592927861@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"]
+  },
+  {
+    name: "EmpregoUrgente.com SP #6",
+    chatId: "17788467427-1593035467@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"]
+  },
+  {
+    name: "EmpregoUrgente.com SP #7",
+    chatId: "17788467427-1593035676@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+    isEndOfLineage: true
+  },
+
 
 
   // ! MG GROUPS - BH
 
+  // Niche groups ========================================
+
+  {
+    name: "Vagas Adm & Atend BH 1",
+    chatId: "17788467427-1590872646@g.us",
+    sectors: ["Administração", "Atendimento ao cliente", "Finanças, Ciências Contábeis, Estatística e Matemática"],
+    stateCode: "MG",
+    cities: ["Belo Horizonte"],
+
+  },
+  {
+    name: "Vagas Estética - BH 1",
+    chatId: "17788467427-1590872676@g.us",
+    sectors: ["Beleza & Estética"],
+    stateCode: "MG",
+    cities: ["Belo Horizonte"],
+
+  },
+  {
+    name: "Constr, Indust, Log BH 1",
+    chatId: "17788467427-1590873489@g.us",
+    sectors: ["Desenho Industrial", "Decoração", "Engenharia", "Construção Civil", "Indústria, Offshore e Metalurgia", "Logística, Transporte e Operações"],
+    stateCode: "MG",
+    cities: ["Belo Horizonte"],
+
+  },
+
+  {
+    name: "Saude, Limp, Cuidad BH 1",
+    chatId: "17788467427-1590873718@g.us",
+    sectors: ["Saúde & Cuidados", "Limpeza"],
+    stateCode: "MG",
+    cities: ["Belo Horizonte"],
+
+  },
+
+  {
+    name: "Vagas Segur & Patr BH 1",
+    chatId: "17788467427-1590873815@g.us",
+    sectors: ["Segurança & Patrimônio"],
+    stateCode: "MG",
+    cities: ["Belo Horizonte"],
+
+  },
+
+  {
+    name: "Vagas - Vend & Comer BH 1",
+    chatId: "17788467427-1590873918@g.us",
+    sectors: ["Vendas & Comércio"],
+    stateCode: "MG",
+    cities: ["Belo Horizonte"],
+
+  },
+
+  // General groups ========================================
 
   {
     name: "EmpregoUrgente.com BH #1",
@@ -410,57 +472,63 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     isEndOfLineage: true
   },
 
+
+  // Niche groups ========================================
+
   {
-    name: "Vagas Adm & Atend BH 1",
-    chatId: "17788467427-1590872646@g.us",
+    name: "Vagas Adm & Atend RJ 1",
+    chatId: "17788467427-1590877892@g.us",
     sectors: ["Administração", "Atendimento ao cliente", "Finanças, Ciências Contábeis, Estatística e Matemática"],
-    stateCode: "MG",
-    cities: ["Belo Horizonte"],
-    isEndOfLineage: true
+    stateCode: "RJ",
+    cities: ["Rio de Janeiro"],
+
   },
   {
-    name: "Vagas Estética - BH 1",
-    chatId: "17788467427-1590872676@g.us",
+    name: "Vagas Estética - RJ 1",
+    chatId: "17788467427-1590878024@g.us",
     sectors: ["Beleza & Estética"],
-    stateCode: "MG",
-    cities: ["Belo Horizonte"],
-    isEndOfLineage: true
+    stateCode: "RJ",
+    cities: ["Rio de Janeiro"],
+
   },
+
   {
-    name: "Constr, Indust, Log BH 1",
-    chatId: "17788467427-1590873489@g.us",
+    name: "Constr, Indust, Log RJ 1",
+    chatId: "17788467427-1590878131@g.us",
     sectors: ["Desenho Industrial", "Decoração", "Engenharia", "Construção Civil", "Indústria, Offshore e Metalurgia", "Logística, Transporte e Operações"],
-    stateCode: "MG",
-    cities: ["Belo Horizonte"],
-    isEndOfLineage: true
+    stateCode: "RJ",
+    cities: ["Rio de Janeiro"],
+
   },
 
   {
-    name: "Saude, Limp, Cuidad BH 1",
-    chatId: "17788467427-1590873718@g.us",
+    name: "Saude, Limp, Cuidad RJ 1",
+    chatId: "17788467427-1590878222@g.us",
     sectors: ["Saúde & Cuidados", "Limpeza"],
-    stateCode: "MG",
-    cities: ["Belo Horizonte"],
-    isEndOfLineage: true
+    stateCode: "RJ",
+    cities: ["Rio de Janeiro"],
+
   },
 
   {
-    name: "Vagas Segur & Patr BH 1",
-    chatId: "17788467427-1590873815@g.us",
+    name: "Vagas Segur & Patr RJ 1",
+    chatId: "17788467427-1590878500@g.us",
     sectors: ["Segurança & Patrimônio"],
-    stateCode: "MG",
-    cities: ["Belo Horizonte"],
-    isEndOfLineage: true
+    stateCode: "RJ",
+    cities: ["Rio de Janeiro"],
+
   },
 
   {
-    name: "Vagas - Vend & Comer BH 1",
-    chatId: "17788467427-1590873918@g.us",
+    name: "Vagas - Vend & Comer RJ 1",
+    chatId: "17788467427-1590878606@g.us",
     sectors: ["Vendas & Comércio"],
-    stateCode: "MG",
-    cities: ["Belo Horizonte"],
-    isEndOfLineage: true
+    stateCode: "RJ",
+    cities: ["Rio de Janeiro"],
+
   },
+
+  // General groups ========================================
 
   {
     name: "EmpregoUrgente.com RJ #1",
@@ -477,58 +545,6 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
   {
     name: "EmpregoUrgente.com RJ #3",
     chatId: "17788467427-1588872998@g.us",
-    stateCode: "RJ",
-    cities: ["Rio de Janeiro"],
-    isEndOfLineage: true
-  },
-  {
-    name: "Vagas Adm & Atend RJ 1",
-    chatId: "17788467427-1590877892@g.us",
-    sectors: ["Administração", "Atendimento ao cliente", "Finanças, Ciências Contábeis, Estatística e Matemática"],
-    stateCode: "RJ",
-    cities: ["Rio de Janeiro"],
-    isEndOfLineage: true
-  },
-  {
-    name: "Vagas Estética - RJ 1",
-    chatId: "17788467427-1590878024@g.us",
-    sectors: ["Beleza & Estética"],
-    stateCode: "RJ",
-    cities: ["Rio de Janeiro"],
-    isEndOfLineage: true
-  },
-
-  {
-    name: "Constr, Indust, Log RJ 1",
-    chatId: "17788467427-1590878131@g.us",
-    sectors: ["Desenho Industrial", "Decoração", "Engenharia", "Construção Civil", "Indústria, Offshore e Metalurgia", "Logística, Transporte e Operações"],
-    stateCode: "RJ",
-    cities: ["Rio de Janeiro"],
-    isEndOfLineage: true
-  },
-
-  {
-    name: "Saude, Limp, Cuidad RJ 1",
-    chatId: "17788467427-1590878222@g.us",
-    sectors: ["Saúde & Cuidados", "Limpeza"],
-    stateCode: "RJ",
-    cities: ["Rio de Janeiro"],
-    isEndOfLineage: true
-  },
-
-  {
-    name: "Vagas Segur & Patr RJ 1",
-    chatId: "17788467427-1590878500@g.us",
-    sectors: ["Segurança & Patrimônio"],
-    stateCode: "RJ",
-    cities: ["Rio de Janeiro"],
-    isEndOfLineage: true
-  },
-
-  {
-    name: "Vagas - Vend & Comer RJ 1",
-    chatId: "17788467427-1590878606@g.us",
-    sectors: ["Vendas & Comércio"],
     stateCode: "RJ",
     cities: ["Rio de Janeiro"],
     isEndOfLineage: true
