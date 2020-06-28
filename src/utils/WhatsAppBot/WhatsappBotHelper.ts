@@ -6,7 +6,7 @@ import { EnvType } from '../../constants/types/env.types';
 import { Post } from '../../resources/Post/post.model';
 import { ConsoleColor, ConsoleHelper } from '../ConsoleHelper';
 import { GenericHelper } from '../GenericHelper';
-import { whatsappAxios } from './whatsappbot.constants';
+import { defaultThumbnailBase64, whatsappAxios } from './whatsappbot.constants';
 import { IWhatsAppGroup } from './whatsappbot.types';
 import { whatsAppGroups } from './whatsappGroups.constants';
 
@@ -142,16 +142,24 @@ export class WhatsAppBotHelper {
 
             const postTitle = post.title.length >= 35 ? post.title.substr(0, 35) + "..." : post.title
 
-            const imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(`${process.env.WEB_APP_URL}/images/seo/${encodeURIComponent(post.sector)}.jpg`)
+            try {
+              const imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(`${process.env.WEB_APP_URL}/images/seo/${encodeURIComponent(post.sector)}.jpg`) || defaultThumbnailBase64
 
-            const response = await WhatsAppBotHelper.request("POST", "/sendLink", {
-              chatId: group.chatId,
-              title: postTitle,
-              body: `${process.env.WEB_APP_URL}/posts/${post.slug}?ref=whatsapp`,
-              previewBase64: `data:image/jpeg;base64,${imageBase64}`
-            })
+              const response = await WhatsAppBotHelper.request("POST", "/sendLink", {
+                chatId: group.chatId,
+                title: postTitle,
+                body: `${process.env.WEB_APP_URL}/posts/${post.slug}?ref=whatsapp`,
+                previewBase64: `data:image/jpeg;base64,${imageBase64}`
+              })
 
-            console.log(response.data);
+              console.log(response.data);
+            }
+            catch (error) {
+              ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Failed to publish post ${post.slug}. Check the error below!`)
+              console.error(error);
+            }
+
+
           }
 
           if (process.env.ENV === EnvType.Production && group.isEndOfLineage) {
