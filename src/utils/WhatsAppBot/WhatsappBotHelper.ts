@@ -43,7 +43,7 @@ export class WhatsAppBotHelper {
 
   }
 
-  private static _fetchGroupPosts = async (group: IWhatsAppGroup) => {
+  private static _fetchGroupPosts = async (group: IWhatsAppGroup, qty: number) => {
 
     let citiesQuery = {}
     let sectorQuery = {}
@@ -94,7 +94,7 @@ export class WhatsAppBotHelper {
         sectorQuery,
         { $or: [{ isPostedOnWhatsApp: { $exists: false } }, { isPostedOnWhatsApp: { $exists: true, $eq: false } }] }
       ]
-    }).limit(15).sort({ 'createdAt': 'descending' })
+    }).limit(qty).sort({ 'createdAt': 'descending' })
 
     posts = _.shuffle(posts)
 
@@ -204,7 +204,9 @@ export class WhatsAppBotHelper {
 
   private static _thumbnailPost = async (posts: IPostModel[], group: IWhatsAppGroup) => {
 
-    for (const post of posts) {
+    const limitedPosts = _.slice(posts, 0, 15) // thumbnail posts are limited to 15 only!
+
+    for (const post of limitedPosts) {
 
       if (post.isPostedOnWhatsApp) {
         continue;
@@ -306,7 +308,7 @@ export class WhatsAppBotHelper {
         }
       }
 
-      const posts = await WhatsAppBotHelper._fetchGroupPosts(group)
+      const posts = await WhatsAppBotHelper._fetchGroupPosts(group, 30)
 
 
       if (posts.length > 0) {
