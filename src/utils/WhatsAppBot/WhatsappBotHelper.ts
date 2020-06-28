@@ -309,9 +309,9 @@ export class WhatsAppBotHelper {
       const posts = await WhatsAppBotHelper._fetchGroupPosts(group)
 
 
-
-
-      await WhatsAppBotHelper._listPost(posts, group);
+      if (posts.length > 0) {
+        await WhatsAppBotHelper._listPost(posts, group);
+      }
 
       // if (!group.isPartnerGroup) {
       //   await WhatsAppBotHelper._thumbnailPost(posts, group);
