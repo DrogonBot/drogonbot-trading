@@ -182,7 +182,7 @@ export class WhatsAppBotHelper {
             await post.save();
           }
 
-          await GenericHelper.sleep(1000 * (12 + _.random(10)))
+          await GenericHelper.sleep(1000 * (6 + _.random(10)))
         }
       } else {
 
