@@ -260,8 +260,13 @@ export class WhatsAppBotHelper {
   }
 
   private static _listPost = async (posts: IPost[], group: IWhatsAppGroup) => {
+
+
+    const inviteOrJoinGroupText = group.isPartnerGroup ? `👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}` : `✌ Convide amigos! https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}`
+
+
     // ! PARTNER GROUP POSTING! SHOULD GENERATE A LIST ONLY, WITH 1 POST.
-    let listContent = `⚠ *Vagas exclusivas: ${group.stateCode}* ⚠ \n👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}\n\n`
+    let listContent = `⚠ *Vagas exclusivas: ${group.stateCode}* ⚠ \n${inviteOrJoinGroupText}\n\n`
 
     for (const post of posts) {
 
