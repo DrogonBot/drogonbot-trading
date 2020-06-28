@@ -110,7 +110,7 @@ export class WhatsAppBotHelper {
 
 
           console.log('generating thumbnail...');
-          const imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(encodeURIComponent(`http://app-web:3003/images/seo/${post.sector}.jpg`))
+          const imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(`${process.env.WEB_APP_URL}/images/seo/${encodeURIComponent(post.sector)}.jpg`)
 
           console.log('sending request to Chat-API');
           const response = await WhatsAppBotHelper.request("POST", "/sendLink", {
