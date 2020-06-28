@@ -308,6 +308,7 @@ export class JobsCron {
     // UTC 11 (8 am Brasilia)
     // UTC 15 (12pm Brasilia)
     // UTC 19 (4pm Brasilia)
+    // UTC 22 (7pm Brasilia)
 
 
     cron.schedule("0 11 * * *", async () => {
@@ -317,6 +318,9 @@ export class JobsCron {
       await WhatsAppBotHelper.postOnGroups()
     })
     cron.schedule("0 19 * * *", async () => {
+      await WhatsAppBotHelper.postOnGroups()
+    })
+    cron.schedule("0 22 * * *", async () => {
       await WhatsAppBotHelper.postOnGroups()
     })
   }
