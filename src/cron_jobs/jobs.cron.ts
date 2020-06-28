@@ -17,6 +17,7 @@ import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { GenericHelper } from '../utils/GenericHelper';
 import { NotificationHelper } from '../utils/NotificationHelper';
 import { TS } from '../utils/TS';
+import { WhatsAppBotHelper } from './../utils/WhatsAppBot/WhatsappBotHelper';
 
 // Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310
 Promise.config({
@@ -297,6 +298,22 @@ export class JobsCron {
 
   }
 
+  public static whatsAppBotPoster = () => {
+    // UTC 11 (8 am Brasilia)
+    // UTC 15 (12pm Brasilia)
+    // UTC 19 (4pm Brasilia)
+
+
+    cron.schedule("0 11 * * *", async () => {
+      await WhatsAppBotHelper.postOnGroups()
+    })
+    cron.schedule("0 15 * * *", async () => {
+      await WhatsAppBotHelper.postOnGroups()
+    })
+    cron.schedule("0 19 * * *", async () => {
+      await WhatsAppBotHelper.postOnGroups()
+    })
+  }
 
   public static telegramBotPoster = () => {
 
