@@ -425,82 +425,83 @@ export const scrappingTargets: IScrappingTarget[] = [
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
-  {
-    name: "TrabalhaBrasil - RJ - São Gonçalo",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-goncalo-rj",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "São Gonçalo"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
+  // ! TEMP DISABLE
+  // {
+  //   name: "TrabalhaBrasil - RJ - São Gonçalo",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-goncalo-rj",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "São Gonçalo"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
 
-  {
-    name: "TrabalhaBrasil - RJ - Duque de Caxias",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-duque-de-caxias-rj",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "Duque de Caxias"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
-  {
-    name: "TrabalhaBrasil - RJ - Nova Iguacu",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-nova-iguacu-rj",
-    priority: TargetPriority.Low,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "Nova Iguaçu"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
-  {
-    name: "TrabalhaBrasil - RJ - Niteroi",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-niteroi-rj",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "Niterói"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
-  {
-    name: "TrabalhaBrasil - RJ - Belford Roxo",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-belford-roxo-rj",
-    priority: TargetPriority.Low,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "Belford Roxo"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
+  // {
+  //   name: "TrabalhaBrasil - RJ - Duque de Caxias",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-duque-de-caxias-rj",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "Duque de Caxias"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
+  // {
+  //   name: "TrabalhaBrasil - RJ - Nova Iguacu",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-nova-iguacu-rj",
+  //   priority: TargetPriority.Low,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "Nova Iguaçu"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
+  // {
+  //   name: "TrabalhaBrasil - RJ - Niteroi",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-niteroi-rj",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "Niterói"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
+  // {
+  //   name: "TrabalhaBrasil - RJ - Belford Roxo",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-belford-roxo-rj",
+  //   priority: TargetPriority.Low,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "Belford Roxo"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
 
   {
     name: "Blog => Rj Empregos Net",
@@ -529,84 +530,84 @@ export const scrappingTargets: IScrappingTarget[] = [
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperOLX
   },
-  {
-    name: "OLX => RJ/Sao Goncalo",
-    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/sao-goncalo/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "São Gonçalo"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => RJ/Campo Grande",
-    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/zona-oeste/campo-grande/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "Campo Grande"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => RJ/Duque de Caxias",
-    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/baixada-fluminense/duque-de-caxias/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "Duque de Caxias"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => RJ/Nova Iguacu",
-    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/baixada-fluminense/nova-iguacu/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "Nova Iguaçu"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => RJ/Niteroi",
-    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/niteroi/vagas-de-emprego",
-    priority: TargetPriority.Medium,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "Niterói"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => RJ/Belford Roxo",
-    externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/baixada-fluminense/belford-roxo/vagas-de-emprego",
-    priority: TargetPriority.Medium,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "Belford Roxo"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
+  // {
+  //   name: "OLX => RJ/Sao Goncalo",
+  //   externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/sao-goncalo/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "São Gonçalo"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => RJ/Campo Grande",
+  //   externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/zona-oeste/campo-grande/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "Campo Grande"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => RJ/Duque de Caxias",
+  //   externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/baixada-fluminense/duque-de-caxias/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "Duque de Caxias"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => RJ/Nova Iguacu",
+  //   externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/baixada-fluminense/nova-iguacu/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "Nova Iguaçu"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => RJ/Niteroi",
+  //   externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/niteroi/vagas-de-emprego",
+  //   priority: TargetPriority.Medium,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "Niterói"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => RJ/Belford Roxo",
+  //   externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/baixada-fluminense/belford-roxo/vagas-de-emprego",
+  //   priority: TargetPriority.Medium,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "Belford Roxo"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
 
 
   // SP ========================================
@@ -672,81 +673,81 @@ export const scrappingTargets: IScrappingTarget[] = [
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
-  {
-    name: "TrabalhaBrasil - SP - Campinas",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-campinas%2C-sp-",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "Campinas"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
-  {
-    name: "TrabalhaBrasil - SP - Sao Bernardo do Campo",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-bernardo-do-campo-sp",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "São Bernardo do Campo"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
-  {
-    name: "TrabalhaBrasil - SP - Sao Jose dos Campos",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-jose-dos-campos-sp",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "São José dos Campos"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
-  {
-    name: "TrabalhaBrasil - SP - Santo Andre",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-santo-andre-sp",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "Santo André"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
-  {
-    name: "TrabalhaBrasil - SP - Ribeirao Preto",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-ribeirao-preto-sp",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "Ribeirão Preto"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
+  // {
+  //   name: "TrabalhaBrasil - SP - Campinas",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-campinas%2C-sp-",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "Campinas"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
+  // {
+  //   name: "TrabalhaBrasil - SP - Sao Bernardo do Campo",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-bernardo-do-campo-sp",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "São Bernardo do Campo"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
+  // {
+  //   name: "TrabalhaBrasil - SP - Sao Jose dos Campos",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-jose-dos-campos-sp",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "São José dos Campos"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
+  // {
+  //   name: "TrabalhaBrasil - SP - Santo Andre",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-santo-andre-sp",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "Santo André"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
+  // {
+  //   name: "TrabalhaBrasil - SP - Ribeirao Preto",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-ribeirao-preto-sp",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "Ribeirão Preto"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
 
 
   {
@@ -873,71 +874,71 @@ export const scrappingTargets: IScrappingTarget[] = [
     pagePattern: PagePattern.ListAndInternalPosts,
     scrapperClass: ScrapperOLX
   },
-  {
-    name: "OLX => SP/Campinas",
-    externalSource: "https://sp.olx.com.br/grande-campinas/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "Campinas"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => SP/Sao bernardo do campo",
-    externalSource: "https://sp.olx.com.br/sao-paulo-e-regiao/abcd/sao-bernardo-do-campo/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "São Bernardo do Campo"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => SP/Sao jose dos campos",
-    externalSource: "https://sp.olx.com.br/vale-do-paraiba-e-litoral-norte/vale-do-paraiba/sao-jose-dos-campos/vagas-de-emprego",
-    priority: TargetPriority.Low,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "São José dos Campos"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => SP/Santo andre",
-    externalSource: "https://sp.olx.com.br/sao-paulo-e-regiao/abcd/santo-andre/vagas-de-emprego",
-    priority: TargetPriority.Low,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "Santo André"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => SP/Ribeirao Preto",
-    externalSource: "https://sp.olx.com.br/regiao-de-ribeirao-preto/vagas-de-emprego",
-    priority: TargetPriority.Low,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "Ribeirão Preto"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
+  // {
+  //   name: "OLX => SP/Campinas",
+  //   externalSource: "https://sp.olx.com.br/grande-campinas/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "Campinas"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => SP/Sao bernardo do campo",
+  //   externalSource: "https://sp.olx.com.br/sao-paulo-e-regiao/abcd/sao-bernardo-do-campo/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "São Bernardo do Campo"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => SP/Sao jose dos campos",
+  //   externalSource: "https://sp.olx.com.br/vale-do-paraiba-e-litoral-norte/vale-do-paraiba/sao-jose-dos-campos/vagas-de-emprego",
+  //   priority: TargetPriority.Low,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "São José dos Campos"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => SP/Santo andre",
+  //   externalSource: "https://sp.olx.com.br/sao-paulo-e-regiao/abcd/santo-andre/vagas-de-emprego",
+  //   priority: TargetPriority.Low,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "Santo André"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => SP/Ribeirao Preto",
+  //   externalSource: "https://sp.olx.com.br/regiao-de-ribeirao-preto/vagas-de-emprego",
+  //   priority: TargetPriority.Low,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "Ribeirão Preto"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
 
   // MG ========================================
 
@@ -971,132 +972,132 @@ export const scrappingTargets: IScrappingTarget[] = [
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
-  {
-    name: "TrabalhaBrasil - MG - Uberlandia",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-uberlandia-mg",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "MG",
-      city: "Uberlândia"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
-  {
-    name: "TrabalhaBrasil - MG - Contagem",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-contagem-mg",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "MG",
-      city: "Contagem"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
-  {
-    name: "TrabalhaBrasil - MG - Juiz de Fora",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-juiz-de-fora-mg",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "MG",
-      city: "Juiz de Fora"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
-  {
-    name: "TrabalhaBrasil - MG - Betim",
-    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-betim-mg",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "MG",
-      city: "Betim"
-    },
-    source: PostSource.Blog,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperTrabalhaBrasil,
-    bypassPostContentFilter: true,
-    isTrustableSource: true
-  },
+  // {
+  //   name: "TrabalhaBrasil - MG - Uberlandia",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-uberlandia-mg",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //     city: "Uberlândia"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
+  // {
+  //   name: "TrabalhaBrasil - MG - Contagem",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-contagem-mg",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //     city: "Contagem"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
+  // {
+  //   name: "TrabalhaBrasil - MG - Juiz de Fora",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-juiz-de-fora-mg",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //     city: "Juiz de Fora"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
+  // {
+  //   name: "TrabalhaBrasil - MG - Betim",
+  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-betim-mg",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //     city: "Betim"
+  //   },
+  //   source: PostSource.Blog,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperTrabalhaBrasil,
+  //   bypassPostContentFilter: true,
+  //   isTrustableSource: true
+  // },
 
 
-  {
-    name: "OLX => MG/BH",
-    externalSource: "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "MG",
-      city: "Belo Horizonte",
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => MG/Uberlandia",
-    externalSource: "https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/triangulo-mineiro/uberlandia/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "MG",
-      city: "Uberlândia"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => MG/Contagem",
-    externalSource: "https://mg.olx.com.br/belo-horizonte-e-regiao/grande-belo-horizonte/contagem/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "MG",
-      city: "Contagem"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => MG/Juiz de Fora",
-    externalSource: "https://mg.olx.com.br/regiao-de-juiz-de-fora/vagas-de-emprego",
-    priority: TargetPriority.Low,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "MG",
-      city: "Juiz de Fora"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => MG/Betim",
-    externalSource: "https://mg.olx.com.br/belo-horizonte-e-regiao/grande-belo-horizonte/betim/vagas-de-emprego",
-    priority: TargetPriority.Low,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "MG",
-      city: "Betim"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
+  // {
+  //   name: "OLX => MG/BH",
+  //   externalSource: "https://mg.olx.com.br/belo-horizonte-e-regiao/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //     city: "Belo Horizonte",
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => MG/Uberlandia",
+  //   externalSource: "https://mg.olx.com.br/regiao-de-uberlandia-e-uberaba/triangulo-mineiro/uberlandia/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //     city: "Uberlândia"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => MG/Contagem",
+  //   externalSource: "https://mg.olx.com.br/belo-horizonte-e-regiao/grande-belo-horizonte/contagem/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //     city: "Contagem"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => MG/Juiz de Fora",
+  //   externalSource: "https://mg.olx.com.br/regiao-de-juiz-de-fora/vagas-de-emprego",
+  //   priority: TargetPriority.Low,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //     city: "Juiz de Fora"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => MG/Betim",
+  //   externalSource: "https://mg.olx.com.br/belo-horizonte-e-regiao/grande-belo-horizonte/betim/vagas-de-emprego",
+  //   priority: TargetPriority.Low,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "MG",
+  //     city: "Betim"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
 ]
 
