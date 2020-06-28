@@ -178,7 +178,7 @@ export class WhatsAppBotHelper {
             await post.save();
           }
 
-          await GenericHelper.sleep(1000 * (12 + _.random(20)))
+          await GenericHelper.sleep(1000 * (12 + _.random(10)))
         }
       } else {
 
@@ -205,7 +205,7 @@ export class WhatsAppBotHelper {
 
 
 
-      await GenericHelper.sleep(1000 * _.random(60))
+      await GenericHelper.sleep(1000 * _.random(10))
     }
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on WhatsApp Groups!')
 
