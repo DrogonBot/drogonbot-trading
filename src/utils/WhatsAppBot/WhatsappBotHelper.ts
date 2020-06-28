@@ -136,6 +136,10 @@ export class WhatsAppBotHelper {
 
         for (const post of posts) {
 
+          if (post.isPostedOnWhatsApp) {
+            continue;
+          }
+
           console.log(`[${post.jobRoles[0]}/${post.sector}] - ${post.city}/${post.stateCode} => ${post.title}`);
 
           if (process.env.ENV === EnvType.Production) {
@@ -186,6 +190,11 @@ export class WhatsAppBotHelper {
         let listContent = `⚠ Vagas exclusivas do ${group.stateCode} ⚠ \n👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}\n\n`
 
         for (const post of posts) {
+
+          if (post.isPostedOnWhatsApp) {
+            continue;
+          }
+
           listContent += `${WhatsAppBotHelper._shortPostTitle(post.title, 30)}: ${process.env.WEB_APP_URL}/posts/${post.slug}\n\n`
         }
 

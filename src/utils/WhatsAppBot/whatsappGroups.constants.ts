@@ -115,31 +115,36 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     name: "ES Emprego #2",
     chatId: "5527999617786-1553625058@g.us",
     stateCode: "ES",
-    isPartnerGroup: true
+    isPartnerGroup: true,
+    isEndOfLineage: true
   },
   {
     name: "ES Emprego #3",
     chatId: "5527999617786-1561151568@g.us",
     stateCode: "ES",
-    isPartnerGroup: true
+    isPartnerGroup: true,
+    isEndOfLineage: true
   },
   {
     name: "ES Emprego #4",
     chatId: "5527999617786-1564846362@g.us",
     stateCode: "ES",
-    isPartnerGroup: true
+    isPartnerGroup: true,
+    isEndOfLineage: true
   },
   {
     name: "ES Emprego #5",
     chatId: "5527999617786-1567613230@g.us",
     stateCode: "ES",
-    isPartnerGroup: true
+    isPartnerGroup: true,
+    isEndOfLineage: true
   },
   {
     name: "ES Emprego #6",
     chatId: "5527999617786-1571064828@g.us",
     stateCode: "ES",
-    isPartnerGroup: true
+    isPartnerGroup: true,
+    isEndOfLineage: true
   },
 
 
@@ -365,7 +370,8 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     chatId: "558189131180-1583925278@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+    isPartnerGroup: true,
+    isEndOfLineage: true // ! LAST PARTNER RECEIVES END OF LINEAGE!
   },
 
 
