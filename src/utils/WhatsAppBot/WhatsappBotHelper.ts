@@ -167,7 +167,7 @@ export class WhatsAppBotHelper {
         let listContent = `⚠ Vagas exclusivas do ES ⚠ \n👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}\n\n`
 
         for (const post of posts) {
-          listContent += `${WhatsAppBotHelper._shortPostTitle(post.title, 30)}: ${process.env.WEB_APP_URL}/posts/${post.slug}?ref=whatsapp \n\n`
+          listContent += `${WhatsAppBotHelper._shortPostTitle(post.title, 30)}: ${process.env.WEB_APP_URL}/posts/${post.slug}\n\n`
         }
 
         listContent += `\n👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}`
