@@ -128,14 +128,13 @@ export class WhatsAppBotHelper {
           const postTitle = post.title.length >= 35 ? post.title.substr(0, 35) + "..." : post.title
 
 
-          console.log('generating thumbnail...');
+
           const imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(`${process.env.WEB_APP_URL}/images/seo/${encodeURIComponent(post.sector)}.jpg`)
 
-          console.log('sending request to Chat-API');
           const response = await WhatsAppBotHelper.request("POST", "/sendLink", {
             chatId: group.chatId,
             title: postTitle,
-            body: `${process.env.WEB_APP_URL}/posts/${post.slug}`,
+            body: `${process.env.WEB_APP_URL}/posts/${post.slug}?ref=whatsapp`,
             previewBase64: `data:image/jpeg;base64,${imageBase64}`
           })
 
@@ -147,7 +146,7 @@ export class WhatsAppBotHelper {
           await post.save();
         }
 
-        await GenericHelper.sleep(1000 * _.random(20))
+        await GenericHelper.sleep(1000 * (12 + _.random(30)))
       }
       await GenericHelper.sleep(1000 * _.random(60 * 3))
     }
