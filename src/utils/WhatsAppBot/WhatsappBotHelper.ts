@@ -42,10 +42,29 @@ export class WhatsAppBotHelper {
 
   public static postOnGroups = async () => {
 
+
+
+
+
     // loop through each group
     for (const group of whatsAppGroups) {
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: WhatsApp Bot => Posting new jobs at ${group.name}!`)
+
+      // start asking people to add you to contact list!
+
+
+      const n = _.random(10);
+
+      if (n <= 5) { // 50% chance
+
+        const addMessages = [`📞 Ei pessoal! Por favor, me adicionem em sua lista de contatos para garantir que Você receba todas as vagas sem problemas!`, `📞 Ei gente, me adicionem em seu contato para que você receba todas as vagas normalmente. Obrigada!`, `📞 Importante: me adicione em seus contatos para que você receba todas as vagas sem erros.`]
+
+        const response = await WhatsAppBotHelper.request("POST", "/sendMessage", {
+          chatId: group.chatId,
+          body: _.sample(addMessages),
+        })
+      }
 
       let citiesQuery = {}
       let sectorQuery = {}
