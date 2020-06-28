@@ -278,6 +278,12 @@ export class JobsCron {
     cron.schedule("0 6 * * *", async () => {
       JobsCron._executeCrawlers()
     });
+
+    // at 12pm UTC = 9am Brasilia (Vagas para 15pm Brasilia)
+    cron.schedule("0 12 * * *", async () => {
+      JobsCron._executeCrawlers()
+    });
+
     // at 6pm UTC = 3pm Brasilia (Vagas para 7pm Brasilia)
     cron.schedule("0 18 * * *", async () => {
       JobsCron._executeCrawlers()
