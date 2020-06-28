@@ -92,7 +92,7 @@ export class WhatsAppBotHelper {
         sectorQuery,
         { $or: [{ isPostedOnWhatsApp: { $exists: false } }, { isPostedOnWhatsApp: { $exists: true, $eq: false } }] }
       ]
-    }).limit(10).sort({ 'createdAt': 'descending' })
+    }).limit(15).sort({ 'createdAt': 'descending' })
 
     posts = _.shuffle(posts)
 
