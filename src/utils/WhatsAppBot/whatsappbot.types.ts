@@ -7,5 +7,7 @@ export interface IWhatsAppGroup {
   sectors?: string[],
   cities?: string[],
   jobRoles?: string[],
-  isEndOfLineage?: boolean // this tell us if we should stop posting that same post, when reaching this group
+  isEndOfLineage?: boolean, // this tell us if we should stop posting that same post, when reaching this group
+  isPartnerGroup?: boolean
 }
+
