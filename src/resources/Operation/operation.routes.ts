@@ -325,13 +325,13 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
-  const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
+  // const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
 
 
 
-  console.log(chatList.data);
+  // console.log(chatList.data);
 
-  // await WhatsAppBotHelper.postOnGroups()
+  await WhatsAppBotHelper.postOnGroups()
 
 
 
