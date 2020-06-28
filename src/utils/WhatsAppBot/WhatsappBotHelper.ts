@@ -164,7 +164,7 @@ export class WhatsAppBotHelper {
       } else {
 
         // ! PARTNER GROUP POSTING! SHOULD GENERATE A LIST ONLY, WITH 1 POST.
-        let listContent = `⚠ Vagas exclusivas do ES ⚠ \n👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}\n\n`
+        let listContent = `⚠ Vagas exclusivas do ${group.stateCode} ⚠ \n👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}\n\n`
 
         for (const post of posts) {
           listContent += `${WhatsAppBotHelper._shortPostTitle(post.title, 30)}: ${process.env.WEB_APP_URL}/posts/${post.slug}\n\n`
