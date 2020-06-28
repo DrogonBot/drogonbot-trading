@@ -25,6 +25,7 @@ export class WhatsAppBotHelper {
   public static getBase64Thumbnail = async (url: string) => {
 
 
+    console.log(url);
 
     const response = await axios
       .get(url, {
@@ -107,8 +108,11 @@ export class WhatsAppBotHelper {
 
           const postTitle = post.title.length >= 35 ? post.title.substr(0, 35) + "..." : post.title
 
-          const imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(encodeURIComponent(`${process.env.WEB_APP_URL}/images/seo/${post.sector}.jpg`))
 
+          console.log('generating thumbnail...');
+          const imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(encodeURIComponent(`http://app-web:3003/images/seo/${post.sector}.jpg`))
+
+          console.log('sending request to Chat-API');
           const response = await WhatsAppBotHelper.request("POST", "/sendLink", {
             chatId: group.chatId,
             title: postTitle,
