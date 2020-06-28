@@ -142,9 +142,20 @@ export class WhatsAppBotHelper {
 
             const postTitle = post.title.length >= 35 ? post.title.substr(0, 35) + "..." : post.title
 
+            // fetch thumbnail image
+            let imageBase64
             try {
-              const imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(`${process.env.WEB_APP_URL}/images/seo/${encodeURIComponent(post.sector)}.jpg`) || defaultThumbnailBase64
+              imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(`${process.env.WEB_APP_URL}/images/seo/${encodeURIComponent(post.sector)}.jpg`)
+            }
+            catch (error) {
+              ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Failed to fetch thumbnail image for post post ${post.slug}. Check the error below!`)
+              console.error(error);
+              // on error, set default thumbnail...
+              imageBase64 = defaultThumbnailBase64
+            }
 
+            // submit post with generated thumbnail
+            try {
               const response = await WhatsAppBotHelper.request("POST", "/sendLink", {
                 chatId: group.chatId,
                 title: postTitle,
@@ -194,7 +205,7 @@ export class WhatsAppBotHelper {
 
 
 
-      await GenericHelper.sleep(1000 * _.random(60 * 3))
+      await GenericHelper.sleep(1000 * _.random(60))
     }
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on WhatsApp Groups!')
 

@@ -50,6 +50,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     name: "EmpregoUrgente.com ES #7",
     chatId: "17788467427-1593200947@g.us",
     stateCode: "ES",
+    isEndOfLineage: true
   },
   {
     name: "Vagas Adm & Atend ES 1",
@@ -184,7 +185,8 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     name: "EmpregoUrgente.com SP #7",
     chatId: "17788467427-1593035676@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
+    cities: ["São Paulo", "Guarulhos"],
+    isEndOfLineage: true
   },
   {
     name: "Vagas Adm & Atend SP 1",
@@ -398,7 +400,8 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     name: "EmpregoUrgente.com BH #5",
     chatId: "17788467427-1589328731@g.us",
     stateCode: "MG",
-    cities: ["Belo Horizonte"]
+    cities: ["Belo Horizonte"],
+    isEndOfLineage: true
   },
 
   {
@@ -469,7 +472,8 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     name: "EmpregoUrgente.com RJ #3",
     chatId: "17788467427-1588872998@g.us",
     stateCode: "RJ",
-    cities: ["Rio de Janeiro"]
+    cities: ["Rio de Janeiro"],
+    isEndOfLineage: true
   },
   {
     name: "Vagas Adm & Atend RJ 1",
