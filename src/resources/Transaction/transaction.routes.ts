@@ -117,7 +117,6 @@ transactionRouter.post('/transaction/checkout/:paymentMethod', [userAuthMiddlewa
   const { paymentMethod } = req.params;
 
 
-  console.log(req.body);
 
   try {
 

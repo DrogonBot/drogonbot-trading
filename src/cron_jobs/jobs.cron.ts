@@ -294,8 +294,8 @@ export class JobsCron {
 
   public static generateJobReports = async () => {
 
-    // at 5am UTC = 2am Brasilia = 10pm Vancouver
-    cron.schedule("0 5 * * *", async () => {
+    // at 9am UTC = 6am Brasilia = 2am Vancouver
+    cron.schedule("0 9 * * *", async () => {
       console.log("🕒  JobsCron: generateJobReports() 🕒");
 
       await NotificationHelper.generateJobReport()
