@@ -10,11 +10,16 @@ import { UI } from '../../../../constants/UI/UI.constant';
 import { TS } from '../../../../helpers/LanguageHelper';
 import { AlertModal } from '../../../elements/ui/AlertModal';
 
-export const CreditsModal = () => {
+interface IProps {
+  onClose: () => void;
+}
+
+export const CreditsModal = ({ onClose }: IProps) => {
   return (
     <AlertModal
       alertKey="credits-modal"
       title={TS.string("account", "noAccountCredits")}
+      onClose={() => onClose()}
       content={
         <Container>
           <p>Para continuar, escolha uma das opções abaixo: </p>

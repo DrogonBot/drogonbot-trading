@@ -1,6 +1,6 @@
 import { Link } from '@material-ui/core';
 import { JobPostingJsonLd } from 'next-seo';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -50,14 +50,10 @@ const IndividualPage = ({
 IProps) => {
   const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
 
+  const [showCreditsModal, setShowCreditsModal] = useState<boolean>(false);
+
   //  human readable date -
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
-
-  // const router = useRouter();
-
-  useEffect(() => {
-    console.log(`Referrer: ${document.referrer}`);
-  }, []);
 
   const getJobJsonLDType = () => {
     switch (post.positionType) {
@@ -122,14 +118,20 @@ IProps) => {
         </PageContainer>
 
         <Cover backgroundImagePath={`/images/seo/${post.sector}.jpg`}>
-          <PostCTA post={post} />
+          <PostCTA
+            post={post}
+            onTriggerCreditsModal={() => {
+              console.log("toggling modal");
+              setShowCreditsModal(true);
+            }}
+          />
         </Cover>
 
         <MainContainer>
           <LeftColumn>
             {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
             <TitleContainer>
-              <H1>{post.title}</H1>{" "}
+              <H1>{post.title}</H1> {`Show credits modal: ${showCreditsModal}`}
             </TitleContainer>
 
             <Breadcumb parent={post.sector} child={post.jobRoles.join(", ")} />
@@ -138,7 +140,13 @@ IProps) => {
 
             <PostInfoTag post={post} />
 
-            <PostCTA post={post} />
+            <PostCTA
+              post={post}
+              onTriggerCreditsModal={() => {
+                console.log("toggling modal");
+                setShowCreditsModal(true);
+              }}
+            />
 
             <TOSContainer>
               <Link href={`/terms?language=${appEnv.language}`}>
@@ -180,8 +188,12 @@ IProps) => {
           type={RelatedPostType.Mobile}
         />
 
+        {showCreditsModal && (
+          <CreditsModal onClose={() => setShowCreditsModal(false)} />
+        )}
+
         {user?.credits === 0 ? (
-          <CreditsModal />
+          <CreditsModal onClose={() => setShowCreditsModal(false)} />
         ) : (
           <LeadModal post={post} jobRoles={jobRoles} />
         )}

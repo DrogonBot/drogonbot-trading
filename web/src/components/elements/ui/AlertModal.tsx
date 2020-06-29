@@ -66,6 +66,7 @@ interface IProps {
   content: React.ReactChild;
   showOnClose?: boolean;
   showDontShowAgain?: boolean;
+  onClose?: () => void;
 }
 
 export const AlertModal = ({
@@ -74,11 +75,13 @@ export const AlertModal = ({
   content,
   showOnClose,
   showDontShowAgain,
+  onClose,
 }: IProps) => {
   const [open, setOpen] = useState(true);
 
   const handleClose = () => {
     setOpen(false);
+    onClose();
   };
 
   const handleDontShowAgain = () => {

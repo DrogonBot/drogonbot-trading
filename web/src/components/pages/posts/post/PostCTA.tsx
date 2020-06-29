@@ -12,6 +12,7 @@ import { IPost } from '../../../../types/Post.types';
 
 interface IProps {
   post: IPost;
+  onTriggerCreditsModal: () => void;
 }
 
 interface ICTAInfo {
@@ -20,7 +21,7 @@ interface ICTAInfo {
   translatedString: string;
 }
 
-export const PostCTA = ({ post }: IProps) => {
+export const PostCTA = ({ post, onTriggerCreditsModal }: IProps) => {
   let CTAInfo: ICTAInfo;
 
   const dispatch = useDispatch();
@@ -71,6 +72,9 @@ export const PostCTA = ({ post }: IProps) => {
 
     if (isCreditConsumed) {
       return GenericHelper.crossBrowserUrlRedirect(CTAInfo.link);
+    } else {
+      console.log("trying to trigger modal");
+      onTriggerCreditsModal();
     }
   };
 
