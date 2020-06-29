@@ -257,7 +257,7 @@ export class WhatsAppBotHelper {
 
   }
 
-  private static _listPost = async (posts: IPostModel[], group: IWhatsAppGroup) => {
+  private static _listPost = async (posts: IPostModel[], group: IWhatsAppGroup, dontRepeatPosts: boolean) => {
 
 
     const inviteOrJoinGroupText = group.isPartnerGroup ? `👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}` : `✌ Convide amigos! https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}`
@@ -276,9 +276,8 @@ export class WhatsAppBotHelper {
 
       listContent += `${WhatsAppBotHelper._shortPostTitle(post.title, 30, post.sector)}: ${process.env.WEB_APP_URL}/posts/${post.slug}\n\n`
 
-      if (group.isEndOfLineage) {
-        post.isPostedOnWhatsApp = true;
-        await post.save();
+      if (dontRepeatPosts) {
+        await Post.updateOne({ _id: post._id }, { isPostedOnWhatsApp: true })
       }
     }
 
@@ -299,7 +298,7 @@ export class WhatsAppBotHelper {
   public static postOnGroups = async () => {
 
     // loop through each group
-    for (const group of whatsAppGroups) {
+    for (const [i, group] of whatsAppGroups.entries()) {
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: WhatsApp Bot => Posting new jobs at ${group.name}!`)
 
@@ -329,7 +328,11 @@ export class WhatsAppBotHelper {
           }
         }
 
-        await WhatsAppBotHelper._listPost(posts, group);
+        // if its last group, do not repeat posts!
+        // if next group is from another state, lets set a variable telling our bot to do not post this post again
+        const dontRepeatPosts = i === whatsAppGroups.length - 1 ? true : (group.stateCode !== whatsAppGroups[i + 1].stateCode)
+
+        await WhatsAppBotHelper._listPost(posts, group, dontRepeatPosts);
       }
 
       // if (!group.isPartnerGroup) {

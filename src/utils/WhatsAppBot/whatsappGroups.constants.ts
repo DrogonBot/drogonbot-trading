@@ -4,13 +4,17 @@ import { IWhatsAppGroup } from './whatsappbot.types';
 export const whatsAppGroups: IWhatsAppGroup[] = [
 
   // !DEV GROUP
-  {
-    name: "EmpregoUrgente.com DEV",
-    // chatId: "17787897362-1593289812@g.us",
-    chatId: "17788467427-1593035467@g.us",
-    stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
-  },
+  // {
+  //   name: "EmpregoUrgente.com DEV",
+  //   chatId: "17787897362-1593289812@g.us",
+  //   stateCode: "SP",
+  //   cities: ["São Paulo", "Guarulhos"],
+  // },
+  // {
+  //   name: "EmpregoUrgente.com DEV 2",
+  //   chatId: "17788467427-1593461051@g.us",
+  //   stateCode: "ES",
+  // },
 
 
   // ! ES GROUPS
@@ -135,7 +139,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     name: "EmpregoUrgente.com ES #7",
     chatId: "17788467427-1593200947@g.us",
     stateCode: "ES",
-    isEndOfLineage: true
+
   },
 
 
@@ -198,63 +202,63 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     chatId: "5511959978310-1565321131@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Procurando Emprego",
     chatId: "5511959978310-1573681724@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Vagas ABCD Regiao de SP 1",
     chatId: "5511961113147-1513611054@g.us",
     stateCode: "SP",
     cities: ["Santo André", "São Bernardo do Campo", "São Caetano do Sul", "Diadema"],
-    isPartnerGroup: true
+
   },
   {
     name: "Vagas em geral",
     chatId: "5511959077348-1518726547@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Vagas de Empregos",
     chatId: "5511985552366-1524520567@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Vagas de emprego",
     chatId: "5511967318264-1488493401@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Empregos Grande Sao Paulo",
     chatId: "5511957623298-1504574473@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Vagas de emprego do dia 3",
     chatId: "5511981815440-1490633419@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Empregos Grande Sao Paulo",
     chatId: "5511960766830-1521741327@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
 
   {
@@ -262,7 +266,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     chatId: "5519993548538-1497623042@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
 
 
@@ -271,56 +275,56 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     chatId: "5511933616045-1583519409@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Empregos SP 54",
     chatId: "5511933616045-1583764406@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Empregos SP 55",
     chatId: "5511933616045-1583785547@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Empregos SP 56",
     chatId: "558189131180-1583924550@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Empregos SP 57",
     chatId: "558189131180-1583924788@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Empregos SP 58",
     chatId: "558189131180-1583924945@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Empregos SP 59",
     chatId: "558189131180-1583925114@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true
+
   },
   {
     name: "Empregos SP 60",
     chatId: "558189131180-1583925278@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isPartnerGroup: true,
+
   },
 
   // General groups ========================================
@@ -366,7 +370,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     chatId: "17788467427-1593035676@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-    isEndOfLineage: true
+
   },
 
 
@@ -522,7 +526,6 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     chatId: "5511953229854-1581727129@g.us",
     stateCode: "RJ",
     cities: ["Rio de Janeiro"],
-    isPartnerGroup: true
   },
   // General groups ========================================
 
@@ -542,8 +545,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     name: "EmpregoUrgente.com RJ #3",
     chatId: "17788467427-1588872998@g.us",
     stateCode: "RJ",
-    cities: ["Rio de Janeiro"],
-    isEndOfLineage: true
+    cities: ["Rio de Janeiro"]
   },
 
 
