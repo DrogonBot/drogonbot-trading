@@ -4,7 +4,6 @@ import sharp from 'sharp';
 
 import { EnvType } from '../../constants/types/env.types';
 import { Post } from '../../resources/Post/post.model';
-import { IPost } from '../../resources/Post/post.types';
 import { ConsoleColor, ConsoleHelper } from '../ConsoleHelper';
 import { GenericHelper } from '../GenericHelper';
 import { IPostModel } from './../../resources/Post/post.model';
@@ -258,7 +257,7 @@ export class WhatsAppBotHelper {
 
   }
 
-  private static _listPost = async (posts: IPost[], group: IWhatsAppGroup) => {
+  private static _listPost = async (posts: IPostModel[], group: IWhatsAppGroup) => {
 
 
     const inviteOrJoinGroupText = group.isPartnerGroup ? `👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}` : `✌ Convide amigos! https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}`
@@ -274,6 +273,11 @@ export class WhatsAppBotHelper {
       }
 
       listContent += `${WhatsAppBotHelper._shortPostTitle(post.title, 30, post.sector)}: ${process.env.WEB_APP_URL}/posts/${post.slug}\n\n`
+
+      if (group.isEndOfLineage) {
+        post.isPostedOnWhatsApp = true;
+        await post.save();
+      }
     }
 
     listContent += `\n👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}`

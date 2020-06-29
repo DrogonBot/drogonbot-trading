@@ -197,7 +197,8 @@ const postSchema = new mongoose.Schema({
     type: Boolean
   },
   isPostedOnWhatsApp: {
-    type: Boolean
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true
