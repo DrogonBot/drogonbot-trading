@@ -4,12 +4,12 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Alert from '@material-ui/lab/Alert';
 import _ from 'lodash';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { Body, PageContainer, PageContent, PageList } from '../../components/elements/common/layout';
+import { AuthenticatedPage } from '../../components/pages/AuthenticatedPage';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
@@ -29,7 +29,7 @@ interface IProps {
 
 const PostAdvertise = ({ provinces }: IProps) => {
   const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
-  const router = useRouter();
+
   const classes = useStyles();
 
   const [isShareableLinkCopied, setIsShareableLinkCopied] = useState(false);
@@ -45,12 +45,6 @@ const PostAdvertise = ({ provinces }: IProps) => {
   ];
 
   const userShareableLinkMessage = _.sample(messageVariations);
-
-  if (process.browser) {
-    if (!user) {
-      router.push("/login");
-    }
-  }
 
   const onHandleCopyClipboard = () => {
     navigator.clipboard.writeText(
@@ -80,7 +74,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
   };
 
   return (
-    <>
+    <AuthenticatedPage>
       <Head>
         <title>{`${appEnv.appName} | ${TS.string(
           null,
@@ -189,7 +183,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
         </PageContent>
       </Body>
       <Footer />
-    </>
+    </AuthenticatedPage>
   );
 };
 
