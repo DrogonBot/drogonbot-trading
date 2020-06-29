@@ -156,4 +156,8 @@ export const globalStrings = {
     eng: "Loading...",
     ptBr: "Carregando...",
   },
+  genericBuyCredits: {
+    eng: "Buy Credits",
+    ptBr: "Comprar Créditos",
+  },
 };

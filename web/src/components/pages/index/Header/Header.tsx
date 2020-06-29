@@ -2,6 +2,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import SubjectIcon from '@material-ui/icons/Subject';
 import VpnLockIcon from '@material-ui/icons/VpnLock';
@@ -70,6 +71,14 @@ export const Header = () => {
       customComponent: <CreditsDisplay key="credits-display" />,
       primary: true,
       position: NavPosition.NavRight,
+    },
+    user && {
+      href: "/payment",
+      text: TS.string("global", "genericBuyCredits"),
+      icon: <MonetizationOnIcon />,
+      primary: true,
+      // customColor: colors.accent,
+      position: NavPosition.NavLeft,
     },
 
     user && {

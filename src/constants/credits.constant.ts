@@ -7,4 +7,3 @@ export const USER_WEEKLY_CREDITS_THRESHOLD = 2;
 export const USER_PER_CLICK_CREDIT_MULTIPLIER = 1;
 
 
-export const PRICE_PER_CREDIT = 0.25 // in R$

@@ -10,3 +10,5 @@ export const junoAxiosRequest = axios.create({
     'Content-type': 'application/json;charset=UTF-8'
   }
 })
+
+export const PRICE_PER_CREDIT = 0.33 // in R$

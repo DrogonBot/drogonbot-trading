@@ -3,11 +3,11 @@ import express from 'express';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { PaymentMiddleware } from '../../middlewares/payment.middleware';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
+import { PRICE_PER_CREDIT } from '../../utils/JunoPayment/junopayment.constants';
 import { IJunoPayment } from '../../utils/JunoPayment/junopayment.types';
 import { JunoPaymentHelper } from '../../utils/JunoPayment/JunoPaymentHelper';
 import { TS } from '../../utils/TS';
 import { User } from '../User/user.model';
-import { PRICE_PER_CREDIT } from './../../constants/credits.constant';
 import { Transaction } from './transaction.model';
 import { PaymentAvailableMethods, TransactionReferences, TransactionStatus } from './transaction.types';
 
@@ -115,6 +115,9 @@ transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAutho
 transactionRouter.post('/transaction/checkout/:paymentMethod', [userAuthMiddleware, PaymentMiddleware.JunoAuthorize], async (req, res) => {
 
   const { paymentMethod } = req.params;
+
+
+  console.log(req.body);
 
   try {
 

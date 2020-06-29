@@ -53,7 +53,23 @@ export class JunoPaymentHelper {
 
   public static generateBoletoPaymentRequest = async (req) => {
 
-    const response = await JunoPaymentHelper.request("POST", "/charges", req.body)
+
+    const { buyerName, buyerCPF, buyerEmail } = req.body;
+
+
+    const response = await JunoPaymentHelper.request("POST", "/charges", {
+      "charge": {
+        "description": "Emprego Urgente - Compra de créditos de envio de currículo",
+        "amount": 19.90,
+        "references": ["CREDITOS_ENVIO"]
+      },
+      "billing": {
+        "name": buyerName,
+        "document": buyerCPF,
+        "email": buyerEmail,
+        "notify": "true"
+      }
+    })
 
     const { _embedded } = response.data;
     const order = _embedded.charges[0];
