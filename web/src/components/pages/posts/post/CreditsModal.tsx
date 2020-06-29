@@ -59,7 +59,7 @@ export const CreditsModal = ({ onClose }: IProps) => {
               <h1>Compartilhe</h1>
               <p>
                 Compartilhe seu link de divulgação e receba 1 crédito toda vez
-                que alguém clicar em sua URL.
+                que alguém clicar em seu link.
               </p>
               <CTAContainer>
                 <ImageContainer>

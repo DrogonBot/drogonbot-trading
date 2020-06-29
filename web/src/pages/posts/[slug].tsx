@@ -188,7 +188,7 @@ IProps) => {
           type={RelatedPostType.Mobile}
         />
 
-        {showCreditsModal && (
+        {user && showCreditsModal && (
           <CreditsModal onClose={() => setShowCreditsModal(false)} />
         )}
 

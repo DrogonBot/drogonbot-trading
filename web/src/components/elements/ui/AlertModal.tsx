@@ -81,7 +81,9 @@ export const AlertModal = ({
 
   const handleClose = () => {
     setOpen(false);
-    onClose();
+    if (onClose) {
+      onClose();
+    }
   };
 
   const handleDontShowAgain = () => {
