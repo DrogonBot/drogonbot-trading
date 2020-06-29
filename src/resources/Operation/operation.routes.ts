@@ -325,13 +325,14 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
-  // const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
+  const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
 
 
+  const filteredData = chatList.data.dialogs.filter((item) => item.name.includes('Empregos RJ'))
 
-  // console.log(chatList.data);
+  console.log(filteredData);
 
-  await WhatsAppBotHelper.postOnGroups()
+  // await WhatsAppBotHelper.postOnGroups()
 
 
 

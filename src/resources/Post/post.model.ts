@@ -194,7 +194,8 @@ const postSchema = new mongoose.Schema({
     default: 0
   },
   isPostedOnTelegram: {
-    type: Boolean
+    type: Boolean,
+    default: false
   },
   isPostedOnWhatsApp: {
     type: Boolean,

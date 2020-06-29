@@ -263,14 +263,16 @@ export class WhatsAppBotHelper {
     const inviteOrJoinGroupText = group.isPartnerGroup ? `👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}` : `✌ Convide amigos! https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}`
 
 
-    // ! PARTNER GROUP POSTING! SHOULD GENERATE A LIST ONLY, WITH 1 POST.
-    let listContent = `⚠ *Vagas exclusivas: ${group.stateCode}* ⚠ \n${inviteOrJoinGroupText}\n\n`
+    // ! PARTNER GROUP POSTING! SHOULD GENERATE A LIST ONLY
+    let listContent = `⚠ *${posts.length} Novas Vagas exclusivas p/ ${group.stateCode}* ⚠ \n${inviteOrJoinGroupText}\n\n`
 
     for (const post of posts) {
 
       if (post.isPostedOnWhatsApp) {
         continue;
       }
+
+
 
       listContent += `${WhatsAppBotHelper._shortPostTitle(post.title, 30, post.sector)}: ${process.env.WEB_APP_URL}/posts/${post.slug}\n\n`
 
@@ -280,7 +282,7 @@ export class WhatsAppBotHelper {
       }
     }
 
-    listContent += `\n👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}`
+    listContent += `\n${inviteOrJoinGroupText}`
 
     console.log(listContent);
 
@@ -306,7 +308,7 @@ export class WhatsAppBotHelper {
       const posts = await WhatsAppBotHelper._fetchGroupPosts(group, 30)
 
 
-      if (posts.length > 0) {
+      if (posts.length > 0) { // minimum post length to submit a message...
 
         // start asking people to add you to contact list!
 
@@ -314,9 +316,11 @@ export class WhatsAppBotHelper {
         if (!group.isPartnerGroup) {
           const n = _.random(10);
 
-          if (n <= 5) { // 50% chance
+          if (n <= 3) { // 30% chance
 
             const addMessages = [`📞 Ei pessoal! Por favor, me adicionem em sua lista de contatos para garantir que Você receba todas as vagas sem problemas!`, `📞 Ei gente, me adicionem em seu contato para que você receba todas as vagas normalmente. Obrigada!`, `📞 Importante: me adicione em seus contatos para que você receba todas as vagas sem erros.`]
+
+            await GenericHelper.sleep(1000 * (6 + _.random(3)))
 
             await WhatsAppBotHelper.request("POST", "/sendMessage", {
               chatId: group.chatId,
@@ -336,7 +340,7 @@ export class WhatsAppBotHelper {
 
 
 
-      await GenericHelper.sleep(1000 * _.random(10))
+      await GenericHelper.sleep(1000 * (6 + _.random(10)))
     }
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on WhatsApp Groups!')
 

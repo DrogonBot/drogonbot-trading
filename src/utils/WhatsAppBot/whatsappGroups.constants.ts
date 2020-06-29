@@ -4,11 +4,13 @@ import { IWhatsAppGroup } from './whatsappbot.types';
 export const whatsAppGroups: IWhatsAppGroup[] = [
 
   // !DEV GROUP
-  // {
-  //   name: "EmpregoUrgente.com DEV",
-  //   chatId: "17787897362-1593289812@g.us",
-  //   stateCode: "ES",
-  // },
+  {
+    name: "EmpregoUrgente.com DEV",
+    // chatId: "17787897362-1593289812@g.us",
+    chatId: "17788467427-1593035467@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"]
+  },
 
 
   // ! ES GROUPS
@@ -514,7 +516,14 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     cities: ["Rio de Janeiro"],
 
   },
-
+  // Partner groups ========================================
+  {
+    name: "Empregos RJ",
+    chatId: "5511953229854-1581727129@g.us",
+    stateCode: "RJ",
+    cities: ["Rio de Janeiro"],
+    isPartnerGroup: true
+  },
   // General groups ========================================
 
   {
@@ -536,6 +545,8 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     cities: ["Rio de Janeiro"],
     isEndOfLineage: true
   },
+
+
 
 
 
