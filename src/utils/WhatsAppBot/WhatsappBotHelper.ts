@@ -264,7 +264,7 @@ export class WhatsAppBotHelper {
 
 
     // ! PARTNER GROUP POSTING! SHOULD GENERATE A LIST ONLY
-    let listContent = `⚠ *${posts.length} Novas Vagas exclusivas p/ ${group.stateCode}* ⚠ \n${inviteOrJoinGroupText}\n\n`
+    let listContent = `⚠ *${posts.length} Nova${posts.length > 1 ? `s` : ''} Vaga${posts.length > 1 ? `s` : ''} - ${group.stateCode}* ⚠ \n${inviteOrJoinGroupText}\n\n`
 
     for (const post of posts) {
 
@@ -304,7 +304,7 @@ export class WhatsAppBotHelper {
 
 
 
-      const posts = await WhatsAppBotHelper._fetchGroupPosts(group, 30)
+      const posts = await WhatsAppBotHelper._fetchGroupPosts(group, 15)
 
 
       if (posts.length > 0) { // minimum post length to submit a message...
@@ -317,7 +317,7 @@ export class WhatsAppBotHelper {
 
           if (n <= 3) { // 30% chance
 
-            const addMessages = [`📞 Ei pessoal! Por favor, me adicionem em sua lista de contatos para garantir que Você receba todas as vagas sem problemas!`, `📞 Ei gente, me adicionem em seu contato para que você receba todas as vagas normalmente. Obrigada!`, `📞 Importante: me adicione em seus contatos para que você receba todas as vagas sem erros.`]
+            const addMessages = [`📞 Ei pessoal! Por favor, me adicionem em sua lista de contatos para garantir que você recebam todas as vagas sem problemas!`, `📞 Ei gente, me adicionem em seu contato para que vocês recebam todas as vagas normalmente. Obrigada!`, `📞 Importante: me adicione em seus contatos para que vocês recebam todas as vagas sem erros.`]
 
             await GenericHelper.sleep(1000 * (6 + _.random(3)))
 
