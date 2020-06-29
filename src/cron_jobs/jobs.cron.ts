@@ -317,7 +317,7 @@ export class JobsCron {
     cron.schedule("0 15 * * *", async () => {
       await WhatsAppBotHelper.postOnGroups()
     })
-    cron.schedule("0 19 * * *", async () => {
+    cron.schedule("0 18 * * *", async () => {
       await WhatsAppBotHelper.postOnGroups()
     })
     cron.schedule("0 22 * * *", async () => {
