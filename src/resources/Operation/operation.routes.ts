@@ -346,6 +346,30 @@ operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restri
 
 })
 
+operationRouter.get('/whatsapp-is-posted/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+  const posts = await Post.find({})
+
+  for (const post of posts) {
+    post.isPostedOnWhatsApp = true;
+    await post.save();
+  }
+
+
+
+
+
+
+
+  return res.status(200).send({
+    status: 'success'
+  })
+
+
+})
+
+
+
 
 
 
