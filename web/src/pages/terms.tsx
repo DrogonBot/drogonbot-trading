@@ -112,12 +112,22 @@ const Terms = ({ provinces }: IProps) => {
               effects that they may cause, being the beware of fraudulent
               situations that exceptionally such waves may cause. Because we
               have an automated system for attracting vacancies, unfortunately
-              we cannot verify the veracity of 100% of the vacancies on our
-              platform, but not we go to great lengths to remove any posts with
-              indications of fraud.
-            </p>
-
-            <p>
+              <p>
+                You agree that any and all payments in our platform (purchase of
+                credit or subscriptions) is linked to {""}
+                <strong>
+                  {" "}
+                  USE OF THE SYSTEM, not access to the vacancies themselves{" "}
+                </strong>
+                . Such opportunities can be found publicly on the internet and
+                our charges occur so that our system continues running without
+                interruptions.
+              </p>
+              <p>
+                You agree that we have no decision-making power in hiring
+                employees of advertising companies and therefore we cannot
+                guarantee any contracting from our platform.
+              </p>{" "}
               You understand that your content (not including information about
               credit card), can be transferred without encryption and can: (a)
               be transmitted over several networks; and (b) undergo changes to
@@ -161,7 +171,7 @@ const Terms = ({ provinces }: IProps) => {
               responsibility to monitor changes in Our site.
             </p>
 
-            <h2> SECTION 4 - MODIFICATIONS OF THE SERVICE AND PRICES </h2>
+            <h2> SECTION 4 - CREDITS AND PLANS </h2>
 
             <p>
               The prices of our plans are subject to change without
@@ -178,6 +188,24 @@ const Terms = ({ provinces }: IProps) => {
               We are not responsible for you or any third party for any
               modification, price change, suspension or discontinuation of the
               Service.
+            </p>
+
+            <p>
+              You agree that any and all payments in our platform (purchase of
+              credit or subscriptions) is linked to the{""}
+              <strong>
+                {" "}
+                USE OF OUR SYSTEM, not the access to vacancies themselves{" "}
+              </strong>
+              . Such opportunities can be found publicly on the internet and our
+              charges occur so that our system continues running without
+              interruptions.
+            </p>
+
+            <p>
+              You agree that we have no decision-making power in hiring
+              employees of advertising companies and therefore we cannot
+              guarantee any contracting from our platform.
             </p>
 
             <h2> SECTION 5 - PRODUCTS OR SERVICES (if applicable) </h2>
@@ -640,7 +668,7 @@ const Terms = ({ provinces }: IProps) => {
               concorda que é de sua responsabilidade monitorar alterações no
               nosso site.
             </p>
-            <h2>SEÇÃO 4 - MODIFICAÇÕES DO SERVIÇO E PREÇOS</h2>
+            <h2>SEÇÃO 4 - COBRANÇAS E ASSINATURAS</h2>
             <p>
               Os preços dos nossos planos são sujeitos a alterações sem
               notificação.
@@ -655,6 +683,22 @@ const Terms = ({ provinces }: IProps) => {
               qualquer modificação, alteração de preço, suspensão ou
               descontinuação do Serviço.
             </p>
+            <p>
+              Você concorda que todo e qualquer tipo de pagamento em nossa
+              plataforma (compra de crédito ou assinaturas) está vinculado ao{" "}
+              <strong>USO DO SISTEMA, e não do acesso das vagas em si</strong>.
+              Tais oportunidades podem ser encontradas publicamente na internet
+              e nossas cobranças ocorrem para que nosso sistema continue
+              funcionando sem interrupções.
+            </p>
+
+            <p>
+              Você concorda que não temos qualquer poder de decisão na
+              contratação de funcionários das empresas anunciantes e, portanto,
+              não podemos garantir qualquer contratação a partir de nossa
+              plataforma.
+            </p>
+
             <h2>SEÇÃO 5 - PRODUTOS OU SERVIÇOS (caso aplicável)</h2>
             <p>
               Certos produtos ou serviços podem estar disponíveis exclusivamente

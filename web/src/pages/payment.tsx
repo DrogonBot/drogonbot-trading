@@ -211,6 +211,7 @@ export const Field = styled.div`
 export const FieldCenter = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 2rem;
 `;
 
 export default Payment;
