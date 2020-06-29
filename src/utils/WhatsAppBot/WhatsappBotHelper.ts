@@ -330,7 +330,7 @@ export class WhatsAppBotHelper {
 
         // if its last group, do not repeat posts!
         // if next group is from another state, lets set a variable telling our bot to do not post this post again
-        const dontRepeatPosts = i === whatsAppGroups.length - 1 ? true : (group.stateCode !== whatsAppGroups[i + 1].stateCode)
+        const dontRepeatPosts = (i === whatsAppGroups.length - 1) ? true : (group.stateCode !== whatsAppGroups[i + 1].stateCode)
 
         await WhatsAppBotHelper._listPost(posts, group, dontRepeatPosts);
       }
