@@ -119,6 +119,7 @@ const WhatsAppLogoContainer = styled.div`
 
 const WhatsAppLogo = styled.img`
   max-width: 70%;
+  max-height: 200px;
 `;
 
 const AlertModalContainer = styled.div`

@@ -15,7 +15,8 @@ export const CreditsModal = () => {
       alertKey="credits-modal"
       title={TS.string("account", "noAccountCredits")}
       content={
-        <>
+        <Container>
+          <p>Para continuar, escolha uma das opções abaixo: </p>
           <Link href="/payment">
             <a>
               <h1>Compre Créditos</h1>
@@ -25,12 +26,12 @@ export const CreditsModal = () => {
               </p>
               <strong>Apenas R$0.33 centavos por crédito.</strong>
 
-              <Container>
+              <ImageContainer>
                 <Img
                   src="/images/advertise/buy-credits.svg"
                   alt="buy credits"
                 />
-              </Container>
+              </ImageContainer>
               <ButtonContainer>
                 <Button
                   variant="contained"
@@ -53,12 +54,12 @@ export const CreditsModal = () => {
                 que alguém clicar em sua URL. Dessa forma você nos ajuda, faz o
                 bem ao próximo e consegue alguns créditos para aplicar.
               </p>
-              <Container>
+              <ImageContainer>
                 <Img
                   src="/images/advertise/share.svg"
                   alt="share to earn credits"
                 />
-              </Container>
+              </ImageContainer>
 
               <ButtonContainer>
                 <Button
@@ -71,11 +72,18 @@ export const CreditsModal = () => {
               </ButtonContainer>
             </a>
           </Link>
-        </>
+        </Container>
       }
     />
   );
 };
+
+const Container = styled.div`
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+`;
 
 const ButtonContainer = styled.div`
   flex: 100%;
@@ -84,7 +92,7 @@ const ButtonContainer = styled.div`
   margin-top: 1.5rem;
 `;
 
-const Container = styled.div`
+const ImageContainer = styled.div`
   flex: 100%;
   display: flex;
   justify-content: center;
@@ -102,5 +110,5 @@ const TextOr = styled.div`
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  color: ${colors.dark};
+  color: ${colors.primary};
 `;

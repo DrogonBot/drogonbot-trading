@@ -71,8 +71,6 @@ export const PostCTA = ({ post }: IProps) => {
 
     if (isCreditConsumed) {
       return GenericHelper.crossBrowserUrlRedirect(CTAInfo.link);
-    } else {
-      router.push("/posts/share");
     }
   };
 

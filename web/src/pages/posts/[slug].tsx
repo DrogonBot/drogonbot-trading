@@ -1,6 +1,7 @@
 import { Link } from '@material-ui/core';
 import { JobPostingJsonLd } from 'next-seo';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { AdsenseHelper } from '../../components/ads/AdsenseAds';
@@ -8,6 +9,7 @@ import { Body, PageContainer } from '../../components/elements/common/layout';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
+import { CreditsModal } from '../../components/pages/posts/post/CreditsModal';
 import { FlagPost } from '../../components/pages/posts/post/FlagPost';
 import { JoinCommunities } from '../../components/pages/posts/post/JoinCommunities';
 import { LeadModal } from '../../components/pages/posts/post/LeadModal';
@@ -25,9 +27,11 @@ import { DateHelper } from '../../helpers/DateHelper';
 import { TS } from '../../helpers/LanguageHelper';
 import { loadAllJobRoles, loadCountryProvinces } from '../../store/actions/form.actions';
 import { postReadFeed, postReadOne } from '../../store/actions/post.action';
+import { AppState } from '../../store/reducers/index.reducers';
 import { AdsenseAdsTypes } from '../../types/Ads.types';
 import { IProvince } from '../../types/Form.types';
 import { IPost, PostPositionType, RelatedPostType } from '../../types/Post.types';
+import { IUser } from '../../types/User.types';
 
 interface IProps {
   post: IPost;
@@ -44,6 +48,8 @@ const IndividualPage = ({
   jobRoles,
 }: // affiliatedProducts,
 IProps) => {
+  const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
+
   //  human readable date -
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
 
@@ -174,7 +180,11 @@ IProps) => {
           type={RelatedPostType.Mobile}
         />
 
-        <LeadModal post={post} jobRoles={jobRoles} />
+        {user?.credits === 0 ? (
+          <CreditsModal />
+        ) : (
+          <LeadModal post={post} jobRoles={jobRoles} />
+        )}
       </Body>
       <Footer />
     </>

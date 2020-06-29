@@ -41,8 +41,9 @@ const Payment = ({ provinces }: IProps) => {
       "POST",
       "/transaction/checkout/boleto",
       {
-        name: userName,
-        document: numberOnlyCPF,
+        buyerName: userName,
+        buyerCPF: numberOnlyCPF,
+        buyerEmail: user.email,
       },
       true
     );
@@ -114,6 +115,7 @@ const Payment = ({ provinces }: IProps) => {
               Gerar Boleto
             </Button>
           </FieldCenter>
+
           <TOSContainer>
             <Link href={`/terms?language=${appEnv.language}`}>
               {TS.string("terms", "buttonTosAgree")}
@@ -122,6 +124,29 @@ const Payment = ({ provinces }: IProps) => {
 
           <h2>Perguntas Frequentes</h2>
 
+          <ExpansionPanel>
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <ExpansionPanelTitle>
+                Porque necessito do CPF para pagamento do boleto?
+              </ExpansionPanelTitle>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Typography>
+                Desde 2017, bancos exigem que o pagador forneca o CPF para
+                emissão do boleto.{" "}
+                <a
+                  target="_blank"
+                  href="http://g1.globo.com/jornal-nacional/noticia/2016/10/boletos-deverao-apresentar-cpf-do-pagador-partir-de-2017.html"
+                >
+                  Clique aqui para maiores informações.
+                </a>
+              </Typography>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
           <ExpansionPanel>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon />}
@@ -139,6 +164,23 @@ const Payment = ({ provinces }: IProps) => {
                 realizemos tal cobrança, a concorrência traria menos resultados
                 para os aplicantes. Além disso, somos uma empresa como qualquer
                 outra e possuímos contas e funcionários a pagar.
+              </Typography>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+          <ExpansionPanel>
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <ExpansionPanelTitle>
+                Quem é "João Paulo Furtado Silva", favorecido do boleto gerado?
+              </ExpansionPanelTitle>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Typography>
+                É o diretor do Emprego Urgente. Não há motivos para
+                preocupações.
               </Typography>
             </ExpansionPanelDetails>
           </ExpansionPanel>
@@ -177,6 +219,20 @@ const Payment = ({ provinces }: IProps) => {
               </Typography>
             </ExpansionPanelDetails>
           </ExpansionPanel>
+
+          <h2>Ainda precisa de ajuda?</h2>
+
+          <p>
+            Entre em contato via WhatsApp{" "}
+            <a
+              href={`https://wa.me/17788467427/?text=${encodeURIComponent(
+                "Oi, tudo bem? Preciso de ajuda na compra de creditos do EmpregoUrgente!"
+              )}`}
+              target="_blank"
+            >
+              clicando aqui
+            </a>
+          </p>
         </PageContent>
       </Body>
       <Footer />
@@ -192,6 +248,7 @@ Payment.getInitialProps = async (ctx) => {
     provinces,
   };
 };
+
 const TOSContainer = styled.p`
   font-size: 0.9rem;
   color: ${colors.silver};
