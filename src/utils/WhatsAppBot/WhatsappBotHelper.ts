@@ -50,10 +50,9 @@ export class WhatsAppBotHelper {
     let jobRolesQuery = {}
 
     if (group.jobRoles) {
-      const jobRolesData = group.jobRoles?.map((jobRole) => jobRole)
 
       jobRolesQuery = {
-        jobRoles: { "$in": jobRolesData },
+        jobRoles: { "$in": group.jobRoles },
       }
 
     }
