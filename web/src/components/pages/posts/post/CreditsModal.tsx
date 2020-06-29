@@ -6,6 +6,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { colors } from '../../../../constants/UI/Colors.constant';
+import { UI } from '../../../../constants/UI/UI.constant';
 import { TS } from '../../../../helpers/LanguageHelper';
 import { AlertModal } from '../../../elements/ui/AlertModal';
 
@@ -26,21 +27,23 @@ export const CreditsModal = () => {
               </p>
               <strong>Apenas R$0.33 centavos por crédito.</strong>
 
-              <ImageContainer>
-                <Img
-                  src="/images/advertise/buy-credits.svg"
-                  alt="buy credits"
-                />
-              </ImageContainer>
-              <ButtonContainer>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  startIcon={<MonetizationOnIcon />}
-                >
-                  Comprar Créditos
-                </Button>
-              </ButtonContainer>
+              <CTAContainer>
+                <ImageContainer>
+                  <Img
+                    src="/images/advertise/buy-credits.svg"
+                    alt="buy credits"
+                  />
+                </ImageContainer>
+                <ButtonContainer>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<MonetizationOnIcon />}
+                  >
+                    Comprar
+                  </Button>
+                </ButtonContainer>
+              </CTAContainer>
             </a>
           </Link>
 
@@ -51,25 +54,26 @@ export const CreditsModal = () => {
               <h1>Compartilhe</h1>
               <p>
                 Compartilhe seu link de divulgação e receba 1 crédito toda vez
-                que alguém clicar em sua URL. Dessa forma você nos ajuda, faz o
-                bem ao próximo e consegue alguns créditos para aplicar.
+                que alguém clicar em sua URL.
               </p>
-              <ImageContainer>
-                <Img
-                  src="/images/advertise/share.svg"
-                  alt="share to earn credits"
-                />
-              </ImageContainer>
+              <CTAContainer>
+                <ImageContainer>
+                  <Img
+                    src="/images/advertise/share.svg"
+                    alt="share to earn credits"
+                  />
+                </ImageContainer>
 
-              <ButtonContainer>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  startIcon={<ShareIcon />}
-                >
-                  Divulgar
-                </Button>
-              </ButtonContainer>
+                <ButtonContainer>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<ShareIcon />}
+                  >
+                    Divulgar
+                  </Button>
+                </ButtonContainer>
+              </CTAContainer>
             </a>
           </Link>
         </Container>
@@ -83,19 +87,43 @@ const Container = styled.div`
     text-decoration: none;
     color: inherit;
   }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+  p {
+    font-size: 0.9rem;
+  }
 `;
 
-const ButtonContainer = styled.div`
-  flex: 100%;
+const CTAContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  margin-top: 1.5rem;
+  align-items: center;
 `;
 
 const ImageContainer = styled.div`
-  flex: 100%;
+  flex: auto;
   display: flex;
   justify-content: center;
+  /*DESKTOP ONLY CODE*/
+  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
+    flex: 100%;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  flex: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /*DESKTOP ONLY CODE*/
+  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
+    margin-top: 1.5rem;
+    flex: 100%;
+  }
 `;
 
 const Img = styled.img`
