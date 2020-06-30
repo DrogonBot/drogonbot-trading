@@ -131,7 +131,7 @@ IProps) => {
           <LeftColumn>
             {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
             <TitleContainer>
-              <H1>{post.title}</H1> {`Show credits modal: ${showCreditsModal}`}
+              <H1>{post.title}</H1>
             </TitleContainer>
 
             <Breadcumb parent={post.sector} child={post.jobRoles.join(", ")} />
