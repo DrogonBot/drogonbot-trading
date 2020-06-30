@@ -97,7 +97,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
 
   },
 
-  // ES Partners ========================================
+  // ES Geral groups ========================================
 
 
 
@@ -134,12 +134,10 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     chatId: "17788467427-1593200580@g.us",
     stateCode: "ES",
   },
-  // LAST GROUPS FROM PROVINCE SHOULD HAVE END OF LINEAGE SET TO TRUE, TO PREVENT POSTING THE SAME THING AGAIN
   {
     name: "EmpregoUrgente.com ES #7",
     chatId: "17788467427-1593200947@g.us",
     stateCode: "ES",
-
   },
 
 
@@ -266,10 +264,191 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     chatId: "5519993548538-1497623042@g.us",
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
-
   },
 
+  {
+    name: "Combine seu Emprego",
+    chatId: "5511966165753-1498086073@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
 
+  {
+    name: "EMPREGOS SÃO PAULO E ABC",
+    chatId: "5511949355975-1530060358@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Juntos somos mais fortes",
+    chatId: "5511999379600-1527117307@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Sao paulo emprega",
+    chatId: "5511941376034-1485286433@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "VAGAS DE EMPREGO",
+    chatId: "5511985492859-1516125660@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "FOCO NO EMPREGO 1",
+    chatId: "5511992443665-1526830311@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "FOCO NO EMPREGO 2",
+    chatId: "5511992443665-1526831821@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "FOCO NO EMPREGO 3",
+    chatId: "5511977958024-1526852927@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "FOCO NO EMPREGO 4",
+    chatId: "5511992443665-1526859820@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Empregos e servicos 1",
+    chatId: "5511942485291-1487094310@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Empregos e servicos 2",
+    chatId: "5511942485291-1487253638@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Empregos e servicos 5",
+    chatId: "5511942485291-1496767314@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Vagas P/ SAO PAULO 1",
+    chatId: "557187778372-1523411008@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Vagas P/ Sao Paulo",
+    chatId: "557187778372-1523482883@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Empregos Curso e Concurso",
+    chatId: "5511949371624-1485308744@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Recolocacao e Negocios",
+    chatId: "5511997321026-1504531840@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Ha vagas de empregos",
+    chatId: "5511959085755-1496358646@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Empregos 3 Empenhos",
+    chatId: "5511954486362-1498652403@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Emprego.com",
+    chatId: "5511953719003-1514412871@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Oportunidades SP",
+    chatId: "5511984802014-1501719505@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "JOB.SP/GRUPO DE EMPREGOS",
+    chatId: "5511999000672-1499907367@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Temos Vagas SP G7.",
+    chatId: "5511947696989-1508354954@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Vagas de Emprego",
+    chatId: "5511981688668-1514990913@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Anuncios de Emprego (2)",
+    chatId: "5511959978310-1527005858@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Empregos",
+    chatId: "5511976135457-1516719239@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Emprego em Geral",
+    chatId: "5511976135457-1524077127@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "TriChat Vagas",
+    chatId: "5511988777747-1520895313@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Anuncios de Emprego (3)",
+    chatId: "5511959978310-1528859485@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Vagas de Empregos",
+    chatId: "5511977655347-1555255014@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "Vagas de Emprego",
+    chatId: "5511981688668-1514990913@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+
+  // SeuJobs
   {
     name: "Empregos SP 53",
     chatId: "5511933616045-1583519409@g.us",
