@@ -1,17 +1,15 @@
-import axios from 'axios';
 import _ from 'lodash';
-import sharp from 'sharp';
 
-import { EnvType } from '../../constants/types/env.types';
-import { Post } from '../../resources/Post/post.model';
-import { ConsoleColor, ConsoleHelper } from '../ConsoleHelper';
-import { GenericHelper } from '../GenericHelper';
-import { IPostModel } from './../../resources/Post/post.model';
+import { EnvType } from '../../../constants/types/env.types';
+import { IPostModel, Post } from '../../../resources/Post/post.model';
+import { ConsoleColor, ConsoleHelper } from '../../../utils/ConsoleHelper';
+import { GenericHelper } from '../../../utils/GenericHelper';
+import { MessengerBotHelper } from '../../helpers/MessengerBotHelper';
+import { IWhatsAppGroup } from '../../types/whatsappbot.types';
 import { defaultThumbnailBase64, whatsappAxios } from './whatsappbot.constants';
-import { IWhatsAppGroup } from './whatsappbot.types';
 import { whatsAppGroups } from './whatsappGroups.constants';
 
-export class WhatsAppBotHelper {
+export class WhatsAppBotHelper extends MessengerBotHelper {
 
   public static request = async (method, endpoint: string, data?: Object | null) => {
 
@@ -22,24 +20,6 @@ export class WhatsAppBotHelper {
     })
 
     return response;
-  }
-
-  public static getBase64Thumbnail = async (url: string) => {
-
-
-    console.log(url);
-
-    const response = await axios
-      .get(url, {
-        responseType: 'arraybuffer'
-      })
-
-    const imageBuffer = Buffer.from(response.data, 'binary')
-
-    const resizedImage = await sharp(imageBuffer).resize(150, 150).toBuffer();
-
-    return resizedImage.toString('base64')
-
   }
 
   private static _fetchGroupPosts = async (group: IWhatsAppGroup, qty: number) => {
@@ -99,107 +79,7 @@ export class WhatsAppBotHelper {
     return posts;
   }
 
-  private static _shortPostTitle = (title: string, maxLength: number, sector: string) => {
-    return title.length >= maxLength ? `${WhatsAppBotHelper._getSectorEmoji(sector)} *${title.substr(0, maxLength)}...*` : `${WhatsAppBotHelper._getSectorEmoji(sector)} *${title}*`
-  }
-
-  private static _getSectorEmoji = (sector: string) => {
-
-    switch (sector) {
-      case "Atendimento ao cliente":
-        return "💁🏼"
-      case "Administração":
-        return "🏢"
-      case "Advocacia & Direito":
-        return "⚖️"
-      case "Agricultura":
-        return "🐄"
-      case "Alimentação & Restaurantes":
-        return "🍛"
-      case "Arquitetura":
-        return "🏛️"
-      case "Artes Cênicas":
-        return "🎭"
-      case "Artes Plásticas":
-        return "🎨"
-      case "Astronomia":
-        return "🚀"
-      case "Biblioteconomia":
-        return "📚"
-      case "Beleza & Estética":
-        return "💅🏻"
-      case "Ciências Aeronáuticas":
-        return "✈️";
-      case "Ciências Biológicas, Oceanografia":
-        return "🐸"
-      case "Finanças, Ciências Contábeis, Estatística e Matemática":
-        return "📊"
-      case "Ciências Econômicas":
-        return "🏦"
-      case "Ciências Sociais":
-      case "Serviço Social":
-        return "👐"
-      case "Cinema e Vídeo":
-        return "🎥"
-      case "Comércio Exterior & Relações Públicas":
-        return "🚢"
-      case "Comunicação & Marketing":
-        return "📺"
-      case "TI, Tecnologia da Informação":
-        return "🤓"
-      case "Dança":
-        return "🕺"
-      case "Decoração":
-        return "🏵️"
-      case "Indústria, Offshore e Metalurgia":
-      case "Desenho Industrial":
-        return "🏭"
-      case "Design":
-        return "🐦"
-      case "Educação Física":
-        return "🏋️"
-      case "Construção Civil":
-      case "Engenharia":
-        return "🏗️"
-      case "Farmácia":
-        return "💉"
-      case "Filosofia":
-        return "🏛️"
-      case "Física":
-        return "⚛️"
-      case "Fotografia":
-        return "📷"
-      case "Hotelaria & Turismo":
-        return "🛌"
-      case "Letras & Lingüística":
-      case "Jornalismo & Produtor de Conteúdo":
-        return "📝"
-      case "Logística, Transporte e Operações":
-        return "🛣️"
-      case "Veterinária":
-        return "🐕"
-      case "Moda & Indústria Têxtil":
-        return "👜"
-      case "Pedagogia":
-        return "👶"
-      case "RH & Recursos Humanos":
-        return "👔"
-      case "Saúde & Cuidados":
-        return "👩‍⚕️"
-      case "Segurança & Patrimônio":
-        return "👮"
-      case "Vendas & Comércio":
-        return "💰"
-      case "Limpeza":
-        return "🧹"
-      default:
-        return "💼"
-    }
-
-
-
-  }
-
+  // ! Not using now (it generates too many notifications)
   private static _thumbnailPost = async (posts: IPostModel[], group: IWhatsAppGroup) => {
 
     const limitedPosts = _.slice(posts, 0, 15) // thumbnail posts are limited to 15 only!
@@ -214,7 +94,7 @@ export class WhatsAppBotHelper {
 
       if (process.env.ENV === EnvType.Production) {
 
-        const postTitle = WhatsAppBotHelper._shortPostTitle(post.title, 35, post.sector)
+        const postTitle = WhatsAppBotHelper.shortPostTitle(post.title, 35, post.sector)
 
         // fetch thumbnail image
         let imageBase64
@@ -259,31 +139,10 @@ export class WhatsAppBotHelper {
 
   private static _listPost = async (posts: IPostModel[], group: IWhatsAppGroup, dontRepeatPosts: boolean) => {
 
-
-    const inviteOrJoinGroupText = group.isPartnerGroup ? `👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}` : `✌ Convide amigos! https://bit.ly/emprego-urgente-${group.stateCode.toLowerCase()}`
-
-
-    // ! PARTNER GROUP POSTING! SHOULD GENERATE A LIST ONLY
-    let listContent = `⚠ *${posts.length} Nova${posts.length > 1 ? `s` : ''} Vaga${posts.length > 1 ? `s` : ''} - ${group.stateCode}* ⚠ \n${inviteOrJoinGroupText}\n\n`
-
-    for (const post of posts) {
-
-      if (post.isPostedOnWhatsApp) {
-        continue;
-      }
-
-
-
-      listContent += `${WhatsAppBotHelper._shortPostTitle(post.title, 30, post.sector)}: ${process.env.WEB_APP_URL}/posts/${post.slug}?ref=whatsapp\n\n`
-
-      if (dontRepeatPosts) {
-        await Post.updateOne({ _id: post._id }, { isPostedOnWhatsApp: true })
-      }
-    }
-
-    listContent += `\n${inviteOrJoinGroupText}`
+    const listContent = await WhatsAppBotHelper.generatePostList("WHATSAPP", group.stateCode, posts, group.isPartnerGroup, dontRepeatPosts)
 
     console.log(listContent);
+
 
     const response = await WhatsAppBotHelper.request("POST", "/sendMessage", {
       chatId: group.chatId,
@@ -293,8 +152,6 @@ export class WhatsAppBotHelper {
     console.log(response.data);
   }
 
-
-  // ! MAIN FUNCION
   public static postOnGroups = async () => {
 
     // loop through each group
@@ -302,16 +159,11 @@ export class WhatsAppBotHelper {
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: WhatsApp Bot => Looking for new jobs to ${group.name}...`)
 
-
-
       const posts = await WhatsAppBotHelper._fetchGroupPosts(group, 15)
-
 
       if (posts.length > 0) { // minimum post length to submit a message...
 
         // start asking people to add you to contact list!
-
-
         if (!group.isPartnerGroup) {
           const n = _.random(10);
 

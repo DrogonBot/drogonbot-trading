@@ -1,28 +1,23 @@
 import Promise from 'bluebird';
 import { Router } from 'express';
-import _ from 'lodash';
 import moment from 'moment-timezone';
-import TelegramBot from 'node-telegram-bot-api';
 
 import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
 import { RECURPOST_CREDENTIALS_SP, ZOHO_SOCIAL_ES_CREDENTIALS } from '../../bots/data/loginCredentials';
 import { ScrappingTargetHelper } from '../../bots/helpers/ScrappingTargetHelper';
-import { PosterFacebook } from '../../bots/posters/PosterFacebook';
+import { WhatsAppBotHelper } from '../../bots/messengers/WhatsAppBot/WhatsappBotHelper';
 import { RecurPostSocialSchedulerBot } from '../../bots/schedulers/RecurPostSocialSchedulerBot';
 import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
+import { PosterFacebook } from '../../bots/social_media/PosterFacebook';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
-import { ITelegramChannel } from '../../typescript/telegrambot.types';
-import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { PostHelper } from '../../utils/PostHelper';
 import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
-import { EnvType } from './../../constants/types/env.types';
-import { GenericHelper } from './../../utils/GenericHelper';
+import { TelegramBotHelper } from './../../bots/messengers/TelegramBot/TelegramBotHelper';
 import { NotificationHelper } from './../../utils/NotificationHelper';
-import { WhatsAppBotHelper } from './../../utils/WhatsAppBot/WhatsappBotHelper';
 
 // Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310
 Promise.config({
@@ -228,114 +223,28 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
 
 operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "");
+  await TelegramBotHelper.postOnGroups()
 
-  if (bot.isPolling()) {
-    await bot.stopPolling()
-  }
-
-  let telegramChannels: ITelegramChannel[] = [
-    {
-      stateCode: "ES",
-      city: "all",
-      chatId: '@empregourgentetest'
-    },
-    {
-      stateCode: "RJ",
-      city: "Rio de Janeiro",
-      chatId: "@empregourgentetest"
-    },
-    // {
-    //   stateCode: "MG",
-    //   city: "Belo Horizonte",
-    //   chatId: '@empregourgenteMGc'
-    // },
-    // {
-    //   stateCode: "SP",
-    //   city: "São Paulo",
-    //   chatId: "@empregourgenteSPc"
-    // },
-  ]
-
-  telegramChannels = _.shuffle(telegramChannels)
-
-  try {
-    for (const channel of telegramChannels) {
-
-
-      // fetch related posts
-      const query: { stateCode: string, city?: string } = {
-        stateCode: channel.stateCode
-      }
-      if (channel.city !== "all") {
-        query.city = channel.city
-      }
-
-      const posts = await Post.find({
-        ...query,
-        $or: [{ isPostedOnTelegram: { $exists: false } }, { isPostedOnTelegram: { $exists: true, $eq: false } }]
-      }).limit(10).sort({ 'createdAt': 'descending' })
-
-      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${posts.length} posts on channel: ${channel.stateCode}/${channel.city}`)
-
-      // now start looping through posts...
-
-      await bot.startPolling();
-      for (const post of posts) {
-
-        const postTitle = post.title.length >= 35 ? post.title.substr(0, 35) + "..." : post.title
-        const content = `
-          👇 ${postTitle} 👇
-          https://empregourgente.com/posts/${post.slug}
-          `
-        const msg = await bot.sendMessage(channel.chatId, content)
-        console.log(msg);
-
-        if (process.env.ENV === EnvType.Production) {
-          post.isPostedOnTelegram = true;
-          await post.save()
-        }
-
-
-        await GenericHelper.sleep(3000);
-      }
-      await bot.stopPolling();
-    }
-
-    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on Telegram Groups!')
-
-    return res.status(200).send({
-      status: 'success'
-    })
-
-
-  }
-  catch (error) {
-    console.error(error);
-    return res.status(200).send({
-      status: 'error'
-    })
-  }
-
-
-
+  return res.status(200).send({
+    status: 'success'
+  })
 
 })
 
 operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
-  const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
+  // const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
 
 
-  const { keyword } = req.query;
+  // const { keyword } = req.query;
 
 
-  const filteredData = chatList.data.dialogs.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()))
+  // const filteredData = chatList.data.dialogs.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()))
 
-  console.log(filteredData);
+  // console.log(filteredData);
 
-  // await WhatsAppBotHelper.postOnGroups()
+  await WhatsAppBotHelper.postOnGroups()
 
 
 

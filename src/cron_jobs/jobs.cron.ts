@@ -1,23 +1,18 @@
 import Promise from 'bluebird';
-import _ from 'lodash';
 import moment from 'moment';
 import cron from 'node-cron';
-import TelegramBot from 'node-telegram-bot-api';
 
 import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
+import { TelegramBotHelper } from '../bots/messengers/TelegramBot/TelegramBotHelper';
+import { WhatsAppBotHelper } from '../bots/messengers/WhatsAppBot/WhatsappBotHelper';
 import { TargetPriority } from '../bots/types/bots.types';
-import { EnvType } from '../constants/types/env.types';
 import { JobsEmailManager } from '../emails/jobs.email';
 import { Post } from '../resources/Post/post.model';
 import { IPostApplication, IPostApplicationStatus } from '../resources/Post/post.types';
 import { Resume } from '../resources/Resume/resume.model';
 import { User } from '../resources/User/user.model';
-import { ITelegramChannel } from '../typescript/telegrambot.types';
-import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
-import { GenericHelper } from '../utils/GenericHelper';
 import { NotificationHelper } from '../utils/NotificationHelper';
 import { TS } from '../utils/TS';
-import { WhatsAppBotHelper } from './../utils/WhatsAppBot/WhatsappBotHelper';
 
 // Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310
 Promise.config({
@@ -52,100 +47,6 @@ export class JobsCron {
     ]);
   }
 
-  private static _telegramBotPost = async () => {
-
-    console.log("🕒  JobsCron: _telegramBotPost() 🕒");
-
-
-    const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "");
-
-    if (bot.isPolling()) {
-      await bot.stopPolling()
-    }
-
-    let telegramChannels: ITelegramChannel[] = [
-      {
-        stateCode: "ES",
-        city: "all",
-        chatId: '@empregourgenteESc'
-      },
-      {
-        stateCode: "RJ",
-        city: "Rio de Janeiro",
-        chatId: "@empregourgenteRJc"
-      },
-      {
-        stateCode: "MG",
-        city: "Belo Horizonte",
-        chatId: '@empregourgenteMGc'
-      },
-      {
-        stateCode: "SP",
-        city: "São Paulo",
-        chatId: "@empregourgenteSPc"
-      },
-    ]
-
-    telegramChannels = _.shuffle(telegramChannels)
-
-    try {
-      for (const channel of telegramChannels) {
-
-
-        // fetch related posts
-        const query: { stateCode: string, city?: string } = {
-          stateCode: channel.stateCode,
-        }
-        if (channel.city !== "all") {
-          query.city = channel.city
-        }
-
-        const posts = await Post.find({
-          ...query,
-          $or: [{ isPostedOnTelegram: { $exists: false } }, { isPostedOnTelegram: { $exists: true, $eq: false } }]
-        }).limit(20).sort({ 'createdAt': 'descending' })
-
-        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${posts.length} posts on channel: ${channel.stateCode}/${channel.city}`)
-
-        // now start looping through posts...
-
-        await bot.startPolling();
-        for (const post of posts) {
-
-          const postTitle = post.title.length >= 35 ? post.title.substr(0, 35) + "..." : post.title
-          const content = `
-          👇 ${postTitle} 👇
-          https://empregourgente.com/posts/${post.slug}
-          `
-          const msg = await bot.sendMessage(channel.chatId, content)
-          console.log(msg);
-
-          if (process.env.ENV === EnvType.Production) {
-            post.isPostedOnTelegram = true;
-            await post.save()
-          }
-
-
-          await GenericHelper.sleep(3000);
-        }
-        await bot.stopPolling();
-      }
-
-      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on Telegram Groups!')
-
-
-
-    }
-    catch (error) {
-      console.error(error);
-
-    }
-
-
-
-
-
-  }
 
 
   public static submitApplications() {
@@ -337,13 +238,13 @@ export class JobsCron {
 
 
     cron.schedule("0 11 * * *", async () => {
-      await JobsCron._telegramBotPost()
+      await TelegramBotHelper.postOnGroups()
     })
     cron.schedule("0 15 * * *", async () => {
-      await JobsCron._telegramBotPost()
+      await TelegramBotHelper.postOnGroups()
     })
     cron.schedule("0 19 * * *", async () => {
-      await JobsCron._telegramBotPost()
+      await TelegramBotHelper.postOnGroups()
     })
 
 

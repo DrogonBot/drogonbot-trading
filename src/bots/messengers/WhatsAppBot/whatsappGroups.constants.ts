@@ -1,4 +1,4 @@
-import { IWhatsAppGroup } from './whatsappbot.types';
+import { IWhatsAppGroup } from '../../types/whatsappbot.types';
 
 
 export const whatsAppGroups: IWhatsAppGroup[] = [

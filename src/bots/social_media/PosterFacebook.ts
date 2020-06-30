@@ -4,13 +4,13 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import { GenericEmailManager } from '../../emails/generic.email';
 import { PuppeteerBot } from '../classes/PuppeteerBot';
+import { IBot } from '../types/bots.types';
 import {
   FB_LOGIN_EMAIL_INPUT,
   FB_LOGIN_LOGIN_CTA,
   FB_LOGIN_PASSWORD_INPUT,
   FB_LOGIN_SKIP_SAVE_PASSWORD,
-} from '../selectors/facebook.selectors';
-import { IBot } from '../types/bots.types';
+} from './selectors/facebook.selectors';
 
 
 
