@@ -76,18 +76,7 @@ export const LeadModal = ({ post, jobRoles }: IProps) => {
           <p>
             Participe do nosso grupo exclusivo de vagas no Telegram ou WhatsApp
             e receba diariamente oportunidades exclusivas em seu celular!
-          </p>
-          <p>
-            Também enviaremos emails com vagas de seu interesse assim que
-            estiverem disponíveis!
-          </p>
-
-          <p>
-            <strong>
-              Por favor, preferencialmente acesse o grupo de Telegram
-            </strong>{" "}
-            pois não possui limite de membros e postamos vagas exclusivas por
-            lá!
+            Enviaremos também vagas por e-mail!
           </p>
 
           <AlertModalContainer>
