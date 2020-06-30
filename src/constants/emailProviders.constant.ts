@@ -13,7 +13,7 @@ export interface IEmailProvider {
 export const emailProviders: IEmailProvider[] = [
   {
     // TODO: SENDGRID Free tier is 100 only
-    key: "SENDGRID", credits: 3550, emailSendingFunction: async (to, from, subject, html, text) => {
+    key: "SENDGRID", credits: 1600, emailSendingFunction: async (to, from, subject, html, text) => {
       // @ts-ignore
       sgMail.setApiKey(process.env.SENDGRID_API_KEY)
       sgMail.send({
