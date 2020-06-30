@@ -48,8 +48,17 @@ export class ScrapperVagasUrgentesMG {
     const complementaryData = await DataExtractorHelper.extractJobData(rawContent)
 
     let fixedEmail = complementaryData.email;
-    fixedEmail = fixedEmail.replace('colocando', '')
-    fixedEmail = fixedEmail.replace(',', '')
+
+    try {
+      if (fixedEmail.includes('colocando') || fixedEmail.includes(',')) {
+        fixedEmail = fixedEmail.replace('colocando', '')
+        fixedEmail = fixedEmail.replace(',', '')
+      }
+    }
+    catch (error) {
+      console.error(error);
+    }
+
 
     const jobData = {
       ...complementaryData,
