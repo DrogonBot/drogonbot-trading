@@ -300,7 +300,7 @@ export class WhatsAppBotHelper {
     // loop through each group
     for (const [i, group] of whatsAppGroups.entries()) {
 
-      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: WhatsApp Bot => Posting new jobs at ${group.name}!`)
+      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: WhatsApp Bot => Looking for new jobs to ${group.name}...`)
 
 
 
@@ -333,6 +333,8 @@ export class WhatsAppBotHelper {
         const dontRepeatPosts = (i === whatsAppGroups.length - 1) ? true : (group.stateCode !== whatsAppGroups[i + 1].stateCode)
 
         await WhatsAppBotHelper._listPost(posts, group, dontRepeatPosts);
+      } else {
+        console.log('No new jobs found...');
       }
 
       // if (!group.isPartnerGroup) {
