@@ -39,8 +39,6 @@ export class APIHelper {
           onTimeoutCallback();
         } else {
           console.log("request timeout");
-
-          GenericHelper.clientAlert(TS.string("global", "requestTimeoutTitle"));
         }
       }, timeout);
 
