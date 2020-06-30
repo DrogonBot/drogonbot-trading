@@ -274,7 +274,7 @@ export class WhatsAppBotHelper {
 
 
 
-      listContent += `${WhatsAppBotHelper._shortPostTitle(post.title, 30, post.sector)}: ${process.env.WEB_APP_URL}/posts/${post.slug}\n\n`
+      listContent += `${WhatsAppBotHelper._shortPostTitle(post.title, 30, post.sector)}: ${process.env.WEB_APP_URL}/posts/${post.slug}?ref=whatsapp\n\n`
 
       if (dontRepeatPosts) {
         await Post.updateOne({ _id: post._id }, { isPostedOnWhatsApp: true })
