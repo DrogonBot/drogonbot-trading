@@ -160,11 +160,6 @@ IProps) => {
 
             <h2>Dúvidas Frequentes</h2>
 
-            <p>
-              Aumente suas chances de conseguir um emprego, assistindo aos
-              seguintes videos abaixo:
-            </p>
-
             <FAQContainer>
               <ExpansionPanel>
                 <ExpansionPanelSummary
