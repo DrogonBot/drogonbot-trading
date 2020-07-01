@@ -23,6 +23,7 @@ import { ValidationHelper } from '../helpers/ValidationHelper';
 import { loadCountryProvinces } from '../store/actions/form.actions';
 import { AppState } from '../store/reducers/index.reducers';
 import { IProvince } from '../types/Form.types';
+import { paymentTypes } from '../types/Payment.types';
 import { IUser } from '../types/User.types';
 
 interface IProps {
@@ -34,6 +35,7 @@ const Payment = ({ provinces }: IProps) => {
 
   const [userName, setUserName] = useState<string>(user?.name);
   const [userCPF, setUserCPF] = useState<string>("");
+  const [paymentType, setPaymentType] = useState<paymentTypes>("BOLETO");
 
   const onHandleGenerateBoleto = async () => {
     const numberOnlyCPF = userCPF.replace(/\D/g, ""); // remove all non numeric chars
@@ -102,6 +104,8 @@ const Payment = ({ provinces }: IProps) => {
           <p>
             <strong>Preço: R$19.90 por 60 créditos</strong>
           </p>
+
+          <PaymentSelectorContainer />
 
           <p>Digite seus dados abaixo para gerarmos um boleto:</p>
 
@@ -273,6 +277,12 @@ Payment.getInitialProps = async (ctx) => {
     provinces,
   };
 };
+
+const PaymentSelectorContainer = styled.div`
+  width: 300px;
+  height: 300px;
+  border: 1px solid red;
+`;
 
 const TOSContainer = styled.p`
   font-size: 0.9rem;
