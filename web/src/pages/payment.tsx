@@ -90,6 +90,62 @@ const Payment = ({ provinces }: IProps) => {
     setPaymentType(e.target.value);
   };
 
+  const onRenderPaymentPanel = () => {
+    switch (paymentType) {
+      case PaymentTypes.BOLETO:
+        return (
+          <>
+            <p>Digite seus dados abaixo para gerarmos um boleto:</p>
+
+            <Field>
+              <TextField
+                fullWidth
+                label={TS.string("account", "registerInputName")}
+                value={userName}
+                onChange={(e) => {
+                  setUserName(e.target.value);
+                }}
+              />
+            </Field>
+
+            <Field>
+              <InputMask
+                mask="999.999.999-99"
+                disabled={false}
+                maskChar="x"
+                value={userCPF}
+                onChange={(e) => {
+                  setUserCPF(e.target.value);
+                }}
+              >
+                {() => <TextField fullWidth label={"CPF"} />}
+              </InputMask>
+            </Field>
+
+            <FieldCenter>
+              <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<DescriptionIcon />}
+                onClick={onHandleGenerateBoleto}
+              >
+                Gerar Boleto
+              </Button>
+            </FieldCenter>
+
+            <TOSContainer>
+              <Link href={`/terms?language=${appEnv.language}`}>
+                {TS.string("terms", "buttonTosAgree")}
+              </Link>
+            </TOSContainer>
+          </>
+        );
+
+      case PaymentTypes.CREDIT_CARD:
+        return <p>In progress</p>;
+    }
+  };
+
   return (
     <AuthenticatedPage>
       <Head>
@@ -138,49 +194,7 @@ const Payment = ({ provinces }: IProps) => {
             </CreditCardContainer>
           </PaymentSelectorContainer>
 
-          <p>Digite seus dados abaixo para gerarmos um boleto:</p>
-
-          <Field>
-            <TextField
-              fullWidth
-              label={TS.string("account", "registerInputName")}
-              value={userName}
-              onChange={(e) => {
-                setUserName(e.target.value);
-              }}
-            />
-          </Field>
-
-          <Field>
-            <InputMask
-              mask="999.999.999-99"
-              disabled={false}
-              maskChar="x"
-              value={userCPF}
-              onChange={(e) => {
-                setUserCPF(e.target.value);
-              }}
-            >
-              {() => <TextField fullWidth label={"CPF"} />}
-            </InputMask>
-          </Field>
-
-          <FieldCenter>
-            <Button
-              variant="contained"
-              color="secondary"
-              startIcon={<DescriptionIcon />}
-              onClick={onHandleGenerateBoleto}
-            >
-              Gerar Boleto
-            </Button>
-          </FieldCenter>
-
-          <TOSContainer>
-            <Link href={`/terms?language=${appEnv.language}`}>
-              {TS.string("terms", "buttonTosAgree")}
-            </Link>
-          </TOSContainer>
+          <PaymentPanel>{onRenderPaymentPanel()}</PaymentPanel>
 
           <PaymentFAQ />
 
@@ -213,8 +227,13 @@ Payment.getInitialProps = async (ctx) => {
   };
 };
 
+const PaymentPanel = styled.div`
+  padding: 3rem;
+`;
+
 const PaymentSelectorContainer = styled.div`
   margin-bottom: 3rem;
+  margin-top: 3rem;
   display: flex;
   flex-wrap: wrap;
 `;
