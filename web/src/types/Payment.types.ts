@@ -1,1 +1,4 @@
-export type paymentTypes = "BOLETO" | "CREDIT_CARD";
+export enum PaymentTypes {
+  BOLETO = "BOLETO",
+  CREDIT_CARD = "CREDIT_CARD",
+}
