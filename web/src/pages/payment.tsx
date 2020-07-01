@@ -19,6 +19,7 @@ import { colors } from '../constants/UI/Colors.constant';
 import { APIHelper } from '../helpers/APIHelper';
 import { GenericHelper } from '../helpers/GenericHelper';
 import { TS } from '../helpers/LanguageHelper';
+import { ValidationHelper } from '../helpers/ValidationHelper';
 import { loadCountryProvinces } from '../store/actions/form.actions';
 import { AppState } from '../store/reducers/index.reducers';
 import { IProvince } from '../types/Form.types';
@@ -37,14 +38,38 @@ const Payment = ({ provinces }: IProps) => {
   const onHandleGenerateBoleto = async () => {
     const numberOnlyCPF = userCPF.replace(/\D/g, ""); // remove all non numeric chars
 
+    const paymentPayload = {
+      buyerName: userName,
+      buyerCPF: numberOnlyCPF,
+      buyerEmail: user.email,
+    };
+
+    // Validation ========================================
+
+    const invalidFields = ValidationHelper.validateKeyValue(paymentPayload, {
+      optionalFields: [],
+      fieldLabels: {
+        buyerName: "Nome",
+        buyerCPF: "CPF",
+      },
+    });
+
+    if (invalidFields) {
+      if (process.browser) {
+        window.alert(
+          `${TS.string(
+            "global",
+            "genericFollowingFieldsInvalid"
+          )} ${invalidFields}`
+        );
+      }
+      return;
+    }
+
     const response = await APIHelper.request(
       "POST",
       "/transaction/checkout/boleto",
-      {
-        buyerName: userName,
-        buyerCPF: numberOnlyCPF,
-        buyerEmail: user.email,
-      },
+      paymentPayload,
       true
     );
 
