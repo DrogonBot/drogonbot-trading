@@ -190,6 +190,10 @@ export class JobsCron {
       JobsCron._executeCrawlers()
     });
 
+    cron.schedule("0 22 * * *", async () => {
+      JobsCron._executeCrawlers()
+    });
+
 
   }
 
@@ -246,12 +250,27 @@ export class JobsCron {
     cron.schedule("0 11 * * *", async () => {
       await TelegramBotHelper.postOnGroups()
     })
+    cron.schedule("0 13 * * *", async () => {
+      await TelegramBotHelper.postOnGroups()
+    })
     cron.schedule("0 15 * * *", async () => {
+      await TelegramBotHelper.postOnGroups()
+    })
+    cron.schedule("0 17 * * *", async () => {
       await TelegramBotHelper.postOnGroups()
     })
     cron.schedule("0 19 * * *", async () => {
       await TelegramBotHelper.postOnGroups()
     })
+    cron.schedule("0 22 * * *", async () => {
+      await TelegramBotHelper.postOnGroups()
+    })
+    cron.schedule("0 01 * * *", async () => {
+      await TelegramBotHelper.postOnGroups()
+    })
+
+
+
 
 
 
