@@ -23,9 +23,11 @@ transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAutho
 
   const { paymentToken, chargeReference, chargeCode } = req.body;
 
+
   ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `💰: Juno Webhook Post received`)
 
   console.log('Checking order status...');
+
 
   const fetchedTransaction = await Transaction.findOne({
     code: chargeCode,
@@ -36,6 +38,8 @@ transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAutho
   if (fetchedTransaction) {
     try {
       const response = await JunoPaymentHelper.request("GET", `/charges/${fetchedTransaction.orderId}`, null)
+
+
 
       const payments: IJunoPayment[] = response.data.payments;
 
@@ -101,6 +105,8 @@ transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAutho
 
 
     }
+  } else {
+    console.log('No transaction found...');
   }
 
 
