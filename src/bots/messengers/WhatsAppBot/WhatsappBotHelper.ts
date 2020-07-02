@@ -70,8 +70,8 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
         jobRolesQuery,
         citiesQuery,
         sectorQuery,
-        { $or: [{ isPostedOnWhatsApp: { $exists: false } }, { isPostedOnWhatsApp: { $exists: true, $eq: false } }] }
-      ]
+      ],
+      isPostedOnWhatsApp: false
     }).limit(qty).sort({ 'createdAt': 'descending' })
 
     posts = _.shuffle(posts)
