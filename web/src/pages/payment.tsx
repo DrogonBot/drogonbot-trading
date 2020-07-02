@@ -1,148 +1,49 @@
-import { Button } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField/TextField';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import DescriptionIcon from '@material-ui/icons/Description';
 import Head from 'next/head';
-import Link from 'next/link';
 import React, { useState } from 'react';
-import InputMask from 'react-input-mask';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { Body, PageContainer, PageContent } from '../components/elements/common/layout';
+import { Body, PageContent } from '../components/elements/common/layout';
 import { RadioIcon } from '../components/elements/form/RadioIcon';
 import { AuthenticatedPage } from '../components/pages/AuthenticatedPage';
 import { Footer } from '../components/pages/index/Footer';
 import { Header } from '../components/pages/index/Header/Header';
+import { BoletoPayment } from '../components/pages/payment/BoletoPayment';
+import { CreditCardPayment } from '../components/pages/payment/CreditCardPayment';
 import { PaymentFAQ } from '../components/pages/payment/PaymentFAQ';
-import { SearchTop } from '../components/pages/posts/SearchTop';
+import { SearchLogo } from '../components/pages/posts/SearchLogo';
+import { SearchHeader } from '../components/pages/posts/SearchTop';
 import { appEnv } from '../constants/Env.constant';
 import { colors } from '../constants/UI/Colors.constant';
-import { APIHelper } from '../helpers/APIHelper';
-import { GenericHelper } from '../helpers/GenericHelper';
-import { TS } from '../helpers/LanguageHelper';
-import { ValidationHelper } from '../helpers/ValidationHelper';
 import { loadCountryProvinces } from '../store/actions/form.actions';
-import { AppState } from '../store/reducers/index.reducers';
 import { IProvince } from '../types/Form.types';
 import { PaymentTypes } from '../types/Payment.types';
-import { IUser } from '../types/User.types';
 
 interface IProps {
   provinces: IProvince[];
 }
 
 const Payment = ({ provinces }: IProps) => {
-  const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
-
-  const [userName, setUserName] = useState<string>(user?.name);
-  const [userCPF, setUserCPF] = useState<string>("");
   const [paymentType, setPaymentType] = useState<PaymentTypes>(
-    PaymentTypes.BOLETO
+    PaymentTypes.CREDIT_CARD
   );
 
-  const onHandleGenerateBoleto = async () => {
-    const numberOnlyCPF = userCPF.replace(/\D/g, ""); // remove all non numeric chars
-
-    const paymentPayload = {
-      buyerName: userName,
-      buyerCPF: numberOnlyCPF,
-      buyerEmail: user.email,
-    };
-
-    // Validation ========================================
-
-    const invalidFields = ValidationHelper.validateKeyValue(paymentPayload, {
-      optionalFields: [],
-      fieldLabels: {
-        buyerName: "Nome",
-        buyerCPF: "CPF",
-      },
-    });
-
-    if (invalidFields) {
-      if (process.browser) {
-        window.alert(
-          `${TS.string(
-            "global",
-            "genericFollowingFieldsInvalid"
-          )} ${invalidFields}`
-        );
-      }
-      return;
-    }
-
-    const response = await APIHelper.request(
-      "POST",
-      "/transaction/checkout/boleto",
-      paymentPayload,
-      true
-    );
-
-    console.log(response.data);
-
-    if (process.browser) {
-      GenericHelper.crossBrowserUrlRedirect(response.data.installmentLink);
-    }
-  };
-
   const onChangePaymentType = (e) => {
-    setPaymentType(e.target.value);
+    if (e.target?.value) {
+      setPaymentType(e.target.value);
+    } else {
+      setPaymentType(e);
+    }
   };
 
   const onRenderPaymentPanel = () => {
     switch (paymentType) {
       case PaymentTypes.BOLETO:
-        return (
-          <>
-            <p>Digite seus dados abaixo para gerarmos um boleto:</p>
-
-            <Field>
-              <TextField
-                fullWidth
-                label={TS.string("account", "registerInputName")}
-                value={userName}
-                onChange={(e) => {
-                  setUserName(e.target.value);
-                }}
-              />
-            </Field>
-
-            <Field>
-              <InputMask
-                mask="999.999.999-99"
-                disabled={false}
-                maskChar="x"
-                value={userCPF}
-                onChange={(e) => {
-                  setUserCPF(e.target.value);
-                }}
-              >
-                {() => <TextField fullWidth label={"CPF"} />}
-              </InputMask>
-            </Field>
-
-            <FieldCenter>
-              <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<DescriptionIcon />}
-                onClick={onHandleGenerateBoleto}
-              >
-                Gerar Boleto
-              </Button>
-            </FieldCenter>
-
-            <TOSContainer>
-              <Link href={`/terms?language=${appEnv.language}`}>
-                {TS.string("terms", "buttonTosAgree")}
-              </Link>
-            </TOSContainer>
-          </>
-        );
+        return <BoletoPayment />;
 
       case PaymentTypes.CREDIT_CARD:
-        return <p>In progress</p>;
+        return <CreditCardPayment />;
     }
   };
 
@@ -158,9 +59,9 @@ const Payment = ({ provinces }: IProps) => {
       <Header />
 
       <Body>
-        <PageContainer>
-          <SearchTop provinces={provinces} />
-        </PageContainer>
+        <SearchHeader>
+          <SearchLogo />
+        </SearchHeader>
 
         <PageContent>
           <h1>Compre Créditos</h1>
@@ -170,18 +71,9 @@ const Payment = ({ provinces }: IProps) => {
           </p>
 
           <PaymentSelectorContainer>
-            <BoletoContainer>
-              <RadioIcon
-                text={"Boleto Bancário"}
-                customIcon={<DescriptionIcon />}
-                checked={paymentType === PaymentTypes.BOLETO}
-                onChange={onChangePaymentType}
-                value={PaymentTypes.BOLETO}
-                name="payment-type-radio"
-                inputProps={{ "aria-label": paymentType }}
-              />
-            </BoletoContainer>
-            <CreditCardContainer>
+            <CreditCardContainer
+              onClick={() => onChangePaymentType(PaymentTypes.CREDIT_CARD)}
+            >
               <RadioIcon
                 text={"Cartão de Crédito"}
                 customIcon={<CreditCardIcon />}
@@ -192,6 +84,20 @@ const Payment = ({ provinces }: IProps) => {
                 inputProps={{ "aria-label": paymentType }}
               />
             </CreditCardContainer>
+
+            <BoletoContainer
+              onClick={() => onChangePaymentType(PaymentTypes.BOLETO)}
+            >
+              <RadioIcon
+                text={"Boleto Bancário"}
+                customIcon={<DescriptionIcon />}
+                checked={paymentType === PaymentTypes.BOLETO}
+                onChange={onChangePaymentType}
+                value={PaymentTypes.BOLETO}
+                name="payment-type-radio"
+                inputProps={{ "aria-label": paymentType }}
+              />
+            </BoletoContainer>
           </PaymentSelectorContainer>
 
           <PaymentPanel>{onRenderPaymentPanel()}</PaymentPanel>
@@ -228,7 +134,8 @@ Payment.getInitialProps = async (ctx) => {
 };
 
 const PaymentPanel = styled.div`
-  padding: 3rem;
+  padding: 2.5%;
+  margin-bottom: 4rem;
 `;
 
 const PaymentSelectorContainer = styled.div`
@@ -236,6 +143,7 @@ const PaymentSelectorContainer = styled.div`
   margin-top: 3rem;
   display: flex;
   flex-wrap: wrap;
+  border: 1px solid red;
 `;
 
 const BoletoContainer = styled.div`
@@ -251,26 +159,10 @@ const CreditCardContainer = styled.div`
   align-items: center;
 `;
 
-const TOSContainer = styled.p`
-  font-size: 0.9rem;
-  color: ${colors.silver};
-  text-align: center;
-`;
-
 export const ExpansionPanelTitle = styled.div`
   font-size: 1rem;
   font-weight: 500;
   color: ${colors.silver};
-`;
-
-export const Field = styled.div`
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-`;
-export const FieldCenter = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
 `;
 
 export default Payment;

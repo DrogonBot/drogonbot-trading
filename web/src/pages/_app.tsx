@@ -1,6 +1,7 @@
 import '../styles/animations.css';
 import '../styles/index.css';
 import '../styles/normalize.css';
+import 'react-credit-cards/es/styles-compiled.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 

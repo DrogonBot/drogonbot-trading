@@ -1,4 +1,3 @@
-import { Link } from '@material-ui/core';
 import { JobPostingJsonLd } from 'next-seo';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -6,6 +5,7 @@ import styled from 'styled-components';
 
 import { AdsenseHelper } from '../../components/ads/AdsenseAds';
 import { Body, PageContainer } from '../../components/elements/common/layout';
+import { TermsOfService } from '../../components/elements/form/TermsOfService';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
@@ -149,11 +149,9 @@ IProps) => {
               }}
             />
 
-            <TOSContainer>
-              <Link href={`/terms?language=${appEnv.language}`}>
-                {TS.string("terms", "tosAgree")}
-              </Link>
-            </TOSContainer>
+            <TermsOfService href={`/terms?language=${appEnv.language}`}>
+              {TS.string("terms", "tosAgree")}
+            </TermsOfService>
 
             {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
 
@@ -299,13 +297,6 @@ const Cover = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const TOSContainer = styled.p`
-  font-size: 0.9rem;
-  color: ${colors.silver};
-  text-align: center;
-  margin-top: 3rem;
 `;
 
 const TitleContainer = styled.div`

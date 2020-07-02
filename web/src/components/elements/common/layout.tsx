@@ -45,8 +45,8 @@ export const PageContent = styled.div`
     color: ${colors.dark};
   }
 
-  padding-left: 0.8rem;
-  padding-right: 0.8rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
 `;
 
 export const FormItemContainer = styled.div`

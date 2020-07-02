@@ -31,6 +31,7 @@ export const RadioIcon: React.FC<IProps> = (props) => {
 };
 
 const RadioIconContainer = styled.div`
+  max-width: 140px;
   display: flex;
   cursor: pointer;
   flex-wrap: wrap;
