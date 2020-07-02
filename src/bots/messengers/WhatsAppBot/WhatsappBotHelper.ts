@@ -124,7 +124,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
           console.error(error);
         }
 
-        if (group.isEndOfLineage) {
+        if (group.isLeaf) {
           post.isPostedOnWhatsApp = true;
           await post.save();
         }
@@ -180,9 +180,10 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
           }
         }
 
+        // if its a leaf group, dont repeat posts
         // if its last group, do not repeat posts!
         // if next group is from another state, lets set a variable telling our bot to do not post this post again
-        const dontRepeatPosts = (i === whatsAppGroups.length - 1) ? true : (group.stateCode !== whatsAppGroups[i + 1].stateCode)
+        const dontRepeatPosts = group.isLeaf || (i === whatsAppGroups.length - 1) ? true : (group.stateCode !== whatsAppGroups[i + 1].stateCode)
 
         await WhatsAppBotHelper._listPost(posts, group, dontRepeatPosts);
       } else {
