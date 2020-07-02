@@ -12,6 +12,7 @@ import { TS } from '../../../helpers/LanguageHelper';
 import { ValidationHelper } from '../../../helpers/ValidationHelper';
 import { AppState } from '../../../store/reducers/index.reducers';
 import { IUser } from '../../../types/User.types';
+import { Field, FieldCenter } from '../../elements/common/form';
 import { TermsOfService } from '../../elements/form/TermsOfService';
 
 export const BoletoPayment: React.FC = (props) => {
@@ -71,6 +72,8 @@ export const BoletoPayment: React.FC = (props) => {
 
       <p>Digite seus dados abaixo para gerarmos um boleto:</p>
 
+      <br />
+
       <Field>
         <TextField
           fullWidth
@@ -79,6 +82,7 @@ export const BoletoPayment: React.FC = (props) => {
           onChange={(e) => {
             setUserName(e.target.value);
           }}
+          variant={"outlined"}
         />
       </Field>
 
@@ -92,7 +96,7 @@ export const BoletoPayment: React.FC = (props) => {
             setUserCPF(e.target.value);
           }}
         >
-          {() => <TextField fullWidth label={"CPF"} />}
+          {() => <TextField fullWidth label={"CPF"} variant={"outlined"} />}
         </InputMask>
       </Field>
 
@@ -102,6 +106,7 @@ export const BoletoPayment: React.FC = (props) => {
           color="secondary"
           startIcon={<DescriptionIcon />}
           onClick={onHandleGenerateBoleto}
+          size="large"
         >
           Gerar Boleto
         </Button>
@@ -115,13 +120,3 @@ export const BoletoPayment: React.FC = (props) => {
 };
 
 const Container = styled.div``;
-
-export const Field = styled.div`
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-`;
-export const FieldCenter = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-`;

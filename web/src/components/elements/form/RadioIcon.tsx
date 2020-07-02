@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { colors } from '../../../constants/UI/Colors.constant';
 
 interface IProps {
-  customIcon: JSX.Element;
+  customicon: JSX.Element;
   text: string;
   checked: boolean;
   onChange: (e: any) => void;
@@ -15,7 +15,7 @@ interface IProps {
 }
 
 export const RadioIcon: React.FC<IProps> = (props) => {
-  const Icon = () => props.customIcon;
+  const Icon = () => props.customicon;
 
   return (
     <RadioIconContainer isChecked={props.checked}>

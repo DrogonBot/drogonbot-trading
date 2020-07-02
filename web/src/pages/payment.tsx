@@ -76,7 +76,7 @@ const Payment = ({ provinces }: IProps) => {
             >
               <RadioIcon
                 text={"Cartão de Crédito"}
-                customIcon={<CreditCardIcon />}
+                customicon={<CreditCardIcon />}
                 checked={paymentType === PaymentTypes.CREDIT_CARD}
                 onChange={onChangePaymentType}
                 value={PaymentTypes.CREDIT_CARD}
@@ -90,7 +90,7 @@ const Payment = ({ provinces }: IProps) => {
             >
               <RadioIcon
                 text={"Boleto Bancário"}
-                customIcon={<DescriptionIcon />}
+                customicon={<DescriptionIcon />}
                 checked={paymentType === PaymentTypes.BOLETO}
                 onChange={onChangePaymentType}
                 value={PaymentTypes.BOLETO}
@@ -143,7 +143,6 @@ const PaymentSelectorContainer = styled.div`
   margin-top: 3rem;
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid red;
 `;
 
 const BoletoContainer = styled.div`
