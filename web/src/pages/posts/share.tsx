@@ -96,6 +96,8 @@ const PostAdvertise = ({ provinces }: IProps) => {
           <CopyContainer>
             <h1>Divulgue e Receba Créditos</h1>
 
+            <p>Veja o vídeo abaixo e aprenda como deve ser feito:</p>
+
             <ShareExplanationVideo
               src="https://www.youtube.com/embed/zZzMIWTQa2A"
               frameBorder="0"

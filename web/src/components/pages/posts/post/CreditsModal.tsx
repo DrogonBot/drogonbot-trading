@@ -23,6 +23,42 @@ export const CreditsModal = ({ onClose }: IProps) => {
       content={
         <Container>
           <p>Para continuar, escolha uma das opções abaixo: </p>
+          <Link href="/posts/share">
+            <a>
+              <h1>
+                Divulge e Ganhe Créditos <Underline>Gratuitamente</Underline>
+              </h1>
+              <p>
+                Compartilhe seu link de divulgação e{" "}
+                <strong>
+                  receba 1 crédito toda vez que alguém clicar em seu link,
+                  gratuitamente.
+                </strong>
+                .
+              </p>
+              <CTAContainer>
+                <ImageContainer>
+                  <Img
+                    src="/images/advertise/share.svg"
+                    alt="share to earn credits"
+                  />
+                </ImageContainer>
+
+                <ButtonContainer>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<ShareIcon />}
+                  >
+                    Divulgue e Ganhe
+                  </Button>
+                </ButtonContainer>
+              </CTAContainer>
+            </a>
+          </Link>
+
+          <TextOr>OU</TextOr>
+
           <Link href="/payment">
             <a>
               <h1>Compre Créditos</h1>
@@ -30,7 +66,10 @@ export const CreditsModal = ({ onClose }: IProps) => {
                 Sem muito tempo para compartilhar e aguardar? Compre créditos
                 para usar nosso sistema sem limitações!
               </p>
-              <strong>Apenas R$0.33 centavos por crédito.</strong>
+              <strong>
+                Apenas R$0.33 centavos por crédito. Mínimo de 60 créditos por
+                R$19.90
+              </strong>
 
               <CTAContainer>
                 <ImageContainer>
@@ -51,41 +90,15 @@ export const CreditsModal = ({ onClose }: IProps) => {
               </CTAContainer>
             </a>
           </Link>
-
-          <TextOr>OU</TextOr>
-
-          <Link href="/posts/share">
-            <a>
-              <h1>Compartilhe</h1>
-              <p>
-                Compartilhe seu link de divulgação e receba 1 crédito toda vez
-                que alguém clicar em seu link.
-              </p>
-              <CTAContainer>
-                <ImageContainer>
-                  <Img
-                    src="/images/advertise/share.svg"
-                    alt="share to earn credits"
-                  />
-                </ImageContainer>
-
-                <ButtonContainer>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    startIcon={<ShareIcon />}
-                  >
-                    Divulgar
-                  </Button>
-                </ButtonContainer>
-              </CTAContainer>
-            </a>
-          </Link>
         </Container>
       }
     />
   );
 };
+
+const Underline = styled.div`
+  text-decoration: underline;
+`;
 
 const Container = styled.div`
   a {
@@ -97,7 +110,7 @@ const Container = styled.div`
     font-size: 1.6rem;
   }
   p {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 `;
 
