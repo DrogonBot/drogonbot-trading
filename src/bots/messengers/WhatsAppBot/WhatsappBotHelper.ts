@@ -167,7 +167,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
         if (!group.isPartnerGroup) {
           const n = _.random(10);
 
-          if (n <= 3) { // 30% chance
+          if (n <= 2) { // 20% chance
 
             const addMessages = [`📞 Ei pessoal! Por favor, me adicionem em sua lista de contatos para garantir que você recebam todas as vagas sem problemas!`, `📞 Ei gente, me adicionem em seu contato para que vocês recebam todas as vagas normalmente. Obrigada!`, `📞 Importante: me adicione em seus contatos para que vocês recebam todas as vagas sem erros.`]
 
