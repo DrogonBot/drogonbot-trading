@@ -82,4 +82,10 @@ export const appEnv = {
       },
     },
   },
+  payment: {
+    juno: {
+      publicToken:
+        "F6D531FE606813AACF68E851EED773903E8C0E1FC6F5D8F89CFF27C61CC0A0FF",
+    },
+  },
 };

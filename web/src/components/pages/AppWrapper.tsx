@@ -31,8 +31,8 @@ export const AppWrapper = (props) => {
 
     refreshUserInfo();
 
-    // refresh user info every 30 seconds
-    setInterval(() => refreshUserInfo(), 30 * 1000);
+    // refresh user info every 60 seconds
+    setInterval(() => refreshUserInfo(), 60 * 1000);
   }, []);
 
   return <>{props.children}</>;

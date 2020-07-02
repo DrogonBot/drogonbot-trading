@@ -12,6 +12,8 @@ import {
   CREDIT_CARD_MASK_DEFAULT,
 } from '../../../constants/payment.constant';
 import { UI } from '../../../constants/UI/UI.constant';
+import { PaymentHelper } from '../../../helpers/PaymentHelper';
+import { ICreditCard } from '../../../types/Payment.types';
 
 export const CreditCardPayment: React.FC = (props) => {
   const [creditCardMask, setCreditCardMask] = useState<string>(
@@ -19,7 +21,7 @@ export const CreditCardPayment: React.FC = (props) => {
   );
   const [cvcMask, setCvcMask] = useState(CREDIT_CARD_CVC_MASK_DEFAULT);
 
-  const [creditCard, setCreditCard] = useState({
+  const [creditCard, setCreditCard] = useState<ICreditCard>({
     name: "",
     number: "",
     cvc: "",
@@ -54,7 +56,12 @@ export const CreditCardPayment: React.FC = (props) => {
   const onHandleCreditCardPayment = async () => {
     // validate payment!
 
-    console.log("VALIDATE PAYMENT");
+    const creditCardHash = await PaymentHelper.validateAndGenerateCreditCardHash(
+      creditCard
+    );
+
+    console.log("CREDIT CARD HASH");
+    console.log(creditCardHash);
   };
 
   return (
@@ -110,6 +117,7 @@ export const CreditCardPayment: React.FC = (props) => {
             <Grid item xs={6}>
               <InputMask
                 mask={"99/99"}
+                maskChar="x"
                 onFocus={handleInputFocus}
                 onChange={handleInputChange}
                 value={creditCard.expiry}
@@ -179,15 +187,17 @@ const LeftColumn = styled.div`
   }
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const RightColumn = styled.div`
   flex: 100%;
   padding-left: 1.2rem;
+  margin-top: 2rem;
 
   /*DESKTOP ONLY CODE*/
   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
     flex: 50%;
+    margin-top: 0;
   }
 `;

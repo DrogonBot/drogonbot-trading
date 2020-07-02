@@ -3,7 +3,9 @@ import Document, { Head, Main, NextScript } from 'next/document';
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
 
+import { ENV } from '../constants/Env.constant';
 import { MUITheme as theme } from '../constants/UI/Theme.constant';
+import { EnvironmentTypes } from '../types/Global.types';
 
 // As suggested on: https://stackoverflow.com/questions/55109497/how-to-integrate-nextjs-styled-components-with-material-ui
 
@@ -47,6 +49,19 @@ class MyDocument extends Document {
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
           />
+
+          {/* Juno Credit Card Validation Library */}
+          {ENV === EnvironmentTypes.Development ? (
+            <script
+              type="text/javascript"
+              src="https://sandbox.boletobancario.com/boletofacil/wro/direct-checkout.min.js"
+            ></script>
+          ) : (
+            <script
+              type="text/javascript"
+              src="https://www.boletobancario.com/boletofacil/wro/direct-checkout.min.js"
+            ></script>
+          )}
 
           {/* Feed Link */}
 
