@@ -73,6 +73,8 @@ export class PaymentHelper {
       },
     };
 
+    console.log(creditCard);
+
     if (!PaymentHelper.areAllFieldsValid(creditCardCheck)) {
       const invalidFieldsString = PaymentHelper.getInvalidFieldsString(
         creditCardCheck

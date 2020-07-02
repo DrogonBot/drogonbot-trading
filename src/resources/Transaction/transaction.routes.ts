@@ -124,14 +124,22 @@ transactionRouter.post('/transaction/checkout/:paymentMethod', [userAuthMiddlewa
     switch (paymentMethod) {
 
       case PaymentAvailableMethods.Boleto:
-        const result = await JunoPaymentHelper.generateBoletoPaymentRequest(req);
+        const boletoReq = await JunoPaymentHelper.generateBoletoPaymentRequest(req);
 
-        if (result) {
-          return res.status(200).send(result)
+        if (boletoReq) {
+          return res.status(200).send(boletoReq)
+        }
+        break;
+
+      case PaymentAvailableMethods.CreditCard:
+
+        const ccReq = await JunoPaymentHelper.generateCreditCardPaymentRequest(req);
+
+        if (ccReq) {
+          return res.status(200).send(ccReq)
         }
 
-
-        break;
+        break
 
 
     }
@@ -145,7 +153,6 @@ transactionRouter.post('/transaction/checkout/:paymentMethod', [userAuthMiddlewa
 
   }
   catch (error) {
-    console.error(error);
     return res.status(200).send({
       status: "error",
       message: TS.string('transaction', 'transactionError')

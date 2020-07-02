@@ -51,6 +51,94 @@ export class JunoPaymentHelper {
     return response
   }
 
+  private static _recordTransactionOrder = async (order, req, type: TransactionTypes) => {
+
+    // if order was generated successfully, lets create a transaction in our db
+    if (order.code) {
+
+      try {
+        const newTransaction = new Transaction({
+          orderId: order.id,
+          userId: req.user._id,
+          code: order.code,
+          type,
+          reference: order.reference,
+          status: TransactionStatus.CREATED,
+          amount: order.amount,
+          boletoLink: order.link,
+          dueDate: order.dueDate,
+        })
+        await newTransaction.save();
+
+        return order;
+      }
+      catch (error) {
+        ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `💰: Juno - Failed while trying to generate your transaction!`)
+        console.error(error);
+        return false
+      }
+
+    }
+  }
+
+  public static generateCreditCardPaymentRequest = async (req) => {
+    const { buyerCreditCardHash, buyerName, buyerCPF, buyerEmail, buyerAddress } = req.body
+
+    const chargeResponse = await JunoPaymentHelper.request("POST", "/charges", {
+      "charge": {
+        "description": "Emprego Urgente - Compra de créditos de envio de currículo",
+        "amount": 19.90,
+        "references": ["CREDITOS_ENVIO"],
+        "paymentTypes": ["CREDIT_CARD"]
+      },
+      "billing": {
+        "name": buyerName,
+        "document": buyerCPF,
+        "email": buyerEmail,
+        "notify": "true"
+      }
+    })
+    const { _embedded } = chargeResponse.data;
+    const order = _embedded.charges[0];
+    const chargeId = chargeResponse.data._embedded.charges[0].id
+
+    console.log(order);
+
+    // record order
+    await JunoPaymentHelper._recordTransactionOrder(order, req, TransactionTypes.CREDIT_CARD)
+
+    // pay order
+    try {
+      const paymentResponse = await JunoPaymentHelper.request("POST", "/payments", {
+        "chargeId": chargeId,
+        "billing": {
+          "email": buyerEmail,
+          "address": buyerAddress,
+          "delayed": false
+        },
+        "creditCardDetails": {
+          "creditCardHash": buyerCreditCardHash
+        }
+      })
+
+      console.log('PAYMENT RESPONSE');
+      console.log(paymentResponse.data);
+      return paymentResponse.data
+
+    }
+    catch (error) {
+      console.error(error.response.data);
+      return false
+
+    }
+
+
+
+
+
+
+  }
+
   public static generateBoletoPaymentRequest = async (req) => {
 
 
@@ -75,31 +163,7 @@ export class JunoPaymentHelper {
     const order = _embedded.charges[0];
 
     // if order was generated successfully, lets create a transaction in our db
-    if (order.code) {
-
-      try {
-        const newTransaction = new Transaction({
-          orderId: order.id,
-          userId: req.user._id,
-          code: order.code,
-          type: TransactionTypes.BOLETO,
-          reference: order.reference,
-          status: TransactionStatus.CREATED,
-          amount: order.amount,
-          boletoLink: order.link,
-          dueDate: order.dueDate,
-        })
-        await newTransaction.save();
-
-        return order;
-      }
-      catch (error) {
-        ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `💰: Juno - Failed while trying to generate your transaction!`)
-        console.error(error);
-        return false
-      }
-
-    }
+    return JunoPaymentHelper._recordTransactionOrder(order, req, TransactionTypes.BOLETO);
 
 
   }
