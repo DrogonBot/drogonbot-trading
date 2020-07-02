@@ -69,7 +69,7 @@ const Payment = ({ provinces }: IProps) => {
           <p>
             <strong>Preço: R$19.90 por 60 créditos</strong>
           </p>
-
+          <h3>Selecione a forma de pagamento: </h3>
           <PaymentSelectorContainer>
             <CreditCardContainer
               onClick={() => onChangePaymentType(PaymentTypes.CREDIT_CARD)}
@@ -156,6 +156,7 @@ const CreditCardContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 0.5rem;
 `;
 
 export const ExpansionPanelTitle = styled.div`

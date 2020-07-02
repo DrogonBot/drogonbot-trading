@@ -18,13 +18,13 @@ export const PaymentFAQ: React.FC = () => {
           id="panel1a-header"
         >
           <ExpansionPanelTitle>
-            Porque necessito do CPF para pagamento do boleto?
+            Porque necessito do CPF para pagamento?
           </ExpansionPanelTitle>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Typography>
             Desde 2017, bancos exigem que o pagador forneca o CPF para emissão
-            do boleto.{" "}
+            do boleto. No caso dos cartões, seria para evitar fraudes.{" "}
             <a
               target="_blank"
               href="http://g1.globo.com/jornal-nacional/noticia/2016/10/boletos-deverao-apresentar-cpf-do-pagador-partir-de-2017.html"

@@ -28,3 +28,8 @@ export interface INavOption {
   mobileOnly?: boolean;
   desktopOnly?: boolean;
 }
+
+export interface IAlertInfo {
+  type: "error" | "info" | "warning" | "success";
+  message: string;
+}

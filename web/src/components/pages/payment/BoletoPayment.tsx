@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { appEnv } from '../../../constants/Env.constant';
+import { CPF_MASK } from '../../../constants/payment.constant';
 import { APIHelper } from '../../../helpers/APIHelper';
 import { GenericHelper } from '../../../helpers/GenericHelper';
 import { TS } from '../../../helpers/LanguageHelper';
@@ -88,7 +89,7 @@ export const BoletoPayment: React.FC = (props) => {
 
       <Field>
         <InputMask
-          mask="999.999.999-99"
+          mask={CPF_MASK}
           disabled={false}
           maskChar="x"
           value={userCPF}
