@@ -31,6 +31,7 @@ export interface IUserNotification {
 
 export interface IUserDocument extends Document {
   name: string;
+  cpf?: string;
   genericPositionsOfInterest: string[]
   language: string;
   country: string;

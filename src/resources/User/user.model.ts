@@ -37,6 +37,9 @@ export const userSchema: Schema = new Schema(
       type: String,
       trim: true
     },
+    cpf: {
+      type: String,
+    },
     genericPositionsOfInterest: {
       type: [String],
       default: []

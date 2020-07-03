@@ -140,6 +140,13 @@ export class JunoPaymentHelper {
 
     const { buyerName, buyerCPF, buyerEmail } = req.body;
 
+    const user = req.user;
+
+    // lets update our user CPF records (so we can use for subsequent charges)
+
+    user.cpf = buyerCPF;
+    await user.save();
+
 
     const response = await JunoPaymentHelper.request("POST", "/charges", {
       "charge": {

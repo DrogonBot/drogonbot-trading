@@ -98,6 +98,7 @@ subscriptionRouter.post('/subscription/:method', [userAuthMiddleware, UserMiddle
   switch (method) {
     case "creditcard":
 
+      // TODO: NOT WORKING YET. WAIT FOR JUNO RESPONSE.
 
       console.log('creating new subscription...');
 
