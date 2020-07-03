@@ -157,4 +157,5 @@ const TextOr = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   color: ${colors.primary};
+  text-decoration: underline;
 `;

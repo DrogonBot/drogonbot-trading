@@ -194,11 +194,7 @@ IProps) => {
           <CreditsModal onClose={() => setShowCreditsModal(false)} />
         )}
 
-        {user?.credits === 0 ? (
-          <CreditsModal onClose={() => setShowCreditsModal(false)} />
-        ) : (
-          <LeadModal post={post} jobRoles={jobRoles} />
-        )}
+        <LeadModal post={post} jobRoles={jobRoles} />
       </Body>
       <Footer />
     </>

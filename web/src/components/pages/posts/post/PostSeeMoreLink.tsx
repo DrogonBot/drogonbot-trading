@@ -45,7 +45,7 @@ export const PostSeeMoreLink: React.FC<IProps> = ({ post }) => {
   );
 };
 
-const SeeMoreLink = styled.div`
+const SeeMoreLink = styled.p`
   color: ${colors.accent};
   display: block;
   margin-top: 1.5rem;

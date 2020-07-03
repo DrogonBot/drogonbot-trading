@@ -43,7 +43,7 @@ export const PostContent = ({ post }: IProps) => {
   );
 };
 
-const ContentArea = styled.p`
+const ContentArea = styled.div`
   color: ${colors.silver};
   white-space: pre-wrap;
 `;
