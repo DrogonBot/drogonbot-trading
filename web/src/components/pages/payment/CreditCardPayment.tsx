@@ -101,11 +101,6 @@ export const CreditCardPayment: React.FC = (props) => {
 
     const preparedPostCode = buyerPostCode.replace(new RegExp("-", "g"), "");
 
-    console.log("CREDIT CARD HASH");
-    console.log(creditCardHash);
-
-    return;
-
     const paymentServerPayload = {
       buyerCreditCardHash: creditCardHash,
       buyerName: creditCard.name,

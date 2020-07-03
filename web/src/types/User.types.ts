@@ -20,6 +20,7 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
   credits: number;
+  isPremium: boolean;
 }
 
 export interface INewAccount {

@@ -73,6 +73,7 @@ export interface IPost {
   schedule?: string;
   requisites?: string;
   experienceRequired?: boolean;
+  premiumOnly: boolean;
 }
 
 export enum RelatedPostType {

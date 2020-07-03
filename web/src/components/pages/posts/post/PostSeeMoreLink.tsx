@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { colors } from '../../../../constants/UI/Colors.constant';
 import { GenericHelper } from '../../../../helpers/GenericHelper';
 import { TS } from '../../../../helpers/LanguageHelper';
-import { userConsumeCredit, userGetProfileInfo } from '../../../../store/actions/user.actions';
+import { userGetProfileInfo } from '../../../../store/actions/user.actions';
 import { IPost } from '../../../../types/Post.types';
 
 interface IProps {
@@ -20,7 +20,7 @@ export const PostSeeMoreLink: React.FC<IProps> = ({ post }) => {
   const onCTAClick = async () => {
     // if user is NOT authenticated, block and ask him to login
 
-    const user = await dispatch(userGetProfileInfo());
+    const user: any = await dispatch(userGetProfileInfo());
 
     if (!user) {
       alert(TS.string("account", "loginRequiredMessage"));
@@ -28,13 +28,12 @@ export const PostSeeMoreLink: React.FC<IProps> = ({ post }) => {
       return;
     }
 
-    // else, proceed with link action + consume one credit
-    const isCreditConsumed = await dispatch(userConsumeCredit(post));
-
-    if (isCreditConsumed) {
+    if (post.premiumOnly && user.isPremium) {
       return GenericHelper.crossBrowserUrlRedirect(post.externalUrl);
     } else {
-      router.push("/posts/share");
+      alert(TS.string("account", "premiumAccessOnly"));
+      router.push("/payment");
+      return;
     }
   };
 
