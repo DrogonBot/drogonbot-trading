@@ -41,16 +41,11 @@ export class JunoPaymentHelper {
 
   public static request = async (method, endpoint: string, data: Object | null) => {
 
-    console.log(`triggering request to ${endpoint}`);
-
     const response = await junoAxiosRequest.request({
       method,
       url: endpoint,
       data,
     })
-
-    console.log(response);
-
 
     return response
   }
@@ -140,7 +135,7 @@ export class JunoPaymentHelper {
     }
   }
 
-  public static generateBoletoPaymentRequest = async (req) => {
+  public static generateBoletoPaymentRequest = async (req, description, amount, reference) => {
 
 
     const { buyerName, buyerCPF, buyerEmail } = req.body;
@@ -148,9 +143,9 @@ export class JunoPaymentHelper {
 
     const response = await JunoPaymentHelper.request("POST", "/charges", {
       "charge": {
-        "description": "Emprego Urgente - Compra de créditos de envio de currículo",
-        "amount": 19.90,
-        "references": ["CREDITOS_ENVIO"]
+        "description": description,
+        "amount": amount,
+        "references": [reference]
       },
       "billing": {
         "name": buyerName,

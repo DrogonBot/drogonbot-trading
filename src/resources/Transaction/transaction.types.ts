@@ -19,8 +19,7 @@ export enum TransactionTypes {
 }
 
 export enum TransactionReferences {
-  CreditosEnvio = "CREDITOS_ENVIO",
-
+  Subscription = "SUBSCRIPTION"
 }
 
 export enum TransactionStatus {
@@ -29,10 +28,4 @@ export enum TransactionStatus {
   PAID = "ORDER.PAID",
   NOT_PAID = "ORDER.NOT_PAID",
   REVERTED = "ORDER.REVERTED"
-}
-
-export enum PaymentAvailableMethods {
-  Boleto = "boleto",
-  CreditCard = "creditcard",
-  DebitCard = "debitcard"
 }
