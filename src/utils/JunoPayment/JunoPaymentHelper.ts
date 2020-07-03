@@ -84,6 +84,33 @@ export class JunoPaymentHelper {
     }
   }
 
+  public static notifyUserAboutPayment = async (user, order) => {
+    const accountEmailManager = new AccountEmailManager();
+
+    const subject = TS.string('transaction', 'invoiceNotificationSubject', {
+      product: TS.string("subscription", "genericSubscription"),
+      paymentMethod: "Boleto"
+    })
+
+    await accountEmailManager.sendEmail(user.email, subject, 'invoice', {
+      invoiceNotificationGreetings: TS.string("transaction", 'invoiceNotificationGreetings', {
+        firstName: user.getFirstName()
+      }),
+      invoiceNotificationFirstPhrase: TS.string('transaction', 'invoiceNotificationFirstPhrase'),
+      invoiceItemTitle: TS.string('transaction', 'invoiceItemTitle'),
+      invoiceItem: TS.string('subscription', 'genericSubscription'),
+      invoiceAmountDueTitle: TS.string('transaction', 'invoiceAmountDueTitle'),
+      invoiceAmount: `${TS.string(null, 'currency')} ${order.amount}`,
+      invoiceDueByTitle: TS.string('transaction', 'invoiceDueByTitle'),
+      invoiceDueBy: moment(order.dueDate).format("DD/MM/YYYY"),
+      invoicePaymentUrl: order.installmentLink,
+      invoicePayCTA: TS.string('transaction', 'invoicePayCTA'),
+      invoiceEndPhrase: TS.string('transaction', 'invoiceEndPhrase')
+    })
+
+
+  }
+
   public static generateCreditCardPaymentRequest = async (req) => {
     const { buyerCreditCardHash, buyerName, buyerCPF, buyerEmail, buyerAddress } = req.body
 
@@ -142,7 +169,7 @@ export class JunoPaymentHelper {
   public static generateBoletoPaymentRequest = async (req, description, amount, reference) => {
 
 
-    const { buyerName, buyerCPF, buyerEmail } = req.body;
+    const { buyerName, buyerCPF } = req.body;
 
     const user: IUser = req.user;
 
@@ -161,7 +188,7 @@ export class JunoPaymentHelper {
       "billing": {
         "name": buyerName,
         "document": buyerCPF,
-        "email": buyerEmail,
+        "email": user.email,
         "notify": "false"
       }
     })
@@ -171,32 +198,10 @@ export class JunoPaymentHelper {
 
     // if order was generated successfully, lets create a transaction in our db and notify the user about our charge
     if (order) {
+
       JunoPaymentHelper._recordTransactionOrder(order, req, TransactionTypes.BOLETO)
 
-
-      const accountEmailManager = new AccountEmailManager();
-
-      const subject = TS.string('transaction', 'invoiceNotificationSubject', {
-        product: TS.string("subscription", "genericSubscription"),
-        paymentMethod: "Boleto"
-      })
-
-      await accountEmailManager.sendEmail(buyerEmail, subject, 'invoice', {
-        invoiceNotificationGreetings: TS.string("transaction", 'invoiceNotificationGreetings', {
-          firstName: user.getFirstName()
-        }),
-        invoiceNotificationFirstPhrase: TS.string('transaction', 'invoiceNotificationFirstPhrase'),
-        invoiceItemTitle: TS.string('transaction', 'invoiceItemTitle'),
-        invoiceItem: TS.string('subscription', 'genericSubscription'),
-        invoiceAmountDueTitle: TS.string('transaction', 'invoiceAmountDueTitle'),
-        invoiceAmount: `${TS.string(null, 'currency')} ${amount}`,
-        invoiceDueByTitle: TS.string('transaction', 'invoiceDueByTitle'),
-        invoiceDueBy: moment(order.dueDate).format("DD/MM/YYYY"),
-        invoicePaymentUrl: order.installmentLink,
-        invoicePayCTA: TS.string('transaction', 'invoicePayCTA'),
-        invoiceEndPhrase: TS.string('transaction', 'invoiceEndPhrase')
-      })
-
+      await JunoPaymentHelper.notifyUserAboutPayment(user, order)
 
     }
 
