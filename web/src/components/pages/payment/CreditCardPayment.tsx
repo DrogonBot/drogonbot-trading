@@ -7,6 +7,7 @@ import { appEnv } from '../../../constants/Env.constant';
 import { APIHelper } from '../../../helpers/APIHelper';
 import { TS } from '../../../helpers/LanguageHelper';
 import { PaymentHelper } from '../../../helpers/PaymentHelper';
+import { ValidationHelper } from '../../../helpers/ValidationHelper';
 import { userGetProfileInfo } from '../../../store/actions/user.actions';
 import { AppState } from '../../../store/reducers/index.reducers';
 import { ICreditCard } from '../../../types/Payment.types';
@@ -43,13 +44,45 @@ export const CreditCardPayment: React.FC = (props) => {
   });
 
   const onHandleCreditCardPayment = async () => {
-    // validate payment!
+    // VALIDATION ========================================
+
+    // Credit card validation
 
     const creditCardHash = await PaymentHelper.validateAndGenerateCreditCardHash(
       creditCard
     );
 
     if (!creditCardHash) {
+      return;
+    }
+
+    // User info validation
+
+    const invalidFields = ValidationHelper.validateKeyValue(userInfo, {
+      optionalFields: [],
+      fieldLabels: {
+        buyerName: "Nome",
+        buyerCPF: "CPF",
+        buyerEmail: "E-mail",
+        buyerStreet: "Rua",
+        buyerNumber: "Número da rua/av.",
+        buyerComplement: "Complemento da rua/av.",
+        buyerNeighborhood: "Bairro",
+        buyerCity: "Cidade",
+        buyerState: "Estado",
+        buyerPostCode: "CEP",
+      },
+    });
+
+    if (invalidFields) {
+      if (process.browser) {
+        window.alert(
+          `${TS.string(
+            "global",
+            "genericFollowingFieldsInvalid"
+          )} ${invalidFields}`
+        );
+      }
       return;
     }
 
@@ -84,8 +117,6 @@ export const CreditCardPayment: React.FC = (props) => {
       },
     };
 
-    console.log(paymentServerPayload);
-
     const response = await APIHelper.request(
       "POST",
       "/transaction/checkout/creditcard",
@@ -103,8 +134,6 @@ export const CreditCardPayment: React.FC = (props) => {
       alert(`Erro: ${response.data.message}`);
       return;
     }
-
-    console.log(response.data);
 
     const paymentPayload = response.data.payments[0];
 

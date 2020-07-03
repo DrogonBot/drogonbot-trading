@@ -143,7 +143,6 @@ transactionRouter.post('/transaction/checkout/:paymentMethod', [userAuthMiddlewa
           return res.status(200).send(ccReq)
         }
         catch (error) {
-          console.log('DEU ERRO!!!');
           console.log(error);
 
           return res.status(200).send({

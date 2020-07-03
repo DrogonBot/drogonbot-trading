@@ -87,6 +87,56 @@ export const UserPaymentInfoForm: React.FC<IProps> = ({
               )}
             </InputMask>
           </Grid>
+          <Grid item xs={4}>
+            <TextField
+              name="buyerCity"
+              label="Cidade"
+              type="text"
+              variant={"outlined"}
+              fullWidth
+              size="small"
+              onChange={handleUserInfoChange}
+              value={userInfo.buyerCity}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <InputMask
+              mask={"aa"}
+              maskChar="x"
+              onChange={handleUserInfoChange}
+              value={userInfo.buyerState}
+            >
+              {() => (
+                <TextField
+                  name="buyerState"
+                  label="Estado"
+                  type="text"
+                  variant={"outlined"}
+                  fullWidth
+                  size="small"
+                />
+              )}
+            </InputMask>
+          </Grid>
+          <Grid item xs={4}>
+            <InputMask
+              mask={CEP_MASK}
+              maskChar="x"
+              onChange={handleUserInfoChange}
+              value={userInfo.buyerPostCode}
+            >
+              {() => (
+                <TextField
+                  name="buyerPostCode"
+                  label="CEP"
+                  type="text"
+                  variant={"outlined"}
+                  fullWidth
+                  size="small"
+                />
+              )}
+            </InputMask>
+          </Grid>
           <Grid item xs={8}>
             <TextField
               name="buyerStreet"
@@ -103,7 +153,7 @@ export const UserPaymentInfoForm: React.FC<IProps> = ({
             <TextField
               name="buyerNumber"
               label="Número"
-              type="text"
+              type="number"
               variant={"outlined"}
               fullWidth
               size="small"
@@ -133,60 +183,10 @@ export const UserPaymentInfoForm: React.FC<IProps> = ({
               size="small"
               onChange={handleUserInfoChange}
               value={userInfo.buyerComplement}
-              helperText="Exemplo: Ao lado da padaria xyz..."
+              helperText="Exemplo: Ao lado da padaria"
             />
           </Grid>
-          <Grid item xs={4}>
-            <TextField
-              name="buyerCity"
-              label="Cidade"
-              type="text"
-              variant={"outlined"}
-              fullWidth
-              size="small"
-              onChange={handleUserInfoChange}
-              value={userInfo.buyerCity}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <InputMask
-              mask={"aa"}
-              maskChar="x"
-              onChange={handleUserInfoChange}
-              value={userInfo.buyerState}
-            >
-              {() => (
-                <TextField
-                  name="buyerState"
-                  label="Estado"
-                  type="text"
-                  variant={"outlined"}
-                  fullWidth
-                  size="small"
-                  helperText={"Duas letras apenas. Ex: SP"}
-                />
-              )}
-            </InputMask>
-          </Grid>
-          <Grid item xs={4}>
-            <InputMask
-              mask={CEP_MASK}
-              maskChar="x"
-              onChange={handleUserInfoChange}
-              value={userInfo.buyerPostCode}
-            >
-              {() => (
-                <TextField
-                  name="buyerPostCode"
-                  label="CEP"
-                  type="text"
-                  variant={"outlined"}
-                  fullWidth
-                  size="small"
-                />
-              )}
-            </InputMask>
-          </Grid>
+
           <Grid item xs={12}>
             <Button
               variant="contained"
