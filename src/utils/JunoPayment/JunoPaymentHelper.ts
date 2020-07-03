@@ -41,11 +41,15 @@ export class JunoPaymentHelper {
 
   public static request = async (method, endpoint: string, data: Object | null) => {
 
+    console.log(`triggering request to ${endpoint}`);
+
     const response = await junoAxiosRequest.request({
       method,
       url: endpoint,
       data,
     })
+
+    console.log(response);
 
 
     return response

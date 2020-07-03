@@ -27,6 +27,7 @@ import { postRouter } from './resources/Post/post.routes';
 import { resumeRouter } from './resources/Resume/resume.routes';
 import { sectorRouter } from './resources/Sector/sector.routes';
 import { SectorSeeder } from './resources/Sector/sector.seeder';
+import { subscriptionRouter } from './resources/Subscription/subscription.routes';
 import { transactionRouter } from './resources/Transaction/transaction.routes';
 import { userRouter } from './resources/User/user.routes';
 import { ConsoleColor, ConsoleHelper } from './utils/ConsoleHelper';
@@ -159,6 +160,7 @@ app.use(countryRouter)
 app.use(operationRouter)
 app.use(affiliateRouter)
 app.use(transactionRouter)
+app.use(subscriptionRouter)
 
 server.listen(process.env.NODE_API_PORT, async () => {
 

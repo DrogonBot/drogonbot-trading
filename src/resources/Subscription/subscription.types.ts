@@ -1,5 +1,6 @@
 
 export interface ISubscription {
+  userId: string,
   subscriptionId: string,
   paymentType: "BOLETO" | "CREDIT_CARD",
   dueDay: number,

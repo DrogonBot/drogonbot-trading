@@ -84,16 +84,12 @@ transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAutho
               console.error(error);
             }
 
-
-
             break;
         }
 
 
 
       }
-
-      // increase user credits
 
       return res.status(200).send(response.data)
 
@@ -120,11 +116,7 @@ transactionRouter.post('/transaction/checkout/:paymentMethod', [userAuthMiddlewa
 
   const { paymentMethod } = req.params;
 
-
-
   try {
-
-
     switch (paymentMethod) {
 
       case PaymentAvailableMethods.Boleto:
