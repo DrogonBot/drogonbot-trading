@@ -228,6 +228,6 @@ export const strings = {
   },
   postPremiumOnlyCTA: {
     eng: "Premium only Job",
-    ptBr: "VAga Apenas para Assinantes",
+    ptBr: "Vaga Apenas para Assinantes",
   },
 };

@@ -18,6 +18,7 @@ export const colors = {
   blue: "#5483EF",
   lightBlue: "#50B0FB",
   yellow: "#FFDC30",
+  lightYellow: "#fff8d6",
   backgroundGmail: "#D44638",
   backgroundFacebook: "#4267B2",
   silver: "#808a8b",

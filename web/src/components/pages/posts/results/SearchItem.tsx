@@ -1,3 +1,4 @@
+import LockIcon from '@material-ui/icons/Lock';
 import ShareIcon from '@material-ui/icons/Share';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Link from 'next/link';
@@ -24,7 +25,7 @@ export const SearchItem = ({ post }: IProps) => {
   const postLink = `/posts/${post.slug}`;
 
   return (
-    <Container>
+    <Container isPremiumOnly={post.premiumOnly}>
       <Breadcumb
         parent={`${post.stateCode} › ${post.city} › ${post.sector}`}
         child={tags}
@@ -33,6 +34,7 @@ export const SearchItem = ({ post }: IProps) => {
         <Title>
           {post.title}
           {post.isTrustableSource && <VerifiedIcon />}
+          {post.premiumOnly && <PremiumIcon />}
         </Title>
       </Link>
       <ActionsContainer>
@@ -63,12 +65,20 @@ const ShareAction = ({ postLink }) => (
   </ShareContainer>
 );
 
+const PremiumIcon = () => (
+  <IconContainer color={colors.dark}>
+    <ToolTipIcon text={TS.string("post", "postPremiumOnlyCTA")}>
+      <LockIcon />
+    </ToolTipIcon>
+  </IconContainer>
+);
+
 const VerifiedIcon = () => (
-  <VerifiedIconContainer>
+  <IconContainer color={colors.green}>
     <ToolTipIcon text={TS.string("post", "postTrustableSource")}>
       <VerifiedUserIcon />
     </ToolTipIcon>
-  </VerifiedIconContainer>
+  </IconContainer>
 );
 
 const ShareContainer = styled.a`
@@ -78,13 +88,13 @@ const ShareContainer = styled.a`
   }
 `;
 
-const VerifiedIconContainer = styled.div`
+const IconContainer = styled.div`
   position: relative;
   top: -0.1rem;
   font-size: 1rem;
   margin-left: 0.3rem;
   svg {
-    color: ${colors.green};
+    color: ${(props) => props.color};
   }
 `;
 
@@ -98,10 +108,11 @@ const Container = styled.div`
   padding: 1.5rem;
   word-break: break-all;
 
+  background-color: ${(props) => props.isPremiumOnly && colors.lightYellow};
+
   /*DESKTOP ONLY CODE*/
   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
     box-shadow: none;
-    padding-left: 0;
     max-width: 652px;
   }
 `;
