@@ -39,8 +39,6 @@ transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAutho
     try {
       const response = await JunoPaymentHelper.request("GET", `/charges/${fetchedTransaction.orderId}`, null)
 
-
-
       const payments: IJunoPayment[] = response.data.payments;
 
       if (!payments) {
@@ -139,15 +137,20 @@ transactionRouter.post('/transaction/checkout/:paymentMethod', [userAuthMiddlewa
 
       case PaymentAvailableMethods.CreditCard:
 
-        const ccReq = await JunoPaymentHelper.generateCreditCardPaymentRequest(req);
+        try {
+          const ccReq = await JunoPaymentHelper.generateCreditCardPaymentRequest(req);
 
-        if (ccReq) {
           return res.status(200).send(ccReq)
         }
+        catch (error) {
+          console.log('DEU ERRO!!!');
+          console.log(error);
 
-        break
-
-
+          return res.status(200).send({
+            status: "error",
+            message: error.message
+          })
+        }
     }
 
 

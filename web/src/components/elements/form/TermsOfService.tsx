@@ -11,7 +11,9 @@ interface IProps {
 export const TermsOfService: React.FC<IProps> = (props) => {
   return (
     <Container>
-      <Link href={props.href}>{props.children}</Link>
+      <Link href={props.href}>
+        <a>{props.children}</a>
+      </Link>
     </Container>
   );
 };

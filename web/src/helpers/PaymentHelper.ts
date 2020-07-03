@@ -103,11 +103,12 @@ export class PaymentHelper {
           function(error) {
             /* Erro - A variável error conterá o erro ocorrido ao obter o hash */
             console.log(error);
+            alert(error.toString("utf8"));
             reject(error);
           }
         );
       } catch (error) {
-        console.log(error);
+        alert(error.toString("utf8"));
         reject(error);
       }
     });
