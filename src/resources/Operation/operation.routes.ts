@@ -241,8 +241,11 @@ operationRouter.get("/premium-fix", [userAuthMiddleware], async (req, res) => {
 
   const posts = await Post.find({})
   for (const post of posts) {
-    post.premiumOnly = false;
-    await post.save();
+    if (!post.premiumOnly) {
+      post.premiumOnly = false;
+      await post.save();
+
+    }
   }
 
   return res.status(200).send({
