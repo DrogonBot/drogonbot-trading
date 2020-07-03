@@ -52,15 +52,17 @@ class MyDocument extends Document {
 
           {/* Juno Credit Card Validation Library */}
           {ENV === EnvironmentTypes.Development ? (
+            
             <script
               type="text/javascript"
               src="https://sandbox.boletobancario.com/boletofacil/wro/direct-checkout.min.js"
-            ></script>
+            />
           ) : (
+            
             <script
               type="text/javascript"
               src="https://www.boletobancario.com/boletofacil/wro/direct-checkout.min.js"
-            ></script>
+            />
           )}
 
           {/* Feed Link */}
