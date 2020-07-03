@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import UserAgent from 'user-agents';
 
 import { EnvType } from '../../constants/types/env.types';
@@ -11,7 +12,9 @@ import { PostHelper } from '../../utils/PostHelper';
 import { TS } from '../../utils/TS';
 import { ScrapperFacebook } from '../scrappers/ScrapperFacebook';
 import { ICrawlerFunctions, IProxyItem, PagePattern, ProxyType } from '../types/bots.types';
+import { IPostModel } from './../../resources/Post/post.model';
 import { NotificationHelper } from './../../utils/NotificationHelper';
+import { SubscriptionHelper } from './../../utils/SubscriptionHelper';
 import { ConnectionHelper } from './ConnectionHelper';
 import { PostScrapperHelper } from './PostScrapperHelper';
 
@@ -42,7 +45,7 @@ export class BotHelper {
         await BotHelper.initializeFreeProxy()
 
 
-        // ! ZenScrape is turned off temporarely
+        // ! ZenScrape is turned off temporarily
         // // ! Due to high costs, ZenScrape is restricted to Facebook only!
         // if (source === PostSource.Facebook) {
         //   // lets check if our free tier on ZenScrape is already gone. If so, use free proxy for requests
@@ -199,19 +202,10 @@ export class BotHelper {
           }
         }
 
-        const newPost = new Post({ ...post, slug: PostHelper.generateTitleSlug(post.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
-
-        newPost.content = BotHelper._hideContactDetails(newPost.content);
-
-
-        await newPost.save()
-        await BotHelper.addToUsersReport(newPost)
-
-        console.log(`🤖: Saving post: ${post.title}`);
-
-        await NotificationHelper.newPostNotification(newPost);
+        const newPost = await BotHelper._savePostAndAddToReport(post, isTrustableSource, redirectToSourceOnly)
 
         await GenericHelper.sleep(1000)
+
         ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Post saved on database! => ${newPost.title}`)
         console.log(`${newPost.title} - ${newPost.stateCode}/${newPost.city} - ${newPost.externalUrl ? newPost.externalUrl : ''}`);
       }
@@ -290,6 +284,32 @@ export class BotHelper {
     return replacedContent;
   }
 
+  private static _savePostAndAddToReport = async (postData, isTrustableSource: boolean | undefined, redirectToSourceOnly: boolean | undefined) => {
+
+    const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
+
+    // decide if it will be a premium only post or not
+    const n = _.random(100);
+
+    if (n <= SubscriptionHelper.getSectorPremiumChance(newPost.sector)) {
+      newPost.premiumOnly = true;
+    }
+
+
+    // hide all contact data from page source
+
+    newPost.content = BotHelper._hideContactDetails(newPost.content);
+
+    console.log(newPost.content);
+
+    await newPost.save()
+
+    await BotHelper.addToUsersReport(newPost)
+
+    return newPost;
+
+  }
+
   private static _scrapPage = async (link: string, crawlPageDataFunction, postDataOverride?, bypassPostContentFilter?: boolean, isTrustableSource?: boolean, redirectToSourceOnly?: boolean) => {
     try {
       console.log(`🤖: Scrapping data from ...${link}`);
@@ -318,18 +338,7 @@ export class BotHelper {
 
 
         try {
-          const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
-
-          // hide all contact data from page source
-
-
-          newPost.content = BotHelper._hideContactDetails(newPost.content);
-
-          console.log(newPost.content);
-
-          await newPost.save()
-
-          await BotHelper.addToUsersReport(newPost)
+          const newPost: IPostModel = await BotHelper._savePostAndAddToReport(postData, isTrustableSource, redirectToSourceOnly)
 
           console.log(`${newPost.title} - ${newPost.stateCode}/${newPost.city} - ${newPost.externalUrl ? newPost.externalUrl : ''}`);
 
