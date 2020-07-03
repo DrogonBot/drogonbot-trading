@@ -18,7 +18,10 @@ export const emailProviders: IEmailProvider[] = [
       sgMail.setApiKey(process.env.SENDGRID_API_KEY)
       sgMail.send({
         to,
-        from,
+        from: {
+          email: from,
+          name: process.env.APP_NAME
+        },
         subject,
         html,
         text
@@ -49,7 +52,7 @@ export const emailProviders: IEmailProvider[] = [
       const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
       sendSmtpEmail.to = [{ email: to }]
-      sendSmtpEmail.sender = { email: from }
+      sendSmtpEmail.sender = { email: from, name: process.env.APP_NAME }
       sendSmtpEmail.htmlContent = html
       sendSmtpEmail.textContent = text
       sendSmtpEmail.subject = subject
@@ -84,6 +87,7 @@ export const emailProviders: IEmailProvider[] = [
               {
                 "From": {
                   "Email": from,
+                  "Name": process.env.APP_NAME
                 },
                 "To": [
                   {

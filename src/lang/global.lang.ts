@@ -1,4 +1,8 @@
 export const globalStrings = {
+  currency: {
+    eng: "CAD",
+    ptBr: "R$",
+  },
   methodNotAllowed: {
     eng: 'Sorry, this request method is not allowed.',
     ptBr: 'Desculpe, este método de solicitação não é permitido.'

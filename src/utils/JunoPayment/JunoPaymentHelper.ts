@@ -1,9 +1,13 @@
 import axios from 'axios';
+import moment from 'moment';
 import { base64encode } from 'nodejs-base64';
 
+import { AccountEmailManager } from '../../emails/account.email';
 import { Transaction } from '../../resources/Transaction/transaction.model';
 import { TransactionStatus, TransactionTypes } from '../../resources/Transaction/transaction.types';
 import { ConsoleColor, ConsoleHelper } from '../ConsoleHelper';
+import { IUser } from './../../resources/User/user.model';
+import { TS } from './../TS';
 import { junoAxiosRequest } from './junopayment.constants';
 import { IJunoAccessTokenResponse } from './junopayment.types';
 
@@ -140,7 +144,7 @@ export class JunoPaymentHelper {
 
     const { buyerName, buyerCPF, buyerEmail } = req.body;
 
-    const user = req.user;
+    const user: IUser = req.user;
 
     // lets update our user CPF records (so we can use for subsequent charges)
 
@@ -158,15 +162,45 @@ export class JunoPaymentHelper {
         "name": buyerName,
         "document": buyerCPF,
         "email": buyerEmail,
-        "notify": "true"
+        "notify": "false"
       }
     })
 
     const { _embedded } = response.data;
     const order = _embedded.charges[0];
 
-    // if order was generated successfully, lets create a transaction in our db
-    return JunoPaymentHelper._recordTransactionOrder(order, req, TransactionTypes.BOLETO);
+    // if order was generated successfully, lets create a transaction in our db and notify the user about our charge
+    if (order) {
+      JunoPaymentHelper._recordTransactionOrder(order, req, TransactionTypes.BOLETO)
+
+
+      const accountEmailManager = new AccountEmailManager();
+
+      const subject = TS.string('transaction', 'invoiceNotificationSubject', {
+        product: TS.string("subscription", "genericSubscription"),
+        paymentMethod: "Boleto"
+      })
+
+      await accountEmailManager.sendEmail(buyerEmail, subject, 'invoice', {
+        invoiceNotificationGreetings: TS.string("transaction", 'invoiceNotificationGreetings', {
+          firstName: user.getFirstName()
+        }),
+        invoiceNotificationFirstPhrase: TS.string('transaction', 'invoiceNotificationFirstPhrase'),
+        invoiceItemTitle: TS.string('transaction', 'invoiceItemTitle'),
+        invoiceItem: TS.string('subscription', 'genericSubscription'),
+        invoiceAmountDueTitle: TS.string('transaction', 'invoiceAmountDueTitle'),
+        invoiceAmount: `${TS.string(null, 'currency')} ${amount}`,
+        invoiceDueByTitle: TS.string('transaction', 'invoiceDueByTitle'),
+        invoiceDueBy: moment(order.dueDate).format("DD/MM/YYYY"),
+        invoicePaymentUrl: order.installmentLink,
+        invoicePayCTA: TS.string('transaction', 'invoicePayCTA'),
+        invoiceEndPhrase: TS.string('transaction', 'invoiceEndPhrase')
+      })
+
+
+    }
+
+    return order;
 
 
   }

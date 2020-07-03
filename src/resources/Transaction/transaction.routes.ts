@@ -1,10 +1,13 @@
 import express from 'express';
+import moment from 'moment';
 
 import { PaymentMiddleware } from '../../middlewares/payment.middleware';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { IJunoPayment } from '../../utils/JunoPayment/junopayment.types';
 import { JunoPaymentHelper } from '../../utils/JunoPayment/JunoPaymentHelper';
 import { TS } from '../../utils/TS';
+import { Subscription } from '../Subscription/subscription.model';
+import { SubscriptionStatus } from '../Subscription/subscription.types';
 import { User } from '../User/user.model';
 import { Transaction } from './transaction.model';
 import { TransactionReferences, TransactionStatus } from './transaction.types';
@@ -71,6 +74,23 @@ transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAutho
 
           case TransactionReferences.Subscription:
 
+            const add30DaysFromToday = moment().add(30, "days")
+
+            const dueDay = add30DaysFromToday.daysInMonth()
+
+            // generate subscription in our system
+            const subscription = new Subscription({
+              userId: fetchedTransaction.userId,
+              paymentType: fetchedTransaction.type,
+              dueDay,
+              status: SubscriptionStatus.Active,
+              startsOn: new Date(),
+              nextBillingDate: add30DaysFromToday
+            })
+            await subscription.save();
+
+
+            // set user as premium
             try {
               const user = await User.findOne({ _id: fetchedTransaction.userId });
 

@@ -8,3 +8,8 @@ export interface ISubscription {
   startsOn: Date,
   nextBillingDate: Date,
 }
+
+export enum SubscriptionStatus {
+  Active = "ACTIVE",
+  Inactive = "Inactive"
+}
