@@ -120,7 +120,12 @@ export const userSchema: Schema = new Schema(
     credits: {
       type: Number,
       default: USER_WEEKLY_CREDITS_THRESHOLD
+    },
+    isPremium: {
+      type: Boolean,
+      default: false
     }
+
   },
   {
     timestamps: true

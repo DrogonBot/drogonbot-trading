@@ -77,7 +77,8 @@ export interface IPost {
   active: boolean,
   views: number,
   isPostedOnTelegram: boolean,
-  isPostedOnWhatsApp: boolean
+  isPostedOnWhatsApp: boolean,
+  premiumOnly: boolean
 }
 
 export interface ISimilarityMatch {
