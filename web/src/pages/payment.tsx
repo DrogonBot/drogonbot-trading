@@ -64,10 +64,12 @@ const Payment = ({ provinces }: IProps) => {
         </SearchHeader>
 
         <PageContent>
-          <h1>Compre Créditos</h1>
+          <h1>Assinatura</h1>
 
           <p>
-            <strong>Preço: R$19.90 por 60 créditos</strong>
+            <strong>
+              Preço: R$19.90 por mês para acesso ilimitado a TODAS as vagas
+            </strong>
           </p>
           <h3>Selecione a forma de pagamento: </h3>
           <PaymentSelectorContainer>
