@@ -91,6 +91,7 @@ switch (process.env.ENV) {
     JobsCron.telegramBotPoster();
     JobsCron.whatsAppBotPoster();
     SubscriptionCron.subscriptionDecrementDays();
+    SubscriptionCron.submitBoletoChargeNearExpiration()
 
 
 

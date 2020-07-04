@@ -7,7 +7,7 @@ import { UserMiddleware } from '../../middlewares/user.middleware';
 import { UserType } from '../User/user.types';
 import { JunoPaymentHelper } from './../../utils/JunoPayment/JunoPaymentHelper';
 import { TransactionReferences } from './../Transaction/transaction.types';
-import { SUBSCRIPTION_PLAN_ID, SUBSCRIPTION_PRICE } from './subscription.constant';
+import { SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PLAN_ID, SUBSCRIPTION_PRICE } from './subscription.constant';
 
 
 // @ts-ignore
@@ -144,7 +144,7 @@ subscriptionRouter.post('/subscription/:method', [userAuthMiddleware, UserMiddle
 
       try {
 
-        const boletoReq = await JunoPaymentHelper.generateBoletoPaymentRequest(req, "Emprego-Urgente - Assinatura", SUBSCRIPTION_PRICE, TransactionReferences.Subscription);
+        const boletoReq = await JunoPaymentHelper.generateBoletoPaymentRequest(req, SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE, TransactionReferences.Subscription);
 
         return res.status(200).send(boletoReq)
       }

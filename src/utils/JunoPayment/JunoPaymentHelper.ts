@@ -57,7 +57,7 @@ export class JunoPaymentHelper {
     return response
   }
 
-  private static _recordTransactionOrder = async (order, req, type: TransactionTypes) => {
+  private static _recordTransactionOrder = async (order, userId: string, type: TransactionTypes) => {
 
     // if order was generated successfully, lets create a transaction in our db
     if (order.code) {
@@ -65,13 +65,13 @@ export class JunoPaymentHelper {
       try {
         const newTransaction = new Transaction({
           orderId: order.id,
-          userId: req.user._id,
+          userId,
           code: order.code,
           type,
           reference: order.reference,
           status: TransactionStatus.CREATED,
           amount: order.amount,
-          boletoLink: order.link,
+          paymentLink: order.link,
           dueDate: order.dueDate,
         })
         await newTransaction.save();
@@ -87,7 +87,7 @@ export class JunoPaymentHelper {
     }
   }
 
-  public static notifyUserAboutPayment = async (user, order, paymentMethod: string) => {
+  public static notifyUserAboutPayment = async (user, paymentMethod: string, orderAmount: number, orderDueDate: string, orderInstallmentLink: string) => {
     const accountEmailManager = new AccountEmailManager();
 
     const subject = TS.string('transaction', 'invoiceNotificationSubject', {
@@ -103,10 +103,10 @@ export class JunoPaymentHelper {
       invoiceItemTitle: TS.string('transaction', 'invoiceItemTitle'),
       invoiceItem: TS.string('subscription', 'genericSubscription'),
       invoiceAmountDueTitle: TS.string('transaction', 'invoiceAmountDueTitle'),
-      invoiceAmount: `${TS.string(null, 'currency')} ${order.amount}`,
+      invoiceAmount: `${TS.string(null, 'currency')} ${orderAmount}`,
       invoiceDueByTitle: TS.string('transaction', 'invoiceDueByTitle'),
-      invoiceDueBy: moment(order.dueDate).format("DD/MM/YYYY"),
-      invoicePaymentUrl: order.installmentLink,
+      invoiceDueBy: moment(orderDueDate).format("DD/MM/YYYY"),
+      invoicePaymentUrl: orderInstallmentLink,
       invoicePayCTA: TS.string('transaction', 'invoicePayCTA'),
       invoiceEndPhrase: TS.string('transaction', 'invoiceEndPhrase')
     })
@@ -169,7 +169,41 @@ export class JunoPaymentHelper {
     }
   }
 
-  public static generateBoletoPaymentRequest = async (req, description, amount, reference) => {
+  public static generateBoletoCharge = async (description: string, amount: number, reference: string, dueDate: string, user: IUser, buyerName: string, buyerCPF: string, buyerEmail: string) => {
+
+
+    const response = await JunoPaymentHelper.request("POST", "/charges", {
+      "charge": {
+        "description": description,
+        "amount": amount,
+        "references": [reference],
+        "dueDate": dueDate
+      },
+      "billing": {
+        "name": buyerName,
+        "document": buyerCPF,
+        "email": buyerEmail,
+        "notify": "false"
+      }
+    })
+
+    const { _embedded } = response.data;
+    const order = _embedded.charges[0];
+
+    // if order was generated successfully, lets create a transaction in our db and notify the user about our charge
+    if (order) {
+
+      await JunoPaymentHelper._recordTransactionOrder(order, user._id, TransactionTypes.BOLETO)
+
+      await JunoPaymentHelper.notifyUserAboutPayment(user, "Boleto", order.amount, order.dueDate, order.installmentLink)
+      return order;
+    }
+
+    return false;
+
+  }
+
+  public static generateBoletoPaymentRequest = async (req, description, amount, reference, dueDate?: string) => {
 
 
     const { buyerName, buyerCPF } = req.body;
@@ -181,35 +215,15 @@ export class JunoPaymentHelper {
     user.cpf = buyerCPF;
     await user.save();
 
-
-    const response = await JunoPaymentHelper.request("POST", "/charges", {
-      "charge": {
-        "description": description,
-        "amount": amount,
-        "references": [reference]
-      },
-      "billing": {
-        "name": buyerName,
-        "document": buyerCPF,
-        "email": user.email,
-        "notify": "false"
-      }
-    })
-
-    const { _embedded } = response.data;
-    const order = _embedded.charges[0];
-
-    // if order was generated successfully, lets create a transaction in our db and notify the user about our charge
-    if (order) {
-
-      JunoPaymentHelper._recordTransactionOrder(order, req, TransactionTypes.BOLETO)
-
-      await JunoPaymentHelper.notifyUserAboutPayment(user, order, "Boleto")
-
+    if (!dueDate) {
+      // set due date 7 days from now, if no due date was provided...
+      dueDate = moment(new Date()).add(7, "days").format("YYYY-MM-DD")
     }
 
-    return order;
 
+    const order = await JunoPaymentHelper.generateBoletoCharge(description, amount, reference, dueDate, user, buyerName, buyerCPF, user.email)
+
+    return order;
 
   }
 

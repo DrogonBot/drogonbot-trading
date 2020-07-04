@@ -20,8 +20,8 @@ export const strings = {
     ptBr: "Oi {{firstName}},",
   },
   invoiceNotificationFirstPhrase: {
-    eng: "Thanks for using our product! This is an invoice for your recent purchase.",
-    ptBr: "Obrigado por usar nosso produto! Esta é uma fatura para sua compra mais recente."
+    eng: "Thanks for using our product! This is an invoice for your recent order.",
+    ptBr: "Obrigado por usar nosso produto! Esta é uma fatura para seu pedido mais recente."
   },
   invoiceItemTitle: {
     eng: "Item:",

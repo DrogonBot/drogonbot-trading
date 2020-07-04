@@ -7,7 +7,7 @@ export interface ITransaction {
   reference: TransactionReferences,
   status: string,
   amount: number,
-  boletoLink?: string,
+  paymentLink: string,
   dueDate: Date,
 }
 
@@ -24,8 +24,5 @@ export enum TransactionReferences {
 
 export enum TransactionStatus {
   CREATED = "ORDER.CREATED",
-  WAITING = "ORDER.WAITING",
   PAID = "ORDER.PAID",
-  NOT_PAID = "ORDER.NOT_PAID",
-  REVERTED = "ORDER.REVERTED"
 }
