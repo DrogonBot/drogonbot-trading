@@ -6,7 +6,12 @@ import { ConsoleColor, ConsoleHelper } from '../../../utils/ConsoleHelper';
 import { GenericHelper } from '../../../utils/GenericHelper';
 import { MessengerBotHelper } from '../../helpers/MessengerBotHelper';
 import { IWhatsAppGroup } from '../../types/whatsappbot.types';
-import { defaultThumbnailBase64, whatsappAxios } from './whatsappbot.constants';
+import {
+  defaultThumbnailBase64,
+  WHATSAPP_BOT_FREE_POSTS_PER_MESSAGE,
+  WHATSAPP_BOT_PREMIUM_POSTS_PER_MESSAGE,
+  whatsappAxios,
+} from './whatsappbot.constants';
 import { whatsAppGroups } from './whatsappGroups.constants';
 
 export class WhatsAppBotHelper extends MessengerBotHelper {
@@ -95,7 +100,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
       if (process.env.ENV === EnvType.Production) {
 
-        const postTitle = WhatsAppBotHelper.shortPostTitle(post.title, 35, false)
+        const postTitle = WhatsAppBotHelper.shortPostTitle(post, 35)
 
         // fetch thumbnail image
         let imageBase64
@@ -160,8 +165,8 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: WhatsApp Bot => Looking for new jobs to ${group.name}...`)
 
-      const premiumPosts = await WhatsAppBotHelper._fetchGroupPosts(group, 3, true)
-      const freePosts = await WhatsAppBotHelper._fetchGroupPosts(group, 13, false)
+      const premiumPosts = await WhatsAppBotHelper._fetchGroupPosts(group, WHATSAPP_BOT_PREMIUM_POSTS_PER_MESSAGE, true)
+      const freePosts = await WhatsAppBotHelper._fetchGroupPosts(group, WHATSAPP_BOT_FREE_POSTS_PER_MESSAGE, false)
 
       if (freePosts.length > 0) { // minimum post length to submit a message...
 
@@ -187,7 +192,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
         // if next group is from another state, lets set a variable telling our bot to do not post this post again
         const dontRepeatPosts = group.isLeaf || (i === whatsAppGroups.length - 1) ? true : (group.stateCode !== whatsAppGroups[i + 1].stateCode)
 
-        const allPosts = [...freePosts, ...premiumPosts]
+        const allPosts = _.shuffle([...freePosts, ...premiumPosts])
 
         await WhatsAppBotHelper._listPost(allPosts, group, dontRepeatPosts);
       } else {

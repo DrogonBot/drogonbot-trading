@@ -1,6 +1,7 @@
 import axios from 'axios';
 import sharp from 'sharp';
 
+import { IPost } from '../../resources/Post/post.types';
 import { IPostModel, Post } from './../../resources/Post/post.model';
 
 
@@ -122,55 +123,46 @@ export class MessengerBotHelper {
 
   }
 
-  public static shortPostTitle = (title: string, maxLength: number, useEmoji: boolean, sector?: string) => {
+  public static shortPostTitle = (post: IPost, maxLength: number): string => {
 
+    const { title, premiumOnly, sector } = post
 
-    if (useEmoji && sector) {
-      return title.length >= maxLength ? `${MessengerBotHelper._getSectorEmoji(sector)} *${title.substr(0, maxLength)}...*` : `${MessengerBotHelper._getSectorEmoji(sector)} *${title}*`
+    let titleString = ""
+
+    if (premiumOnly) {
+      titleString += `🌟 *[P/ ASSINANTES]* `
     } else {
-      return title.length >= maxLength ? `*${title.substr(0, maxLength)}...*` : `*${title}*`
+      titleString += `${MessengerBotHelper._getSectorEmoji(sector)} `
     }
 
+    if (title.length >= maxLength) {
+      titleString += `*${title.substr(0, maxLength)}...:* `
+    } else {
+      titleString += `*${title}*`
+    }
 
+    return titleString
   }
 
   public static generatePostList = async (platform: "WHATSAPP" | "TELEGRAM", stateCode: string, posts: IPostModel[], isPartnerGroup: boolean = false, dontRepeatPosts: boolean) => {
 
-    const premiumPosts = posts.filter((post) => post.premiumOnly)
-    const freePosts = posts.filter(post => !post.premiumOnly)
 
     const inviteOrJoinGroupText = isPartnerGroup ? `👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${stateCode.toLowerCase()}` : `✌ Convide amigos! https://bit.ly/emprego-urgente-${stateCode.toLowerCase()}`
 
     const dontRepeatPostsQuery = (platform === "WHATSAPP" ? { isPostedOnWhatsApp: true } : { isPostedOnTelegram: true })
 
     // ! PARTNER GROUP POSTING! SHOULD GENERATE A LIST ONLY
-    const allPostsLength = premiumPosts.length + freePosts.length
-    let listContent = `⚠ *${allPostsLength} Nova${allPostsLength > 1 ? `s` : ''} Vaga${allPostsLength > 1 ? `s` : ''} - ${stateCode}* ⚠ \n${inviteOrJoinGroupText}\n\n`
 
-    if (premiumPosts.length > 0) {
-      // list of premium posts
-      listContent += `🌟 *Vagas para ASSINANTES* 🌟\nMais info.: https://empregourgente.com/payment\n\n`
+    let listContent = `⚠ *${posts.length} Nova${posts.length > 1 ? `s` : ''} Vaga${posts.length > 1 ? `s` : ''} - ${stateCode}* ⚠ \n${inviteOrJoinGroupText}\n\n`
 
-      for (const premiumPost of premiumPosts) {
-        listContent += `- ${MessengerBotHelper.shortPostTitle(premiumPost.title, 30, false)}: ${process.env.WEB_APP_URL}/posts/${premiumPost.slug}?ref=whatsapp\n\n`
-        if (dontRepeatPosts) {
-          await Post.updateOne({ _id: premiumPost._id }, dontRepeatPostsQuery)
-        }
-      }
-    }
+    if (posts.length > 0) {
 
+      for (const post of posts) {
 
-
-    if (freePosts.length > 0) {
-      // list free posts
-      listContent += `✨ *Vagas 100% Gratuitas* ✨\n\n`
-
-      for (const freePost of freePosts) {
-
-        listContent += `- ${MessengerBotHelper.shortPostTitle(freePost.title, 30, false)}: ${process.env.WEB_APP_URL}/posts/${freePost.slug}?ref=whatsapp\n\n`
+        listContent += `${MessengerBotHelper.shortPostTitle(post, 30)}: ${process.env.WEB_APP_URL}/posts/${post.slug}?ref=whatsapp\n\n`
 
         if (dontRepeatPosts) {
-          await Post.updateOne({ _id: freePost._id }, dontRepeatPostsQuery)
+          await Post.updateOne({ _id: post._id }, dontRepeatPostsQuery)
         }
       }
     }

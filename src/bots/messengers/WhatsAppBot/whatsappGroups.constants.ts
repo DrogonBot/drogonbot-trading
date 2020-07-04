@@ -7,7 +7,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
   // {
   //   name: "EmpregoUrgente.com DEV",
   //   chatId: "17787897362-1593289812@g.us",
-  //   stateCode: "ES",
+  //   stateCode: "SP",
   // },
   // {
   //   name: "EmpregoUrgente.com DEV 2",
@@ -18,7 +18,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
 
   // ! ES GROUPS
 
-  // ES Geral groups ========================================
+  ES Geral groups ========================================
 
   {
     name: "EmpregoUrgente.com ES #1",
