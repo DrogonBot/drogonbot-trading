@@ -268,4 +268,8 @@ export const strings = {
     eng: "Oops! No Account Credits",
     ptBr: "Oops! Você não possui créditos!",
   },
+  premiumAccessOnly: {
+    eng: "You should have a premium account to access this job.",
+    ptBr: "Você necessita ser assinante para acessar essa vaga.",
+  },
 };

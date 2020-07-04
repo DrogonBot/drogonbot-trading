@@ -160,4 +160,8 @@ export const globalStrings = {
     eng: "Buy Credits",
     ptBr: "Comprar Créditos",
   },
+  genericSubscription: {
+    eng: "Subscribe",
+    ptBr: "Assinatura",
+  },
 };

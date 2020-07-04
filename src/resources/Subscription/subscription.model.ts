@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
 import { ISubscription } from './subscription.types';
@@ -7,15 +8,13 @@ export interface ISubscriptionModel extends ISubscription, Document {
 }
 
 const subscriptionSchema = new mongoose.Schema({
-  subscriptionId: String,
+  userId: ObjectId,
   paymentType: String,
-  dueDay: Number,
   status: {
     type: String,
     default: "INACTIVE"
   },
-  startsOn: Date,
-  nextBillingDate: Date,
+  subscriberDays: Number,
 }, {
   timestamps: true
 })

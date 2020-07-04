@@ -230,31 +230,7 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
   })
 
 })
-
-operationRouter.get("/premium-fix", [userAuthMiddleware], async (req, res) => {
-
-  const users = await User.find({})
-  for (const user of users) {
-    user.isPremium = false;
-    await user.save();
-  }
-
-  const posts = await Post.find({})
-  for (const post of posts) {
-    if (!post.premiumOnly) {
-      post.premiumOnly = false;
-      await post.save();
-
-    }
-  }
-
-  return res.status(200).send({
-    status: 'success'
-  })
-
-
-
-})
+ 
 
 operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 

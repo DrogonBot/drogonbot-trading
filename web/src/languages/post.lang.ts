@@ -226,4 +226,8 @@ export const strings = {
     eng: "Share this Post",
     ptBr: "Compartilhar Vaga",
   },
+  postPremiumOnlyCTA: {
+    eng: "Premium only Job",
+    ptBr: "Vaga Apenas para Assinantes",
+  },
 };

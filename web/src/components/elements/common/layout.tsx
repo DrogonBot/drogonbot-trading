@@ -67,3 +67,13 @@ export const PageList = styled.ul`
 export const ToolTipText = styled.span`
   font-size: 0.9rem;
 `;
+
+export const AccentText = styled.span`
+  color: ${colors.accent};
+  display: inline;
+`;
+
+export const Underline = styled.span`
+  text-decoration: underline;
+  display: inline;
+`;

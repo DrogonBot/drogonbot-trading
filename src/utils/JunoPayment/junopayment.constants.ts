@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-
-
 export const junoAxiosRequest = axios.create({
   baseURL: process.env.JUNO_RESOURCE_SERVER,
   headers: {

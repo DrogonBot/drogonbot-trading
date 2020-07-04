@@ -74,10 +74,10 @@ export const Header = () => {
     },
     user && {
       href: "/payment",
-      text: TS.string("global", "genericBuyCredits"),
+      text: TS.string("global", "genericSubscription"),
       icon: <MonetizationOnIcon />,
       primary: true,
-      // customColor: colors.accent,
+      customColor: colors.accent,
       position: NavPosition.NavLeft,
     },
 

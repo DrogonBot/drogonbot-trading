@@ -7,7 +7,7 @@ export interface ITransaction {
   reference: TransactionReferences,
   status: string,
   amount: number,
-  boletoLink?: string,
+  paymentLink: string,
   dueDate: Date,
 }
 
@@ -19,20 +19,10 @@ export enum TransactionTypes {
 }
 
 export enum TransactionReferences {
-  CreditosEnvio = "CREDITOS_ENVIO",
-
+  Subscription = "SUBSCRIPTION"
 }
 
 export enum TransactionStatus {
   CREATED = "ORDER.CREATED",
-  WAITING = "ORDER.WAITING",
   PAID = "ORDER.PAID",
-  NOT_PAID = "ORDER.NOT_PAID",
-  REVERTED = "ORDER.REVERTED"
-}
-
-export enum PaymentAvailableMethods {
-  Boleto = "boleto",
-  CreditCard = "creditcard",
-  DebitCard = "debitcard"
 }

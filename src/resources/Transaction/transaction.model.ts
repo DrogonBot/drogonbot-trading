@@ -15,7 +15,7 @@ const transactionSchema = new mongoose.Schema({
   code: String,
   status: String,
   amount: Number,
-  boletoLink: String,
+  paymentLink: String,
   dueDate: Date,
 }, {
   timestamps: true

@@ -1,5 +1,4 @@
 import { JobPostingJsonLd } from 'next-seo';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -9,7 +8,6 @@ import { TermsOfService } from '../../components/elements/form/TermsOfService';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
-import { CreditsModal } from '../../components/pages/posts/post/CreditsModal';
 import { FlagPost } from '../../components/pages/posts/post/FlagPost';
 import { JoinCommunities } from '../../components/pages/posts/post/JoinCommunities';
 import { LeadModal } from '../../components/pages/posts/post/LeadModal';
@@ -18,6 +16,7 @@ import { PostCTA } from '../../components/pages/posts/post/PostCTA';
 import { PostFAQ } from '../../components/pages/posts/post/PostFAQ';
 import { PostInfoTag } from '../../components/pages/posts/post/PostInfoTag';
 import { RelatedPosts } from '../../components/pages/posts/post/RelatedPosts';
+import { SubscriptionModal } from '../../components/pages/posts/post/SubscriptionModal';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { NextSEOPost } from '../../components/seo/NextSEOPost';
 import { appEnv } from '../../constants/Env.constant';
@@ -50,8 +49,6 @@ const IndividualPage = ({
 }: // affiliatedProducts,
 IProps) => {
   const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
-
-  const [showCreditsModal, setShowCreditsModal] = useState<boolean>(false);
 
   //  human readable date -
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
@@ -93,7 +90,7 @@ IProps) => {
           datePosted={post.createdAt}
           description={post.content}
           hiringOrganization={{
-            name: post.companyName,
+            name: post.companyName || "Não Informado",
             sameAs: null,
           }}
           jobLocation={{
@@ -119,13 +116,7 @@ IProps) => {
         </PageContainer>
 
         <Cover backgroundImagePath={`/images/seo/${post.sector}.jpg`}>
-          <PostCTA
-            post={post}
-            onTriggerCreditsModal={() => {
-              console.log("toggling modal");
-              setShowCreditsModal(true);
-            }}
-          />
+          <PostCTA post={post} />
         </Cover>
 
         <MainContainer>
@@ -141,13 +132,7 @@ IProps) => {
 
             <PostInfoTag post={post} />
 
-            <PostCTA
-              post={post}
-              onTriggerCreditsModal={() => {
-                console.log("toggling modal");
-                setShowCreditsModal(true);
-              }}
-            />
+            <PostCTA post={post} />
 
             <TermsOfService href={`/terms?language=${appEnv.language}`}>
               {TS.string("terms", "tosAgree")}
@@ -185,16 +170,20 @@ IProps) => {
           <Slider {...carouselSettings}>{onRenderAffiliateProducts()}</Slider>
         </AffiliateProductsContainerMobile> */}
 
+        {post.premiumOnly && !user?.isPremium ? (
+          <SubscriptionModal
+            stateCode={post.stateCode}
+            city={post.city}
+            jobRole={post.jobRoles[0]}
+          />
+        ) : (
+          <LeadModal post={post} jobRoles={jobRoles} />
+        )}
+
         <RelatedPosts
           relatedPosts={relatedPosts}
           type={RelatedPostType.Mobile}
         />
-
-        {user && showCreditsModal && (
-          <CreditsModal onClose={() => setShowCreditsModal(false)} />
-        )}
-
-        <LeadModal post={post} jobRoles={jobRoles} />
       </Body>
       <Footer />
     </>

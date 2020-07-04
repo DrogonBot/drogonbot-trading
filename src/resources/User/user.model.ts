@@ -20,6 +20,7 @@ import { AuthType, IUserDocument, UserType } from './user.types';
 export interface IUser extends IUserDocument {
   hashPassword: (string) => string;
   generateAuthToken: () => string;
+  getFirstName: () => string
   toJSON: () => Object;
   registerUser: (req?: any) => { token: string };
 }
@@ -36,6 +37,9 @@ export const userSchema: Schema = new Schema(
     name: {
       type: String,
       trim: true
+    },
+    cpf: {
+      type: String,
     },
     genericPositionsOfInterest: {
       type: [String],
@@ -141,6 +145,10 @@ userSchema.statics.hashPassword = async (password: string): Promise<string> => {
 // methods create a normal method (instance needs to be declared). Statics functions, otherwise, doesn't need to be declared. It can be accessed directly through the model
 
 // here we use function() instead of an arrow function because we need access to "this", that's not present on the later.
+
+userSchema.methods.getFirstName = function (): string {
+  return this.name.split(" ")[0]
+}
 
 userSchema.methods.registerUser = async function (req?) {
   const user = this;

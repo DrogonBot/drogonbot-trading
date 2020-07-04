@@ -13,6 +13,7 @@ import { EnvType } from './constants/types/env.types';
 import { EmailQueueCron } from './cron_jobs/emailqueue.cron';
 import { JobsCron } from './cron_jobs/jobs.cron';
 import { RetentionCron } from './cron_jobs/retention.cron';
+import { SubscriptionCron } from './cron_jobs/subscription.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { affiliateRouter } from './resources/AffiliateProduct/affiliate.routes';
 import { AffiliateSeeder } from './resources/AffiliateProduct/affiliate.seeder';
@@ -27,6 +28,7 @@ import { postRouter } from './resources/Post/post.routes';
 import { resumeRouter } from './resources/Resume/resume.routes';
 import { sectorRouter } from './resources/Sector/sector.routes';
 import { SectorSeeder } from './resources/Sector/sector.seeder';
+import { subscriptionRouter } from './resources/Subscription/subscription.routes';
 import { transactionRouter } from './resources/Transaction/transaction.routes';
 import { userRouter } from './resources/User/user.routes';
 import { ConsoleColor, ConsoleHelper } from './utils/ConsoleHelper';
@@ -88,6 +90,8 @@ switch (process.env.ENV) {
     JobsCron.generateJobReports();
     JobsCron.telegramBotPoster();
     JobsCron.whatsAppBotPoster();
+    SubscriptionCron.subscriptionDecrementDays();
+    SubscriptionCron.submitBoletoChargeNearExpiration()
 
 
 
@@ -159,6 +163,7 @@ app.use(countryRouter)
 app.use(operationRouter)
 app.use(affiliateRouter)
 app.use(transactionRouter)
+app.use(subscriptionRouter)
 
 server.listen(process.env.NODE_API_PORT, async () => {
 

@@ -1,9 +1,14 @@
+import { TransactionTypes } from './../Transaction/transaction.types';
 
 export interface ISubscription {
-  subscriptionId: string,
-  paymentType: "BOLETO" | "CREDIT_CARD",
-  dueDay: number,
-  status: "ACTIVE" | "INACTIVE",
-  startsOn: Date,
-  nextBillingDate: Date,
+  userId: string,
+  paymentType: TransactionTypes,
+  status: SubscriptionStatus,
+  subscriberDays: number
+}
+
+export enum SubscriptionStatus {
+  Active = "ACTIVE",
+  Inactive = "INACTIVE",
+  Cancelled = "CANCELLED"
 }
