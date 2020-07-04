@@ -67,8 +67,16 @@ Obrigado! </br>
 Equipe [Product Name]
 </p>
     `
-  }
+  },
 
+  notificationGreetings: {
+    eng: "Hi {{firstName}},",
+    ptBr: "Oi {{firstName}},",
+  },
+  notificationEndPhrase: {
+    eng: "{{company}}'s Team",
+    ptBr: "Equipe {{company}}"
+  }
 
 
 

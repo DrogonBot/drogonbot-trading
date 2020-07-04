@@ -68,7 +68,8 @@ const Payment = ({ provinces }: IProps) => {
 
           <p>
             <strong>
-              Preço: R$19.90 por mês para acesso ilimitado a TODAS as vagas
+              Preço: Plano TRIMESTRAL por apenas R$24.90 (Equivalente a
+              R$8.30/mês) para acesso ilimitado a TODAS as vagas
             </strong>
           </p>
           <h3>Selecione a forma de pagamento: </h3>

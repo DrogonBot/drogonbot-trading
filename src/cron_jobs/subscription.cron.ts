@@ -87,8 +87,6 @@ export class SubscriptionCron {
 
       console.log("🕒  SubscriptionCron: subscriptionDecrementDays() 🕒");
 
-
-
       const subscriptions = await Subscription.find({
         status: SubscriptionStatus.Active
       })

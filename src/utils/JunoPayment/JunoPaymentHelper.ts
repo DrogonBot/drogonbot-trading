@@ -3,11 +3,13 @@ import moment from 'moment';
 import { base64encode } from 'nodejs-base64';
 
 import { AccountEmailManager } from '../../emails/account.email';
+import { SUBSCRIPTION_SUBSCRIBER_DAYS_ADDED } from '../../resources/Subscription/subscription.constant';
 import { Subscription } from '../../resources/Subscription/subscription.model';
 import { SubscriptionStatus } from '../../resources/Subscription/subscription.types';
 import { Transaction } from '../../resources/Transaction/transaction.model';
 import { TransactionStatus, TransactionTypes } from '../../resources/Transaction/transaction.types';
 import { ConsoleColor, ConsoleHelper } from '../ConsoleHelper';
+import { GenericEmailManager } from './../../emails/generic.email';
 import { ITransaction } from './../../resources/Transaction/transaction.types';
 import { IUser } from './../../resources/User/user.model';
 import { TS } from './../TS';
@@ -241,7 +243,7 @@ export class JunoPaymentHelper {
           userId: fetchedTransaction.userId,
           paymentType: fetchedTransaction.type,
           status: SubscriptionStatus.Active,
-          subscriberDays: 30 // 30 days of subscription
+          subscriberDays: SUBSCRIPTION_SUBSCRIBER_DAYS_ADDED // 30 days of subscription
         })
         await newSubscription.save();
       } else {
@@ -252,7 +254,7 @@ export class JunoPaymentHelper {
         //  update subscription
         subscription.status = SubscriptionStatus.Active;
         // subscription.expirationDate =
-        subscription.subscriberDays += 30; // increment more 30 days on subscription
+        subscription.subscriberDays += SUBSCRIPTION_SUBSCRIBER_DAYS_ADDED; // increment more 30 days on subscription
 
         await subscription.save();
       }
@@ -262,6 +264,17 @@ export class JunoPaymentHelper {
           user.isPremium = true;
           await user.save();
         }
+
+        // notify  user
+        const genericEmailManager = new GenericEmailManager()
+        await genericEmailManager.sendEmail(user.email, TS.string("subscription", "subscriptionPaid"), "notification", {
+          notificationGreetings: TS.string("transaction", "notificationGreetings", { firstName: user.getFirstName() }),
+          notificationMessage: TS.string("subscription", "subscriptionPaymentConfirmationMessage"),
+          notificationEndPhrase: TS.string("transaction", 'notificationEndPhrase', {
+            company: process.env.APP_NAME
+          })
+        })
+
       }
       catch (error) {
         console.error(error);
