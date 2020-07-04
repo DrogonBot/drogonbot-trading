@@ -28,7 +28,6 @@ export const BoletoPayment: React.FC = (props) => {
     const paymentPayload = {
       buyerName: userName,
       buyerCPF: numberOnlyCPF,
-      buyerEmail: user.email,
     };
 
     // Validation ========================================
@@ -55,7 +54,7 @@ export const BoletoPayment: React.FC = (props) => {
 
     const response = await APIHelper.request(
       "POST",
-      "/transaction/checkout/boleto",
+      "/subscription/boleto",
       paymentPayload,
       true
     );
