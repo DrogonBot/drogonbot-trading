@@ -94,7 +94,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
       if (process.env.ENV === EnvType.Production) {
 
-        const postTitle = WhatsAppBotHelper.shortPostTitle(post.title, 35, post.sector)
+        const postTitle = WhatsAppBotHelper.shortPostTitle(post.title, 35, false)
 
         // fetch thumbnail image
         let imageBase64
