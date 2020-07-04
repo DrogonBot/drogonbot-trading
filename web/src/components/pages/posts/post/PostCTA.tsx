@@ -63,18 +63,18 @@ export const PostCTA = ({ post }: IProps) => {
   const onCTAClick = async () => {
     // if user is NOT authenticated, block and ask him to login
 
-    const user: any = await dispatch(userGetProfileInfo());
+    const refreshedUser: any = await dispatch(userGetProfileInfo());
 
-    if (!user) {
+    if (!refreshedUser) {
       alert(TS.string("account", "loginRequiredMessage"));
       router.push("/register");
       return;
     }
 
     console.log(post.premiumOnly);
-    console.log(user.isPremium);
+    console.log(refreshedUser.isPremium);
 
-    if ((post.premiumOnly && user.isPremium) || !post.premiumOnly) {
+    if ((post.premiumOnly && refreshedUser.isPremium) || !post.premiumOnly) {
       return GenericHelper.crossBrowserUrlRedirect(CTAInfo.link);
     } else {
       alert(TS.string("account", "premiumAccessOnly"));
