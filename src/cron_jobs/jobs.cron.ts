@@ -214,7 +214,6 @@ export class JobsCron {
     // UTC 15 (12pm Brasilia)
     // UTC 19 (4pm Brasilia)
     // UTC 22 (7pm Brasilia)
-    // UTC 01 (22pm Brasilia)
 
     cron.schedule("0 10 * * *", async () => {
       await WhatsAppBotHelper.postOnGroups()
@@ -244,6 +243,9 @@ export class JobsCron {
     // UTC 19 (4pm Brasilia)
 
 
+    cron.schedule("0 10 * * *", async () => {
+      await TelegramBotHelper.postOnGroups()
+    })
     cron.schedule("0 11 * * *", async () => {
       await TelegramBotHelper.postOnGroups()
     })
@@ -253,16 +255,10 @@ export class JobsCron {
     cron.schedule("0 15 * * *", async () => {
       await TelegramBotHelper.postOnGroups()
     })
-    cron.schedule("0 17 * * *", async () => {
-      await TelegramBotHelper.postOnGroups()
-    })
     cron.schedule("0 19 * * *", async () => {
       await TelegramBotHelper.postOnGroups()
     })
     cron.schedule("0 22 * * *", async () => {
-      await TelegramBotHelper.postOnGroups()
-    })
-    cron.schedule("0 01 * * *", async () => {
       await TelegramBotHelper.postOnGroups()
     })
 
