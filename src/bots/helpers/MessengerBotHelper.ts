@@ -1,5 +1,4 @@
 import axios from 'axios';
-import _ from 'lodash';
 import sharp from 'sharp';
 
 import { IPostModel, Post } from './../../resources/Post/post.model';
@@ -137,7 +136,7 @@ export class MessengerBotHelper {
 
   public static generatePostList = async (platform: "WHATSAPP" | "TELEGRAM", stateCode: string, posts: IPostModel[], isPartnerGroup: boolean = false, dontRepeatPosts: boolean) => {
 
-    const premiumPosts = _.slice(posts.filter((post) => post.premiumOnly), 0, 2) // max 3 posts only
+    const premiumPosts = posts.filter((post) => post.premiumOnly)
     const freePosts = posts.filter(post => !post.premiumOnly)
 
     const inviteOrJoinGroupText = isPartnerGroup ? `👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${stateCode.toLowerCase()}` : `✌ Convide amigos! https://bit.ly/emprego-urgente-${stateCode.toLowerCase()}`

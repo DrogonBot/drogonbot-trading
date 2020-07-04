@@ -22,7 +22,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
     return response;
   }
 
-  private static _fetchGroupPosts = async (group: IWhatsAppGroup, qty: number) => {
+  private static _fetchGroupPosts = async (group: IWhatsAppGroup, qty: number, premiumOnly: boolean) => {
 
     let citiesQuery = {}
     let sectorQuery = {}
@@ -65,6 +65,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
     }
 
     let posts = await Post.find({
+      premiumOnly,
       stateCode: group.stateCode,
       $and: [
         jobRolesQuery,
@@ -159,9 +160,10 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: WhatsApp Bot => Looking for new jobs to ${group.name}...`)
 
-      const posts = await WhatsAppBotHelper._fetchGroupPosts(group, 15)
+      const premiumPosts = await WhatsAppBotHelper._fetchGroupPosts(group, 3, true)
+      const freePosts = await WhatsAppBotHelper._fetchGroupPosts(group, 13, false)
 
-      if (posts.length > 0) { // minimum post length to submit a message...
+      if (freePosts.length > 0) { // minimum post length to submit a message...
 
         // start asking people to add you to contact list!
         if (!group.isPartnerGroup) {
@@ -185,7 +187,9 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
         // if next group is from another state, lets set a variable telling our bot to do not post this post again
         const dontRepeatPosts = group.isLeaf || (i === whatsAppGroups.length - 1) ? true : (group.stateCode !== whatsAppGroups[i + 1].stateCode)
 
-        await WhatsAppBotHelper._listPost(posts, group, dontRepeatPosts);
+        const allPosts = [...freePosts, ...premiumPosts]
+
+        await WhatsAppBotHelper._listPost(allPosts, group, dontRepeatPosts);
       } else {
         console.log('No new jobs found...');
       }
