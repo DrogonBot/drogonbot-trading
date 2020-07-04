@@ -10,13 +10,11 @@ export interface ISubscriptionModel extends ISubscription, Document {
 const subscriptionSchema = new mongoose.Schema({
   userId: ObjectId,
   paymentType: String,
-  dueDay: Number,
   status: {
     type: String,
     default: "INACTIVE"
   },
-  startsOn: Date,
-  nextBillingDate: Date,
+  subscriberDays: Number,
 }, {
   timestamps: true
 })

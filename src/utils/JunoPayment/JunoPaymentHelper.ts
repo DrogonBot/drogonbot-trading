@@ -3,9 +3,12 @@ import moment from 'moment';
 import { base64encode } from 'nodejs-base64';
 
 import { AccountEmailManager } from '../../emails/account.email';
+import { Subscription } from '../../resources/Subscription/subscription.model';
+import { SubscriptionStatus } from '../../resources/Subscription/subscription.types';
 import { Transaction } from '../../resources/Transaction/transaction.model';
 import { TransactionStatus, TransactionTypes } from '../../resources/Transaction/transaction.types';
 import { ConsoleColor, ConsoleHelper } from '../ConsoleHelper';
+import { ITransaction } from './../../resources/Transaction/transaction.types';
 import { IUser } from './../../resources/User/user.model';
 import { TS } from './../TS';
 import { junoAxiosRequest } from './junopayment.constants';
@@ -84,12 +87,12 @@ export class JunoPaymentHelper {
     }
   }
 
-  public static notifyUserAboutPayment = async (user, order) => {
+  public static notifyUserAboutPayment = async (user, order, paymentMethod: string) => {
     const accountEmailManager = new AccountEmailManager();
 
     const subject = TS.string('transaction', 'invoiceNotificationSubject', {
       product: TS.string("subscription", "genericSubscription"),
-      paymentMethod: "Boleto"
+      paymentMethod
     })
 
     await accountEmailManager.sendEmail(user.email, subject, 'invoice', {
@@ -201,11 +204,56 @@ export class JunoPaymentHelper {
 
       JunoPaymentHelper._recordTransactionOrder(order, req, TransactionTypes.BOLETO)
 
-      await JunoPaymentHelper.notifyUserAboutPayment(user, order)
+      await JunoPaymentHelper.notifyUserAboutPayment(user, order, "Boleto")
 
     }
 
     return order;
+
+
+  }
+
+  public static updateSubscriptionData = async (user: IUser, fetchedTransaction: ITransaction) => {
+
+    if (user) {
+      // Check if this user already has a subscription
+
+      const subscription = await Subscription.findOne({ userId: user._id })
+
+      if (!subscription) {
+
+        // generate subscription in our system
+        const newSubscription = new Subscription({
+          userId: fetchedTransaction.userId,
+          paymentType: fetchedTransaction.type,
+          status: SubscriptionStatus.Active,
+          subscriberDays: 30 // 30 days of subscription
+        })
+        await newSubscription.save();
+      } else {
+
+        console.log('updating subscription...');
+
+        subscription.paymentType = fetchedTransaction.type;
+        //  update subscription
+        subscription.status = SubscriptionStatus.Active;
+        // subscription.expirationDate =
+        subscription.subscriberDays += 30; // increment more 30 days on subscription
+
+        await subscription.save();
+      }
+      // set user as premium
+      try {
+        if (user) {
+          user.isPremium = true;
+          await user.save();
+        }
+      }
+      catch (error) {
+        console.error(error);
+
+      }
+    }
 
 
   }
