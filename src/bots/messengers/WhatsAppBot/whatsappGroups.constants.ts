@@ -18,7 +18,7 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
 
   // ! ES GROUPS
 
-  ES Geral groups ========================================
+  // ES Geral groups ========================================
 
   {
     name: "EmpregoUrgente.com ES #1",
