@@ -70,4 +70,10 @@ export const ToolTipText = styled.span`
 
 export const AccentText = styled.span`
   color: ${colors.accent};
+  display: inline;
+`;
+
+export const Underline = styled.span`
+  text-decoration: underline;
+  display: inline;
 `;

@@ -28,7 +28,7 @@ export const PostSeeMoreLink: React.FC<IProps> = ({ post }) => {
       return;
     }
 
-    if (post.premiumOnly && user.isPremium) {
+    if ((post.premiumOnly && user.isPremium) || !post.premiumOnly) {
       return GenericHelper.crossBrowserUrlRedirect(post.externalUrl);
     } else {
       alert(TS.string("account", "premiumAccessOnly"));

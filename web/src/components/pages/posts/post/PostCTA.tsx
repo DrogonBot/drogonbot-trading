@@ -71,7 +71,10 @@ export const PostCTA = ({ post }: IProps) => {
       return;
     }
 
-    if (post.premiumOnly && user.isPremium) {
+    console.log(post.premiumOnly);
+    console.log(user.isPremium);
+
+    if ((post.premiumOnly && user.isPremium) || !post.premiumOnly) {
       return GenericHelper.crossBrowserUrlRedirect(CTAInfo.link);
     } else {
       alert(TS.string("account", "premiumAccessOnly"));

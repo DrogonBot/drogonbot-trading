@@ -104,6 +104,23 @@ export const PaymentFAQ: React.FC = () => {
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <ExpansionPanelTitle>
+            Posso cancelar quando quiser?
+          </ExpansionPanelTitle>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Typography>
+            Sim, porém para resultados consistentes sugerimos que assine por
+            pelo menos 6 meses a 1 ano.
+          </Typography>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
     </Container>
   );
 };

@@ -1,4 +1,5 @@
 import { JobPostingJsonLd } from 'next-seo';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { AdsenseHelper } from '../../components/ads/AdsenseAds';
@@ -15,6 +16,7 @@ import { PostCTA } from '../../components/pages/posts/post/PostCTA';
 import { PostFAQ } from '../../components/pages/posts/post/PostFAQ';
 import { PostInfoTag } from '../../components/pages/posts/post/PostInfoTag';
 import { RelatedPosts } from '../../components/pages/posts/post/RelatedPosts';
+import { SubscriptionModal } from '../../components/pages/posts/post/SubscriptionModal';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { NextSEOPost } from '../../components/seo/NextSEOPost';
 import { appEnv } from '../../constants/Env.constant';
@@ -25,9 +27,11 @@ import { DateHelper } from '../../helpers/DateHelper';
 import { TS } from '../../helpers/LanguageHelper';
 import { loadAllJobRoles, loadCountryProvinces } from '../../store/actions/form.actions';
 import { postReadFeed, postReadOne } from '../../store/actions/post.action';
+import { AppState } from '../../store/reducers/index.reducers';
 import { AdsenseAdsTypes } from '../../types/Ads.types';
 import { IProvince } from '../../types/Form.types';
 import { IPost, PostPositionType, RelatedPostType } from '../../types/Post.types';
+import { IUser } from '../../types/User.types';
 
 interface IProps {
   post: IPost;
@@ -44,6 +48,8 @@ const IndividualPage = ({
   jobRoles,
 }: // affiliatedProducts,
 IProps) => {
+  const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
+
   //  human readable date -
   const humanDate = DateHelper.displayHumanDate(post.createdAt);
 
@@ -84,7 +90,7 @@ IProps) => {
           datePosted={post.createdAt}
           description={post.content}
           hiringOrganization={{
-            name: post.companyName,
+            name: post.companyName || "Não Informado",
             sameAs: null,
           }}
           jobLocation={{
@@ -164,12 +170,20 @@ IProps) => {
           <Slider {...carouselSettings}>{onRenderAffiliateProducts()}</Slider>
         </AffiliateProductsContainerMobile> */}
 
+        {post.premiumOnly && !user?.isPremium ? (
+          <SubscriptionModal
+            stateCode={post.stateCode}
+            city={post.city}
+            jobRole={post.jobRoles[0]}
+          />
+        ) : (
+          <LeadModal post={post} jobRoles={jobRoles} />
+        )}
+
         <RelatedPosts
           relatedPosts={relatedPosts}
           type={RelatedPostType.Mobile}
         />
-
-        <LeadModal post={post} jobRoles={jobRoles} />
       </Body>
       <Footer />
     </>
