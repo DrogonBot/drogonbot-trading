@@ -216,7 +216,9 @@ export class JobsCron {
     // UTC 22 (7pm Brasilia)
     // UTC 01 (22pm Brasilia)
 
-
+    cron.schedule("0 10 * * *", async () => {
+      await WhatsAppBotHelper.postOnGroups()
+    })
     cron.schedule("0 11 * * *", async () => {
       await WhatsAppBotHelper.postOnGroups()
     })
@@ -226,18 +228,13 @@ export class JobsCron {
     cron.schedule("0 15 * * *", async () => {
       await WhatsAppBotHelper.postOnGroups()
     })
-    cron.schedule("0 17 * * *", async () => {
-      await WhatsAppBotHelper.postOnGroups()
-    })
     cron.schedule("0 19 * * *", async () => {
       await WhatsAppBotHelper.postOnGroups()
     })
     cron.schedule("0 22 * * *", async () => {
       await WhatsAppBotHelper.postOnGroups()
     })
-    cron.schedule("0 01 * * *", async () => {
-      await WhatsAppBotHelper.postOnGroups()
-    })
+
   }
 
   public static telegramBotPoster = () => {
