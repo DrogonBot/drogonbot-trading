@@ -116,15 +116,14 @@ export class JunoPaymentHelper {
 
   }
 
-  public static generateCreditCardPaymentRequest = async (req) => {
-    const { buyerCreditCardHash, buyerName, buyerCPF, buyerEmail, buyerAddress } = req.body
+  public static generateCreditCardCharge = async (reference, description, amount, buyerCreditCardHash, userId, buyerName, buyerCPF, buyerEmail, buyerAddress) => {
 
     // First we generate an PAYMENT CHARGE
     const chargeResponse = await JunoPaymentHelper.request("POST", "/charges", {
       "charge": {
-        "description": "Emprego Urgente - Compra de créditos de envio de currículo",
-        "amount": 19.90,
-        "references": ["CREDITOS_ENVIO"],
+        "description": description,
+        "amount": amount,
+        "references": [reference],
         "paymentTypes": ["CREDIT_CARD"]
       },
       "billing": {
@@ -141,7 +140,7 @@ export class JunoPaymentHelper {
     console.log(order);
 
     // record order in our database. We'll need to do it to update it once we receive an webhook with payment details
-    await JunoPaymentHelper._recordTransactionOrder(order, req, TransactionTypes.CREDIT_CARD)
+    await JunoPaymentHelper._recordTransactionOrder(order, userId, TransactionTypes.CREDIT_CARD)
 
     // Then we PAY the order
     try {

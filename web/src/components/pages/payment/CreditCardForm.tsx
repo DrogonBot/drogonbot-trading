@@ -28,7 +28,7 @@ export const CreditCardForm: React.FC<IProps> = ({ onChange }) => {
   const [cvcMask, setCvcMask] = useState(CREDIT_CARD_CVC_MASK_DEFAULT);
 
   const [creditCard, setCreditCard] = useState<ICreditCard>({
-    name: user?.name,
+    name: user?.name || "",
     number: "",
     cvc: "",
     expiry: "",

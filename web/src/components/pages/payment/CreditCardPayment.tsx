@@ -119,7 +119,7 @@ export const CreditCardPayment: React.FC = (props) => {
 
     const response = await APIHelper.request(
       "POST",
-      "/transaction/checkout/creditcard",
+      "/subscription/creditcard",
       paymentServerPayload,
       true
     );

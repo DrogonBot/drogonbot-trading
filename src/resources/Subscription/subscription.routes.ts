@@ -19,12 +19,14 @@ subscriptionRouter.post('/subscription/:method', [userAuthMiddleware, UserMiddle
   const { method } = req.params;
 
   // although we're trying to get all of this information from our req.body, only some of them will be used on boleto payment (buyerName, buyerCPF and buyerEmail only)
-  const { buyerCreditCardHash, buyerName, buyerEmail, buyerCPF, buyerStreet, buyerNumber, buyerComplement, buyerNeighborhood, buyerCity, buyerState, buyerPostCode } = req.body
+  const { buyerCreditCardHash, buyerName, buyerEmail, buyerCPF, buyerStreet, buyerNumber, buyerComplement, buyerNeighborhood, buyerCity, buyerState, buyerPostCode, buyerAddress } = req.body
+
+  const user = req.user;
 
   switch (method) {
     case "creditcard":
       try {
-        const ccReq = await JunoPaymentHelper.generateCreditCardPaymentRequest(req);
+        const ccReq = await JunoPaymentHelper.generateCreditCardCharge("SUBSCRIPTION", SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE, buyerCreditCardHash, user._id, buyerName, buyerCPF, buyerEmail, buyerAddress);
 
         return res.status(200).send(ccReq)
       }
