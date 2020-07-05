@@ -10,6 +10,7 @@ import { Transaction } from '../../resources/Transaction/transaction.model';
 import { TransactionStatus, TransactionTypes } from '../../resources/Transaction/transaction.types';
 import { ConsoleColor, ConsoleHelper } from '../ConsoleHelper';
 import { GenericEmailManager } from './../../emails/generic.email';
+import { CreditCardToken } from './../../resources/CreditCardToken/creditcardtoken.model';
 import { ITransaction } from './../../resources/Transaction/transaction.types';
 import { IUser } from './../../resources/User/user.model';
 import { TS } from './../TS';
@@ -158,6 +159,35 @@ export class JunoPaymentHelper {
 
       console.log('PAYMENT RESPONSE');
       console.log(paymentResponse.data);
+
+      const isPaymentConfirmed = paymentResponse.data.payments.some((payment) => payment.status === "CONFIRMED")
+
+      if (isPaymentConfirmed) {
+
+        console.log('Tokenizing credit card...');
+
+        // lets tokenize our credit card
+
+        const tokenizationResponse = await JunoPaymentHelper.request("POST", "/credit-cards/tokenization", {
+          creditCardHash: buyerCreditCardHash
+        })
+
+        console.log('TOKENIZATION RESPONSE');
+
+        const ccToken = tokenizationResponse.data;
+
+        console.log(ccToken);
+
+        console.log(ccToken);
+
+        const newCreditCardToken = new CreditCardToken({
+          ...ccToken
+        })
+        await newCreditCardToken.save()
+
+
+      }
+
       return paymentResponse.data
 
     }
