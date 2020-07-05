@@ -197,8 +197,8 @@ export const strings = {
     ptBr: "Encontramos uma vaga que provavelmente lhe interessa:"
   },
   jobNotificationSubscriptionCTA: {
-    eng: `<p> Do you want to have access to exclusive vacancies and <strong>increase your chances of getting a job faster?</strong> <a href="${process.env.WEB_APP_URL}/payment"> Click here and become a subscriber! </a> </p>`,
-    ptBr: `<p>Quer ter acesso a vagas exclusivas e <strong>aumentar suas chances de conseguir um emprego mais rapidamente?</strong> <a href="${process.env.WEB_APP_URL}/payment">Clique aqui e se torne um assinante!</a> </p>`
+    eng: `<p>Ps.: Do you want to have <strong>unlimited</strong>access to exclusive vacancies and <strong>increase your chances of getting a job faster?</strong> <a href="${process.env.WEB_APP_URL}/payment"> Click here and become a subscriber! </a> </p>`,
+    ptBr: `<p>Obs.: Para ter acesso as vagas <strong>exclusivas</strong> e aumentar suas chances de <strong>conseguir um emprego mais rapidamente</strong>, torne-se um assinante! <a href="${process.env.WEB_APP_URL}/payment">Clique aqui para maiores informações</a> </p>`
   },
 
   jobsNotificationClosing: {
@@ -313,19 +313,19 @@ Boa sorte!
   },
   jobReportSecondPhrase: {
     eng: "We've found some open positions that may interest you!",
-    ptBr: "Encontramos algumas vagas que podem lhe interessar:"
+    ptBr: "Encontramos algumas vagas que podem lhe interessar."
   },
   jobReportSecondPhrase2: {
     eng: "Our system has found some job openings that fit your profile",
-    ptBr: "Nosso sistema encontrou algumas vagas de emprego que se encaixam em seu perfil:"
+    ptBr: "Nosso sistema encontrou algumas vagas de emprego que se encaixam em seu perfil."
   },
   jobReportSecondPhrase3: {
     eng: "There're some open job positions that matches your interests:",
-    ptBr: "Existem algumas vagas que se encaixam muito bem em seu perfil:"
+    ptBr: "Encontramos algumas vagas que se encaixam muito bem em seu perfil."
   },
   jobReportSecondPhrase4: {
     eng: "Today there're some job vacancies that have been posted and fit your profile",
-    ptBr: "Hoje foram postadas algumas vagas de emprego que se encaixam em seu perfil:"
+    ptBr: "Hoje foram postadas algumas vagas de emprego que se encaixam em seu perfil."
   }
 
 

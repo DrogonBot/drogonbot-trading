@@ -42,7 +42,8 @@ const leadSchema = new mongoose.Schema({
     {
       slug: String,
       title: String,
-      jobRoles: [String]
+      jobRoles: [String],
+      premiumOnly: Boolean
     }
   ],
   unsubscribed: Boolean

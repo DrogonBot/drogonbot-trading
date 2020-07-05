@@ -97,7 +97,8 @@ export const userSchema: Schema = new Schema(
       {
         slug: String,
         title: String,
-        jobRoles: [String]
+        jobRoles: [String],
+        premiumOnly: Boolean
       }
     ],
 

@@ -9,6 +9,7 @@ import { IUser, User } from '../resources/User/user.model';
 import { emailProviders } from './../constants/emailProviders.constant';
 import { ILeadModel, Lead } from './../resources/Lead/lead.model';
 import { IUserDocument } from './../resources/User/user.types';
+import { IReportItem } from './../typescript/report.types';
 import { ConsoleColor, ConsoleHelper } from './ConsoleHelper';
 import { PushNotificationHelper } from './PushNotificationHelper';
 import { TS } from './TS';
@@ -131,6 +132,8 @@ export class NotificationHelper {
 
   public static _generateJobRolesString = (jobRoles: string[]) => {
 
+    // Used in email subjects, like: "Encontramos novas vagas para Pedreiro e Vendedor"
+
     if (jobRoles.length === 1) {
       return jobRoles[0];
     }
@@ -191,6 +194,7 @@ export class NotificationHelper {
         'job-report', {
         jobReportFirstPhrase,
         jobReportSecondPhrase,
+        jobNotificationSubscriptionCTA: TS.string("post", "jobNotificationSubscriptionCTA"),
         postSummary: postThumbnailsLinks.join(''),
         jobReportClosing
       }
@@ -223,17 +227,24 @@ export class NotificationHelper {
     let postThumbnailsLinks: string[] = []
     let reportedPostsJobRoles: string[] = []
 
-    for (const post of target.postReportItems) {
+
+    const reportItems: IReportItem[] = target.postReportItems;
+
+    for (const reportItem of reportItems) {
+
+      console.log(`${reportItem.title} => ${reportItem.premiumOnly}`);
+
+      const reportTitle = reportItem.premiumOnly ? `(Exclusiva P/ Assinantes) - ${reportItem.title}` : reportItem.title
 
       // compile report list
       postThumbnailsLinks = [
         ...postThumbnailsLinks,
-        `<a href="https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_sendgrid&utm_medium=email" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${post.title}</a>`
+        `<a href="https://empregourgente.com/posts/${reportItem.slug}?utm_source=empregourgente_sendgrid&utm_medium=email" target="_blank" style="display: block; padding-bottom: 0.75rem; padding-top: 0.75rem; text-decoration: none; font-size: 0.9rem; font-weight: bold;">${reportTitle}</a>`
       ]
 
       reportedPostsJobRoles = [
         ...reportedPostsJobRoles,
-        ...post.jobRoles
+        ...reportItem.jobRoles
       ]
 
     }
@@ -360,7 +371,6 @@ export class NotificationHelper {
       "job-notification", {
       jobsNotificationFirstPhrase: TS.string('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: user.name || "" }),
       jobsNotificationSecondParagraph: TS.string('post', secondPhraseSample || 'jobsNotificationSecondParagraph'),
-      jobNotificationSubscriptionCTA: TS.string("post", "jobNotificationSubscriptionCTA"),
       jobsNotificationClosing: TS.string('post', closingSample || 'jobsNotificationClosing', {
         postUrl: `https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_sendgrid&utm_medium=email`
       }),

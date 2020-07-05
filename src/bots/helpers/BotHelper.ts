@@ -236,7 +236,7 @@ export class BotHelper {
 
       user.postReportItems = [
         ...user.postReportItems,
-        { slug: post.slug, title: post.title, jobRoles: post.jobRoles }
+        { slug: post.slug, title: post.title, jobRoles: post.jobRoles, premiumOnly: post.premiumOnly }
       ]
       await user.save();
       reportedUsers = [...reportedUsers, user.email]
@@ -262,7 +262,7 @@ export class BotHelper {
 
       lead.postReportItems = [
         ...lead.postReportItems,
-        { slug: post.slug, title: post.title, jobRoles: post.jobRoles }
+        { slug: post.slug, title: post.title, jobRoles: post.jobRoles, premiumOnly: post.premiumOnly }
       ]
       await lead.save();
     }
