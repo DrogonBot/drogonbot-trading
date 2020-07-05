@@ -67,9 +67,9 @@ const Payment = ({ provinces }: IProps) => {
 
           <p>
             <strong>
-              Preço: Plano TRIMESTRAL por apenas{" "}
+              Preço: Plano <AccentText>TRIMESTRAL</AccentText> por apenas{" "}
               <AccentText>R$14.90 (Equivalente a R$5/mês)</AccentText> para
-              acesso ilimitado a TODAS as vagas
+              acesso ILIMITADO a TODAS as vagas
             </strong>
           </p>
           <h3>Selecione a forma de pagamento: </h3>

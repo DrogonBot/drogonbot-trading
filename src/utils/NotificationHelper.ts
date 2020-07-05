@@ -232,8 +232,6 @@ export class NotificationHelper {
 
     for (const reportItem of reportItems) {
 
-      console.log(`${reportItem.title} => ${reportItem.premiumOnly}`);
-
       const reportTitle = reportItem.premiumOnly ? `(Exclusiva P/ Assinantes) - ${reportItem.title}` : reportItem.title
 
       // compile report list
