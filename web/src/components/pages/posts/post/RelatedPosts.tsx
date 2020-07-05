@@ -37,6 +37,7 @@ export const RelatedPosts = ({ relatedPosts, type }: IProps) => {
         slug={relatedPost.slug}
         stateCode={relatedPost.stateCode}
         city={relatedPost.city}
+        isPremium={relatedPost.premiumOnly}
       />
     ));
   };

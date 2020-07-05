@@ -8,8 +8,7 @@ import { TermsOfService } from '../../components/elements/form/TermsOfService';
 import { Breadcumb } from '../../components/elements/ui/Breadcumb';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
-import { FlagPost } from '../../components/pages/posts/post/FlagPost';
-import { JoinCommunities } from '../../components/pages/posts/post/JoinCommunities';
+import { ActionButtons } from '../../components/pages/posts/post/ActionButtons';
 import { LeadModal } from '../../components/pages/posts/post/LeadModal';
 import { PostContent } from '../../components/pages/posts/post/PostContent';
 import { PostCTA } from '../../components/pages/posts/post/PostCTA';
@@ -139,18 +138,12 @@ IProps) => {
             </TermsOfService>
 
             {AdsenseHelper.showAds(AdsenseAdsTypes.ResponsiveAndNative)}
-
-            <FlagPost post={post} />
-
-            <JoinCommunities post={post} />
           </LeftColumn>
 
           <RelatedPosts
             relatedPosts={relatedPosts}
             type={RelatedPostType.Desktop}
           />
-
-          <PostFAQ post={post} />
 
           {/* <RightColumn> */}
           {/* <H2> {TS.string("post", "postImproveSkills")}</H2>
@@ -184,6 +177,10 @@ IProps) => {
           relatedPosts={relatedPosts}
           type={RelatedPostType.Mobile}
         />
+
+        <ActionButtons post={post} />
+
+        <PostFAQ post={post} />
       </Body>
       <Footer />
     </>

@@ -8,6 +8,7 @@ import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 
+import { colors } from '../../../../constants/UI/Colors.constant';
 import { TS } from '../../../../helpers/LanguageHelper';
 
 interface IProps {
@@ -17,6 +18,7 @@ interface IProps {
   slug: string;
   stateCode: string;
   city: string;
+  isPremium: boolean;
 }
 
 export const PostCard = ({
@@ -26,9 +28,13 @@ export const PostCard = ({
   slug,
   stateCode,
   city,
+  isPremium,
 }: IProps) => {
+  const shortContent =
+    content.length >= 70 ? content.substr(0, 70) + "..." : content;
+
   return (
-    <Container>
+    <Container isPremium={isPremium}>
       <Link href={`/posts/${slug}`}>
         <Card>
           <CardTopHeader>
@@ -49,7 +55,7 @@ export const PostCard = ({
                 {title}
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
-                {content}
+                {shortContent}
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -69,6 +75,9 @@ export const PostCard = ({
 const Container = styled.div`
   max-width: 315px;
   margin: 1rem;
+  .MuiPaper-root {
+    background-color: ${(props) => props.isPremium && colors.lightYellow};
+  }
 `;
 
 const CardTopHeader = styled.div`
