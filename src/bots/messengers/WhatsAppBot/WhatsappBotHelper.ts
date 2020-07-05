@@ -9,6 +9,7 @@ import { IWhatsAppGroup } from '../../types/whatsappbot.types';
 import {
   defaultThumbnailBase64,
   WHATSAPP_BOT_FREE_POSTS_PER_MESSAGE,
+  WHATSAPP_BOT_MINIMUM_FREE_POSTS_PER_LIST,
   WHATSAPP_BOT_PREMIUM_POSTS_PER_MESSAGE,
   whatsappAxios,
 } from './whatsappbot.constants';
@@ -160,7 +161,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
   public static postOnGroups = async () => {
 
-    // loop through each group
+    // loop through each group. We'll use the index to check if we should or not repeat posts
     for (const [i, group] of whatsAppGroups.entries()) {
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: WhatsApp Bot => Looking for new jobs to ${group.name}...`)
@@ -168,14 +169,17 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
       const premiumPosts = await WhatsAppBotHelper._fetchGroupPosts(group, WHATSAPP_BOT_PREMIUM_POSTS_PER_MESSAGE, true)
       const freePosts = await WhatsAppBotHelper._fetchGroupPosts(group, WHATSAPP_BOT_FREE_POSTS_PER_MESSAGE, false)
 
-      if (freePosts.length > 0) { // minimum post length to submit a message...
+      if (freePosts.length >= WHATSAPP_BOT_MINIMUM_FREE_POSTS_PER_LIST) { // minimum post length to submit a message...
 
         // start asking people to add you to contact list!
         if (!group.isPartnerGroup) {
+
+
           const n = _.random(10);
+          console.log(n);
 
           if (n <= 2) { // 20% chance
-
+            console.log('asking to add on list');
             const addMessages = [`📞 Ei pessoal! Por favor, me adicionem em sua lista de contatos para garantir que você recebam todas as vagas sem problemas!`, `📞 Ei gente, me adicionem em seu contato para que vocês recebam todas as vagas normalmente. Obrigado!`, `📞 Importante: me adicione em seus contatos para que vocês recebam todas as vagas sem erros.`]
 
             await GenericHelper.sleep(1000 * (6 + _.random(3)))
@@ -185,6 +189,27 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
               body: _.sample(addMessages),
             })
           }
+
+
+          if (n >= 3 && n <= 7) { // 50% chance
+            console.log('inviting to subgroups');
+            const subgroupLink = `https://bitly.com/emprego-urgente-${group.stateCode.toLowerCase()}`
+
+            const randomMessages = [`🔔 Quer receber apenas notificações de vagas da *SUA ÁREA*? Acesse nossos subgrupos: ${subgroupLink}`, `🔔 Cansado(a) de tantas notificações de vagas fora da sua área? Acesse nossos subgrupos: ${subgroupLink}`, `🔔 Pessoal, entre em nossos *subgrupos divididos por área profissional* clicando aqui: ${subgroupLink}. Dessa forma vocês receberão notificações de oportunidades relevantes. `]
+
+
+            await GenericHelper.sleep(1000 * 6 + _.random(3))
+
+            await WhatsAppBotHelper.request("POST", "/sendMessage", {
+              chatId: group.chatId,
+              body: _.sample(randomMessages),
+            })
+
+
+          }
+
+
+
         }
 
         // if its a leaf group, dont repeat posts

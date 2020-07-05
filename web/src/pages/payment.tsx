@@ -1,4 +1,3 @@
-import CreditCardIcon from '@material-ui/icons/CreditCard';
 import DescriptionIcon from '@material-ui/icons/Description';
 import Head from 'next/head';
 import React, { useState } from 'react';
@@ -26,7 +25,7 @@ interface IProps {
 
 const Payment = ({ provinces }: IProps) => {
   const [paymentType, setPaymentType] = useState<PaymentTypes>(
-    PaymentTypes.CREDIT_CARD
+    PaymentTypes.BOLETO
   );
 
   const onChangePaymentType = (e) => {
@@ -75,7 +74,7 @@ const Payment = ({ provinces }: IProps) => {
           </p>
           <h3>Selecione a forma de pagamento: </h3>
           <PaymentSelectorContainer>
-            <CreditCardContainer
+            {/* <CreditCardContainer
               onClick={() => onChangePaymentType(PaymentTypes.CREDIT_CARD)}
             >
               <RadioIcon
@@ -87,7 +86,7 @@ const Payment = ({ provinces }: IProps) => {
                 name="payment-type-radio"
                 inputProps={{ "aria-label": paymentType }}
               />
-            </CreditCardContainer>
+            </CreditCardContainer> */}
 
             <BoletoContainer
               onClick={() => onChangePaymentType(PaymentTypes.BOLETO)}
@@ -155,13 +154,13 @@ const BoletoContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const CreditCardContainer = styled.div`
-  flex: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 0.5rem;
-`;
+// const CreditCardContainer = styled.div`
+//   flex: 50%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   margin-top: 0.5rem;
+// `;
 
 export const ExpansionPanelTitle = styled.div`
   font-size: 1rem;

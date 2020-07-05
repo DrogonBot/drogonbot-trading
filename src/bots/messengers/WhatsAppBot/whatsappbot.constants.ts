@@ -10,7 +10,7 @@ export const whatsappAxios = axios.create({
 
 export const WHATSAPP_BOT_PREMIUM_POSTS_PER_MESSAGE = 5
 export const WHATSAPP_BOT_FREE_POSTS_PER_MESSAGE = 10
-
+export const WHATSAPP_BOT_MINIMUM_FREE_POSTS_PER_LIST = 1
 
 
 
