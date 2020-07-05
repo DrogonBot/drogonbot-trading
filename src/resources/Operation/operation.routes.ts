@@ -1,27 +1,28 @@
 import Promise from 'bluebird';
 import { Router } from 'express';
-import _ from 'lodash';
-import moment from 'moment-timezone';
 
-import { PuppeteerBot } from '../../bots/classes/PuppeteerBot';
-import { RECURPOST_CREDENTIALS_SP, ZOHO_SOCIAL_ES_CREDENTIALS } from '../../bots/data/loginCredentials';
-import { ScrappingTargetHelper } from '../../bots/helpers/ScrappingTargetHelper';
-import { WhatsAppBotHelper } from '../../bots/messengers/WhatsAppBot/WhatsappBotHelper';
-import { RecurPostSocialSchedulerBot } from '../../bots/schedulers/RecurPostSocialSchedulerBot';
-import { ZohoSocialSchedulerBot } from '../../bots/schedulers/ZohoSocialSchedulerBot';
-import { PosterFacebook } from '../../bots/social_media/PosterFacebook';
+import { PuppeteerBot } from '../../classes/bots/classes/PuppeteerBot';
+import { RECURPOST_CREDENTIALS_SP, ZOHO_SOCIAL_ES_CREDENTIALS } from '../../classes/bots/data/loginCredentials';
+import { ScrappingTargetHelper } from '../../classes/bots/helpers/ScrappingTargetHelper';
+import { TelegramBotHelper } from '../../classes/bots/messengers/TelegramBot/TelegramBotHelper';
+import { WhatsAppBotHelper } from '../../classes/bots/messengers/WhatsAppBot/WhatsappBotHelper';
+import { RecurPostSocialSchedulerBot } from '../../classes/bots/schedulers/RecurPostSocialSchedulerBot';
+import { ZohoSocialSchedulerBot } from '../../classes/bots/schedulers/ZohoSocialSchedulerBot';
+import { PosterFacebook } from '../../classes/bots/social_media/PosterFacebook';
+import { PagSeguro } from '../../classes/payment/Pagseguro/Pagseguro';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { PostHelper } from '../../utils/PostHelper';
-import { SubscriptionHelper } from '../../utils/SubscriptionHelper';
-import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
-import { Subscription } from '../Subscription/subscription.model';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
-import { TelegramBotHelper } from './../../bots/messengers/TelegramBot/TelegramBotHelper';
 import { NotificationHelper } from './../../utils/NotificationHelper';
-import { SubscriptionStatus } from './../Subscription/subscription.types';
+import {
+  SUBSCRIPTION_DESCRIPTION,
+  SUBSCRIPTION_PRICE,
+  SUBSCRIPTION_REFERENCE,
+} from './../Subscription/subscription.constant';
+
 
 // Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310
 Promise.config({
@@ -138,29 +139,7 @@ operationRouter.get('/scheduler', [userAuthMiddleware, UserMiddleware.restrictUs
   })
 
 });
-operationRouter.get('/logs', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-
-  const nowInVancouver = moment.tz(new Date(), 'America/Vancouver').format('YYYY-MM-DD[T00:00:00.000Z]');
-
-  console.log(nowInVancouver);
-
-  const providerEmailsToday = await Log.find({
-    action: `SENDGRID_EMAIL_SUBMISSION`,
-    createdAt: { $gte: nowInVancouver }
-  })
-
-
-
-
-
-
-
-  return res.status(200).send({
-    count: providerEmailsToday.length
-  })
-
-})
 
 operationRouter.get('/report', async (req, res) => {
 
@@ -251,12 +230,6 @@ operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restri
 
   await WhatsAppBotHelper.postOnGroups()
 
-
-
-
-
-
-
   return res.status(200).send({
     status: 'success'
   })
@@ -264,76 +237,38 @@ operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restri
 
 })
 
-operationRouter.get('/whatsapp-is-posted/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  const posts = await Post.find({})
+operationRouter.get('/pagseguro/checkout/test', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  for (const post of posts) {
-    post.isPostedOnWhatsApp = true;
-    await post.save();
-  }
+  const user = req.user;
 
+  const pagseguro = new PagSeguro(process.env.PAGSEGURO_EMAIL!, process.env.PAGSEGURO_TOKEN!, process.env.PAGSEGURO_ENVIRONMENT!)
 
-
-
-
-
-
-  return res.status(200).send({
-    status: 'success'
-  })
-
-
-})
-
-operationRouter.get('/subscription-fixes/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  // ObjectId("5eeb69c0425047002b814663")
-  // ObjectId("5efb50ea9fa7b40173c3dc1e")
-  // ObjectId("5ef3c4b8cb3860006356bb65")
-  // /ObjectId("5ef2bb80d098620065eddba5")
-
-  const userIds = ["5eeb69c0425047002b814663", "5efb50ea9fa7b40173c3dc1e", "5ef3c4b8cb3860006356bb65", "5ef2bb80d098620065eddba5"]
-
-
-  // generate subscriptions
-
-  for (const id of userIds) {
-    const newSubscription = new Subscription({
-      status: SubscriptionStatus.Active,
-      userId: id,
-      paymentType: "BOLETO",
-      subscriberDays: 90
-    })
-
-    newSubscription.save();
-
-  }
-
-  // randomize post premium or not premium
-
-  const posts = await Post.find({ active: true })
-
-  for (const post of posts) {
-
-    // decide if it will be a premium only post or not
-    const n = _.random(100);
-
-    if (n <= SubscriptionHelper.getSectorPremiumChance(post.sector)) {
-      await Post.updateOne({ _id: post.id }, { premiumOnly: true })
+  const response = await pagseguro.generateBoleto(user._id, SUBSCRIPTION_REFERENCE, SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE * 100, {
+    "name": "Joao Paulo Furtado Silva",
+    "tax_id": "14001372762",
+    "email": "joaopaulofurtado@live.com",
+    "address": {
+      "country": "Brasil",
+      "region": "São Paulo",
+      "region_code": "SP",
+      "city": "Sao Paulo",
+      "postal_code": "01452002",
+      "street": "Avenida Brigadeiro Faria Lima",
+      "number": "1384",
+      "locality": "Pinheiros"
     }
+  });
+
+  console.log(response.data);
 
 
-  }
+  return res.status(200).send({
+    status: "success"
+  })
 
 
-
-
-
-
-});
-
-
+})
 
 
 

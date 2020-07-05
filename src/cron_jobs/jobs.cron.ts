@@ -2,10 +2,10 @@ import Promise from 'bluebird';
 import moment from 'moment';
 import cron from 'node-cron';
 
-import { ScrappingTargetHelper } from '../bots/helpers/ScrappingTargetHelper';
-import { TelegramBotHelper } from '../bots/messengers/TelegramBot/TelegramBotHelper';
-import { WhatsAppBotHelper } from '../bots/messengers/WhatsAppBot/WhatsappBotHelper';
-import { TargetPriority } from '../bots/types/bots.types';
+import { ScrappingTargetHelper } from '../classes/bots/helpers/ScrappingTargetHelper';
+import { TelegramBotHelper } from '../classes/bots/messengers/TelegramBot/TelegramBotHelper';
+import { WhatsAppBotHelper } from '../classes/bots/messengers/WhatsAppBot/WhatsappBotHelper';
+import { TargetPriority } from '../classes/bots/types/bots.types';
 import { JobsEmailManager } from '../emails/jobs.email';
 import { Post } from '../resources/Post/post.model';
 import { IPostApplication, IPostApplicationStatus } from '../resources/Post/post.types';

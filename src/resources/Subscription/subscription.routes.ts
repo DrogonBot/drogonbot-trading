@@ -1,10 +1,10 @@
 import express from 'express';
 
+import { JunoPaymentHelper } from '../../classes/payment/JunoPayment/JunoPaymentHelper';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { PaymentMiddleware } from '../../middlewares/payment.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { UserType } from '../User/user.types';
-import { JunoPaymentHelper } from './../../utils/JunoPayment/JunoPaymentHelper';
 import { TransactionReferences } from './../Transaction/transaction.types';
 import { SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE } from './subscription.constant';
 

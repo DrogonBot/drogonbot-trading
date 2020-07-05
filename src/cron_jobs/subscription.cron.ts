@@ -1,6 +1,7 @@
 import moment from 'moment';
 import cron from 'node-cron';
 
+import { JunoPaymentHelper } from '../classes/payment/JunoPayment/JunoPaymentHelper';
 import { SUBSCRIPTION_DESCRIPTION } from '../resources/Subscription/subscription.constant';
 import { SubscriptionStatus } from '../resources/Subscription/subscription.types';
 import { Transaction } from '../resources/Transaction/transaction.model';
@@ -8,7 +9,6 @@ import { TransactionStatus, TransactionTypes } from '../resources/Transaction/tr
 import { User } from '../resources/User/user.model';
 import { SUBSCRIPTION_PRICE } from './../resources/Subscription/subscription.constant';
 import { Subscription } from './../resources/Subscription/subscription.model';
-import { JunoPaymentHelper } from './../utils/JunoPayment/JunoPaymentHelper';
 
 export class SubscriptionCron {
   public static submitBoletoChargeNearExpiration = () => {

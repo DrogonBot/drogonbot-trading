@@ -2,7 +2,7 @@ import { Router } from 'express';
 import _ from 'lodash';
 import RSS from 'rss';
 
-import { BotHelper } from '../../bots/helpers/BotHelper';
+import { BotHelper } from '../../classes/bots/helpers/BotHelper';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { PostHelper } from '../../utils/PostHelper';
 import { TS } from '../../utils/TS';

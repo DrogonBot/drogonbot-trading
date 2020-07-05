@@ -1,4 +1,4 @@
-import { JunoPaymentHelper } from '../utils/JunoPayment/JunoPaymentHelper';
+import { JunoPaymentHelper } from '../classes/payment/JunoPayment/JunoPaymentHelper';
 
 
 export class PaymentMiddleware {

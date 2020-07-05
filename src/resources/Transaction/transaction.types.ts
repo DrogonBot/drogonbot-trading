@@ -1,5 +1,6 @@
 
 export interface ITransaction {
+  providerName: string
   orderId: string
   userId: string,
   type: TransactionTypes,
