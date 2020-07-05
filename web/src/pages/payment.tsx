@@ -67,9 +67,9 @@ const Payment = ({ provinces }: IProps) => {
 
           <p>
             <strong>
-              Preço: Plano TRIMESTRAL por apenas R$24.90{" "}
-              <AccentText>(Equivalente a R$8.30/mês)</AccentText> para acesso
-              ilimitado a TODAS as vagas
+              Preço: Plano TRIMESTRAL por apenas{" "}
+              <AccentText>R$14.90 (Equivalente a R$5/mês)</AccentText> para
+              acesso ilimitado a TODAS as vagas
             </strong>
           </p>
           <h3>Selecione a forma de pagamento: </h3>
@@ -113,7 +113,7 @@ const Payment = ({ provinces }: IProps) => {
             Entre em contato via WhatsApp{" "}
             <a
               href={`https://wa.me/17788467427/?text=${encodeURIComponent(
-                "Oi, tudo bem? Preciso de ajuda na compra de creditos do EmpregoUrgente!"
+                "Oi, tudo bem? Preciso de ajuda para fazer a assinatura do EmpregoUrgente!"
               )}`}
               target="_blank"
             >

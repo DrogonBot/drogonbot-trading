@@ -360,6 +360,7 @@ export class NotificationHelper {
       "job-notification", {
       jobsNotificationFirstPhrase: TS.string('post', firstPhraseSample || 'jobsNotificationFirstPhrase', { userName: user.name || "" }),
       jobsNotificationSecondParagraph: TS.string('post', secondPhraseSample || 'jobsNotificationSecondParagraph'),
+      jobNotificationSubscriptionCTA: TS.string("post", "jobNotificationSubscriptionCTA"),
       jobsNotificationClosing: TS.string('post', closingSample || 'jobsNotificationClosing', {
         postUrl: `https://empregourgente.com/posts/${post.slug}?utm_source=empregourgente_sendgrid&utm_medium=email`
       }),

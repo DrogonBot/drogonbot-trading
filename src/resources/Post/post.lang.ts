@@ -196,6 +196,11 @@ export const strings = {
     eng: "There's a job position that matches  your interests:",
     ptBr: "Encontramos uma vaga que provavelmente lhe interessa:"
   },
+  jobNotificationSubscriptionCTA: {
+    eng: `<p> Do you want to have access to exclusive vacancies and <strong>increase your chances of getting a job faster?</strong> <a href="${process.env.WEB_APP_URL}/payment"> Click here and become a subscriber! </a> </p>`,
+    ptBr: `<p>Quer ter acesso a vagas exclusivas e <strong>aumentar suas chances de conseguir um emprego mais rapidamente?</strong> <a href="${process.env.WEB_APP_URL}/payment">Clique aqui e se torne um assinante!</a> </p>`
+  },
+
   jobsNotificationClosing: {
     eng: `We suggest that you <a href="{{postUrl}}">apply immediately through the <strong>red button</strong> at the top of the post.</a>,
          because generally the first candidates have higher

@@ -40,8 +40,8 @@ export const SubscriptionModal = ({ stateCode, jobRole, city }: IProps) => {
             <a>
               <h1>Assinatura Trimestral</h1>
               <p>
-                Por apenas R$24.90{" "}
-                <AccentText>(equivalente a apenas R$8.30/mês)</AccentText> você
+                Por apenas R$14.90{" "}
+                <AccentText>(equivalente a menos de R$5/mês)</AccentText> você
                 tem <Underline>acesso ilimitado</Underline> a todas as vagas por
                 90 dias (3 MESES).
               </p>
