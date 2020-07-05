@@ -14,6 +14,7 @@ import { EmailQueueCron } from './cron_jobs/emailqueue.cron';
 import { JobsCron } from './cron_jobs/jobs.cron';
 import { RetentionCron } from './cron_jobs/retention.cron';
 import { SubscriptionCron } from './cron_jobs/subscription.cron';
+import { UsersCron } from './cron_jobs/user.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { affiliateRouter } from './resources/AffiliateProduct/affiliate.routes';
 import { AffiliateSeeder } from './resources/AffiliateProduct/affiliate.seeder';
@@ -81,9 +82,8 @@ switch (process.env.ENV) {
 
   case EnvType.Production: // Let's turn on our cron job in production only!
 
+    UsersCron.deleteOldLogs()
     RetentionCron.inactiveUserReminder()
-
-
     JobsCron.submitApplications();
     JobsCron.jobCrawlersCleaners();
     JobsCron.initializeJobCrawlers();
