@@ -281,6 +281,27 @@ operationRouter.get('/subscription-disable-premium-posts/', [userAuthMiddleware,
 })
 
 
+operationRouter.get('/disable-olx-posts/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+
+  const posts = await Post.find({ source: "OLX", active: true })
+
+  console.log(`${posts.length} found`);
+
+  for (const post of posts) {
+    post.active = false
+    await post.save();
+  }
+
+
+
+
+  return res.status(200).send({
+    status: 'success'
+  })
+
+
+})
 
 
 export { operationRouter }

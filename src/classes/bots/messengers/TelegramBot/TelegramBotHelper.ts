@@ -37,7 +37,8 @@ export class TelegramBotHelper extends MessengerBotHelper {
 
         const posts = await Post.find({
           ...query,
-          isPostedOnTelegram: false
+          isPostedOnTelegram: false,
+          active: true
         }).limit(20).sort({ 'createdAt': 'descending' })
 
         ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${posts.length} posts on channel: ${channel.stateCode}/${channel.city}`)

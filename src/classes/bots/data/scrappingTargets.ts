@@ -13,7 +13,6 @@ import { ScrapperEmpregosSaoPauloRegioes } from '../scrappers/ScrapperEmpregosSa
 import { ScrapperGlobalEmpregosSP } from '../scrappers/ScrapperGlobalEmpregosSP';
 import { ScrapperGrupoResolveSP } from '../scrappers/ScrapperGrupoResolveSP';
 import { ScrapperMaisVagasES } from '../scrappers/ScrapperMaisVagasES';
-import { ScrapperOLX } from '../scrappers/ScrapperOLX';
 import { ScrapperParceriaSocialDeEmpregos } from '../scrappers/ScrapperParceriaSocialDeEmpregos';
 import { ScrapperQuatreMG } from '../scrappers/ScrapperQuatreMG';
 import { ScrapperRandstad } from '../scrappers/ScrapperRandstad';
@@ -329,70 +328,70 @@ export const scrappingTargets: IScrappingTarget[] = [
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
-  {
-    name: "OLX => ES",
-    externalSource: "https://es.olx.com.br/vagas-de-emprego?sf=1",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "ES"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => Vitoria",
-    externalSource: "https://es.olx.com.br/norte-do-espirito-santo/vitoria/vagas-de-emprego?sf=1",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "ES",
-      city: "Vitória"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => Vila Velha",
-    externalSource: "https://es.olx.com.br/norte-do-espirito-santo/vila-velha/vagas-de-emprego?sf=1",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "ES",
-      city: "Vila Velha"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => Serra",
-    externalSource: "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/serra/vagas-de-emprego?sf=1",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "ES",
-      city: "Serra"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => Cariacica",
-    externalSource: "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/cariacica/vagas-de-emprego?f=p&sf=1",
-    priority: TargetPriority.Low,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "ES",
-      city: "Cariacica"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
+  // {
+  //   name: "OLX => ES",
+  //   externalSource: "https://es.olx.com.br/vagas-de-emprego?sf=1",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "ES"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => Vitoria",
+  //   externalSource: "https://es.olx.com.br/norte-do-espirito-santo/vitoria/vagas-de-emprego?sf=1",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "ES",
+  //     city: "Vitória"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => Vila Velha",
+  //   externalSource: "https://es.olx.com.br/norte-do-espirito-santo/vila-velha/vagas-de-emprego?sf=1",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "ES",
+  //     city: "Vila Velha"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => Serra",
+  //   externalSource: "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/serra/vagas-de-emprego?sf=1",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "ES",
+  //     city: "Serra"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => Cariacica",
+  //   externalSource: "https://es.olx.com.br/norte-do-espirito-santo/outras-cidades/cariacica/vagas-de-emprego?f=p&sf=1",
+  //   priority: TargetPriority.Low,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "ES",
+  //     city: "Cariacica"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
 
   // RJ ========================================
   {
@@ -517,19 +516,19 @@ export const scrappingTargets: IScrappingTarget[] = [
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
-  {
-    name: "OLX => RJ/CAPITAL",
-    externalSource: "https://rj.olx.com.br/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "RJ",
-      city: "Rio de Janeiro"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
+  // {
+  //   name: "OLX => RJ/CAPITAL",
+  //   externalSource: "https://rj.olx.com.br/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "RJ",
+  //     city: "Rio de Janeiro"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
   // {
   //   name: "OLX => RJ/Sao Goncalo",
   //   externalSource: "https://rj.olx.com.br/rio-de-janeiro-e-regiao/sao-goncalo/vagas-de-emprego",
@@ -848,32 +847,32 @@ export const scrappingTargets: IScrappingTarget[] = [
     scrapperClass: ScrapperParceriaSocialDeEmpregos,
     bypassPostContentFilter: true
   },
-  {
-    name: "OLX => SP/CAPITAL",
-    externalSource: "https://sp.olx.com.br/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "São Paulo"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
-  {
-    name: "OLX => SP/Guarulhos",
-    externalSource: "https://sp.olx.com.br/sao-paulo-e-regiao/outras-cidades/guarulhos/vagas-de-emprego",
-    priority: TargetPriority.High,
-    postDataOverride: {
-      country: "Brazil",
-      stateCode: "SP",
-      city: "Guarulhos"
-    },
-    source: PostSource.OLX,
-    pagePattern: PagePattern.ListAndInternalPosts,
-    scrapperClass: ScrapperOLX
-  },
+  // {
+  //   name: "OLX => SP/CAPITAL",
+  //   externalSource: "https://sp.olx.com.br/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "São Paulo"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
+  // {
+  //   name: "OLX => SP/Guarulhos",
+  //   externalSource: "https://sp.olx.com.br/sao-paulo-e-regiao/outras-cidades/guarulhos/vagas-de-emprego",
+  //   priority: TargetPriority.High,
+  //   postDataOverride: {
+  //     country: "Brazil",
+  //     stateCode: "SP",
+  //     city: "Guarulhos"
+  //   },
+  //   source: PostSource.OLX,
+  //   pagePattern: PagePattern.ListAndInternalPosts,
+  //   scrapperClass: ScrapperOLX
+  // },
   // {
   //   name: "OLX => SP/Campinas",
   //   externalSource: "https://sp.olx.com.br/grande-campinas/vagas-de-emprego",

@@ -71,6 +71,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
     }
 
     let posts = await Post.find({
+      active: true,
       premiumOnly,
       stateCode: group.stateCode,
       $and: [
@@ -180,7 +181,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
 
           const n = _.random(10);
-          console.log(n);
+
 
           if (n <= 2) { // 20% chance
             console.log('asking to add on list');
@@ -196,7 +197,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
 
           if (n >= 3 && n <= 7) { // 50% chance
-            console.log('inviting to subgroups');
+
             const subgroupLink = `https://bitly.com/emprego-urgente-${group.stateCode.toLowerCase()}`
 
             const randomMessages = [`🔔 Quer receber apenas notificações de vagas da *SUA ÁREA*? Acesse nossos subgrupos: ${subgroupLink}`, `🔔 Cansado(a) de tantas notificações de vagas fora da sua área? Acesse nossos subgrupos: ${subgroupLink}`, `🔔 Pessoal, entre em nossos *subgrupos divididos por área profissional* clicando aqui: ${subgroupLink}. Dessa forma vocês receberão notificações de oportunidades relevantes. `]
