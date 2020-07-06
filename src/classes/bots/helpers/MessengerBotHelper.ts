@@ -129,7 +129,7 @@ export class MessengerBotHelper {
 
     let titleString = ""
 
-    if (premiumOnly) {
+    if (premiumOnly && process.env.SUBSCRIPTION_SYSTEM === "on") {
       titleString += `🌟 *[P/ ASSINANTES]* `
     } else {
       titleString += `${MessengerBotHelper._getSectorEmoji(sector)} `

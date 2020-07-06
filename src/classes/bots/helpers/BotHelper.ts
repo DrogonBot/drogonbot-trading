@@ -287,12 +287,15 @@ export class BotHelper {
 
     const newPost = new Post({ ...postData, slug: PostHelper.generateTitleSlug(postData.title), owner: BotHelper.owner._id, isTrustableSource, redirectToSourceOnly })
 
-    // decide if it will be a premium only post or not
-    const n = _.random(100);
+    if (process.env.SUBSCRIPTION_SYSTEM === "on") {
+      // decide if it will be a premium only post or not
+      const n = _.random(100);
 
-    if (n <= SubscriptionHelper.getSectorPremiumChance(newPost.sector)) {
-      newPost.premiumOnly = true;
+      if (n <= SubscriptionHelper.getSectorPremiumChance(newPost.sector)) {
+        newPost.premiumOnly = true;
+      }
     }
+
 
 
     // hide all contact data from page source
