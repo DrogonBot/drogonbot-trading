@@ -87,7 +87,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
   }
 
   // ! Not using now (it generates too many notifications)
-  private static _thumbnailPost = async (posts: IPostModel[], group: IWhatsAppGroup) => {
+  private static _thumbnailPost = async (posts: IPostModel[], group: IWhatsAppGroup, dontRepeatPosts: boolean) => {
 
     const limitedPosts = _.slice(posts, 0, 15) // thumbnail posts are limited to 15 only!
 
@@ -131,14 +131,18 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
           console.error(error);
         }
 
-        if (group.isLeaf) {
-          post.isPostedOnWhatsApp = true;
-          await post.save();
+
+        if (dontRepeatPosts) {
+          await Post.updateOne({ _id: post._id }, { isPostedOnWhatsApp: true })
         }
+
+
 
         // random delay between each posting interval
         await GenericHelper.sleep(1000 * (6 + _.random(10)))
 
+      } else {
+        console.log(`You're running on development. Please turn on PRODUCTION mode!`);
       }
     }
 
@@ -219,7 +223,14 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
         const allPosts = _.shuffle([...freePosts, ...premiumPosts])
 
-        await WhatsAppBotHelper._listPost(allPosts, group, dontRepeatPosts);
+        // await WhatsAppBotHelper._listPost(allPosts, group, dontRepeatPosts);
+
+        if (!group.isPartnerGroup) {
+          await WhatsAppBotHelper._thumbnailPost(allPosts, group, dontRepeatPosts);
+        } else {
+          await WhatsAppBotHelper._listPost(allPosts, group, dontRepeatPosts);
+        }
+
       } else {
         console.log('No new jobs found...');
       }
