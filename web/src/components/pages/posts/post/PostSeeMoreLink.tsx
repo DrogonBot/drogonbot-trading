@@ -3,6 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
+import { appEnv } from '../../../../constants/Env.constant';
 import { colors } from '../../../../constants/UI/Colors.constant';
 import { GenericHelper } from '../../../../helpers/GenericHelper';
 import { TS } from '../../../../helpers/LanguageHelper';
@@ -26,6 +27,10 @@ export const PostSeeMoreLink: React.FC<IProps> = ({ post }) => {
       alert(TS.string("account", "loginRequiredMessage"));
       router.push("/register");
       return;
+    }
+
+    if (!appEnv.payment.subscriptionSystemActive) {
+      return GenericHelper.crossBrowserUrlRedirect(post.externalUrl);
     }
 
     if ((post.premiumOnly && user.isPremium) || !post.premiumOnly) {

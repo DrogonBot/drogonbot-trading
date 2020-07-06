@@ -30,14 +30,18 @@ export class PagSeguro extends Payment {
     })
 
     if (isXML) {
-
       const obj: any = convert.xml2js(response.data, { ignoreComment: true, alwaysChildren: true, compact: true });
-
       return obj;
-
     }
 
     return response
+  }
+
+  public getTransaction = async (notificationCode: string) => {
+
+
+
+
 
   }
 

@@ -6,6 +6,7 @@ import { PaymentMiddleware } from '../../middlewares/payment.middleware';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { TS } from '../../utils/TS';
 import { User } from '../User/user.model';
+import { PagSeguro } from './../../classes/payment/Pagseguro/Pagseguro';
 import { Transaction } from './transaction.model';
 import { TransactionReferences, TransactionStatus } from './transaction.types';
 
@@ -19,7 +20,25 @@ const transactionRouter = new express.Router();
 // !  Payment Webhooks route
 transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAuthorize, async (req, res) => {
 
-  const { chargeCode } = req.body;
+  const { chargeCode, notificationCode } = req.body;
+
+  console.log(req.body);
+
+
+  if (notificationCode) {
+    // ! Pagseguro Webhook
+
+    const pagseguro = new PagSeguro();
+
+    ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `💰: Pagseguro Webhook Post received`)
+
+    console.log('Fetching transaction details...');
+
+
+
+  }
+
+
 
   // ! JUNO WEBHOOK
   if (chargeCode) {

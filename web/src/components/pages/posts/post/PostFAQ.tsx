@@ -23,18 +23,28 @@ export const PostFAQ: React.FC<IProps> = ({ post }) => {
             id="panel1a-header"
           >
             <ExpansionPanelTitle>
+              As vagas sao do Emprego-Urgente? Voces poderiam me indicar?
+            </ExpansionPanelTitle>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            Nós apenas repassamos vagas encontradas publicamente pela internet.
+            Não temos NENHUM contato com tais anunciantes, portanto, não podemos
+            indicar ninguém.
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        <ExpansionPanel>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <ExpansionPanelTitle>
               Porque muitas vagas não dão retorno ao candidato?
             </ExpansionPanelTitle>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <VideoResponsive>
-              <iframe
-                src="https://www.youtube.com/embed/WzSQZS_cEZs?start=145"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </VideoResponsive>
+            Porque recebem tantos currículo que fica impossivel entrar em
+            contato com cada um.
           </ExpansionPanelDetails>
         </ExpansionPanel>
         <ExpansionPanel>
@@ -62,149 +72,6 @@ export const PostFAQ: React.FC<IProps> = ({ post }) => {
                 </a>
               </Typography>
               <br />
-
-              <iframe
-                src="https://www.youtube.com/embed/x4NQpxLr5FU"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </VideoResponsive>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <ExpansionPanelTitle>
-              Dicas para envio de currículo por E-MAIL
-            </ExpansionPanelTitle>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <VideoResponsive>
-              <iframe
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/D5HXP8OyFI0"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </VideoResponsive>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <ExpansionPanelTitle>
-              Envio meu currículo porém sem resultados até o momento. Como posso
-              melhorar?
-            </ExpansionPanelTitle>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <VideoResponsive>
-              <iframe
-                src="https://www.youtube.com/embed/tW3I0XYJyE0"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-              <iframe
-                src="https://www.youtube.com/embed/0MxvryGnDwc?start=145"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />{" "}
-            </VideoResponsive>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <ExpansionPanelTitle>
-              Quais são as principais perguntas de uma entrevista de emprego?
-            </ExpansionPanelTitle>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <VideoResponsive>
-              <iframe
-                src="https://www.youtube.com/embed/qejkRftycSI"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </VideoResponsive>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <ExpansionPanelTitle>
-              Meu primeiro emprego. E agora?
-            </ExpansionPanelTitle>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <VideoResponsive>
-              <iframe
-                src="https://www.youtube.com/embed/dK9-W918_eM"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </VideoResponsive>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-
-        <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <ExpansionPanelTitle>
-              Fui selecionado para uma entrevista. Como me preparar?
-            </ExpansionPanelTitle>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <VideoResponsive>
-              <iframe
-                src="https://www.youtube.com/embed/WfsKmRbBv7A?start=145"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </VideoResponsive>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <ExpansionPanelTitle>
-              Procuro emprego mas não possuo experiência. E agora?
-            </ExpansionPanelTitle>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <VideoResponsive>
-              <iframe
-                src="https://www.youtube.com/embed/uSYY3AQpr0k?start=145"
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
             </VideoResponsive>
           </ExpansionPanelDetails>
         </ExpansionPanel>

@@ -163,7 +163,9 @@ IProps) => {
           <Slider {...carouselSettings}>{onRenderAffiliateProducts()}</Slider>
         </AffiliateProductsContainerMobile> */}
 
-        {post.premiumOnly && !user?.isPremium ? (
+        {post.premiumOnly &&
+        !user?.isPremium &&
+        appEnv.payment.subscriptionSystemActive ? (
           <SubscriptionModal
             stateCode={post.stateCode}
             city={post.city}

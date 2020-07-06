@@ -1,6 +1,6 @@
-// @ts-ignore
 import { AvailableLanguages, EnvironmentTypes } from '../types/Global.types';
 
+// @ts-ignore
 export const ENV: string = EnvironmentTypes.Production; // set the current environment here
 
 const defineServerUrl = () => {
@@ -83,6 +83,7 @@ export const appEnv = {
     },
   },
   payment: {
+    subscriptionSystemActive: false,
     juno: {
       publicToken:
         "B5B35C369EABC339A9DCA32F46D726A0A802C27287A84DD4A8BA38458285C8169475F35ED15AD32B",

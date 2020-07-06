@@ -72,14 +72,15 @@ export const Header = () => {
       primary: true,
       position: NavPosition.NavRight,
     },
-    user && {
-      href: "/payment",
-      text: TS.string("global", "genericSubscription"),
-      icon: <MonetizationOnIcon />,
-      primary: true,
-      customColor: colors.accent,
-      position: NavPosition.NavLeft,
-    },
+    user &&
+      appEnv.payment.subscriptionSystemActive && {
+        href: "/payment",
+        text: TS.string("global", "genericSubscription"),
+        icon: <MonetizationOnIcon />,
+        primary: true,
+        customColor: colors.accent,
+        position: NavPosition.NavLeft,
+      },
 
     user && {
       // Only show this option on logged in users

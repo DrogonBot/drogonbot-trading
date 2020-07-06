@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import { appEnv } from '../../../../constants/Env.constant';
 import { colors } from '../../../../constants/UI/Colors.constant';
 import { GenericHelper } from '../../../../helpers/GenericHelper';
 import { TS } from '../../../../helpers/LanguageHelper';
@@ -61,7 +62,9 @@ export const PostCTA = ({ post }: IProps) => {
   }
 
   const onCTAClick = async () => {
-    // if user is NOT authenticated, block and ask him to login
+    if (!appEnv.payment.subscriptionSystemActive) {
+      return GenericHelper.crossBrowserUrlRedirect(CTAInfo.link);
+    }
 
     const refreshedUser: any = await dispatch(userGetProfileInfo());
 
@@ -70,9 +73,6 @@ export const PostCTA = ({ post }: IProps) => {
       router.push("/register");
       return;
     }
-
-    console.log(post.premiumOnly);
-    console.log(refreshedUser.isPremium);
 
     if ((post.premiumOnly && refreshedUser.isPremium) || !post.premiumOnly) {
       return GenericHelper.crossBrowserUrlRedirect(CTAInfo.link);
@@ -84,7 +84,11 @@ export const PostCTA = ({ post }: IProps) => {
   };
 
   const CTAButton = () => {
-    if (post.premiumOnly && !user?.isPremium) {
+    if (
+      post.premiumOnly &&
+      !user?.isPremium &&
+      appEnv.payment.subscriptionSystemActive
+    ) {
       return (
         <Button
           className="premium-only-button"
