@@ -258,7 +258,7 @@ operationRouter.get('/pagseguro/checkout/test', [userAuthMiddleware, UserMiddlew
 
 })
 
-operationRouter.get('/subscription-randomize-premium-posts/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+operationRouter.get('/subscription-disable-premium-posts/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
   const posts = await Post.find({ premiunOnly: true })
