@@ -258,6 +258,24 @@ operationRouter.get('/pagseguro/checkout/test', [userAuthMiddleware, UserMiddlew
 
 })
 
+operationRouter.get('/subscription-randomize-premium-posts/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+
+  const posts = await Post.find({ premiunOnly: true })
+
+  for (const post of posts) {
+    await Post.updateOne({ _id: post._id }, { premiumOnly: false })
+  }
+
+
+
+
+  return res.status(200).send({
+    status: 'success'
+  })
+
+
+})
 
 
 
