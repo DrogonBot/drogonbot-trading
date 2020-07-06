@@ -23,13 +23,13 @@ export const PostFAQ: React.FC<IProps> = ({ post }) => {
             id="panel1a-header"
           >
             <ExpansionPanelTitle>
-              As vagas sao do Emprego-Urgente? Voces poderiam me indicar?
+              As vagas são do Emprego-Urgente? Vocês poderiam me indicar?
             </ExpansionPanelTitle>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             Nós apenas repassamos vagas encontradas publicamente pela internet.
-            Não temos NENHUM contato com tais anunciantes, portanto, não podemos
-            indicar ninguém.
+            Não temos <strong>NENHUM</strong> contato com tais anunciantes,
+            portanto, não podemos indicar ninguém, infelizmente!
           </ExpansionPanelDetails>
         </ExpansionPanel>
         <ExpansionPanel>
