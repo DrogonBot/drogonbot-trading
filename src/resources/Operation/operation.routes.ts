@@ -261,10 +261,13 @@ operationRouter.get('/pagseguro/checkout/test', [userAuthMiddleware, UserMiddlew
 operationRouter.get('/subscription-disable-premium-posts/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
-  const posts = await Post.find({ premiunOnly: true })
+  const posts = await Post.find({ premiumOnly: true })
+
+  console.log(`${posts.length} found`);
 
   for (const post of posts) {
-    await Post.updateOne({ _id: post._id }, { premiumOnly: false })
+    post.premiumOnly = false;
+    await post.save();
   }
 
 
