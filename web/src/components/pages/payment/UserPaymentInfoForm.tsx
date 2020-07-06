@@ -1,5 +1,4 @@
 import { Button, Grid, TextField } from '@material-ui/core';
-import CreditCardIcon from '@material-ui/icons/CreditCard';
 import React, { useEffect, useState } from 'react';
 import InputMask from 'react-input-mask';
 import { useSelector } from 'react-redux';
@@ -12,13 +11,19 @@ import { IUser } from '../../../types/User.types';
 interface IProps {
   onChange: (newUserInfo) => void;
   onTriggerPayment: () => void;
+  paymentIcon: JSX.Element;
+  paymentButtonText: string;
 }
 
 export const UserPaymentInfoForm: React.FC<IProps> = ({
   onChange,
   onTriggerPayment,
+  paymentIcon,
+  paymentButtonText,
 }) => {
   const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
+
+  const PaymentIcon = () => paymentIcon;
 
   const [userInfo, setUserInfo] = useState({
     buyerName: user?.name,
@@ -30,7 +35,7 @@ export const UserPaymentInfoForm: React.FC<IProps> = ({
     buyerNeighborhood: "",
     buyerCity: user?.city,
     buyerState: user?.stateCode,
-    buyerPostCode: "",
+    buyerPostalCode: "",
   });
 
   useEffect(() => {
@@ -123,11 +128,11 @@ export const UserPaymentInfoForm: React.FC<IProps> = ({
               mask={CEP_MASK}
               maskChar="x"
               onChange={handleUserInfoChange}
-              value={userInfo.buyerPostCode}
+              value={userInfo.buyerPostalCode}
             >
               {() => (
                 <TextField
-                  name="buyerPostCode"
+                  name="buyerPostalCode"
                   label="CEP"
                   type="text"
                   variant={"outlined"}
@@ -191,12 +196,12 @@ export const UserPaymentInfoForm: React.FC<IProps> = ({
             <Button
               variant="contained"
               color="secondary"
-              startIcon={<CreditCardIcon />}
+              startIcon={<PaymentIcon />}
               onClick={() => onTriggerPayment()}
               size="large"
               fullWidth
             >
-              Pagar
+              {paymentButtonText}
             </Button>
           </Grid>
         </Grid>

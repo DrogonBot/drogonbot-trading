@@ -1,33 +1,47 @@
-import { Button, TextField } from '@material-ui/core';
 import DescriptionIcon from '@material-ui/icons/Description';
 import React, { useState } from 'react';
-import InputMask from 'react-input-mask';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { appEnv } from '../../../constants/Env.constant';
-import { CPF_MASK } from '../../../constants/payment.constant';
 import { APIHelper } from '../../../helpers/APIHelper';
 import { GenericHelper } from '../../../helpers/GenericHelper';
 import { TS } from '../../../helpers/LanguageHelper';
 import { ValidationHelper } from '../../../helpers/ValidationHelper';
 import { AppState } from '../../../store/reducers/index.reducers';
 import { IUser } from '../../../types/User.types';
-import { Field, FieldCenter } from '../../elements/common/form';
 import { TermsOfService } from '../../elements/form/TermsOfService';
+import { UserPaymentInfoForm } from './UserPaymentInfoForm';
 
 export const BoletoPayment: React.FC = (props) => {
   const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
 
-  const [userName, setUserName] = useState<string>(user?.name);
-  const [userCPF, setUserCPF] = useState<string>("");
+  const [userInfo, setUserInfo] = useState({
+    buyerName: user?.name,
+    buyerCPF: user?.cpf || "",
+    buyerEmail: user?.email,
+    buyerStreet: user?.street || "",
+    buyerNumber: user?.streetNumber || "",
+    buyerComplement: "",
+    buyerNeighborhood: user?.streetNeighborhood || "",
+    buyerCity: user?.city,
+    buyerState: user?.stateCode,
+    buyerPostalCode: user?.postalCode || "",
+  });
 
   const onHandleGenerateBoleto = async () => {
-    const numberOnlyCPF = userCPF.replace(/\D/g, ""); // remove all non numeric chars
+    const numberOnlyCPF = userInfo.buyerCPF.replace(/\D/g, ""); // remove all non numeric chars
 
     const paymentPayload = {
-      buyerName: userName,
+      buyerName: userInfo.buyerName,
       buyerCPF: numberOnlyCPF,
+      buyerEmail: userInfo.buyerEmail,
+      buyerCity: userInfo.buyerCity,
+      buyerState: userInfo.buyerState,
+      buyerPostalCode: userInfo.buyerPostalCode,
+      buyerStreet: userInfo.buyerStreet,
+      buyerNumber: userInfo.buyerNumber,
+      buyerNeighborhood: userInfo.buyerNeighborhood,
     };
 
     // Validation ========================================
@@ -37,6 +51,13 @@ export const BoletoPayment: React.FC = (props) => {
       fieldLabels: {
         buyerName: "Nome",
         buyerCPF: "CPF",
+        buyerEmail: "E-mail",
+        buyerCity: "Cidade",
+        buyerState: "Estado",
+        buyerPostalCode: "CEP",
+        buyerStreet: "Rua/Av.",
+        buyerNumber: "Número",
+        buyerNeighborhood: "Bairro",
       },
     });
 
@@ -62,7 +83,7 @@ export const BoletoPayment: React.FC = (props) => {
     console.log(response.data);
 
     if (process.browser) {
-      GenericHelper.crossBrowserUrlRedirect(response.data.installmentLink);
+      GenericHelper.crossBrowserUrlRedirect(response.data.links[1].href);
     }
   };
 
@@ -74,43 +95,12 @@ export const BoletoPayment: React.FC = (props) => {
 
       <br />
 
-      <Field>
-        <TextField
-          fullWidth
-          label={TS.string("account", "registerInputName")}
-          value={userName}
-          onChange={(e) => {
-            setUserName(e.target.value);
-          }}
-          variant={"outlined"}
-        />
-      </Field>
-
-      <Field>
-        <InputMask
-          mask={CPF_MASK}
-          disabled={false}
-          maskChar="x"
-          value={userCPF}
-          onChange={(e) => {
-            setUserCPF(e.target.value);
-          }}
-        >
-          {() => <TextField fullWidth label={"CPF"} variant={"outlined"} />}
-        </InputMask>
-      </Field>
-
-      <FieldCenter>
-        <Button
-          variant="contained"
-          color="secondary"
-          startIcon={<DescriptionIcon />}
-          onClick={onHandleGenerateBoleto}
-          size="large"
-        >
-          Gerar Boleto
-        </Button>
-      </FieldCenter>
+      <UserPaymentInfoForm
+        onChange={(newUserInfo) => setUserInfo(newUserInfo)}
+        onTriggerPayment={() => onHandleGenerateBoleto()}
+        paymentIcon={<DescriptionIcon />}
+        paymentButtonText={"Gerar Boleto"}
+      />
 
       <TermsOfService href={`/terms?language=${appEnv.language}`}>
         {TS.string("terms", "buttonTosAgree")}

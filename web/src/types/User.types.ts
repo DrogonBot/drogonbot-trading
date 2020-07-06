@@ -1,8 +1,13 @@
 export interface IUser {
   _id: string;
   stateCode: string;
+  cpf?: string;
   country: string;
   city: string;
+  postalCode?: string;
+  street?: string;
+  streetNumber?: string;
+  streetNeighborhood?: string;
   name: string;
   language: string;
   givenName: string;

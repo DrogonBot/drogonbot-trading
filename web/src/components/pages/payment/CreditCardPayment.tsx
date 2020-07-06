@@ -1,3 +1,4 @@
+import CreditCardIcon from '@material-ui/icons/CreditCard';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,15 +33,15 @@ export const CreditCardPayment: React.FC = (props) => {
 
   const [userInfo, setUserInfo] = useState({
     buyerName: user?.name,
-    buyerCPF: "",
+    buyerCPF: user?.cpf || "",
     buyerEmail: user?.email,
-    buyerStreet: "",
-    buyerNumber: "",
+    buyerStreet: user?.street || "",
+    buyerNumber: user?.streetNumber || "",
     buyerComplement: "",
-    buyerNeighborhood: "",
+    buyerNeighborhood: user?.streetNeighborhood || "",
     buyerCity: user?.city,
     buyerState: user?.stateCode,
-    buyerPostCode: "",
+    buyerPostalCode: user?.postalCode || "",
   });
 
   const onHandleCreditCardPayment = async () => {
@@ -70,7 +71,7 @@ export const CreditCardPayment: React.FC = (props) => {
         buyerNeighborhood: "Bairro",
         buyerCity: "Cidade",
         buyerState: "Estado",
-        buyerPostCode: "CEP",
+        buyerPostalCode: "CEP",
       },
     });
 
@@ -96,10 +97,10 @@ export const CreditCardPayment: React.FC = (props) => {
       buyerNeighborhood,
       buyerCity,
       buyerState,
-      buyerPostCode,
+      buyerPostalCode,
     } = userInfo;
 
-    const preparedPostCode = buyerPostCode.replace(new RegExp("-", "g"), "");
+    const preparedPostCode = buyerPostalCode.replace(new RegExp("-", "g"), "");
 
     const paymentServerPayload = {
       buyerCreditCardHash: creditCardHash,
@@ -157,6 +158,8 @@ export const CreditCardPayment: React.FC = (props) => {
       <UserPaymentInfoForm
         onChange={(newUserInfo) => setUserInfo(newUserInfo)}
         onTriggerPayment={() => onHandleCreditCardPayment()}
+        paymentIcon={<CreditCardIcon />}
+        paymentButtonText={"Pagar"}
       />
 
       <TermsOfService href={`/terms?language=${appEnv.language}`}>
