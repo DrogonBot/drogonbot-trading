@@ -37,13 +37,6 @@ export class PagSeguro extends Payment {
     return response
   }
 
-  public getTransaction = async (notificationCode: string) => {
-
-
-
-
-
-  }
 
   public generateBoletoCharge = async (userId: string, reference: string, description: string, amount: number, buyerName: string, buyerCPF: string, buyerEmail: string, buyerStateCode: string, buyerCity: string, buyerPostalCode: string, buyerStreet: string, buyerStreetNumber: string, buyerStreetNeighborhood: string) => {
 
