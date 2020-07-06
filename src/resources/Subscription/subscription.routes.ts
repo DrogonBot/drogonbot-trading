@@ -1,12 +1,12 @@
 import express from 'express';
 
-import { JunoPaymentHelper } from '../../classes/payment/JunoPayment/JunoPaymentHelper';
+import { JunoPayment } from '../../classes/payment/JunoPayment/JunoPayment';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { PaymentMiddleware } from '../../middlewares/payment.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { UserType } from '../User/user.types';
 import { TransactionReferences } from './../Transaction/transaction.types';
-import { SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE } from './subscription.constant';
+import { SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE, SUBSCRIPTION_REFERENCE } from './subscription.constant';
 
 
 // @ts-ignore
@@ -23,10 +23,12 @@ subscriptionRouter.post('/subscription/:method', [userAuthMiddleware, UserMiddle
 
   const user = req.user;
 
+  const junoPayment = new JunoPayment();
+
   switch (method) {
     case "creditcard":
       try {
-        const ccReq = await JunoPaymentHelper.generateCreditCardCharge("SUBSCRIPTION", SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE, buyerCreditCardHash, user._id, buyerName, buyerCPF, buyerEmail, buyerAddress);
+        const ccReq = await junoPayment.generateCreditCardCharge(user, SUBSCRIPTION_REFERENCE, SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE, buyerCreditCardHash, buyerName, buyerCPF, buyerEmail, buyerAddress);
 
         return res.status(200).send(ccReq)
       }
@@ -47,7 +49,7 @@ subscriptionRouter.post('/subscription/:method', [userAuthMiddleware, UserMiddle
 
       try {
 
-        const boletoReq = await JunoPaymentHelper.generateBoletoPaymentRequest(req, SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE, TransactionReferences.Subscription);
+        const boletoReq = await junoPayment.generateBoletoPaymentRequest(req, SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE, TransactionReferences.Subscription);
 
         return res.status(200).send(boletoReq)
       }

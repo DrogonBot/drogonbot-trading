@@ -240,25 +240,13 @@ operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restri
 
 operationRouter.get('/pagseguro/checkout/test', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
+  const { buyerName, buyerCPF, buyerEmail, buyerCity, buyerState, buyerPostalCode, buyerStreet, buyerNumber, buyerNeighborhood } = req.body;
+
   const user = req.user;
 
-  const pagseguro = new PagSeguro(process.env.PAGSEGURO_EMAIL!, process.env.PAGSEGURO_TOKEN!, process.env.PAGSEGURO_ENVIRONMENT!)
+  const pagseguro = new PagSeguro()
 
-  const response = await pagseguro.generateBoleto(user._id, SUBSCRIPTION_REFERENCE, SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE * 100, {
-    "name": "Joao Paulo Furtado Silva",
-    "tax_id": "14001372762",
-    "email": "joaopaulofurtado@live.com",
-    "address": {
-      "country": "Brasil",
-      "region": "São Paulo",
-      "region_code": "SP",
-      "city": "Sao Paulo",
-      "postal_code": "01452002",
-      "street": "Avenida Brigadeiro Faria Lima",
-      "number": "1384",
-      "locality": "Pinheiros"
-    }
-  });
+  const response = await pagseguro.generateBoletoCharge(user._id, SUBSCRIPTION_REFERENCE, SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE * 100, buyerName, buyerCPF, buyerEmail, buyerState, buyerCity, buyerPostalCode, buyerStreet, buyerNumber, buyerNeighborhood);
 
   console.log(response.data);
 

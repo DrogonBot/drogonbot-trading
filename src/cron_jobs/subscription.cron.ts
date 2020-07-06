@@ -1,13 +1,13 @@
 import moment from 'moment';
 import cron from 'node-cron';
 
-import { JunoPaymentHelper } from '../classes/payment/JunoPayment/JunoPaymentHelper';
-import { SUBSCRIPTION_DESCRIPTION } from '../resources/Subscription/subscription.constant';
+import { JunoPayment } from '../classes/payment/JunoPayment/JunoPayment';
+import { Payment } from '../classes/payment/Payment';
 import { SubscriptionStatus } from '../resources/Subscription/subscription.types';
 import { Transaction } from '../resources/Transaction/transaction.model';
 import { TransactionStatus, TransactionTypes } from '../resources/Transaction/transaction.types';
 import { User } from '../resources/User/user.model';
-import { SUBSCRIPTION_PRICE } from './../resources/Subscription/subscription.constant';
+import { PagSeguro } from './../classes/payment/Pagseguro/Pagseguro';
 import { Subscription } from './../resources/Subscription/subscription.model';
 
 export class SubscriptionCron {
@@ -17,6 +17,9 @@ export class SubscriptionCron {
 
       console.log("🕒  SubscriptionCron: submitBoletoChargeNearExpiration() 🕒");
 
+      const payment = new Payment()
+      const junoPayment = new JunoPayment()
+      const pagseguroPayment = new PagSeguro()
 
 
       // check which subscriptions has 10, 5 and 2 days to expire...
@@ -59,7 +62,7 @@ export class SubscriptionCron {
 
 
           // submit charge
-          await JunoPaymentHelper.notifyUserAboutPayment(user, "Boleto", pendingTransaction.amount, pendingTransaction.dueDate.toISOString(), pendingTransaction.paymentLink)
+          await payment.notifyUserAboutPayment(user, "Boleto", pendingTransaction.amount, pendingTransaction.dueDate.toISOString(), pendingTransaction.paymentLink)
 
         } else {
 
@@ -68,9 +71,9 @@ export class SubscriptionCron {
           // boleto due date should be on subscription expiry date
           const subscriptionExpiryDate = moment(new Date()).add(subscription.subscriberDays, "days").format("YYYY-MM-DD")
 
-          await JunoPaymentHelper.getAccessToken();
+          // TODO: generate new order from user data
 
-          const order = await JunoPaymentHelper.generateBoletoCharge(SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE, "SUBSCRIPTION", subscriptionExpiryDate, user, user.getFirstName(), user.cpf, user.email)
+          // const order = await pagseguroPayment.generateBoletoCharge(user, SUBSCRIPTION_REFERENCE, SUBSCRIPTION_DESCRIPTION, SUBSCRIPTION_PRICE, subscriptionExpiryDate, user, user.getFirstName(), user.cpf, user.email)
 
 
 

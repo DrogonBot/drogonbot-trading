@@ -30,16 +30,20 @@ export interface IUserNotification {
 
 
 export interface IUserDocument extends Document {
+  type: string; // account type
   name: string;
+  givenName: string;
+  familyName: string;
   cpf?: string;
   genericPositionsOfInterest: string[]
   language: string;
   country: string;
   stateCode: string;
   city: string;
-  type: string; // account type
-  givenName: string;
-  familyName: string;
+  postalCode?: string;
+  street?: string;
+  streetNumber?: string;
+  streetNeighborhood?: string;
   password: string;
   email: string;
   pushToken: string;

@@ -1,11 +1,13 @@
-import { JunoPaymentHelper } from '../classes/payment/JunoPayment/JunoPaymentHelper';
+import { JunoPayment } from '../classes/payment/JunoPayment/JunoPayment';
 
 
 export class PaymentMiddleware {
 
   public static JunoAuthorize = async (req, res, next) => {
 
-    await JunoPaymentHelper.getAccessToken();
+    const junoPayment = new JunoPayment()
+
+    await junoPayment.getAccessToken();
 
     next()
 

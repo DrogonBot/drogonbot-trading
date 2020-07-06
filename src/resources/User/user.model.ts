@@ -62,6 +62,22 @@ export const userSchema: Schema = new Schema(
       type: String,
       default: "Vitória"
     },
+    postalCode: {
+      type: String,
+
+    },
+    street: {
+      type: String,
+
+    },
+    streetNumber: {
+      type: String,
+
+    },
+    streetNeighborhood: {
+      type: String,
+
+    },
     type: {
       type: String,
       default: UserType.JobSeeker
@@ -92,7 +108,6 @@ export const userSchema: Schema = new Schema(
     phone: {
       type: String
     },
-
     postReportItems: [
       {
         slug: String,

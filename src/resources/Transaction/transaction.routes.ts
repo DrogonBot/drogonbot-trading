@@ -1,7 +1,7 @@
 import express from 'express';
 
+import { JunoPayment } from '../../classes/payment/JunoPayment/JunoPayment';
 import { IJunoPayment } from '../../classes/payment/JunoPayment/junopayment.types';
-import { JunoPaymentHelper } from '../../classes/payment/JunoPayment/JunoPaymentHelper';
 import { PaymentMiddleware } from '../../middlewares/payment.middleware';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { TS } from '../../utils/TS';
@@ -21,11 +21,11 @@ transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAutho
 
   const { chargeCode } = req.body;
 
-
-
-
   // ! JUNO WEBHOOK
   if (chargeCode) {
+
+    const junoPayment = new JunoPayment()
+
     ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `💰: Juno Webhook Post received`)
 
     console.log('Checking order status...');
@@ -39,7 +39,7 @@ transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAutho
     // if there's a transaction in our system, let's get more info about it
     if (fetchedTransaction) {
       try {
-        const response = await JunoPaymentHelper.request("GET", `/charges/${fetchedTransaction.orderId}`, null)
+        const response = await junoPayment.request("GET", `/charges/${fetchedTransaction.orderId}`, null)
 
         const payments: IJunoPayment[] = response.data.payments;
 
@@ -78,7 +78,7 @@ transactionRouter.post("/transaction/notification/", PaymentMiddleware.JunoAutho
               const user = await User.findOne({ _id: fetchedTransaction.userId })
 
               if (user) {
-                await JunoPaymentHelper.updateSubscriptionData(user, fetchedTransaction);
+                await junoPayment.updateSubscriptionData(user, fetchedTransaction);
               } else {
                 console.log("Error: User not found...");
               }
