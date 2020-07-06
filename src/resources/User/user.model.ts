@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Model, model, Schema } from 'mongoose';
 
-import { USER_WEEKLY_CREDITS_THRESHOLD } from '../../constants/credits.constant';
+import { USER_WEEKLY_CREDITS_EARNED } from '../../constants/credits.constant';
 import { AccountEmailManager } from '../../emails/account.email';
 import { MarketingEmailManager } from '../../emails/MarketingEmailManager';
 import { GenericHelper } from '../../utils/GenericHelper';
@@ -139,7 +139,7 @@ export const userSchema: Schema = new Schema(
     unsubscribed: Boolean,
     credits: {
       type: Number,
-      default: USER_WEEKLY_CREDITS_THRESHOLD
+      default: USER_WEEKLY_CREDITS_EARNED
     },
     isPremium: {
       type: Boolean,

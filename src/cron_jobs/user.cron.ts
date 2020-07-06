@@ -1,7 +1,7 @@
 import moment from 'moment';
 import cron from 'node-cron';
 
-import { USER_WEEKLY_CREDITS_THRESHOLD } from '../constants/credits.constant';
+import { USER_WEEKLY_CREDITS_EARNED } from '../constants/credits.constant';
 import { Log } from '../resources/Log/log.model';
 import { User } from '../resources/User/user.model';
 
@@ -36,6 +36,7 @@ export class UsersCron {
 
   }
 
+  //!Disabled for now
   public static refreshUserCredits = () => {
 
 
@@ -48,7 +49,7 @@ export class UsersCron {
       for (const user of users) {
 
         if (!user.credits) {
-          user.credits = USER_WEEKLY_CREDITS_THRESHOLD;
+          user.credits = USER_WEEKLY_CREDITS_EARNED;
           await user.save();
 
           const creditRestored = new Log({
@@ -60,8 +61,8 @@ export class UsersCron {
 
         }
 
-        if (user.credits <= USER_WEEKLY_CREDITS_THRESHOLD) {
-          user.credits = USER_WEEKLY_CREDITS_THRESHOLD;
+        if (user.credits <= USER_WEEKLY_CREDITS_EARNED) {
+          user.credits = USER_WEEKLY_CREDITS_EARNED;
           await user.save();
 
           const creditRestored = new Log({
