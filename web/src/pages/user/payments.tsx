@@ -132,7 +132,8 @@ const Payments = ({ provinces }: IProps) => {
                 </p>
                 <p>
                   <AccentText>
-                    <strong>Saldo:</strong> R$ {creditsInfo.pendingPayment}
+                    <strong>Saldo:</strong> R${" "}
+                    {creditsInfo.pendingPayment.toFixed(2)}
                   </AccentText>
                 </p>
                 <p>
