@@ -136,14 +136,7 @@ export const userSchema: Schema = new Schema(
       visualized: Boolean
     },
     unsubscribed: Boolean,
-    credits: {
-      type: Number,
-      default: 0
-    },
-    creditsPaid: {
-      type: Number,
-      default: 0
-    },
+
 
     isPremium: {
       type: Boolean,

@@ -57,7 +57,6 @@ export interface IUserDocument extends Document {
   updatedAt: string;
   lastNotification: any;
   unsubscribed: boolean;
-  credits: number;
   postReportItems: IReportItem[],
   isPremium: boolean
 }

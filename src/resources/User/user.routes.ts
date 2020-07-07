@@ -19,7 +19,7 @@ import { TextHelper } from '../../utils/TextHelper';
 import { TS } from '../../utils/TS';
 import { Lead } from '../Lead/lead.model';
 import { Log } from '../Log/log.model';
-import { IUser, User } from './user.model';
+import { User } from './user.model';
 import { AuthType, ILoginData, UserType } from './user.types';
 
 // @ts-ignore
@@ -1005,64 +1005,64 @@ userRouter.patch(
   }
 );
 
-userRouter.post(
-  "/users/consume-credit",
-  [userAuthMiddleware],
-  async (req, res) => {
-    const user: IUser | null = req.user;
+// userRouter.post(
+//   "/users/consume-credit",
+//   [userAuthMiddleware],
+//   async (req, res) => {
+//     const user: IUser | null = req.user;
 
-    // update user credits
-    if (user) {
-      // check if the user has credits
-      if (!user.credits || user.credits <= 0) {
-        return res.status(200).send({
-          status: "error",
-          message: TS.string(
-            "user",
-            "userCreditsInsuficient"
-          ),
-        });
-      }
+//     // update user credits
+//     if (user) {
+//       // check if the user has credits
+//       if (!user.credits || user.credits <= 0) {
+//         return res.status(200).send({
+//           status: "error",
+//           message: TS.string(
+//             "user",
+//             "userCreditsInsuficient"
+//           ),
+//         });
+//       }
 
-      // if user has credits, proceed
-      try {
-        user.credits -= 1;
-        await user.save();
+//       // if user has credits, proceed
+//       try {
+//         user.credits -= 1;
+//         await user.save();
 
-        // Log in the system
+//         // Log in the system
 
-        const creditConsumption = new Log({
-          emitter: user._id,
-          action: "USER_CREDIT_CONSUMED",
-          target: user.credits,
-        });
-        await creditConsumption.save();
+//         const creditConsumption = new Log({
+//           emitter: user._id,
+//           action: "USER_CREDIT_CONSUMED",
+//           target: user.credits,
+//         });
+//         await creditConsumption.save();
 
-        return res.status(200).send({
-          status: "success",
-          message: TS.string(
-            "user",
-            "userCreditsConsumedSuccess"
-          ),
-        });
-      } catch (error) {
-        console.error(error);
-        return res.status(200).send({
-          status: "error",
-          message: TS.string("user", "userCreditsError"),
-        });
-      }
-    } else {
-      return res.status(200).send({
-        status: "error",
-        message: TS.string(
-          "user",
-          "userNotFoundByToken"
-        ),
-      });
-    }
-  }
-);
+//         return res.status(200).send({
+//           status: "success",
+//           message: TS.string(
+//             "user",
+//             "userCreditsConsumedSuccess"
+//           ),
+//         });
+//       } catch (error) {
+//         console.error(error);
+//         return res.status(200).send({
+//           status: "error",
+//           message: TS.string("user", "userCreditsError"),
+//         });
+//       }
+//     } else {
+//       return res.status(200).send({
+//         status: "error",
+//         message: TS.string(
+//           "user",
+//           "userNotFoundByToken"
+//         ),
+//       });
+//     }
+//   }
+// );
 
 
 

@@ -13,10 +13,13 @@ import { PagSeguro } from '../../classes/payment/Pagseguro/Pagseguro';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { PostHelper } from '../../utils/PostHelper';
+import { Log } from '../Log/log.model';
 import { Post } from '../Post/post.model';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
 import { NotificationHelper } from './../../utils/NotificationHelper';
+import { Credit } from './../Credit/credit.model';
+import { CreditStatus } from './../Credit/credit.types';
 import {
   SUBSCRIPTION_DESCRIPTION,
   SUBSCRIPTION_PRICE,
@@ -281,18 +284,74 @@ operationRouter.get('/subscription-disable-premium-posts/', [userAuthMiddleware,
 })
 
 
-operationRouter.get('/disable-olx-posts/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+operationRouter.get('/convert-old-credits/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+  // convert old credits into new credits. Then remove credits from user model
+
+  const users = await User.find({})
+
+  for (const user of users) {
+
+    console.log(`Converting credits from user ${user.email}`);
+
+    // get earned credits
+    const earnedCredits = await Log.find({
+      emitter: user._id,
+      action: "USER_COMPUTE_PROMOTED_CLICK"
+    })
+
+    const usedCredits = await Log.find({
+      emitter: user._id,
+      action: "USER_CREDIT_CONSUMED"
+    })
 
 
-  const posts = await Post.find({ source: "OLX", active: true })
+    const total = earnedCredits.length - usedCredits.length
 
-  console.log(`${posts.length} found`);
+    console.log(`total=${total}`);
 
-  for (const post of posts) {
-    post.active = false
-    await post.save();
+    if (total > 0) {
+
+      for (let i = 0; i < total; i++) {
+
+        const newCredit = new Credit({
+          userId: user._id,
+          payer: "Emprego-Urgente",
+          referralIP: "OLD",
+          status: CreditStatus.UNPAID,
+          value: 0.1,
+          quantity: 1
+        })
+        await newCredit.save();
+
+
+
+      }
+
+    }
+
+    // remove all credits logs
+
+    await Log.deleteMany({
+      $or: [
+        {
+          emitter: user._id,
+          action: "USER_COMPUTE_PROMOTED_CLICK"
+        },
+        {
+          emitter: user._id,
+          action: "USER_CREDIT_CONSUMED"
+        }
+      ]
+    }, function (err) {
+      if (err) {
+        console.log(`failed on user ${user.email}`);
+        console.log(err);
+      }
+    })
+
+
   }
-
 
 
 
