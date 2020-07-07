@@ -21,6 +21,7 @@ import { AffiliateSeeder } from './resources/AffiliateProduct/affiliate.seeder';
 import { conversationRouter } from './resources/Conversation/conversation.routes';
 import { countryRouter } from './resources/Country/country.routes';
 import { CountrySeeder } from './resources/Country/country.seed';
+import { creditRouter } from './resources/Credit/credit.routes';
 import { leadsRouter } from './resources/Lead/lead.routes';
 import { operationRouter } from './resources/Operation/operation.routes';
 import { placeRouter } from './resources/Place/place.routes';
@@ -164,6 +165,7 @@ app.use(operationRouter)
 app.use(affiliateRouter)
 app.use(transactionRouter)
 app.use(subscriptionRouter)
+app.use(creditRouter)
 
 server.listen(process.env.NODE_API_PORT, async () => {
 

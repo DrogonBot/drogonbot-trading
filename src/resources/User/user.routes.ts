@@ -8,7 +8,6 @@ import multer from 'multer';
 import randomstring from 'randomstring';
 import sharp from 'sharp';
 
-import { USER_PER_CLICK_CREDIT_MULTIPLIER } from '../../constants/credits.constant';
 import { GenericEmailManager } from '../../emails/generic.email';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { RequestMiddleware } from '../../middlewares/request.middleware';
@@ -1066,60 +1065,5 @@ userRouter.post(
 );
 
 
-userRouter.post(
-  "/users/validate-post-click",
-  [RequestMiddleware.getRequestIP],
-  async (req, res) => {
-    const { clientIp } = req;
-    const { promoterId } = req.body;
-
-    const user = await User.findOne({
-      _id: promoterId,
-    });
-
-    if (!user) {
-      return res.status(200).send({
-        status: "error",
-        message: TS.string(
-          "user",
-          "userNotFoundByToken"
-        ),
-      });
-    }
-
-    const checkClickAlreadyLoggedByThisUser = await Log.findOne({
-      emitter: user._id,
-      target: clientIp,
-    });
-
-    if (checkClickAlreadyLoggedByThisUser) {
-      return res.status(200).send({
-        status: "error",
-        message: TS.string(
-          "user",
-          "userClickAlreadyLogged"
-        ),
-      });
-    }
-
-    // if everything is ok and we have a new user, compute as new click
-
-    const newPromotedClick = new Log({
-      emitter: promoterId,
-      action: "USER_COMPUTE_PROMOTED_CLICK",
-      target: clientIp,
-    });
-    await newPromotedClick.save();
-
-    // add user credits
-    user.credits += USER_PER_CLICK_CREDIT_MULTIPLIER;
-    await user.save();
-
-    return res.status(200).send({
-      status: "success",
-      message: TS.string("user", "userClickComputed"),
-    });
-  }
-);
 
 export { userRouter };
