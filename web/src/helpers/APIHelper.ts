@@ -9,7 +9,7 @@ export class APIHelper {
   public static request = async (
     method: any,
     url: string,
-    data: object,
+    data: object | null,
     useAuth = true,
     customHeaders: object = {},
     onTimeoutCallback = () => null,

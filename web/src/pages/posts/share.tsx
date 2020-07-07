@@ -36,7 +36,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
   const userShareableLink =
     user &&
-    `https://emprego-urgente.netlify.app/?stateCode=${user.stateCode}&pid=${user._id}&ro=true`;
+    `https://emprego-urgente.netlify.app/?stateCode=${user.stateCode}&promoterId=${user._id}&payerId=0&ro=true`;
 
   const messageVariations = [
     "Pessoal, acessem nosso grupo de vagas no WhatsApp! Postamos todos os dias!!",
@@ -94,7 +94,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
         <PageContent>
           <CopyContainer>
-            <h1>Divulgue e Receba Créditos</h1>
+            <h1>Divulgue e Ganhe DINHEIRO!</h1>
 
             <p>Veja o vídeo abaixo e aprenda como deve ser feito:</p>
 
@@ -107,12 +107,10 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
             <p>
               Quer ajudar ao próximo e ao mesmo tempo poder
-              <strong>
-                {" "}
-                restaurar seus créditos de envio de currículos?
-              </strong>{" "}
-              Divulgue o link dos nossos grupos de WhatsApp abaixo! Você
-              receberá 1 crédito por clique único.
+              <strong> ganhar algum dinheiro?</strong> Divulgue o link dos
+              nossos grupos de WhatsApp abaixo! Você receberá 1 crédito por
+              clique único. Ao atingir o valor mínimo para retirada, iremos
+              efetuar o pagamento diretamente em sua conta.
             </p>
 
             {user && (

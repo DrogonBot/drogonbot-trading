@@ -19,6 +19,10 @@ export const strings = {
     eng: "Promote Jobs",
     ptBr: "Área do Divulgador",
   },
+  myPaymentsText: {
+    eng: "My Payments",
+    ptBr: "Meus Pagamentos",
+  },
   emailInput: {
     eng: "E-mail",
     ptBr: "E-mail",

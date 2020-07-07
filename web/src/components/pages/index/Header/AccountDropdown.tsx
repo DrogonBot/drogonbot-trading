@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useDispatch } from 'react-redux';
@@ -40,16 +41,16 @@ export const AccountDropdown = () => {
     });
   };
 
-  const onHandlePromoterArea = () => {
+  const onHandleRedirect = (link: string) => {
     router.push({
-      pathname: "/posts/share",
+      pathname: link,
     });
   };
 
   const renderMenuItem = (
     icon: JSX.Element,
     text: JSX.Element,
-    handleItemAction: () => any
+    handleItemAction: () => void
   ) => (
     <StyledMenuItem onClick={handleItemAction}>
       <ListItemIcon>{icon}</ListItemIcon>
@@ -88,7 +89,12 @@ export const AccountDropdown = () => {
           <ListItemText
             primary={TS.string("account", "PromoteJobsButtonText")}
           />,
-          onHandlePromoterArea
+          () => onHandleRedirect("/posts/share")
+        )}
+        {renderMenuItem(
+          <MonetizationOnIcon fontSize="small" />,
+          <ListItemText primary={TS.string("account", "myPaymentsText")} />,
+          () => onHandleRedirect("/user/payments")
         )}
         {renderMenuItem(
           <MeetingRoomIcon fontSize="small" />,

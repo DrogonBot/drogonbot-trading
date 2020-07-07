@@ -15,15 +15,9 @@ import { SearchLogo } from '../components/pages/posts/SearchLogo';
 import { SearchHeader } from '../components/pages/posts/SearchTop';
 import { appEnv } from '../constants/Env.constant';
 import { colors } from '../constants/UI/Colors.constant';
-import { loadCountryProvinces } from '../store/actions/form.actions';
-import { IProvince } from '../types/Form.types';
 import { PaymentTypes } from '../types/Payment.types';
 
-interface IProps {
-  provinces: IProvince[];
-}
-
-const Payment = ({ provinces }: IProps) => {
+const Payment = (props) => {
   const [paymentType, setPaymentType] = useState<PaymentTypes>(
     PaymentTypes.BOLETO
   );
@@ -125,15 +119,6 @@ const Payment = ({ provinces }: IProps) => {
       <Footer />
     </AuthenticatedPage>
   );
-};
-
-Payment.getInitialProps = async (ctx) => {
-  await ctx.store.dispatch(loadCountryProvinces(appEnv.appCountry));
-  const provinces = ctx.store.getState().formReducer.states;
-
-  return {
-    provinces,
-  };
 };
 
 const PaymentPanel = styled.div`
