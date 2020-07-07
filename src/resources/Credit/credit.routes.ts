@@ -21,7 +21,7 @@ creditRouter.get('/credit', userAuthMiddleware, async (req, res) => {
 
   const user = req.user;
 
-  const credits = await Credit.find({ userId: user._id })
+  const credits = await Credit.find({ userId: user._id, payer: { $ne: "FREE" } })
 
   const { totalCredits, paidCredits, unpaidCredits, totalIncome, pendingPayment, totalPaidCredits } = CreditsHelper.getCreditsInfo(credits)
 
@@ -78,24 +78,22 @@ creditRouter.post(
     // if everything is ok and we have a new user, compute as new credit
 
     // fetch payer information
-    const payer = payerSites.find((p) => p.id === Number(payerId))
+    let payer = payerSites.find((p) => p.id === Number(payerId))
 
     if (!payer) {
-      return res.status(200).send({
-        status: "error",
-        message: TS.string(
-          "credit",
-          "creditPayerNotFound"
-        ),
-      });
+      payer = {
+        id: -1,
+        name: "FREE",
+        ppc: 0
+      }
     }
 
 
     const newCredit = new Credit({
       userId: user._id,
+      payer: payer.name,
       referralIP: clientIp,
       status: CreditStatus.UNPAID,
-      payer: payer.name,
       value: payer.ppc,
       quantity: USER_PER_CLICK_CREDIT_MULTIPLIER
     })
@@ -123,7 +121,7 @@ creditRouter.get("/credit/user", [userAuthMiddleware, UserMiddleware.restrictUse
     });
   }
 
-  const credits = await Credit.find({ userId: user._id })
+  const credits = await Credit.find({ userId: user._id, payer: { $ne: "FREE" } })
 
   const { totalCredits, paidCredits, unpaidCredits, totalIncome, pendingPayment, totalPaidCredits } = CreditsHelper.getCreditsInfo(credits)
 
@@ -153,7 +151,7 @@ creditRouter.post("/credit/pay", [userAuthMiddleware, UserMiddleware.restrictUse
     })
   }
 
-  const credits = await Credit.find({ userId: user._id });
+  const credits = await Credit.find({ userId: user._id, payer: { $ne: "FREE" } });
 
   let paidCredits = 0;
   let paidValue = 0;

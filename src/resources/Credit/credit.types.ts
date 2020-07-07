@@ -2,11 +2,11 @@
 
 export interface ICredit {
   userId: string,
+  payer: string
   referralIP: string,
   quantity: number,
   value: number,
   status: CreditStatus,
-  payer: string
 }
 
 
