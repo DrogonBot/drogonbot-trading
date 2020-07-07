@@ -24,7 +24,7 @@ export const CreditsDisplay = () => {
 
   return (
     <Link href={"/user/payments"}>
-      <Tooltip title={<ToolTipText>Divulgue e Ganhe Créditos</ToolTipText>}>
+      <Tooltip title={<ToolTipText>Divulgue e Ganhe Dinheiro</ToolTipText>}>
         <IconButton aria-label="credits">
           <StyledBadge badgeContent={unpaidCredits} color="secondary">
             <StarsIcon />
