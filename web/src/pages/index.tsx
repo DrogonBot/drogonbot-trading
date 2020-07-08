@@ -139,7 +139,7 @@ const SearchBarContainer = styled.div`
       margin-right: 0.5rem;
     }
     [class*="CitiesContainer"] [class*="MuiInputBase-root"] {
-      max-width: 120px;
+      max-width: 100px;
     }
   }
 

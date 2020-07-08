@@ -88,9 +88,14 @@ export const AlertModal = ({
 
   const handleDontShowAgain = () => {
     setOpen(false);
-
     window.localStorage.setItem(alertKey, "dont-show");
   };
+
+  if (process.browser) {
+    if (localStorage.getItem(alertKey) === "dont-show") {
+      return null;
+    }
+  }
 
   return (
     <Dialog
