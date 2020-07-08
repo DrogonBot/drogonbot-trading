@@ -17,6 +17,7 @@ import { appEnv } from '../../constants/Env.constant';
 import { groups } from '../../constants/groups';
 import { UI } from '../../constants/UI/UI.constant';
 import { TS } from '../../helpers/LanguageHelper';
+import { PromoterHelper } from '../../helpers/PromoterHelper';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
 import { AppState } from '../../store/reducers/index.reducers';
 import { IProvince } from '../../types/Form.types';
@@ -34,9 +35,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
   const [isShareableLinkCopied, setIsShareableLinkCopied] = useState(false);
 
-  const userShareableLink =
-    user &&
-    `https://emprego-urgente.netlify.app/?stateCode=${user.stateCode}&promoterId=${user._id}&payerId=0&ro=true`;
+  const userShareableLink = user && PromoterHelper.getShareableLink(user);
 
   const messageVariations = [
     "Pessoal, acessem nosso grupo de vagas no WhatsApp! Postamos todos os dias!!",

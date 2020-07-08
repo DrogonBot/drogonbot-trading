@@ -53,8 +53,8 @@ creditRouter.post(
       return res.status(200).send({
         status: "error",
         message: TS.string(
-          "user",
-          "userNotFoundByToken"
+          "credit",
+          "creditPromoterUserNotFound"
         ),
       });
     }
