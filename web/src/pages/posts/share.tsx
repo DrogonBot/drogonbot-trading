@@ -55,7 +55,9 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
   const onRenderGroups = () => {
     try {
-      return groups[user.stateCode].map((group: IGroupItem, index) => (
+      // return groups[user.stateCode].map((group: IGroupItem, index) => (
+      // ! Promoting only SeuJobs -> SP for now
+      return groups.SP.map((group: IGroupItem, index) => (
         <li key={index}>
           <a target="_blank" href={group.link}>
             - {group.name}
