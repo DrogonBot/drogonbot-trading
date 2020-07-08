@@ -17,10 +17,6 @@ export const groups: IGroups = {
   ],
   SP: [
     {
-      link: "https://www.facebook.com/groups/grupovagasdeempregosaopaulo/",
-      name: "Grupo Vagas de Empregos São Paulo",
-    },
-    {
       link: "https://www.facebook.com/groups/Temostrampo/",
       name: "Temos Trampo",
     },
