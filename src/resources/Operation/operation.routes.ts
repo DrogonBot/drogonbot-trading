@@ -281,26 +281,4 @@ operationRouter.get('/subscription-disable-premium-posts/', [userAuthMiddleware,
 })
 
 
-operationRouter.get('/convert-old-credits/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
-
-  // convert old credits into new credits. Then remove credits from user model
-
-  const users = await User.find({})
-
-  for (const user of users) {
-    // @ts-ignore
-    user.credits = undefined;
-    await user.save();
-  }
-
-
-
-  return res.status(200).send({
-    status: 'success'
-  })
-
-
-})
-
-
 export { operationRouter }
