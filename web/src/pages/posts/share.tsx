@@ -149,9 +149,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
               <>
                 <h3>2. Entre em grupos do Facebook</h3>
 
-                <Alert severity="warning">
-                  Apenas grupos do estado de <strong>SP</strong>!
-                </Alert>
+                <Alert severity="warning">Apenas grupos do estado de SP!</Alert>
 
                 <p>
                   Sugerimos que você primeiro{" "}
