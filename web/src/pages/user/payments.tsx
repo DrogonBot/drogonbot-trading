@@ -72,9 +72,9 @@ const Payments = ({ provinces }: IProps) => {
   }, []);
 
   const onHandleWithdraw = () => {
-    if (creditsInfo.pendingPayment < 25) {
+    if (creditsInfo.pendingPayment < 10) {
       alert(
-        "Você precisa de um saldo mínimo a receber de R$25.00 para solicitar uma retirada."
+        "Você precisa de um saldo mínimo a receber de R$10.00 para solicitar uma retirada."
       );
       return;
     }
@@ -102,7 +102,7 @@ const Payments = ({ provinces }: IProps) => {
         <PageContent>
           <h1>Meus Pagamentos</h1>
 
-          <Alert severity="info">Valor mínimo para saque: R$25.00.</Alert>
+          <Alert severity="info">Valor mínimo para saque: R$10.00.</Alert>
 
           <h2>Ações</h2>
 
