@@ -196,7 +196,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
           if ((n >= 7 && n <= 10) && !group.isPartnerGroup) {
 
-            const randomMessages = [`💸 Quer ganhar um extra enquanto procura um emprego? Torne-se um Divulgador? Acesse: https://empregourgente.com/posts/share💸`]
+            const randomMessages = [`💸 Quer ganhar um extra enquanto procura um emprego? Torne-se um Divulgador? Acesse: https://empregourgente.com/posts/share💸`, `💸 PAGAMOS para você divulgar nosso grupo do WhatsApp em redes sociais. Saiba mais em https://empregourgente.com/posts/share💸`]
 
 
             await GenericHelper.sleep(1000 * 6 + _.random(3))
