@@ -87,7 +87,6 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
     return posts;
   }
 
-  // ! Not using now (it generates too many notifications)
   private static _thumbnailPost = async (posts: IPostModel[], group: IWhatsAppGroup, dontRepeatPosts: boolean) => {
 
     const limitedPosts = _.slice(posts, 0, 15) // thumbnail posts are limited to 15 only!
@@ -195,8 +194,21 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
             })
           }
 
+          if ((n >= 7 && n <= 10) && !group.isPartnerGroup) {
 
-          if (n >= 3 && n <= 7) { // 50% chance
+            const randomMessages = [`💸 Quer ganhar um extra enquanto procura um emprego? Torne-se um Divulgador? Acesse: https://empregourgente.com/posts/share💸`]
+
+
+            await GenericHelper.sleep(1000 * 6 + _.random(3))
+
+            await WhatsAppBotHelper.request("POST", "/sendMessage", {
+              chatId: group.chatId,
+              body: _.sample(randomMessages),
+            })
+          }
+
+
+          if ((n >= 3 && n <= 7) && !group.isPartnerGroup && !group.isNicheGroup) { // 50% chance
 
             const subgroupLink = `https://bitly.com/emprego-urgente-${group.stateCode.toLowerCase()}`
 
