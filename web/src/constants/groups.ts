@@ -18,7 +18,15 @@ export const groups: IGroups = {
   SP: [
     {
       link: "https://www.facebook.com/groups/Temostrampo/",
-      name: "Temos Trampo",
+      name: "Temos Trampo (* MAIS INDICADO PARA DIVULGAR *)",
+    },
+    {
+      link: "https://www.facebook.com/groups/concursoemsp/",
+      name: "Concurso e Vagas em SP",
+    },
+    {
+      link: "https://www.facebook.com/groups/851299251885320/",
+      name: "Empregos Zona Norte SP",
     },
   ],
   MG: [
