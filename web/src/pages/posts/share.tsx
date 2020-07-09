@@ -203,10 +203,10 @@ PostAdvertise.getInitialProps = async (ctx) => {
 
 export default PostAdvertise;
 
-const ShareExplanationVideo = styled.iframe`
-  width: 100%;
-  height: 315px;
-`;
+// const ShareExplanationVideo = styled.iframe`
+//   width: 100%;
+//   height: 315px;
+// `;
 
 // const AdvertiseImg = styled.img`
 //   width: 100%;
