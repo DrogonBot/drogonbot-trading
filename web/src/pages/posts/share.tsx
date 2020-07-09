@@ -38,9 +38,9 @@ const PostAdvertise = ({ provinces }: IProps) => {
   const userShareableLink = user && PromoterHelper.getShareableLink(user);
 
   const messageVariations = [
-    "Pessoal, acessem esse grupo de VAGAS no WhatsApp! Postamos todos os dias!!",
-    "Ei gente! Entrem nesse grupo exclusivo de VAGAS DE EMPREGO no WhatsApp!",
-    "Pessoal, entrem nesse grupo de empregos no WhatsApp! Todos os dias com VAGAS novas!",
+    "Pessoal, acessem esse grupo de VAGAS no Whats! Postamos todos os dias!!",
+    "Ei gente! Entrem nesse grupo exclusivo de VAGAS DE EMPREGO no Whats!",
+    "Pessoal, entrem nesse grupo de empregos no Whats! Todos os dias com VAGAS novas!",
   ];
 
   const userShareableLinkMessage = _.sample(messageVariations);
@@ -71,7 +71,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
       return (
         <p>
           Nenhum grupo sugerido para seu estado! Por favor, procure manualmente
-          no Facebook!
+          no Face!
         </p>
       );
     }
@@ -150,7 +150,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
             {user && (
               <>
-                <h3>2. Entre em grupos do Facebook</h3>
+                <h3>2. Entre em grupos do Face</h3>
 
                 <Alert severity="warning">Apenas grupos do estado de SP!</Alert>
 
