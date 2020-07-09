@@ -21,6 +21,10 @@ export const groups: IGroups = {
       name: "Temos Trampo (* MAIS INDICADO PARA DIVULGAR *)",
     },
     {
+      link: "https://www.facebook.com/groups/guarulhosvagas/",
+      name: "Guarulhos Vagas (* MAIS INDICADO PARA DIVULGAR *)",
+    },
+    {
       link: "https://www.facebook.com/groups/concursoemsp/",
       name: "Concurso e Vagas em SP",
     },
