@@ -137,6 +137,24 @@ creditRouter.get("/credit/user", [userAuthMiddleware, UserMiddleware.restrictUse
 
 })
 
+creditRouter.get("/credit/all", [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
+
+  const credits = await Credit.find({ payer: { $ne: "FREE" } })
+
+  const { totalCredits, paidCredits, unpaidCredits, totalIncome, pendingPayment, totalPaidCredits } = CreditsHelper.getCreditsInfo(credits)
+
+  return res.status(200).send({
+    totalCredits,
+    paidCredits,
+    unpaidCredits,
+    totalIncome,
+    pendingPayment,
+    totalPaidCredits
+  })
+
+
+})
+
 
 creditRouter.post("/credit/pay", [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
