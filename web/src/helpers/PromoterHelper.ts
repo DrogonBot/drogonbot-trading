@@ -8,7 +8,7 @@ export class PromoterHelper {
     // return `https://emprego-urgente.netlify.app/?stateCode=SP&promoterId=${user._id}&payerId=${payerId}&ro=true`;
 
     payerId = 0; // Emprego Urgente
-    return `https://emprego-urgente.netlify.app/?stateCode=${user.stateCode}&promoterId=${user._id}&payerId=${payerId}&ro=true`;
+    return `https://emprego-urgente.netlify.app/?stateCode=SP&promoterId=${user._id}&payerId=${payerId}&ro=true`;
 
     // switch (user.stateCode) {
     //   case "SP":
