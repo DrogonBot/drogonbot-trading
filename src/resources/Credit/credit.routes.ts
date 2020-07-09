@@ -78,7 +78,7 @@ creditRouter.post(
     // if everything is ok and we have a new user, compute as new credit
 
     // fetch payer information
-    let payer = payerSites.find((p) => p.id === Number(payerId))
+    let payer = payerSites.find((p) => p.id === 0)
 
     if (!payer) {
       payer = {
