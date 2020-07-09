@@ -79,11 +79,7 @@ const Payments = ({ provinces }: IProps) => {
       return;
     }
 
-    GenericHelper.crossBrowserUrlRedirect(
-      `whatsapp://send?abid=17788467427&text=${encodeURI(
-        "Ei, bom dia. Gostaria de retirar meu saldo."
-      )}`
-    );
+    GenericHelper.crossBrowserUrlRedirect(`mailto:${appEnv.appEmail}`);
   };
 
   return (

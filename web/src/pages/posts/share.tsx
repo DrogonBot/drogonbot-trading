@@ -1,33 +1,28 @@
-import Button from "@material-ui/core/Button";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
-import Alert from "@material-ui/lab/Alert";
-import _ from "lodash";
-import Head from "next/head";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
+import Button from '@material-ui/core/Button';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import Alert from '@material-ui/lab/Alert';
+import _ from 'lodash';
+import Head from 'next/head';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
-import {
-  Body,
-  PageContainer,
-  PageContent,
-  PageList,
-} from "../../components/elements/common/layout";
-import { AuthenticatedPage } from "../../components/pages/AuthenticatedPage";
-import { Footer } from "../../components/pages/index/Footer";
-import { Header } from "../../components/pages/index/Header/Header";
-import { SearchTop } from "../../components/pages/posts/SearchTop";
-import { appEnv } from "../../constants/Env.constant";
-import { groups } from "../../constants/groups";
-import { UI } from "../../constants/UI/UI.constant";
-import { TS } from "../../helpers/LanguageHelper";
-import { PromoterHelper } from "../../helpers/PromoterHelper";
-import { loadCountryProvinces } from "../../store/actions/form.actions";
-import { AppState } from "../../store/reducers/index.reducers";
-import { IProvince } from "../../types/Form.types";
-import { IGroupItem } from "../../types/Groups.types";
-import { IUser } from "../../types/User.types";
+import { Body, PageContainer, PageContent, PageList } from '../../components/elements/common/layout';
+import { AuthenticatedPage } from '../../components/pages/AuthenticatedPage';
+import { Footer } from '../../components/pages/index/Footer';
+import { Header } from '../../components/pages/index/Header/Header';
+import { SearchTop } from '../../components/pages/posts/SearchTop';
+import { appEnv } from '../../constants/Env.constant';
+import { groups } from '../../constants/groups';
+import { UI } from '../../constants/UI/UI.constant';
+import { TS } from '../../helpers/LanguageHelper';
+import { PromoterHelper } from '../../helpers/PromoterHelper';
+import { loadCountryProvinces } from '../../store/actions/form.actions';
+import { AppState } from '../../store/reducers/index.reducers';
+import { IProvince } from '../../types/Form.types';
+import { IGroupItem } from '../../types/Groups.types';
+import { IUser } from '../../types/User.types';
 
 interface IProps {
   provinces: IProvince[];
