@@ -57,7 +57,10 @@ const PostAdvertise = ({ provinces }: IProps) => {
     try {
       // return groups[user.stateCode].map((group: IGroupItem, index) => (
       // ! Promoting only SeuJobs -> SP for now
-      return groups.SP.map((group: IGroupItem, index) => (
+
+      const spGroups = _.shuffle(groups.SP);
+
+      return spGroups.map((group: IGroupItem, index) => (
         <li key={index}>
           <a target="_blank" href={group.link}>
             - {group.name}

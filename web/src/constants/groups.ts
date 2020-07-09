@@ -18,11 +18,11 @@ export const groups: IGroups = {
   SP: [
     {
       link: "https://www.facebook.com/groups/Temostrampo/",
-      name: "Temos Trampo (* MAIS INDICADO PARA DIVULGAR *)",
+      name: "Temos Trampo",
     },
     {
       link: "https://www.facebook.com/groups/guarulhosvagas/",
-      name: "Guarulhos Vagas (* MAIS INDICADO PARA DIVULGAR *)",
+      name: "Guarulhos Vagas",
     },
     {
       link: "https://www.facebook.com/groups/concursoemsp/",
