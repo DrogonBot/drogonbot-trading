@@ -100,21 +100,21 @@ const PostAdvertise = ({ provinces }: IProps) => {
           <CopyContainer>
             <h1>Divulgue e Ganhe DINHEIRO!</h1>
 
-            <p>Veja o vídeo abaixo e aprenda como deve ser feito:</p>
+            {/* <p>Veja o vídeo abaixo e aprenda como deve ser feito:</p> */}
 
-            <ShareExplanationVideo
+            {/* <ShareExplanationVideo
               src="https://www.youtube.com/embed/zZzMIWTQa2A"
               frameBorder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-            />
+            /> */}
 
             <p>
               Quer ajudar ao próximo e ao mesmo tempo poder
               <strong> ganhar algum dinheiro?</strong> Divulgue o link dos
-              nossos grupos de WhatsApp abaixo! Você receberá 1 crédito por
-              clique único. Ao atingir o valor mínimo para retirada, iremos
-              efetuar o pagamento diretamente em sua conta.
+              nossos grupos abaixo! Você receberá 1 crédito por clique único. Ao
+              atingir o valor mínimo para retirada, iremos efetuar o pagamento
+              diretamente em sua conta.
             </p>
 
             {user && (
@@ -172,10 +172,10 @@ const PostAdvertise = ({ provinces }: IProps) => {
               publicação, pois provavelmente será banido dos grupos!
             </p>
 
-            <AdvertiseImg
+            {/* <AdvertiseImg
               src="/images/advertise/advertise_example.png"
               alt="advertisement example"
-            />
+            /> */}
 
             <h3>4. Aguarde clicarem em seu link</h3>
 
@@ -208,10 +208,10 @@ const ShareExplanationVideo = styled.iframe`
   height: 315px;
 `;
 
-const AdvertiseImg = styled.img`
-  width: 100%;
-  max-width: 400px;
-`;
+// const AdvertiseImg = styled.img`
+//   width: 100%;
+//   max-width: 400px;
+// `;
 
 const LinkContainer = styled.div`
   display: flex;
