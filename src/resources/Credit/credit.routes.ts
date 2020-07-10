@@ -96,6 +96,7 @@ creditRouter.post(
       payer = payerId === 0 || payerId === 1 ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === payerId);
     }
 
+    console.log(`promoter=${user._id} / ${user.name} / ${user.email}`);
     console.log(`payerId=${payerId}`);
     console.log("payer...");
     console.log(payer);
