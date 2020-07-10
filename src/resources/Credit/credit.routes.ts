@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import { USER_PER_CLICK_CREDIT_MULTIPLIER } from '../../constants/credits.constant';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { RequestMiddleware } from '../../middlewares/request.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
+import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { CreditsHelper } from '../../utils/CreditsHelper';
 import { TS } from '../../utils/TS';
 import { ExternalLead } from '../ExternalLead/externallead.model';
@@ -72,6 +72,8 @@ creditRouter.post(
 
 
     if (isCreditAlreadyLoggedByThisUser) {
+      ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🤖: Warning: User ${user.name}/${user.email} is trying to log new credits for the same IP! (${clientIp})`)
+
       return res.status(200).send({
         status: "error",
         message: TS.string(
@@ -79,54 +81,57 @@ creditRouter.post(
           "userClickAlreadyLogged"
         ),
       });
-    }
-
-    let payer;
-
-    // fetch payer information
-    if (payerId === undefined || payerId === null) {
-      payer = {
-        id: -1,
-        name: "FREE",
-        ppc: 0
-      }
     } else {
-      // ! Gambiarra! I'm paying for seujobs credits because they're inactive for now and their link redirects to my groups
 
-      payer = payerId === 0 || payerId === 1 ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === payerId);
-    }
+      // ! Lets log credits for this user
 
-    console.log(`promoter=${user._id} / ${user.name} / ${user.email}`);
-    console.log(`payerId=${payerId}`);
-    console.log("payer...");
-    console.log(payer);
+      let payer;
+
+      // fetch payer information
+      if (payerId === undefined || payerId === null) {
+        payer = {
+          id: -1,
+          name: "FREE",
+          ppc: 0
+        }
+      } else {
+        // ! Gambiarra! I'm paying for seujobs credits because they're inactive for now and their link redirects to my groups
+
+        payer = payerId === 0 || payerId === 1 ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === payerId);
+      }
 
 
-    // if everything is ok and we have a new user, compute as new credit
 
-    if (lead) {
-      const newLead = new ExternalLead({
-        ...lead,
-        owner: payer.name
+      // if everything is ok and we have a new user, compute as new credit
+
+      if (lead) {
+        const newLead = new ExternalLead({
+          ...lead,
+          owner: payer.name
+        })
+        await newLead.save()
+      }
+
+
+      const newCredit = new Credit({
+        userId: user._id,
+        payer: payer.name,
+        referralIP: clientIp,
+        status: CreditStatus.UNPAID,
+        value: payer.ppc,
+        quantity: 1
       })
-      await newLead.save()
+      await newCredit.save();
+
+      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Computing new credit for user: ${user.name} (${user.email} - Payer: ${payer.name} - value: ${newCredit.value * newCredit.quantity} - referralIP: ${newCredit.referralIP})`)
+
+      return res.status(200).send({
+        status: "success",
+        message: TS.string("user", "userClickComputed"),
+      });
     }
 
 
-    const newCredit = new Credit({
-      userId: user._id,
-      payer: payer.name,
-      referralIP: clientIp,
-      status: CreditStatus.UNPAID,
-      value: payer.ppc,
-      quantity: USER_PER_CLICK_CREDIT_MULTIPLIER
-    })
-    await newCredit.save();
-
-    return res.status(200).send({
-      status: "success",
-      message: TS.string("user", "userClickComputed"),
-    });
   }
 );
 
