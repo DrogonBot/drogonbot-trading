@@ -123,7 +123,7 @@ const Payments = ({ provinces }: IProps) => {
             <ColumnContainer>
               <ColumnLeft>
                 <p>
-                  <strong>Créditos Totais (cliques): </strong>
+                  <strong>Créditos Totais: </strong>
                   {creditsInfo.totalCredits}
                 </p>
                 <p>
