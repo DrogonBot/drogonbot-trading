@@ -91,7 +91,7 @@ creditRouter.post(
       if (payerId === 0 || payerId === 1) {
         payer = payerSites.find((p) => p.id === 0) // Emprego Urgente
       } else {
-        payer = payerSites.find((p) => p.id === payerId)
+        payer = payerSites.find((p) => p.id === Number(payerId))
       }
     }
 
