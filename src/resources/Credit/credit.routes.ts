@@ -6,6 +6,7 @@ import { RequestMiddleware } from '../../middlewares/request.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { CreditsHelper } from '../../utils/CreditsHelper';
 import { TS } from '../../utils/TS';
+import { ExternalLead } from '../ExternalLead/externallead.model';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
 import { payerSites } from './credit.constant';
@@ -43,8 +44,9 @@ creditRouter.post(
   [RequestMiddleware.getRequestIP],
   async (req, res) => {
     const { clientIp } = req;
-    const { promoterId, payerId } = req.body;
+    const { promoterId, payerId, lead } = req.body;
 
+    // Try to fetch promoterId
     const user = await User.findOne({
       _id: promoterId,
     });
@@ -75,17 +77,31 @@ creditRouter.post(
       });
     }
 
-    // if everything is ok and we have a new user, compute as new credit
+    let payer;
 
     // fetch payer information
-    let payer = payerSites.find((p) => p.id === 0)
-
-    if (!payer) {
+    if (!payerId) {
       payer = {
         id: -1,
         name: "FREE",
         ppc: 0
       }
+    } else {
+      // ! Gambiarra! I'm paying for seujobs credits because they're inactive for now and their link redirects to my groups
+      if (payerId === 0 || payerId === 1) {
+        payer = payerSites.find((p) => p.id === 0) // Emprego Urgente
+      } else {
+        payer = payerSites.find((p) => p.id === payerId)
+      }
+    }
+
+    // if everything is ok and we have a new user, compute as new credit
+
+    if (lead) {
+      const newLead = new ExternalLead({
+        ...lead
+      })
+      await newLead.save()
     }
 
 
