@@ -47,6 +47,8 @@ creditRouter.post(
     const { promoterId, lead } = req.body;
     const payerId = Number(req.body.payerId)
 
+    console.log(req.body);
+
     // Try to fetch promoterId
     const user = await User.findOne({
       _id: promoterId,
