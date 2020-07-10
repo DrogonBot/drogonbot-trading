@@ -38,8 +38,8 @@ const PostAdvertise = ({ provinces }: IProps) => {
   const userShareableLink = user && PromoterHelper.getShareableLink(user);
 
   const messageVariations = [
-    "Pessoal, curso gratuito de desenho mecânico + grupo no whatsapp! Bora participar!",
-    "Ei gente, olha esse curso gratuito de desenho mecânico + grupo no whatsapp! Participem!",
+    "Pessoal, aulão gratuito de desenho mecânico + grupo no whatsapp! Bora participar!",
+    "Ei gente, olha esse aulão gratuito de desenho mecânico + grupo no whatsapp! Participem!",
     "E ai pessoal! Vamos ter um aulão 100% gratuito sobre DESENHO MECANICO! Bora participar!",
   ];
 
