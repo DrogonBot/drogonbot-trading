@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { Body, PageContainer, PageContent, PageList } from '../../components/elements/common/layout';
+import { AccentText, Body, PageContainer, PageContent, PageList } from '../../components/elements/common/layout';
 import { AuthenticatedPage } from '../../components/pages/AuthenticatedPage';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
@@ -117,6 +117,21 @@ const PostAdvertise = ({ provinces }: IProps) => {
               diretamente em sua conta.
             </p>
 
+            <p>
+              Caso se torne um divulgador,{" "}
+              <AccentText>
+                <a
+                  href="https://chat.whatsapp.com/LVdk9leeUEX4zWX51aGLnn"
+                  target="_blank"
+                >
+                  <strong>
+                    CLIQUE AQUI para participar de nosso grupo de divulgadores
+                  </strong>
+                </a>
+              </AccentText>
+              , já que postaremos avisos por lá.
+            </p>
+
             {user && (
               <>
                 <h3>1. Copie seu link</h3>
@@ -126,6 +141,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
                     <LinkColumnLeft>
                       Seu link para divulgação:{" "}
                       <a href={userShareableLink}>{userShareableLink}</a>{" "}
+                      (Pagamento POR CADASTRO)
                     </LinkColumnLeft>
                     <LinkColumnRight>
                       <Button
