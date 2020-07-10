@@ -83,7 +83,7 @@ creditRouter.post(
     let payer;
 
     // fetch payer information
-    if (!payerId) {
+    if (payerId === undefined || payerId === null) {
       payer = {
         id: -1,
         name: "FREE",
