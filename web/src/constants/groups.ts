@@ -24,6 +24,14 @@ export const groups: IGroups = {
       link: "https://www.facebook.com/groups/374562575922448/?ref=br_rs",
       name: "Cadista / Projetista",
     },
+    {
+      link: "https://www.facebook.com/groups/664643813630132/",
+      name: "Vagas offshore macae e regiao",
+    },
+    {
+      link: "https://www.facebook.com/groups/760125697391600/?ref=br_rs",
+      name: "Vagas offshore brasil",
+    },
     // {
     //   link: "https://www.facebook.com/groups/Temostrampo/",
     //   name: "Temos Trampo",
