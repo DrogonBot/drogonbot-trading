@@ -214,6 +214,24 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     stateCode: "SP",
     cities: ["São Paulo", "Guarulhos"],
   },
+  {
+    name: "EmpregoUrgente.com SP #11",
+    chatId: "17788467427-1594361758@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "EmpregoUrgente.com SP #12",
+    chatId: "17788467427-1594361875@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
+  {
+    name: "EmpregoUrgente.com SP #13",
+    chatId: "17788467427-1594362024@g.us",
+    stateCode: "SP",
+    cities: ["São Paulo", "Guarulhos"],
+  },
 
   // SP Partners ========================================
   {
