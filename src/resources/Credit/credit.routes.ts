@@ -88,12 +88,14 @@ creditRouter.post(
       }
     } else {
       // ! Gambiarra! I'm paying for seujobs credits because they're inactive for now and their link redirects to my groups
+      console.log(`payerId=${payerId}`);
       if (payerId === 0 || payerId === 1) {
         payer = payerSites.find((p) => p.id === 0) // Emprego Urgente
       } else {
         payer = payerSites.find((p) => p.id === Number(payerId))
       }
     }
+    console.log(payer);
 
     // if everything is ok and we have a new user, compute as new credit
 
