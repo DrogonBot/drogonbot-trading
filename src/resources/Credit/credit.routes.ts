@@ -47,6 +47,7 @@ creditRouter.post(
     const { promoterId, lead } = req.body;
     const payerId = Number(req.body.payerId)
 
+    console.log("req.body");
     console.log(req.body);
 
     // Try to fetch promoterId
@@ -91,16 +92,21 @@ creditRouter.post(
       }
     } else {
       // ! Gambiarra! I'm paying for seujobs credits because they're inactive for now and their link redirects to my groups
-      console.log(`payerId=${payerId}`);
+
       payer = payerId === 0 || payerId === 1 ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === payerId);
     }
+
+    console.log(`payerId=${payerId}`);
+    console.log("payer...");
     console.log(payer);
+
 
     // if everything is ok and we have a new user, compute as new credit
 
     if (lead) {
       const newLead = new ExternalLead({
-        ...lead
+        ...lead,
+        owner: payer.name
       })
       await newLead.save()
     }
