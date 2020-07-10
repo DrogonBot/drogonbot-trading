@@ -38,9 +38,9 @@ const PostAdvertise = ({ provinces }: IProps) => {
   const userShareableLink = user && PromoterHelper.getShareableLink(user);
 
   const messageVariations = [
-    "Pessoal, acessem esse grupo de VAGAS no Whats! Postamos todos os dias!!",
-    "Ei gente! Entrem nesse grupo exclusivo de VAGAS DE EMPREGO no Whats!",
-    "Pessoal, entrem nesse grupo de empregos no Whats! Todos os dias com VAGAS novas!",
+    "Pessoal, curso gratuito de desenho mecânico + grupo no whatsapp! Bora participar!",
+    "Ei gente, olha esse curso gratuito de desenho mecânico + grupo no whatsapp! Participem!",
+    "E ai pessoal! Vamos ter um aulão 100% gratuito sobre DESENHO MECANICO! Bora participar!",
   ];
 
   const userShareableLinkMessage = _.sample(messageVariations);

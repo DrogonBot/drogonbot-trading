@@ -44,7 +44,8 @@ creditRouter.post(
   [RequestMiddleware.getRequestIP],
   async (req, res) => {
     const { clientIp } = req;
-    const { promoterId, payerId, lead } = req.body;
+    const { promoterId, lead } = req.body;
+    const payerId = Number(req.body.payerId)
 
     // Try to fetch promoterId
     const user = await User.findOne({
@@ -89,7 +90,7 @@ creditRouter.post(
     } else {
       // ! Gambiarra! I'm paying for seujobs credits because they're inactive for now and their link redirects to my groups
       console.log(`payerId=${payerId}`);
-      payer = payerId === 0 || payerId === 1 ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === Number(payerId));
+      payer = payerId === 0 || payerId === 1 ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === payerId);
     }
     console.log(payer);
 
