@@ -99,7 +99,7 @@ creditRouter.post(
         // payer = payerSites.find((p) => p.id === payerId)
 
         // ! Gambiarra! I'm paying for seujobs credits because they're inactive for now and their link redirects to my groups
-        payer = payerId === 0 || payerId === 1 ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === payerId);
+        payer = (payerId === 0 || payerId === 1) ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === payerId);
       }
 
 
