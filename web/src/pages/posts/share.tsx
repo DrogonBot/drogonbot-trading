@@ -47,9 +47,9 @@ const PostAdvertise = ({ provinces }: IProps) => {
   ];
 
   const seuJobsMessageVariations = [
-    "Pessoal, acessem nosso grupo de EMPREGOS NO TELEGRAM!",
-    "Ei gente, vamos entrar em nosso grupo de VAGAS no TELEGRAM!",
-    "Oi pessoal! Grupo de VAGAS NO TELEGRAM! Bora participar!!",
+    "Pessoal, acessem nosso grupo de EMPREGOS NO TELEGRAM! ENTRE APENAS SE TIVER O APP TELEGRAM INSTALADO!",
+    "Ei gente, vamos entrar em nosso grupo de VAGAS no TELEGRAM! ENTRE APENAS SE TIVER O APP TELEGRAM INSTALADO!",
+    "Oi pessoal! Grupo de VAGAS NO TELEGRAM! Bora participar!!ENTRE APENAS SE TIVER O APP TELEGRAM INSTALADO!",
   ];
 
   const adgroupShareableMessage = _.sample(adgroupMessageVariations);
