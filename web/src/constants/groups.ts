@@ -18,11 +18,19 @@ export const groups: IGroups = {
   SP: [
     {
       link: "https://www.facebook.com/groups/328205223881706/",
-      name: "Projetista Mecânico",
+      name: "Projetista Mecânico (+ Recomendado)",
     },
     {
       link: "https://www.facebook.com/groups/374562575922448/?ref=br_rs",
-      name: "Cadista / Projetista",
+      name: "Cadista / Projetista  (+ Recomendado)",
+    },
+    {
+      link: "https://www.facebook.com/groups/666437053509871/",
+      name: "Dimensionamento e Projeto Mecânico",
+    },
+    {
+      link: "https://www.facebook.com/groups/1901304170093223/",
+      name: "Desenho Industrial Mecânico",
     },
     {
       link: "https://www.facebook.com/groups/664643813630132/",
