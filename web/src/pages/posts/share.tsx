@@ -14,14 +14,12 @@ import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { appEnv } from '../../constants/Env.constant';
-import { groups } from '../../constants/groups';
+import { colors } from '../../constants/UI/Colors.constant';
 import { UI } from '../../constants/UI/UI.constant';
 import { TS } from '../../helpers/LanguageHelper';
-import { PromoterHelper } from '../../helpers/PromoterHelper';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
 import { AppState } from '../../store/reducers/index.reducers';
 import { IProvince } from '../../types/Form.types';
-import { IGroupItem } from '../../types/Groups.types';
 import { IUser } from '../../types/User.types';
 
 interface IProps {
@@ -35,46 +33,32 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
   const [isShareableLinkCopied, setIsShareableLinkCopied] = useState(false);
 
-  const userShareableLink = user && PromoterHelper.getShareableLink(user);
+  const adgroupShareableLink =
+    user &&
+    `https://adgroup-desenho-industrial.netlify.app/?promoterId=${user._id}&payerId=2`;
+  const seuJobsGroupsShareableLink =
+    user &&
+    `https://telegram-group.netlify.app/?promoterId=${user._id}&payerId=3`;
 
-  const messageVariations = [
+  const adgroupMessageVariations = [
     "Pessoal, aulão gratuito de desenho mecânico + grupo no whatsapp! Bora participar!",
     "Ei gente, olha esse aulão gratuito de desenho mecânico + grupo no whatsapp! Participem!",
     "E ai pessoal! Vamos ter um aulão 100% gratuito sobre DESENHO MECANICO! Bora participar!",
   ];
 
-  const userShareableLinkMessage = _.sample(messageVariations);
+  const seuJobsMessageVariations = [
+    "Pessoal, acessem nosso grupo de EMPREGOS NO TELEGRAM!",
+    "Ei gente, vamos entrar em nosso grupo de VAGAS no TELEGRAM!",
+    "Oi pessoal! Grupo de VAGAS NO TELEGRAM! Bora participar!!",
+  ];
 
-  const onHandleCopyClipboard = () => {
-    navigator.clipboard.writeText(
-      `${userShareableLinkMessage} ${userShareableLink}`
-    );
+  const adgroupShareableMessage = _.sample(adgroupMessageVariations);
+  const seuJobsShareableMessage = _.sample(seuJobsMessageVariations);
+
+  const onHandleCopyClipboard = (message: string, shareableLink: string) => {
+    navigator.clipboard.writeText(`${message} ${shareableLink}`);
 
     setIsShareableLinkCopied(true);
-  };
-
-  const onRenderGroups = () => {
-    try {
-      // return groups[user.stateCode].map((group: IGroupItem, index) => (
-      // ! Promoting only SeuJobs -> SP for now
-
-      const spGroups = _.shuffle(groups.SP);
-
-      return spGroups.map((group: IGroupItem, index) => (
-        <li key={index}>
-          <a target="_blank" href={group.link}>
-            - {group.name}
-          </a>
-        </li>
-      ));
-    } catch (error) {
-      return (
-        <p>
-          Nenhum grupo sugerido para seu estado! Por favor, procure manualmente
-          no Face!
-        </p>
-      );
-    }
   };
 
   return (
@@ -134,14 +118,15 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
             {user && (
               <>
-                <h3>1. Copie seu link</h3>
+                <h3>1. Escolha um Anunciante e Divulgue o Link</h3>
+
+                <h4>Adgroup - R$ 0.13 por CADASTRO</h4>
 
                 <Alert severity="info">
                   <LinkContainer>
                     <LinkColumnLeft>
                       Seu link para divulgação:{" "}
-                      <a href={userShareableLink}>{userShareableLink}</a>{" "}
-                      (Pagamento POR CADASTRO)
+                      <a href={adgroupShareableLink}>{adgroupShareableLink}</a>{" "}
                     </LinkColumnLeft>
                     <LinkColumnRight>
                       <Button
@@ -149,7 +134,12 @@ const PostAdvertise = ({ provinces }: IProps) => {
                         color="primary"
                         className={classes.button}
                         startIcon={<FileCopyIcon />}
-                        onClick={onHandleCopyClipboard}
+                        onClick={() =>
+                          onHandleCopyClipboard(
+                            adgroupShareableMessage,
+                            adgroupShareableLink
+                          )
+                        }
                       >
                         Copiar Link
                       </Button>
@@ -159,30 +149,107 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
                 <br />
                 {isShareableLinkCopied && (
-                  <p>Link copiado com sucesso! Divulgue nos grupos abaixo!</p>
+                  <p style={{ color: colors.green }}>
+                    Link copiado com sucesso! Divulgue nos grupos abaixo!
+                  </p>
+                )}
+
+                <p>Grupos sugeridos para divulgar:</p>
+
+                <PageList>
+                  <li key={1}>
+                    <a href="https://www.facebook.com/groups/328205223881706/">
+                      Projetista Mecânico (+ Recomendado)
+                    </a>
+                  </li>
+                  <li key={2}>
+                    <a href="https://www.facebook.com/groups/374562575922448/?ref=br_rs">
+                      Cadista / Projetista (+ Recomendado)
+                    </a>
+                  </li>
+                  <li key={3}>
+                    <a href="https://www.facebook.com/groups/666437053509871/">
+                      Dimensionamento e Projeto Mecânico
+                    </a>
+                  </li>
+                  <li key={4}>
+                    <a href="https://www.facebook.com/groups/1901304170093223/">
+                      Desenho Industrial Mecânico
+                    </a>
+                  </li>
+                  <li key={5}>
+                    <a href="https://www.facebook.com/groups/664643813630132/">
+                      Vagas offshore macae e regiao
+                    </a>
+                  </li>
+                </PageList>
+
+                <h4>SeuJobs - R$ 0.05 por CLIQUE</h4>
+
+                <Alert severity="info">
+                  <LinkContainer>
+                    <LinkColumnLeft>
+                      Seu link para divulgação:{" "}
+                      <a href={seuJobsGroupsShareableLink}>
+                        {seuJobsGroupsShareableLink}
+                      </a>{" "}
+                    </LinkColumnLeft>
+                    <LinkColumnRight>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        startIcon={<FileCopyIcon />}
+                        onClick={() =>
+                          onHandleCopyClipboard(
+                            seuJobsShareableMessage,
+                            seuJobsGroupsShareableLink
+                          )
+                        }
+                      >
+                        Copiar Link
+                      </Button>
+                    </LinkColumnRight>
+                  </LinkContainer>
+                </Alert>
+
+                <p>Grupos sugeridos para divulgar:</p>
+
+                <small>Obs: Deve ser na grande SP</small>
+
+                <PageList>
+                  <li key={1}>
+                    <a href="https://www.facebook.com/groups/Temostrampo/">
+                      Temos Trampo
+                    </a>
+                  </li>
+                  <li key={2}>
+                    <a href="https://www.facebook.com/groups/guarulhosvagas/">
+                      Guarulhos Vagas
+                    </a>
+                  </li>
+                  <li key={3}>
+                    <a href="https://www.facebook.com/groups/concursoemsp/">
+                      Concurso e Vagas em SP
+                    </a>
+                  </li>
+                  <li key={4}>
+                    <a href="https://www.facebook.com/groups/851299251885320/">
+                      Empregos Zona Norte SP
+                    </a>
+                  </li>
+                </PageList>
+
+                <br />
+                {isShareableLinkCopied && (
+                  <p style={{ color: colors.green }}>
+                    Link copiado com sucesso! Divulgue nos grupos abaixo!
+                  </p>
                 )}
               </>
             )}
 
-            {user && (
-              <>
-                <h3>2. Entre em grupos do Face</h3>
-
-                <Alert severity="warning">
-                  Favor focar apenas nos grupos abaixo
-                </Alert>
-
-                <p>
-                  Sugerimos que você primeiro{" "}
-                  <strong>solicite participação e aguarde ser aceito(a)</strong>{" "}
-                  nos seguintes grupos
-                </p>
-
-                <PageList>{onRenderGroups()}</PageList>
-              </>
-            )}
-
-            <h3>3. Divulgue nos comentários</h3>
+            <h3>2. Divulgue nos comentários</h3>
 
             <p>
               Sugerimos que poste seu link na{" "}
@@ -195,7 +262,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
               alt="advertisement example"
             /> */}
 
-            <h3>4. Aguarde clicarem em seu link</h3>
+            <h3>3. Aguarde clicarem em seu link</h3>
 
             <p>
               Aguarde um pouco até <strong>clicarem em seus links</strong> para
