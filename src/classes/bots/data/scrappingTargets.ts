@@ -672,81 +672,81 @@ export const scrappingTargets: IScrappingTarget[] = [
     bypassPostContentFilter: true,
     isTrustableSource: true
   },
-  // {
-  //   name: "TrabalhaBrasil - SP - Campinas",
-  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-campinas%2C-sp-",
-  //   priority: TargetPriority.High,
-  //   postDataOverride: {
-  //     country: "Brazil",
-  //     stateCode: "SP",
-  //     city: "Campinas"
-  //   },
-  //   source: PostSource.Blog,
-  //   pagePattern: PagePattern.ListAndInternalPosts,
-  //   scrapperClass: ScrapperTrabalhaBrasil,
-  //   bypassPostContentFilter: true,
-  //   isTrustableSource: true
-  // },
-  // {
-  //   name: "TrabalhaBrasil - SP - Sao Bernardo do Campo",
-  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-bernardo-do-campo-sp",
-  //   priority: TargetPriority.High,
-  //   postDataOverride: {
-  //     country: "Brazil",
-  //     stateCode: "SP",
-  //     city: "São Bernardo do Campo"
-  //   },
-  //   source: PostSource.Blog,
-  //   pagePattern: PagePattern.ListAndInternalPosts,
-  //   scrapperClass: ScrapperTrabalhaBrasil,
-  //   bypassPostContentFilter: true,
-  //   isTrustableSource: true
-  // },
-  // {
-  //   name: "TrabalhaBrasil - SP - Sao Jose dos Campos",
-  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-jose-dos-campos-sp",
-  //   priority: TargetPriority.High,
-  //   postDataOverride: {
-  //     country: "Brazil",
-  //     stateCode: "SP",
-  //     city: "São José dos Campos"
-  //   },
-  //   source: PostSource.Blog,
-  //   pagePattern: PagePattern.ListAndInternalPosts,
-  //   scrapperClass: ScrapperTrabalhaBrasil,
-  //   bypassPostContentFilter: true,
-  //   isTrustableSource: true
-  // },
-  // {
-  //   name: "TrabalhaBrasil - SP - Santo Andre",
-  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-santo-andre-sp",
-  //   priority: TargetPriority.High,
-  //   postDataOverride: {
-  //     country: "Brazil",
-  //     stateCode: "SP",
-  //     city: "Santo André"
-  //   },
-  //   source: PostSource.Blog,
-  //   pagePattern: PagePattern.ListAndInternalPosts,
-  //   scrapperClass: ScrapperTrabalhaBrasil,
-  //   bypassPostContentFilter: true,
-  //   isTrustableSource: true
-  // },
-  // {
-  //   name: "TrabalhaBrasil - SP - Ribeirao Preto",
-  //   externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-ribeirao-preto-sp",
-  //   priority: TargetPriority.High,
-  //   postDataOverride: {
-  //     country: "Brazil",
-  //     stateCode: "SP",
-  //     city: "Ribeirão Preto"
-  //   },
-  //   source: PostSource.Blog,
-  //   pagePattern: PagePattern.ListAndInternalPosts,
-  //   scrapperClass: ScrapperTrabalhaBrasil,
-  //   bypassPostContentFilter: true,
-  //   isTrustableSource: true
-  // },
+  {
+    name: "TrabalhaBrasil - SP - Campinas",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-campinas%2C-sp-",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "Campinas"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - SP - Sao Bernardo do Campo",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-bernardo-do-campo-sp",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "São Bernardo do Campo"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - SP - Sao Jose dos Campos",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-sao-jose-dos-campos-sp",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "São José dos Campos"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - SP - Santo Andre",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-santo-andre-sp",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "Santo André"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
+  {
+    name: "TrabalhaBrasil - SP - Ribeirao Preto",
+    externalSource: "https://www.trabalhabrasil.com.br/vagas-empregos-em-ribeirao-preto-sp",
+    priority: TargetPriority.High,
+    postDataOverride: {
+      country: "Brazil",
+      stateCode: "SP",
+      city: "Ribeirão Preto"
+    },
+    source: PostSource.Blog,
+    pagePattern: PagePattern.ListAndInternalPosts,
+    scrapperClass: ScrapperTrabalhaBrasil,
+    bypassPostContentFilter: true,
+    isTrustableSource: true
+  },
 
 
   {

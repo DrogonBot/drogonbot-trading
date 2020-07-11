@@ -158,79 +158,79 @@ export const whatsAppGroups: IWhatsAppGroup[] = [
     name: "EmpregoUrgente.com SP #1",
     chatId: "17788467427-1579925753@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #2",
     chatId: "17788467427-1579925840@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #3",
     chatId: "17788467427-1581563654@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #4",
     chatId: "17788467427-1582860789@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #5",
     chatId: "17788467427-1592927861@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #6",
     chatId: "17788467427-1593035467@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"]
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #7",
     chatId: "17788467427-1593035676@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"],
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #8",
     chatId: "17788467427-1594338493@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"],
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #9",
     chatId: "17788467427-1594338581@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"],
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #10",
     chatId: "17788467427-1594338672@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"],
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #11",
     chatId: "17788467427-1594361758@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"],
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #12",
     chatId: "17788467427-1594361875@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"],
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
   {
     name: "EmpregoUrgente.com SP #13",
     chatId: "17788467427-1594362024@g.us",
     stateCode: "SP",
-    cities: ["São Paulo", "Guarulhos"],
+    cities: ["São Paulo", "Guarulhos", "Campinas", "São Bernardo do Campo", "São José dos Campos", "Santo André", "Ribeirão Preto"]
   },
 
   // SP Partners ========================================
