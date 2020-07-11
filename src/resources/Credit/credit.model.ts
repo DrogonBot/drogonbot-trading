@@ -10,7 +10,10 @@ export interface ICreditModel extends ICredit, Document {
 const creditSchema = new mongoose.Schema({
   userId: String,
   payer: String,
-  referralIP: String,
+  referralIP: {
+    type: String,
+    unique: true
+  },
   value: Number,
   status: String,
   quantity: Number
