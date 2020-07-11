@@ -95,21 +95,11 @@ creditRouter.post(
           ppc: 0
         }
       } else {
+
+        payer = payerSites.find((p) => p.id === payerId)
+
         // ! Gambiarra! I'm paying for seujobs credits because they're inactive for now and their link redirects to my groups
-
-        payer = payerId === 0 || payerId === 1 ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === payerId);
-      }
-
-
-
-      // if everything is ok and we have a new user, compute as new credit
-
-      if (lead) {
-        const newLead = new ExternalLead({
-          ...lead,
-          owner: payer.name
-        })
-        await newLead.save()
+        // payer = payerId === 0 || payerId === 1 ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === payerId);
       }
 
 
@@ -122,6 +112,17 @@ creditRouter.post(
         quantity: 1
       })
       await newCredit.save();
+
+      // if everything is ok and we have a new user, compute as new credit
+
+      if (lead && newCredit) {
+        const newLead = new ExternalLead({
+          ...lead,
+          owner: payer.name
+        })
+        await newLead.save()
+      }
+
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Computing new credit for user: ${user.name} (${user.email} - Payer: ${payer.name} - value: ${newCredit.value * newCredit.quantity} - referralIP: ${newCredit.referralIP})`)
 
