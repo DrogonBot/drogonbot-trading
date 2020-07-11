@@ -699,7 +699,67 @@ const Terms = ({ provinces }: IProps) => {
               plataforma.
             </p>
 
-            <h2>SEÇÃO 5 - PRODUTOS OU SERVIÇOS (caso aplicável)</h2>
+            <h2>SEÇÃO 5 - SISTEMA DE DIVULGAÇÃO</h2>
+            <p>
+              Ao utilizar nosso sistema de divulgação, você concorda que poderá
+              ter sua{" "}
+              <strong>
+                conta banida e o acesso ao Emprego-Urgente vetado{" "}
+              </strong>{" "}
+              por:
+            </p>
+            <ul>
+              <li> Clicar nos próprios links.</li>
+              <li>Solicitar amigos/parentes para clicar nos seus links.</li>
+              <li>
+                Utilizar quaisquer métodos fraudulentos ou automatizados para
+                artificialmente aumentar seus cliques.
+              </li>
+            </ul>
+
+            <p>
+              Na suspeita de qualquer violação citada acima, ou a critério do
+              Emprego-Urgente, sua conta pode ser banida e seu saldo zerado.
+              Nesses casos, nenhum valor será pago e não lhe devemos nenhuma
+              explicação.
+            </p>
+
+            <h3>5.1 - Pagamento de Saldo Pendente</h3>
+            <p>
+              Pagaremos saldos pendentes APENAS quando este atingir o valor
+              mínimo para saque, via transferência bancária (TED), no prazo de
+              3-5 dias úteis. Pagaremos apenas para contas de TITULAR com MESMO
+              NOME do registrado no Emprego-Urgente (não depositaremos em contas
+              de terceiros){" "}
+            </p>
+
+            <h3>5.2 - Banimento em redes sociais</h3>
+            <p>
+              Você concorda que a divulgação em redes sociais executadas são de
+              inteira responsabilidade sua. Não nos responsabilizamos por
+              banimentos de contas em redes sociais.
+            </p>
+
+            <h3>5.3 - Não Vínculo</h3>
+
+            <p>
+              Ao utilizar o sistema de divulgadores do Emprego-Urgente você
+              concorda que possui autonomia para:
+            </p>
+            <ul>
+              <li>Decidir quando, onde e como irá trabalhar.</li>
+              <li>
+                Decidir a forma como irá executar sua divulgação (Apenas
+                sugerimos modelos de textos, porém a decisão final de usar ou
+                não é sua).
+              </li>
+              <li>
+                Solicitar que outra pessoa divulgue em seu nome, usando seu link
+                do Emprego-Urgente.
+              </li>
+            </ul>
+
+            <h2>SEÇÃO 6 - PRODUTOS OU SERVIÇOS (caso aplicável)</h2>
             <p>
               Certos produtos ou serviços podem estar disponíveis exclusivamente
               online através do site. Tais produtos ou serviços podem ter
@@ -730,7 +790,7 @@ const Terms = ({ provinces }: IProps) => {
               atender às suas expectativas, ou que quaisquer erros no Serviço
               serão corrigidos.
             </p>
-            <h2>SEÇÃO 6 - PRECISÃO DE INFORMAÇÕES DE FATURAMENTO E CONTA</h2>
+            <h2>SEÇÃO 7 - PRECISÃO DE INFORMAÇÕES DE FATURAMENTO E CONTA</h2>
             <p>
               Reservamos o direito de recusar qualquer pedido que você nos
               fizer. Podemos, a nosso próprio critério, limitar ou cancelar o
@@ -752,7 +812,7 @@ const Terms = ({ provinces }: IProps) => {
               validade, para que possamos completar suas transações e contatar
               você quando preciso.
             </p>
-            <h2>SEÇÃO 7 - FERRAMENTAS OPCIONAIS</h2>
+            <h2>SEÇÃO 8 - FERRAMENTAS OPCIONAIS</h2>
             <p>
               Podemos te dar acesso a ferramentas de terceiros que não
               monitoramos e nem temos qualquer controle.
@@ -776,7 +836,7 @@ const Terms = ({ provinces }: IProps) => {
               recursos). Tais recursos e/ou serviços novos também devem estar
               sujeitos a esses Termos de serviço.
             </p>
-            <h2>SEÇÃO 8 - LINKS DE TERCEIROS</h2>
+            <h2>SEÇÃO 9 - LINKS DE TERCEIROS</h2>
             <p>
               Certos produtos, conteúdos e serviços disponíveis pelo nosso
               Serviço podem incluir materiais de terceiros.
@@ -800,7 +860,7 @@ const Terms = ({ provinces }: IProps) => {
               reclamações, preocupações ou questões relativas a produtos de
               terceiros devem ser direcionadas ao terceiro.
             </p>
-            <h2>SEÇÃO 9 - COMENTÁRIOS, FEEDBACK, ETC. DO USUÁRIO</h2>
+            <h2>SEÇÃO 10 - COMENTÁRIOS, FEEDBACK, ETC. DO USUÁRIO</h2>
             <p>
               Se, a nosso pedido, você enviar certos itens específicos (por
               exemplo, participação em um concurso), ou sem um pedido nosso,
@@ -838,18 +898,18 @@ const Terms = ({ provinces }: IProps) => {
               obrigação por quaisquer comentários publicados por você ou por
               qualquer terceiro.
             </p>
-            <h2>SEÇÃO 10 - INFORMAÇÕES PESSOAIS</h2>
+            <h2>SEÇÃO 11 - INFORMAÇÕES PESSOAIS</h2>
             <p>
               {" "}
               O envio de suas informações pessoais através do nosso site é
-              regido pela nossa Política de privacidade. Ver nossa Política de
+              regido pela nossa Política de privacidade. Veja nossa Política de
               privacidade.
             </p>
-            <h2>SEÇÃO 11 - ERROS, IMPRECISÕES E OMISSÕES</h2>
+            <h2>SEÇÃO 12 - ERROS, IMPRECISÕES E OMISSÕES</h2>
             <p>
-              Ocasionalmente, pode haver informações no nosso site ou no Serviço
-              que contém erros tipográficos, imprecisões ou omissões que possam
-              relacionar-se a descrições de produtos, preços, promoções,
+              Ocasionalmente, podem haver informações no nosso site ou no
+              Serviço que contém erros tipográficos, imprecisões ou omissões que
+              possam relacionar-se a descrições de produtos, preços, promoções,
               ofertas, taxas de envio do produto, o prazo de envio e
               disponibilidade. Reservamos o direito de corrigir quaisquer erros,
               imprecisões ou omissões, e de alterar ou atualizar informações ou
@@ -867,7 +927,7 @@ const Terms = ({ provinces }: IProps) => {
               em qualquer site relacionado tenham sido modificadas ou
               atualizadas.
             </p>
-            <h2>SEÇÃO 12 - USOS PROIBIDOS</h2>
+            <h2>SEÇÃO 13 - USOS PROIBIDOS</h2>
             <p>
               Além de outras proibições, conforme estabelecido nos Termos de
               serviço, você está proibido de usar o site ou o conteúdo para: (a)
@@ -895,7 +955,7 @@ const Terms = ({ provinces }: IProps) => {
             </p>
             <h2>
               {" "}
-              SEÇÃO 13 - ISENÇÃO DE RESPONSABILIDADE DE GARANTIAS; LIMITAÇÃO DE
+              SEÇÃO 14 - ISENÇÃO DE RESPONSABILIDADE DE GARANTIAS; LIMITAÇÃO DE
               RESPONSABILIDADE
             </h2>
 
@@ -939,7 +999,7 @@ const Terms = ({ provinces }: IProps) => {
               lei.
             </p>
 
-            <h2>SEÇÃO 14 - INDENIZAÇÃO</h2>
+            <h2>SEÇÃO 15 - INDENIZAÇÃO</h2>
 
             <p>
               Você concorda em indenizar, defender e isentar Emprego Urgente e
@@ -953,7 +1013,7 @@ const Terms = ({ provinces }: IProps) => {
               terceiro.
             </p>
 
-            <h2>SEÇÃO 15 - INDEPENDÊNCIA</h2>
+            <h2>SEÇÃO 16 - INDEPENDÊNCIA</h2>
 
             <p>
               No caso de qualquer disposição destes Termos de serviço ser
@@ -963,7 +1023,7 @@ const Terms = ({ provinces }: IProps) => {
               Termos de serviço. Tal determinação não prejudica a validade e
               aplicabilidade de quaisquer outras disposições restantes.
             </p>
-            <h2>SEÇÃO 16 - RESCISÃO</h2>
+            <h2>SEÇÃO 17 - RESCISÃO</h2>
             <p>
               As obrigações e responsabilidades das partes incorridas antes da
               data de rescisão devem continuar após a rescisão deste acordo para
@@ -979,7 +1039,7 @@ const Terms = ({ provinces }: IProps) => {
               Serviços (ou qualquer parte deles).
             </p>
 
-            <h2>SEÇÃO 17 - ACORDO INTEGRAL</h2>
+            <h2>SEÇÃO 18 - ACORDO INTEGRAL</h2>
 
             <p>
               Caso não exerçamos ou executemos qualquer direito ou disposição
@@ -995,14 +1055,14 @@ const Terms = ({ provinces }: IProps) => {
               serviço não devem ser interpretadas contra a parte que os redigiu.
             </p>
 
-            <h2>SEÇÃO 18 - LEGISLAÇÃO APLICÁVEL</h2>
+            <h2>SEÇÃO 19 - LEGISLAÇÃO APLICÁVEL</h2>
             <p>
               Esses Termos de serviço e quaisquer acordos separados em que nós
               lhe fornecemos os Serviços devem ser regidos e interpretados de
               acordo com as leis do Canadá.{" "}
             </p>
 
-            <h2>SEÇÃO 19 - ALTERAÇÕES DOS TERMOS DE SERVIÇO</h2>
+            <h2>SEÇÃO 20 - ALTERAÇÕES DOS TERMOS DE SERVIÇO</h2>
 
             <p>
               Você pode rever a versão mais atual dos Termos de serviço a
@@ -1015,12 +1075,11 @@ const Terms = ({ provinces }: IProps) => {
               de serviço constitui aceitação dessas alterações.{" "}
             </p>
 
-            <h2>SEÇÃO 20 - INFORMAÇÕES DE CONTATO </h2>
+            <h2>SEÇÃO 21 - INFORMAÇÕES DE CONTATO </h2>
 
             <p>
               As perguntas sobre os Termos de serviço devem ser enviadas para
-              nós através do
-              {appEnv.appEmail}.
+              nós através do email {appEnv.appEmail}.
             </p>
           </>
         );

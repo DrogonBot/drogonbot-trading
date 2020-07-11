@@ -24,29 +24,65 @@ export const UserPaymentFAQ: React.FC = () => {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>
+              <h2>SEÇÃO 5 - SISTEMA DE DIVULGAÇÃO</h2>
               <p>
-                Na <AccentText>suspeita</AccentText> de qualquer violação
-                abaixo, sua conta será suspensa e seu saldo zerado. Nenhum valor
-                será pago.
+                Ao utilizar nosso sistema de divulgação, você concorda que
+                poderá ter sua{" "}
+                <strong>
+                  conta banida e o acesso ao Emprego-Urgente vetado{" "}
+                </strong>{" "}
+                por:
               </p>
               <ul>
-                <li> Não clicar nos próprios links.</li>
+                <li> Clicar nos próprios links.</li>
+                <li>Solicitar amigos/parentes para clicar nos seus links.</li>
                 <li>
-                  Não solicitar amigos/parentes para clicar nos seus links.
-                </li>
-                <li>
-                  Não utilizar quaisquer métodos fraudulentos para
+                  Utilizar quaisquer métodos fraudulentos ou automatizado para
                   artificialmente aumentar seus cliques.
                 </li>
+              </ul>
+
+              <p>
+                Na <AccentText>suspeita</AccentText> de qualquer violação citada
+                acima, ou a critério do Emprego-Urgente, sua conta pode ser
+                banida e seu saldo zerado. Nesses casos, nenhum valor será pago
+                e não lhe devemos nenhuma explicação.
+              </p>
+
+              <h3>5.1 - Pagamento de Saldo Pendente</h3>
+              <p>
+                Pagaremos saldos pendentes APENAS quando este atingir o valor
+                mínimo para saque, via transferência bancária (TED), no prazo de
+                3-5 dias úteis. Pagaremos apenas para contas de TITULAR com
+                MESMO NOME do registrado no Emprego-Urgente (não depositaremos
+                em contas de terceiros){" "}
+              </p>
+
+              <h3>5.2 - Banimento em redes sociais</h3>
+              <p>
+                Você concorda que a divulgação em redes sociais executadas são
+                de inteira responsabilidade sua. Não nos responsabilizamos por
+                banimentos de contas em redes sociais.
+              </p>
+
+              <h3>5.3 - Não Vínculo</h3>
+
+              <p>
+                Ao utilizar o sistema de divulgadores do Emprego-Urgente você
+                concorda que possui autonomia para:
+              </p>
+              <ul>
+                <li>Decidir quando, onde e como irá trabalhar.</li>
                 <li>
-                  Solicitar apenas pessoas dos grupos indicados (ou similares)
-                  para acessarem seus links.
+                  Decidir a forma como irá executar sua divulgação (Apenas
+                  sugerimos modelos de textos, porém a decisão final de usar ou
+                  não é sua).
+                </li>
+                <li>
+                  Solicitar que outra pessoa divulgue em seu nome, usando seu
+                  link do Emprego-Urgente.
                 </li>
               </ul>
-              <p>
-                Antes de quaisquer pagamentos as informações contidas nos seus
-                creditos serão verificadas, quanto a veracidade.
-              </p>
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
