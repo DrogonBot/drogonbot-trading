@@ -17,7 +17,7 @@ export const PromoterModal = () => {
       content={
         <Container>
           <ImageContainer>
-            <Img src="/images/advertise/share.svg" alt="become a promoter" />
+            <Img src="/images/modals/share.svg" alt="become a sharer" />
           </ImageContainer>
 
           <p>
@@ -100,6 +100,6 @@ const ButtonContainer = styled.div`
 `;
 
 const Img = styled.img`
-  max-width: 130px;
+  max-width: 80px;
   height: auto;
 `;

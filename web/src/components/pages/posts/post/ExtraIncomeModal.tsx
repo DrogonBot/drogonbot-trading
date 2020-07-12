@@ -15,10 +15,6 @@ export const ExtraIncomeModal = () => {
       showDontShowAgain={true}
       content={
         <Container>
-          <ImageContainer>
-            <Img src="/images/advertise/earning.svg" alt="earn money" />
-          </ImageContainer>
-
           <p>
             Querem ganhar uma grana extra enquanto está parado? Indique amigos
             pelo app{" "}
@@ -32,7 +28,7 @@ export const ExtraIncomeModal = () => {
             </AccentText>
           </p>
 
-          <VideoResponsive height={250}>
+          <VideoResponsive height={200}>
             <iframe
               src="https://www.youtube.com/embed/zBwFxotVJ64"
               frameBorder="0"
@@ -87,15 +83,15 @@ const CTAContainer = styled.div`
   align-items: center;
 `;
 
-const ImageContainer = styled.div`
-  flex: 100%;
-  display: flex;
-  justify-content: center;
-  /*DESKTOP ONLY CODE*/
-  @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
-    flex: 100%;
-  }
-`;
+// const ImageContainer = styled.div`
+//   flex: 100%;
+//   display: flex;
+//   justify-content: center;
+//   /*DESKTOP ONLY CODE*/
+//   @media screen and (min-width: ${UI.mediumLayoutBreak}px) {
+//     flex: 100%;
+//   }
+// `;
 
 const ButtonContainer = styled.div`
   flex: 50%;
@@ -110,7 +106,7 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const Img = styled.img`
-  max-width: 130px;
-  height: auto;
-`;
+// const Img = styled.img`
+//   max-width: 80px;
+//   height: auto;
+// `;
