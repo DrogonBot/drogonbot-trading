@@ -16,7 +16,7 @@ export const ExtraIncomeModal = () => {
       content={
         <Container>
           <p>
-            Querem ganhar uma grana extra enquanto está parado? Indique amigos
+            Quer ganhar uma grana extra enquanto está parado? Indique amigos
             pelo app{" "}
             <AccentText>
               <strong>PagBank</strong>
@@ -24,7 +24,7 @@ export const ExtraIncomeModal = () => {
             . <AccentText>Ele ganha 20 reais</AccentText> ao se cadastrar e
             pagar uma conta de qualquer valor, e{" "}
             <AccentText>
-              você 10 reais quando seu amigo concluir o cadastro.
+              você 10 reais quando seu amigo terminar o processo.
             </AccentText>
           </p>
 
