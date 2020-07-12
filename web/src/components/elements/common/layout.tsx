@@ -77,3 +77,13 @@ export const Underline = styled.span`
   text-decoration: underline;
   display: inline;
 `;
+
+export const VideoResponsive = styled.div`
+  width: 100%;
+
+  iframe {
+    width: 100%;
+    height: ${({ height }) => height}px;
+    padding-bottom: 1.5rem;
+  }
+`;

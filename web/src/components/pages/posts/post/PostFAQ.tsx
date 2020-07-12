@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { appEnv } from '../../../../constants/Env.constant';
 import { ExpansionPanelTitle } from '../../../../pages/payment';
 import { IPost } from '../../../../types/Post.types';
+import { VideoResponsive } from '../../../elements/common/layout';
 
 interface IProps {
   post: IPost;
@@ -59,7 +60,7 @@ export const PostFAQ: React.FC<IProps> = ({ post }) => {
             </ExpansionPanelTitle>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <VideoResponsive>
+            <VideoResponsive height={440}>
               <Typography>
                 Sim! Qualquer vaga que exija pagamento prévio para "ser
                 selecionado" ou que tente lhe vender algum curso provavelmente é
@@ -96,12 +97,4 @@ const FAQContainer = styled.div`
   padding: 3rem;
   flex: 100%;
   max-width: 900px;
-`;
-const VideoResponsive = styled.div`
-  width: 100%;
-
-  iframe {
-    width: 100%;
-    height: 440px;
-  }
 `;

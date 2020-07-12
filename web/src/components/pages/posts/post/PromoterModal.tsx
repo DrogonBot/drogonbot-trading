@@ -40,6 +40,7 @@ export const PromoterModal = () => {
                   <Button
                     variant="contained"
                     color="secondary"
+                    className="wobble-hor-bottom"
                     startIcon={<FavoriteIcon />}
                   >
                     Saiba Mais

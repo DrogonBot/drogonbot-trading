@@ -1,53 +1,65 @@
 import { Button } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 
 import { UI } from '../../../../constants/UI/UI.constant';
-import { AccentText } from '../../../elements/common/layout';
+import { AccentText, VideoResponsive } from '../../../elements/common/layout';
 import { AlertModal } from '../../../elements/ui/AlertModal';
 
-export const PromoterModal = () => {
+export const ExtraIncomeModal = () => {
   return (
     <AlertModal
-      alertKey="promoter-modal"
-      title={"Divulgue e Ganhe DINHEIRO!"}
+      alertKey="extra-income-modal"
+      title={"Ganhe R$10 por Indicação!"}
       showDontShowAgain={true}
       content={
         <Container>
           <ImageContainer>
-            <Img src="/images/advertise/share.svg" alt="become a promoter" />
+            <Img src="/images/advertise/earning.svg" alt="earn money" />
           </ImageContainer>
 
           <p>
-            Quer convidar novos membros para nossos grupos de emprego no
-            WhatsApp e de quebra ainda <AccentText>ganhar dinheiro</AccentText>{" "}
-            com isso? Não é necessario nenhum tipo de pagamento ou compra de
-            curso!
+            Querem ganhar uma grana extra enquanto está parado? Indique amigos
+            pelo app{" "}
+            <AccentText>
+              <strong>PagBank</strong>
+            </AccentText>
+            . <AccentText>Ele ganha 20 reais</AccentText> ao se cadastrar e
+            pagar uma conta de qualquer valor, e{" "}
+            <AccentText>
+              você 10 reais quando seu amigo concluir o cadastro.
+            </AccentText>
           </p>
-          <p />
-          <Link href="/posts/share">
-            <a>
-              <h1>Seja um Divulgador</h1>
-              <p>
-                Ganhe dinheiro cada vez que algum novo membro for adicionado aos
-                nossos grupos de WhatsApp!
-              </p>
 
-              <CTAContainer>
-                <ButtonContainer>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    startIcon={<FavoriteIcon />}
-                  >
-                    Saiba Mais
-                  </Button>
-                </ButtonContainer>
-              </CTAContainer>
-            </a>
-          </Link>
+          <VideoResponsive height={250}>
+            <iframe
+              src="https://www.youtube.com/embed/zBwFxotVJ64"
+              frameBorder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </VideoResponsive>
+
+          <a href="https://bit.ly/pagbank-app-download" target="_blank">
+            <h1>Comece Agora</h1>
+            <p>
+              Baixe o app e cria sua <AccentText>conta gratuita </AccentText>
+              clicando abaixo:
+            </p>
+            <CTAContainer>
+              <ButtonContainer>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<FavoriteIcon />}
+                  className="wobble-hor-bottom"
+                >
+                  Baixe o App
+                </Button>
+              </ButtonContainer>
+            </CTAContainer>
+          </a>
         </Container>
       }
     />
