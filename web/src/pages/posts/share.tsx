@@ -125,7 +125,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
               <>
                 <h3>1. Escolha um dos links e divulgue</h3>
 
-                <h4>IndicaApp - R$ 0.07 por CLIQUE</h4>
+                <h4>IndicaApp - R$ 0.06 por CLIQUE</h4>
 
                 <Alert severity="info">
                   <LinkContainer>
