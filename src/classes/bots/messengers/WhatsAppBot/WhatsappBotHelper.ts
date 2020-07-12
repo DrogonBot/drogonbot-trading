@@ -120,7 +120,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
           if ((n >= 0 && n <= 7) && !group.isPartnerGroup) {
 
-            const randomMessages = [`💸 Querem ganhar uma grana extra enquanto estão parados? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.\nVejam como funciona:\nhttps://youtu.be/zBwFxotVJ64`, `💸 💸 Querem receber uma grana extra enquanto estão procurando emprego? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.\nVejam como funciona:\nhttps://youtu.be/zBwFxotVJ64`]
+            const randomMessages = [`💸 Querem ganhar uma grana extra enquanto estão parados? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.\n▶️ Vejam como funciona: https://youtu.be/zBwFxotVJ64\n 👉 Baixem o app: https://bit.ly/pagbank-app-indique`, `💸 💸 Querem receber uma grana extra enquanto estão procurando emprego? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.\n▶️ Vejam como funciona: https://youtu.be/zBwFxotVJ64\n👉 Baixem o app: https://bit.ly/pagbank-app-indique`]
 
 
             await GenericHelper.sleep(1000 * 6 + _.random(3))
@@ -132,7 +132,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
             await GenericHelper.sleep(1000 * 6 + _.random(2))
             await WhatsAppBotHelper.request("POST", "/sendMessage", {
               chatId: group.chatId,
-              body: `👉 Baixem o app: https://bit.ly/pagbank-app-indique`,
+              body: ``,
             })
           }
         }
