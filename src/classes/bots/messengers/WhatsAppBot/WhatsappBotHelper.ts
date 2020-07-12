@@ -194,9 +194,23 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
             })
           }
 
-          if ((n >= 7 && n <= 10) && !group.isPartnerGroup) {
+          if ((n >= 3 && n <= 5) && !group.isPartnerGroup) {
 
             const randomMessages = [`💸 Quer ganhar um extra enquanto procura um emprego? Torne-se um Divulgador? Acesse: https://empregourgente.com/posts/share`, `💸 PAGAMOS para você divulgar nosso grupo do WhatsApp em redes sociais. Saiba mais em https://empregourgente.com/posts/share`]
+
+
+            await GenericHelper.sleep(1000 * 6 + _.random(3))
+
+            await WhatsAppBotHelper.request("POST", "/sendMessage", {
+              chatId: group.chatId,
+              body: _.sample(randomMessages),
+            })
+          }
+          if ((n >= 5 && n <= 10) && !group.isPartnerGroup) {
+
+            const randomMessages = [`💸 Quer ganhar R$20? Use meu link de indicação para abrir uma conta grátis no PagBank pelo celular. Faça uma recarga de celular ou pague uma conta, e pronto! ;D
+            https://indicapagbank.page.link/HmvD8ZiehE6fRLzT8`, `💸 Quer receber R$20? Use meu link abaixo para abrir uma conta grátis no PagBank pelo celular. Faça uma recarga de celular ou pague uma conta, e pronto!
+            https://indicapagbank.page.link/HmvD8ZiehE6fRLzT8`]
 
 
             await GenericHelper.sleep(1000 * 6 + _.random(3))
