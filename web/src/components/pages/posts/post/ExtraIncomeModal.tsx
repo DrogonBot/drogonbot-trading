@@ -11,13 +11,17 @@ export const ExtraIncomeModal = () => {
   return (
     <AlertModal
       alertKey="extra-income-modal"
-      title={"Ganhe R$10 por Indicação!"}
-      showDontShowAgain={true}
+      title={"Ganhe R$20 reais para baixar o PagBank!"}
       content={
         <Container>
           <p>
-            Quer ganhar uma grana extra enquanto está parado? Indique amigos
-            pelo app{" "}
+            Quer <AccentText>ganhar R$ 20,00</AccentText> para baixar o app
+            PagBank e validar sua conta? Veja o video abaixo e entenda como
+            funciona!
+          </p>
+
+          <p>
+            Caso voce queira continuar ganhando, indique amigos! ao{" "}
             <AccentText>
               <strong>PagBank</strong>
             </AccentText>
@@ -28,7 +32,7 @@ export const ExtraIncomeModal = () => {
             </AccentText>
           </p>
 
-          <VideoResponsive height={200}>
+          <VideoResponsive height={160}>
             <iframe
               src="https://www.youtube.com/embed/zBwFxotVJ64"
               frameBorder="0"

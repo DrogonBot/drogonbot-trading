@@ -41,6 +41,11 @@ export class TelegramBotHelper extends MessengerBotHelper {
           active: true
         }).limit(20).sort({ 'createdAt': 'descending' })
 
+        if (posts.length === 0) {
+          console.log('🤖: TelegramBot: No new posts found. Skipping');
+          return
+        }
+
         ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${posts.length} posts on channel: ${channel.stateCode}/${channel.city}`)
 
         // now start looping through posts...
