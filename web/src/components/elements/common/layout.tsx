@@ -62,6 +62,8 @@ export const PageList = styled.ul`
     margin-bottom: 0.5rem;
   }
   word-break: break-word;
+  margin: 0;
+  padding: 0;
 `;
 
 export const ToolTipText = styled.span`

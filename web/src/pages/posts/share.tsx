@@ -4,7 +4,6 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Alert from '@material-ui/lab/Alert';
 import _ from 'lodash';
 import Head from 'next/head';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -14,7 +13,6 @@ import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { appEnv } from '../../constants/Env.constant';
-import { colors } from '../../constants/UI/Colors.constant';
 import { UI } from '../../constants/UI/UI.constant';
 import { TS } from '../../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
@@ -31,14 +29,16 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
   const classes = useStyles();
 
-  const [isShareableLinkCopied, setIsShareableLinkCopied] = useState(false);
-
   const adgroupShareableLink =
     user &&
     `https://adgroup-desenho-industrial.netlify.app/?promoterId=${user._id}&payerId=2`;
   const seuJobsGroupsShareableLink =
     user &&
     `https://telegram-group.netlify.app/?promoterId=${user._id}&payerId=3`;
+
+  const euPagBankShareableLink =
+    user &&
+    `https://pagbank-indique-amigos.netlify.app/?promoterId=${user._id}&payerId=4`;
 
   const adgroupMessageVariations = [
     "Pessoal, aulão gratuito de desenho mecânico + grupo no whatsapp! Bora participar!",
@@ -52,13 +52,18 @@ const PostAdvertise = ({ provinces }: IProps) => {
     "Oi pessoal! Grupo de VAGAS NO TELEGRAM (SP)! Bora participar!! Se nao tiver o Telegram instalado, baixe antes de entrar!",
   ];
 
+  const euPagBankMessageVariations = [
+    "Pessoal, sabiam quem tem como ganhar dinheiro indicando o app PagBank? Veja como funciona. 100% Grátis",
+    "Ei gente, querem ganhar uma graninha indicando PagBank? Acesse e veja como funciona. 100% Grátis",
+    "Ei pessoal, querem ganhar um extra indicando PagBank? Acesse e veja como funciona. 100% Grátis",
+  ];
+
   const adgroupShareableMessage = _.sample(adgroupMessageVariations);
   const seuJobsShareableMessage = _.sample(seuJobsMessageVariations);
+  const euPagBankShareableMessage = _.sample(euPagBankMessageVariations);
 
   const onHandleCopyClipboard = (message: string, shareableLink: string) => {
     navigator.clipboard.writeText(`${message} ${shareableLink}`);
-
-    setIsShareableLinkCopied(true);
   };
 
   return (
@@ -118,7 +123,55 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
             {user && (
               <>
-                <h3>1. Escolha um Anunciante e Divulgue o Link</h3>
+                <h3>1. Escolha um dos links e divulgue</h3>
+
+                <h4>IndicaApp - R$ 0.07 por CLIQUE</h4>
+
+                <Alert severity="info">
+                  <LinkContainer>
+                    <LinkColumnLeft>
+                      Seu link para divulgação:{" "}
+                      <a href={euPagBankShareableLink}>
+                        {euPagBankShareableLink}
+                      </a>{" "}
+                    </LinkColumnLeft>
+                    <LinkColumnRight>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        startIcon={<FileCopyIcon />}
+                        onClick={() =>
+                          onHandleCopyClipboard(
+                            euPagBankShareableMessage,
+                            euPagBankShareableLink
+                          )
+                        }
+                      >
+                        Copiar Link
+                      </Button>
+                    </LinkColumnRight>
+                  </LinkContainer>
+                </Alert>
+
+                <br />
+
+                <p>Grupos sugeridos para divulgar:</p>
+
+                <Alert severity="warning">
+                  <PageList>
+                    <li key={1}>
+                      <a href="https://www.facebook.com/groups/querotrabalharvagasdeempregos/?ref=br_rs">
+                        Quero Trabalhar - Vagas de Empregos
+                      </a>
+                    </li>
+                    <li key={2}>
+                      <a href="https://www.facebook.com/groups/vagasabcdm/">
+                        Vagas ABCDM
+                      </a>
+                    </li>
+                  </PageList>
+                </Alert>
 
                 <h4>Adgroup - R$ 0.13 por CADASTRO</h4>
 
@@ -148,41 +201,38 @@ const PostAdvertise = ({ provinces }: IProps) => {
                 </Alert>
 
                 <br />
-                {isShareableLinkCopied && (
-                  <p style={{ color: colors.green }}>
-                    Link copiado com sucesso! Divulgue nos grupos abaixo!
-                  </p>
-                )}
 
                 <p>Grupos sugeridos para divulgar:</p>
 
-                <PageList>
-                  <li key={1}>
-                    <a href="https://www.facebook.com/groups/328205223881706/">
-                      Projetista Mecânico (+ Recomendado)
-                    </a>
-                  </li>
-                  <li key={2}>
-                    <a href="https://www.facebook.com/groups/374562575922448/?ref=br_rs">
-                      Cadista / Projetista (+ Recomendado)
-                    </a>
-                  </li>
-                  <li key={3}>
-                    <a href="https://www.facebook.com/groups/666437053509871/">
-                      Dimensionamento e Projeto Mecânico
-                    </a>
-                  </li>
-                  <li key={4}>
-                    <a href="https://www.facebook.com/groups/1901304170093223/">
-                      Desenho Industrial Mecânico
-                    </a>
-                  </li>
-                  <li key={5}>
-                    <a href="https://www.facebook.com/groups/664643813630132/">
-                      Vagas offshore macae e regiao
-                    </a>
-                  </li>
-                </PageList>
+                <Alert severity="warning">
+                  <PageList>
+                    <li key={1}>
+                      <a href="https://www.facebook.com/groups/328205223881706/">
+                        Projetista Mecânico (+ Recomendado)
+                      </a>
+                    </li>
+                    <li key={2}>
+                      <a href="https://www.facebook.com/groups/374562575922448/?ref=br_rs">
+                        Cadista / Projetista (+ Recomendado)
+                      </a>
+                    </li>
+                    <li key={3}>
+                      <a href="https://www.facebook.com/groups/666437053509871/">
+                        Dimensionamento e Projeto Mecânico
+                      </a>
+                    </li>
+                    <li key={4}>
+                      <a href="https://www.facebook.com/groups/1901304170093223/">
+                        Desenho Industrial Mecânico
+                      </a>
+                    </li>
+                    <li key={5}>
+                      <a href="https://www.facebook.com/groups/664643813630132/">
+                        Vagas offshore macae e regiao
+                      </a>
+                    </li>
+                  </PageList>
+                </Alert>
 
                 <h4>SeuJobs - R$ 0.05 por CLIQUE</h4>
 
@@ -217,35 +267,32 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
                 <small>Obs: Deve ser na grande SP</small>
 
-                <PageList>
-                  <li key={1}>
-                    <a href="https://www.facebook.com/groups/Temostrampo/">
-                      Temos Trampo
-                    </a>
-                  </li>
-                  <li key={2}>
-                    <a href="https://www.facebook.com/groups/guarulhosvagas/">
-                      Guarulhos Vagas
-                    </a>
-                  </li>
-                  <li key={3}>
-                    <a href="https://www.facebook.com/groups/concursoemsp/">
-                      Concurso e Vagas em SP
-                    </a>
-                  </li>
-                  <li key={4}>
-                    <a href="https://www.facebook.com/groups/851299251885320/">
-                      Empregos Zona Norte SP
-                    </a>
-                  </li>
-                </PageList>
+                <Alert severity="warning">
+                  <PageList>
+                    <li key={1}>
+                      <a href="https://www.facebook.com/groups/Temostrampo/">
+                        Temos Trampo
+                      </a>
+                    </li>
+                    <li key={2}>
+                      <a href="https://www.facebook.com/groups/guarulhosvagas/">
+                        Guarulhos Vagas
+                      </a>
+                    </li>
+                    <li key={3}>
+                      <a href="https://www.facebook.com/groups/concursoemsp/">
+                        Concurso e Vagas em SP
+                      </a>
+                    </li>
+                    <li key={4}>
+                      <a href="https://www.facebook.com/groups/851299251885320/">
+                        Empregos Zona Norte SP
+                      </a>
+                    </li>
+                  </PageList>
+                </Alert>
 
                 <br />
-                {isShareableLinkCopied && (
-                  <p style={{ color: colors.green }}>
-                    Link copiado com sucesso! Divulgue nos grupos abaixo!
-                  </p>
-                )}
               </>
             )}
 
