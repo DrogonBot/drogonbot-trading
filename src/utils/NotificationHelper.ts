@@ -194,7 +194,7 @@ export class NotificationHelper {
         'job-report', {
         jobReportFirstPhrase,
         jobReportSecondPhrase,
-        jobNotificationSubscriptionCTA: TS.string("post", "jobNotificationSubscriptionCTA"),
+        jobNotificationSubscriptionCTA: process.env.SUBSCRIPTION_SYSTEM === "on" ? TS.string("post", "jobNotificationSubscriptionCTA") : "",
         postSummary: postThumbnailsLinks.join(''),
         jobReportClosing
       }

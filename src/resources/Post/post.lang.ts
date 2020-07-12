@@ -197,8 +197,8 @@ export const strings = {
     ptBr: "Encontramos uma vaga que provavelmente lhe interessa:"
   },
   jobNotificationSubscriptionCTA: {
-    eng: `<p>Ps.: Do you want to have <strong>unlimited</strong>access to exclusive vacancies and <strong>increase your chances of getting a job faster?</strong> <a href="${process.env.WEB_APP_URL}/payment"> Click here and become a subscriber! </a> </p>`,
-    ptBr: `<p>Obs.: Para ter acesso as vagas <strong>exclusivas</strong> e aumentar suas chances de <strong>conseguir um emprego mais rapidamente</strong>, torne-se um assinante! <a href="${process.env.WEB_APP_URL}/payment">Clique aqui para maiores informações</a> </p>`
+    eng: `<p>Ps.: Do you want to have <strong>unlimited</strong>access to exclusive vacancies and <strong>increase your chances of getting a job faster?</strong> <a href="${process.env.WEB_APP_URL}/payment"> Click here and become a subscriber! </a> </p><br />`,
+    ptBr: `<p>Obs.: Para ter acesso as vagas <strong>exclusivas</strong> e aumentar suas chances de <strong>conseguir um emprego mais rapidamente</strong>, torne-se um assinante! <a href="${process.env.WEB_APP_URL}/payment">Clique aqui para maiores informações</a> </p><br />`
   },
 
   jobsNotificationClosing: {
