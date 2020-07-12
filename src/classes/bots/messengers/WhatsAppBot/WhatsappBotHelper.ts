@@ -91,7 +91,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
     const limitedPosts = _.slice(posts, 0, 15) // thumbnail posts are limited to 15 only!
 
-    for (const post of limitedPosts) {
+    for (const [i, post] of limitedPosts.entries()) {
 
       if (post.isPostedOnWhatsApp) {
         continue;
@@ -113,6 +113,32 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
           console.error(error);
           // on error, set default thumbnail...
           imageBase64 = defaultThumbnailBase64
+        }
+
+        if (i === limitedPosts.length - 2) {
+          const n = _.random(10);
+
+          if ((n >= 5 && n <= 10) && !group.isPartnerGroup) {
+
+            const randomMessages = [`💸 Querem ganhar uma grana extra enquanto estão parados? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.
+            Vejam como funciona:
+            https://youtu.be/zBwFxotVJ64`, `💸 💸 Querem receber uma grana extra enquanto estão procurando emprego? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.
+            Vejam como funciona:
+            https://youtu.be/zBwFxotVJ64`]
+
+
+            await GenericHelper.sleep(1000 * 6 + _.random(3))
+
+            await WhatsAppBotHelper.request("POST", "/sendMessage", {
+              chatId: group.chatId,
+              body: _.sample(randomMessages),
+            })
+            await GenericHelper.sleep(1000 * 6 + _.random(2))
+            await WhatsAppBotHelper.request("POST", "/sendMessage", {
+              chatId: group.chatId,
+              body: `👉 Baixem o app: https://bit.ly/pagbank-app-indique`,
+            })
+          }
         }
 
         // submit post with generated thumbnail
@@ -206,20 +232,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
               body: _.sample(randomMessages),
             })
           }
-          if ((n >= 5 && n <= 10) && !group.isPartnerGroup) {
 
-            const randomMessages = [`💸 Quer ganhar R$20? Use meu link de indicação para abrir uma conta grátis no PagBank pelo celular. Faça uma recarga de celular ou pague uma conta, e pronto! ;D
-            https://indicapagbank.page.link/HmvD8ZiehE6fRLzT8`, `💸 Quer receber R$20? Use meu link abaixo para abrir uma conta grátis no PagBank pelo celular. Faça uma recarga de celular ou pague uma conta, e pronto!
-            https://indicapagbank.page.link/HmvD8ZiehE6fRLzT8`]
-
-
-            await GenericHelper.sleep(1000 * 6 + _.random(3))
-
-            await WhatsAppBotHelper.request("POST", "/sendMessage", {
-              chatId: group.chatId,
-              body: _.sample(randomMessages),
-            })
-          }
 
 
           if ((n >= 3 && n <= 7) && !group.isPartnerGroup && !group.isNicheGroup) { // 50% chance

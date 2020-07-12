@@ -218,19 +218,19 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
 
-  const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
+  // const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
 
 
-  const { keyword } = req.query;
+  // const { keyword } = req.query;
 
 
-  const filteredData = chatList.data.dialogs.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()))
+  // const filteredData = chatList.data.dialogs.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase()))
 
-  for (const data of filteredData) {
-    console.log(`${data.name} => ${data.id}`);
-  }
+  // for (const data of filteredData) {
+  //   console.log(`${data.name} => ${data.id}`);
+  // }
 
-  // await WhatsAppBotHelper.postOnGroups()
+  await WhatsAppBotHelper.postOnGroups()
 
   return res.status(200).send({
     status: 'success'
