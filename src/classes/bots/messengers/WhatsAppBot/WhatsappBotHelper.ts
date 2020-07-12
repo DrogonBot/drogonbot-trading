@@ -120,11 +120,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
           if ((n >= 5 && n <= 10) && !group.isPartnerGroup) {
 
-            const randomMessages = [`💸 Querem ganhar uma grana extra enquanto estão parados? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.
-            Vejam como funciona:
-            https://youtu.be/zBwFxotVJ64`, `💸 💸 Querem receber uma grana extra enquanto estão procurando emprego? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.
-            Vejam como funciona:
-            https://youtu.be/zBwFxotVJ64`]
+            const randomMessages = [`💸 Querem ganhar uma grana extra enquanto estão parados? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.\nVejam como funciona:\nhttps://youtu.be/zBwFxotVJ64`, `💸 💸 Querem receber uma grana extra enquanto estão procurando emprego? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.\nVejam como funciona:\nhttps://youtu.be/zBwFxotVJ64`]
 
 
             await GenericHelper.sleep(1000 * 6 + _.random(3))
