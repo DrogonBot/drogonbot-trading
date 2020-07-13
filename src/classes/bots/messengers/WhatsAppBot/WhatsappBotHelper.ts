@@ -115,7 +115,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
           imageBase64 = defaultThumbnailBase64
         }
 
-        if (i === limitedPosts.length - 2) {
+        if ((i === limitedPosts.length - 2) && limitedPosts.length > 0) {
           const n = _.random(10);
 
           if ((n >= 0 && n <= 7) && !group.isPartnerGroup) {
