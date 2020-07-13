@@ -1,6 +1,5 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
-import _ from 'lodash';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -56,8 +55,8 @@ const PostAdvertise = ({ provinces }: IProps) => {
   //   "👉 Ei pessoal, querem ganhar um extra indicando PagBank? Acesse e veja como funciona. 100% Grátis",
   // ];
 
-  const adgroupShareableMessage = _.sample(adgroupMessageVariations);
-  const seuJobsShareableMessage = _.sample(seuJobsMessageVariations);
+  // const adgroupShareableMessage = _.sample(adgroupMessageVariations);
+  // const seuJobsShareableMessage = _.sample(seuJobsMessageVariations);
   // const euPagBankShareableMessage = _.sample(euPagBankMessageVariations);
 
   const onHandleCopyClipboard = (message: string, shareableLink: string) => {
