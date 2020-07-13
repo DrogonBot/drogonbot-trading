@@ -9,6 +9,10 @@ export const strings = {
   creditPromoterUserNotFound: {
     eng: "User not found by promoterId",
     ptBr: "Usuário nao encontrado, com base no promoterId passado."
+  },
+  creditCampaignDisabled: {
+    eng: "This campaign is disabled",
+    ptBr: "Essa campanha está inativa"
   }
 
 }

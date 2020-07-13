@@ -15,8 +15,9 @@ export enum CreditStatus {
   PAID = "PAID"
 }
 
-export interface ICreditPayer {
+export interface ICampaign {
   id: number,
   name: string,
-  ppc: number
+  ppc: number,
+  isActive: boolean
 }

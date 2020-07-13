@@ -9,9 +9,9 @@ import { TS } from '../../utils/TS';
 import { ExternalLead } from '../ExternalLead/externallead.model';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
-import { payerSites } from './credit.constant';
+import { campaigns } from './credit.constant';
 import { Credit } from './credit.model';
-import { CreditStatus } from './credit.types';
+import { CreditStatus, ICampaign } from './credit.types';
 
 
 // @ts-ignore
@@ -45,7 +45,7 @@ creditRouter.post(
   async (req, res) => {
     const { clientIp } = req;
     const { promoterId, lead } = req.body;
-    const payerId = Number(req.body.payerId)
+    const payerId = Number(req.body.payerId) // received as string, but we should cast it to number
 
     console.log("req.body");
     console.log(req.body);
@@ -83,53 +83,73 @@ creditRouter.post(
       });
     } else {
 
-      // ! Lets log credits for this user
+      // ! Lets log credits for this user (unique click)
 
-      let payer;
+      let payer: ICampaign | undefined;
+      let canComputeCredit = true;
 
       // fetch payer information
       if (payerId === undefined || payerId === null) {
-        payer = {
-          id: -1,
-          name: "FREE",
-          ppc: 0
-        }
+        canComputeCredit = false
+
+        return res.status(200).send({
+          status: "error",
+          message: TS.string("credit", "creditPayerNotFound"),
+        });
       } else {
 
-        // payer = payerSites.find((p) => p.id === payerId)
+        // try to define who's the payer
+        payer = campaigns.find((p) => p.id === payerId)
 
-        // ! Gambiarra! I'm paying for seujobs credits because they're inactive for now and their link redirects to my groups
-        payer = (payerId === 0 || payerId === 1) ? payerSites.find((p) => p.id === 0) : payerSites.find((p) => p.id === payerId);
+        if (!payer) {
+          canComputeCredit = false
+          ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: User ${user.name} (${user.email} tryied to compute new credit, but no campaign was found!`)
+          return res.status(200).send({
+            status: "error",
+            message: TS.string("credit", "creditPayerNotFound"),
+          });
+        }
+
+        if (!payer.isActive) {
+          canComputeCredit = false
+          ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: User ${user.name} (${user.email} tryied to compute new credit for ${payer.name} campaign, but it's disabled!`)
+          return res.status(200).send({
+            status: "error",
+            message: TS.string("credit", "creditCampaignDisabled"),
+          })
+        }
+
       }
 
+      if (canComputeCredit && payer) {
 
-      const newCredit = new Credit({
-        userId: user._id,
-        payer: payer.name,
-        referralIP: clientIp,
-        status: CreditStatus.UNPAID,
-        value: payer.ppc,
-        quantity: 1
-      })
-      await newCredit.save();
-
-      // if everything is ok and we have a new user, compute as new credit
-
-      if (lead && newCredit) {
-        const newLead = new ExternalLead({
-          ...lead,
-          owner: payer.name
+        const newCredit = new Credit({
+          userId: user._id,
+          payer: payer.name,
+          referralIP: clientIp,
+          status: CreditStatus.UNPAID,
+          value: payer.ppc,
+          quantity: 1
         })
-        await newLead.save()
+        await newCredit.save();
+        // if everything is ok and we have a new user, compute as new credit
+        if (lead && newCredit) {
+          const newLead = new ExternalLead({
+            ...lead,
+            owner: payer.name
+          })
+          await newLead.save()
+        }
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Computing new credit for user: ${user.name} (${user.email} - Payer: ${payer.name} - value: ${newCredit.value * newCredit.quantity} - referralIP: ${newCredit.referralIP})`)
+        return res.status(200).send({
+          status: "success",
+          message: TS.string("user", "userClickComputed"),
+        });
+
+
+
       }
 
-
-      ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Computing new credit for user: ${user.name} (${user.email} - Payer: ${payer.name} - value: ${newCredit.value * newCredit.quantity} - referralIP: ${newCredit.referralIP})`)
-
-      return res.status(200).send({
-        status: "success",
-        message: TS.string("user", "userClickComputed"),
-      });
     }
 
 
