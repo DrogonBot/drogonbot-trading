@@ -115,27 +115,6 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
           imageBase64 = defaultThumbnailBase64
         }
 
-        if ((i === limitedPosts.length - 2) && limitedPosts.length > 0) {
-          const n = _.random(10);
-
-          if ((n >= 0 && n <= 7) && !group.isPartnerGroup) {
-
-            const randomMessages = [`💸 Querem ganhar uma grana extra enquanto estão parados? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.\n▶️ Vejam como funciona: https://youtu.be/zBwFxotVJ64\n 👉 Baixem o app: https://bit.ly/pagbank-app-indique`, `💸 💸 Querem receber uma grana extra enquanto estão procurando emprego? Indiquem amigos pelo app PagBank. Ele ganha 20 reais ao se cadastrar e pagar uma conta de qualquer valor, e você 10 reais por cadastro.\n▶️ Vejam como funciona: https://youtu.be/zBwFxotVJ64\n👉 Baixem o app: https://bit.ly/pagbank-app-indique`]
-
-
-            await GenericHelper.sleep(1000 * 6 + _.random(3))
-
-            await WhatsAppBotHelper.request("POST", "/sendMessage", {
-              chatId: group.chatId,
-              body: _.sample(randomMessages),
-            })
-            await GenericHelper.sleep(1000 * 6 + _.random(2))
-            await WhatsAppBotHelper.request("POST", "/sendMessage", {
-              chatId: group.chatId,
-              body: ``,
-            })
-          }
-        }
 
         // submit post with generated thumbnail
         try {
@@ -216,18 +195,6 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
             })
           }
 
-          if ((n >= 3 && n <= 5) && !group.isPartnerGroup) {
-
-            const randomMessages = [`💸 Quer ganhar um extra enquanto procura um emprego? Torne-se um Divulgador? Acesse: https://empregourgente.com/posts/share`, `💸 PAGAMOS para você divulgar nosso grupo do WhatsApp em redes sociais. Saiba mais em https://empregourgente.com/posts/share`]
-
-
-            await GenericHelper.sleep(1000 * 6 + _.random(3))
-
-            await WhatsAppBotHelper.request("POST", "/sendMessage", {
-              chatId: group.chatId,
-              body: _.sample(randomMessages),
-            })
-          }
 
 
 
