@@ -47,8 +47,8 @@ const PostAdvertise = ({ provinces }: IProps) => {
   ];
 
   const seuJobsMessageVariations = [
-    "👉 Pessoal, acessem nosso grupo em SP de EMPREGOS NO TELEGRAM! ENTRE Se nao tiver o Telegram instalado, baixe antes de entrar!",
-    "👉 Ei gente, vamos entrar em nosso grupo para SP de VAGAS no TELEGRAM! Se nao tiver o Telegram instalado, baixe antes de entrar!",
+    "👉 Pessoal, acessem nesse grupo em SP de EMPREGOS NO TELEGRAM! ENTRE Se nao tiver o Telegram instalado, baixe antes de entrar!",
+    "👉 Ei gente, vamos entrar nesse grupo para SP de VAGAS no TELEGRAM! Se nao tiver o Telegram instalado, baixe antes de entrar!",
     "👉 Oi pessoal! Grupo de VAGAS NO TELEGRAM (SP)! Bora participar!! Se nao tiver o Telegram instalado, baixe antes de entrar!",
   ];
 
