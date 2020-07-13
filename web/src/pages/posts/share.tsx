@@ -1,4 +1,3 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
@@ -10,7 +9,6 @@ import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
 import { SearchTop } from '../../components/pages/posts/SearchTop';
 import { appEnv } from '../../constants/Env.constant';
-import { UI } from '../../constants/UI/UI.constant';
 import { TS } from '../../helpers/LanguageHelper';
 import { loadCountryProvinces } from '../../store/actions/form.actions';
 import { AppState } from '../../store/reducers/index.reducers';
@@ -24,24 +22,24 @@ interface IProps {
 const PostAdvertise = ({ provinces }: IProps) => {
   const user = useSelector<AppState, IUser>((state) => state.userReducer.user);
 
-  const classes = useStyles();
+  // const classes = useStyles();
 
-  const adgroupShareableLink =
-    user &&
-    `https://adgroup-desenho-industrial.netlify.app/?promoterId=${user._id}&payerId=2`;
-  const seuJobsGroupsShareableLink =
-    user &&
-    `https://telegram-group.netlify.app/?promoterId=${user._id}&payerId=3`;
+  // const adgroupShareableLink =
+  //   user &&
+  //   `https://adgroup-desenho-industrial.netlify.app/?promoterId=${user._id}&payerId=2`;
+  // const seuJobsGroupsShareableLink =
+  //   user &&
+  //   `https://telegram-group.netlify.app/?promoterId=${user._id}&payerId=3`;
 
   // const euPagBankShareableLink =
   //   user &&
   //   `https://pagbank-indique-amigos.netlify.app/?promoterId=${user._id}&payerId=4`;
 
-  const adgroupMessageVariations = [
-    "👉 Pessoal, aulão gratuito de desenho mecânico + grupo no whatsapp! Bora participar!",
-    "👉 Ei gente, olha esse aulão gratuito de desenho mecânico + grupo no whatsapp! Participem!",
-    "👉 E ai pessoal! Vamos ter um aulão 100% gratuito sobre DESENHO MECANICO! Bora participar!",
-  ];
+  // const adgroupMessageVariations = [
+  //   "👉 Pessoal, aulão gratuito de desenho mecânico + grupo no whatsapp! Bora participar!",
+  //   "👉 Ei gente, olha esse aulão gratuito de desenho mecânico + grupo no whatsapp! Participem!",
+  //   "👉 E ai pessoal! Vamos ter um aulão 100% gratuito sobre DESENHO MECANICO! Bora participar!",
+  // ];
 
   // const seuJobsMessageVariations = [
   //   "👉 Pessoal, acessem nesse grupo em SP de EMPREGOS NO TELEGRAM! ENTRE Se nao tiver o Telegram instalado, baixe antes de entrar!",
@@ -59,9 +57,9 @@ const PostAdvertise = ({ provinces }: IProps) => {
   // const seuJobsShareableMessage = _.sample(seuJobsMessageVariations);
   // const euPagBankShareableMessage = _.sample(euPagBankMessageVariations);
 
-  const onHandleCopyClipboard = (message: string, shareableLink: string) => {
-    navigator.clipboard.writeText(`${message} ${shareableLink}`);
-  };
+  // const onHandleCopyClipboard = (message: string, shareableLink: string) => {
+  //   navigator.clipboard.writeText(`${message} ${shareableLink}`);
+  // };
 
   return (
     <AuthenticatedPage>
@@ -346,35 +344,35 @@ export default PostAdvertise;
 //   max-width: 400px;
 // `;
 
-const LinkContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  word-break: break-word;
-`;
+// const LinkContainer = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   word-break: break-word;
+// `;
 
-const LinkColumnLeft = styled.div`
-  flex: 70%;
-`;
+// const LinkColumnLeft = styled.div`
+//   flex: 70%;
+// `;
 
-const LinkColumnRight = styled.div`
-  flex: auto;
+// const LinkColumnRight = styled.div`
+//   flex: auto;
 
-  /*MOBILE ONLY CODE*/
-  @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
+//   /*MOBILE ONLY CODE*/
+//   @media screen and (max-width: ${UI.mediumLayoutBreak}px) {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//   }
+// `;
 
 const CopyContainer = styled.div`
   margin-bottom: 2rem;
 `;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    button: {
-      margin: theme.spacing(1),
-    },
-  })
-);
+// const useStyles = makeStyles((theme: Theme) =>
+//   createStyles({
+//     button: {
+//       margin: theme.spacing(1),
+//     },
+//   })
+// );
