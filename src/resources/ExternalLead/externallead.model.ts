@@ -12,7 +12,10 @@ export interface IExternalLeadModel extends IExternalLead, Document {
 
 const externalLeadSchema = new mongoose.Schema({
   name: String,
-  email: String,
+  email: {
+    type: String,
+    unique: true
+  },
   phone: String,
   owner: String,
 }, {
