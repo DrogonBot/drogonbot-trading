@@ -36,9 +36,9 @@ const PostAdvertise = ({ provinces }: IProps) => {
     user &&
     `https://telegram-group.netlify.app/?promoterId=${user._id}&payerId=3`;
 
-  const euPagBankShareableLink =
-    user &&
-    `https://pagbank-indique-amigos.netlify.app/?promoterId=${user._id}&payerId=4`;
+  // const euPagBankShareableLink =
+  //   user &&
+  //   `https://pagbank-indique-amigos.netlify.app/?promoterId=${user._id}&payerId=4`;
 
   const adgroupMessageVariations = [
     "👉 Pessoal, aulão gratuito de desenho mecânico + grupo no whatsapp! Bora participar!",
@@ -52,15 +52,15 @@ const PostAdvertise = ({ provinces }: IProps) => {
     "👉 Oi pessoal! Grupo de VAGAS NO TELEGRAM (SP)! Bora participar!! Se nao tiver o Telegram instalado, baixe antes de entrar!",
   ];
 
-  const euPagBankMessageVariations = [
-    "👉 Pessoal, sabiam quem tem como ganhar dinheiro indicando o app PagBank? Veja como funciona. 100% Grátis",
-    "👉 Ei gente, querem ganhar uma graninha indicando PagBank? Acesse e veja como funciona. 100% Grátis",
-    "👉 Ei pessoal, querem ganhar um extra indicando PagBank? Acesse e veja como funciona. 100% Grátis",
-  ];
+  // const euPagBankMessageVariations = [
+  //   "👉 Pessoal, sabiam quem tem como ganhar dinheiro indicando o app PagBank? Veja como funciona. 100% Grátis",
+  //   "👉 Ei gente, querem ganhar uma graninha indicando PagBank? Acesse e veja como funciona. 100% Grátis",
+  //   "👉 Ei pessoal, querem ganhar um extra indicando PagBank? Acesse e veja como funciona. 100% Grátis",
+  // ];
 
   const adgroupShareableMessage = _.sample(adgroupMessageVariations);
   const seuJobsShareableMessage = _.sample(seuJobsMessageVariations);
-  const euPagBankShareableMessage = _.sample(euPagBankMessageVariations);
+  // const euPagBankShareableMessage = _.sample(euPagBankMessageVariations);
 
   const onHandleCopyClipboard = (message: string, shareableLink: string) => {
     navigator.clipboard.writeText(`${message} ${shareableLink}`);
@@ -125,7 +125,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
               <>
                 <h3>1. Escolha um dos links e divulgue</h3>
 
-                <h4>IndicaApp - R$ 0.06 por CLIQUE</h4>
+                {/* <h4>IndicaApp - R$ 0.06 por CLIQUE</h4>
 
                 <Alert severity="info">
                   <LinkContainer>
@@ -171,7 +171,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
                       </a>
                     </li>
                   </PageList>
-                </Alert>
+                </Alert> */}
 
                 <h4>Adgroup - R$ 0.13 por CADASTRO</h4>
 
