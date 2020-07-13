@@ -1,13 +1,11 @@
-import Button from '@material-ui/core/Button';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Alert from '@material-ui/lab/Alert';
 import _ from 'lodash';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { AccentText, Body, PageContainer, PageContent, PageList } from '../../components/elements/common/layout';
+import { Body, PageContainer, PageContent } from '../../components/elements/common/layout';
 import { AuthenticatedPage } from '../../components/pages/AuthenticatedPage';
 import { Footer } from '../../components/pages/index/Footer';
 import { Header } from '../../components/pages/index/Header/Header';
@@ -97,7 +95,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             /> */}
-
+            {/* 
             <p>
               Quer ajudar ao próximo e ao mesmo tempo poder
               <strong> ganhar algum dinheiro?</strong> Divulgue o link dos
@@ -119,11 +117,11 @@ const PostAdvertise = ({ provinces }: IProps) => {
                 </a>
               </AccentText>
               , já que postaremos avisos por lá.
-            </p>
+            </p> */}
 
             {user && (
               <>
-                <h3>1. Escolha um dos links e divulgue</h3>
+                {/* <h3>1. Escolha um dos links e divulgue</h3> */}
 
                 {/* <h4>IndicaApp - R$ 0.06 por CLIQUE</h4>
 
@@ -173,7 +171,11 @@ const PostAdvertise = ({ provinces }: IProps) => {
                   </PageList>
                 </Alert> */}
 
-                <h4>Adgroup - R$ 0.13 por CADASTRO</h4>
+                <Alert severity="warning">
+                  Sistema de divulgação pausado temporariamente
+                </Alert>
+
+                {/* <h4>Adgroup - R$ 0.13 por CADASTRO</h4>
 
                 <Alert severity="info">
                   <LinkContainer>
@@ -202,9 +204,9 @@ const PostAdvertise = ({ provinces }: IProps) => {
 
                 <br />
 
-                <p>Grupos sugeridos para divulgar:</p>
+                <p>Grupos sugeridos para divulgar:</p> */}
 
-                <Alert severity="warning">
+                {/* <Alert severity="warning">
                   <PageList>
                     <li key={1}>
                       <a href="https://www.facebook.com/groups/328205223881706/">
@@ -232,7 +234,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
                       </a>
                     </li>
                   </PageList>
-                </Alert>
+                </Alert> */}
 
                 {/* <h4>SeuJobs - R$ 0.05 por CLIQUE</h4> */}
 
