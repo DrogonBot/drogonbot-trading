@@ -41,21 +41,21 @@ const PostAdvertise = ({ provinces }: IProps) => {
     `https://pagbank-indique-amigos.netlify.app/?promoterId=${user._id}&payerId=4`;
 
   const adgroupMessageVariations = [
-    "Pessoal, aulão gratuito de desenho mecânico + grupo no whatsapp! Bora participar!",
-    "Ei gente, olha esse aulão gratuito de desenho mecânico + grupo no whatsapp! Participem!",
-    "E ai pessoal! Vamos ter um aulão 100% gratuito sobre DESENHO MECANICO! Bora participar!",
+    "👉 Pessoal, aulão gratuito de desenho mecânico + grupo no whatsapp! Bora participar!",
+    "👉 Ei gente, olha esse aulão gratuito de desenho mecânico + grupo no whatsapp! Participem!",
+    "👉 E ai pessoal! Vamos ter um aulão 100% gratuito sobre DESENHO MECANICO! Bora participar!",
   ];
 
   const seuJobsMessageVariations = [
-    "Pessoal, acessem nosso grupo em SP de EMPREGOS NO TELEGRAM! ENTRE Se nao tiver o Telegram instalado, baixe antes de entrar!",
-    "Ei gente, vamos entrar em nosso grupo para SP de VAGAS no TELEGRAM! Se nao tiver o Telegram instalado, baixe antes de entrar!",
-    "Oi pessoal! Grupo de VAGAS NO TELEGRAM (SP)! Bora participar!! Se nao tiver o Telegram instalado, baixe antes de entrar!",
+    "👉 Pessoal, acessem nosso grupo em SP de EMPREGOS NO TELEGRAM! ENTRE Se nao tiver o Telegram instalado, baixe antes de entrar!",
+    "👉 Ei gente, vamos entrar em nosso grupo para SP de VAGAS no TELEGRAM! Se nao tiver o Telegram instalado, baixe antes de entrar!",
+    "👉 Oi pessoal! Grupo de VAGAS NO TELEGRAM (SP)! Bora participar!! Se nao tiver o Telegram instalado, baixe antes de entrar!",
   ];
 
   const euPagBankMessageVariations = [
-    "Pessoal, sabiam quem tem como ganhar dinheiro indicando o app PagBank? Veja como funciona. 100% Grátis",
-    "Ei gente, querem ganhar uma graninha indicando PagBank? Acesse e veja como funciona. 100% Grátis",
-    "Ei pessoal, querem ganhar um extra indicando PagBank? Acesse e veja como funciona. 100% Grátis",
+    "👉 Pessoal, sabiam quem tem como ganhar dinheiro indicando o app PagBank? Veja como funciona. 100% Grátis",
+    "👉 Ei gente, querem ganhar uma graninha indicando PagBank? Acesse e veja como funciona. 100% Grátis",
+    "👉 Ei pessoal, querem ganhar um extra indicando PagBank? Acesse e veja como funciona. 100% Grátis",
   ];
 
   const adgroupShareableMessage = _.sample(adgroupMessageVariations);
