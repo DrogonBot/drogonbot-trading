@@ -46,11 +46,11 @@ const PostAdvertise = ({ provinces }: IProps) => {
     "👉 E ai pessoal! Vamos ter um aulão 100% gratuito sobre DESENHO MECANICO! Bora participar!",
   ];
 
-  const seuJobsMessageVariations = [
-    "👉 Pessoal, acessem nesse grupo em SP de EMPREGOS NO TELEGRAM! ENTRE Se nao tiver o Telegram instalado, baixe antes de entrar!",
-    "👉 Ei gente, vamos entrar nesse grupo para SP de VAGAS no TELEGRAM! Se nao tiver o Telegram instalado, baixe antes de entrar!",
-    "👉 Oi pessoal! Grupo de VAGAS NO TELEGRAM (SP)! Bora participar!! Se nao tiver o Telegram instalado, baixe antes de entrar!",
-  ];
+  // const seuJobsMessageVariations = [
+  //   "👉 Pessoal, acessem nesse grupo em SP de EMPREGOS NO TELEGRAM! ENTRE Se nao tiver o Telegram instalado, baixe antes de entrar!",
+  //   "👉 Ei gente, vamos entrar nesse grupo para SP de VAGAS no TELEGRAM! Se nao tiver o Telegram instalado, baixe antes de entrar!",
+  //   "👉 Oi pessoal! Grupo de VAGAS NO TELEGRAM (SP)! Bora participar!! Se nao tiver o Telegram instalado, baixe antes de entrar!",
+  // ];
 
   // const euPagBankMessageVariations = [
   //   "👉 Pessoal, sabiam quem tem como ganhar dinheiro indicando o app PagBank? Veja como funciona. 100% Grátis",
@@ -234,9 +234,9 @@ const PostAdvertise = ({ provinces }: IProps) => {
                   </PageList>
                 </Alert>
 
-                <h4>SeuJobs - R$ 0.05 por CLIQUE</h4>
+                {/* <h4>SeuJobs - R$ 0.05 por CLIQUE</h4> */}
 
-                <Alert severity="info">
+                {/* <Alert severity="info">
                   <LinkContainer>
                     <LinkColumnLeft>
                       Seu link para divulgação:{" "}
@@ -292,7 +292,7 @@ const PostAdvertise = ({ provinces }: IProps) => {
                   </PageList>
                 </Alert>
 
-                <br />
+                <br /> */}
               </>
             )}
 
