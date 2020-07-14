@@ -28,6 +28,56 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
     return response;
   }
 
+  private static _advertiseTelegram = async (group: IWhatsAppGroup) => {
+    // fetch thumbnail image
+    let imageBase64
+    try {
+      imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(`${process.env.API_URL}/images/telegram.png`)
+    }
+    catch (error) {
+      ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Failed to fetch thumbnail image for telegram ad. Check the error below!`)
+      console.error(error);
+      // on error, set default thumbnail...
+      imageBase64 = defaultThumbnailBase64
+    }
+
+    let telegramLink = "";
+    switch (group.stateCode) {
+      case "ES":
+        telegramLink = "https://t.me/empregourgenteESc"
+        break;
+      case "RJ":
+        telegramLink = "https://t.me/empregourgenteRJc"
+      case "SP":
+        telegramLink = "https://t.me/empregourgenteSPc"
+      case "MG":
+        telegramLink = "https://t.me/empregourgenteMGc"
+      default:
+        telegramLink = "https://t.me/empregourgenteSPc"
+    }
+
+
+
+    // submit post with generated thumbnail
+    try {
+      const response = await WhatsAppBotHelper.request("POST", "/sendLink", {
+        chatId: group.chatId,
+        //  title: "Participe de nosso grupo do Telegram! Priorizamos melhores e exclusivas vagas para lá.",
+        body: `Participe de nosso grupo do Telegram! Priorizamos melhores e exclusivas vagas para lá. Acesse: ${telegramLink}`,
+        previewBase64: `data:image/jpeg;base64,${imageBase64}`
+      })
+
+      console.log(response.data);
+
+      // random delay between each posting interval
+      await GenericHelper.sleep(1000 * (6 + _.random(10)))
+    }
+    catch (error) {
+      ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Failed to publish telegram ad  Check the error below!`)
+      console.error(error);
+    }
+  }
+
   private static _fetchGroupPosts = async (group: IWhatsAppGroup, qty: number, premiumOnly: boolean) => {
 
     let citiesQuery = {}
@@ -195,7 +245,11 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
             })
           }
 
+          if (n >= 3 && n <= 10) { // 70% chance
+            console.log('Telegram invitation');
 
+            await WhatsAppBotHelper._advertiseTelegram(group)
+          }
 
 
           if ((n >= 3 && n <= 7) && !group.isPartnerGroup && !group.isNicheGroup) { // 50% chance
