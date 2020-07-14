@@ -1,6 +1,8 @@
 import Promise from 'bluebird';
 import { Router } from 'express';
+import { ObjectsToCsv } from 'objects-to-csv';
 
+import { publicDirectory } from '../..';
 import { PuppeteerBot } from '../../classes/bots/classes/PuppeteerBot';
 import { RECURPOST_CREDENTIALS_SP, ZOHO_SOCIAL_ES_CREDENTIALS } from '../../classes/bots/data/loginCredentials';
 import { ScrappingTargetHelper } from '../../classes/bots/helpers/ScrappingTargetHelper';
@@ -13,6 +15,7 @@ import { PagSeguro } from '../../classes/payment/Pagseguro/Pagseguro';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { PostHelper } from '../../utils/PostHelper';
+import { ExternalLead } from '../ExternalLead/externallead.model';
 import { Post } from '../Post/post.model';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
@@ -150,6 +153,23 @@ operationRouter.get('/report', async (req, res) => {
   })
 
 })
+
+operationRouter.get('/externalLeads', async (req, res) => {
+
+  const externalLeads = await ExternalLead.find({})
+
+
+  const csv = new ObjectsToCsv(externalLeads)
+
+  await csv.toDisk(`${publicDirectory}/export/externalLeads.csv`)
+
+  return res.status(200).send({
+    status: 'leads exported'
+  })
+
+})
+
+
 
 operationRouter.get('/job-notification', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
