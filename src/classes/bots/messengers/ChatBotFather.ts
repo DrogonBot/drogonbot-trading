@@ -1,11 +1,74 @@
 import axios from 'axios';
+import _ from 'lodash';
 import sharp from 'sharp';
 
 import { IPostModel, Post } from '../../../resources/Post/post.model';
 import { IPost } from '../../../resources/Post/post.types';
+import { IChatChannel } from '../types/whatsappbot.types';
 
 
 export class ChatBotFather {
+
+  public _fetchGroupPosts = async (platform: "WHATSAPP" | "TELEGRAM", group: IChatChannel, qty: number, premiumOnly: boolean) => {
+
+    let citiesQuery = {}
+    let sectorQuery = {}
+    let jobRolesQuery = {}
+
+    const isPostedOnPlatformQuery = platform === "WHATSAPP" ? { isPostedOnWhatsApp: false } : { isPostedOnTelegram: false }
+
+    if (group.jobRoles) {
+
+      jobRolesQuery = {
+        jobRoles: { "$in": group.jobRoles },
+      }
+
+    }
+
+
+    // Filter by cities
+    if (group.cities) {
+      const citiesData = group.cities?.map((city) => {
+        return {
+          city
+        }
+      })
+
+      citiesQuery = {
+        $or: citiesData
+      }
+
+    }
+
+    // Filter by sectors
+    if (group.sectors) {
+      const sectorData = group.sectors?.map((sector) => {
+        return {
+          sector
+        }
+      })
+
+      sectorQuery = {
+        $or: sectorData
+      }
+    }
+
+    let posts = await Post.find({
+      active: true,
+      premiumOnly,
+      stateCode: group.stateCode,
+      $and: [
+        jobRolesQuery,
+        citiesQuery,
+        sectorQuery,
+      ],
+      ...isPostedOnPlatformQuery
+    }).limit(qty).sort({ 'createdAt': 'descending' })
+
+    posts = _.shuffle(posts)
+
+    return posts;
+  }
 
   private _getSectorEmoji = (sector: string) => {
 

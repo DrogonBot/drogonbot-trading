@@ -1,7 +1,7 @@
-import { IWhatsAppGroup } from '../../types/whatsappbot.types';
+import { IChatChannel } from '../../types/whatsappbot.types';
 
 
-export const whatsAppGroups: IWhatsAppGroup[] = [
+export const whatsAppGroups: IChatChannel[] = [
 
   // !DEV GROUP
   // {

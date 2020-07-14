@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import TelegramBot from 'node-telegram-bot-api';
 
-import { Post } from '../../../../resources/Post/post.model';
 import { ConsoleColor, ConsoleHelper } from '../../../../utils/ConsoleHelper';
 import { GenericHelper } from '../../../../utils/GenericHelper';
 import { ChatBotFather } from '../ChatBotFather';
-import { telegramChannels } from './telegramchatbot.constant';
+import { TELEGRAM_BOT_PREMIUM_POSTS_PER_MESSAGE } from './telegramchatbot.constant';
+import { telegramChannels } from './telegramGroups.constant';
 
 
 
@@ -37,32 +37,17 @@ export class TelegramChatBot extends ChatBotFather {
     try {
       for (const channel of sortedChannels) {
 
-        // fetch related posts
-        const query: { stateCode: string, city?: string } = {
-          stateCode: channel.stateCode,
-        }
-        if (channel.city !== "all") {
-          query.city = channel.city
-        }
+        const premiumPosts = await this._fetchGroupPosts("TELEGRAM", channel, TELEGRAM_BOT_PREMIUM_POSTS_PER_MESSAGE, true)
+        const freePosts = await this._fetchGroupPosts("TELEGRAM", channel, TELEGRAM_BOT_PREMIUM_POSTS_PER_MESSAGE, false)
+        const allPosts = _.shuffle([...freePosts, ...premiumPosts])
 
-        const posts = await Post.find({
-          ...query,
-          isPostedOnTelegram: false,
-          active: true
-        }).limit(20).sort({ 'createdAt': 'descending' })
-
-        if (posts.length === 0) {
-          console.log('🤖: TelegramBot: No new posts found. Skipping');
-          return
-        }
-
-        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${posts.length} posts on channel: ${channel.stateCode}/${channel.city}`)
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${allPosts.length} posts on channel: ${channel.stateCode}`)
 
         // now start looping through posts...
 
         await this.bot.startPolling();
 
-        const listContent = await this.generatePostList("TELEGRAM", channel.stateCode, posts, false, true)
+        const listContent = await this.generatePostList("TELEGRAM", channel.stateCode, allPosts, false, true)
 
         const msg = await this.bot.sendMessage(channel.chatId, listContent)
         console.log(msg);

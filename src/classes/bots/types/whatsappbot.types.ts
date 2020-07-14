@@ -1,6 +1,6 @@
 
 
-export interface IWhatsAppGroup {
+export interface IChatChannel {
   name: string,
   chatId: string,
   stateCode: string,

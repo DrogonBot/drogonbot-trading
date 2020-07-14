@@ -1,30 +1,7 @@
-import { ITelegramChannel } from '../../../../typescript/telegrambot.types';
 
-export const telegramChannels: ITelegramChannel[] = [
-  {
-    stateCode: "ES",
-    city: "all",
-    chatId: '@empregourgenteESc'
-  },
-  {
-    stateCode: "RJ",
-    city: "Rio de Janeiro",
-    chatId: "@empregourgenteRJc"
-  },
-  {
-    stateCode: "MG",
-    city: "Belo Horizonte",
-    chatId: '@empregourgenteMGc'
-  },
-  {
-    stateCode: "SP",
-    city: "São Paulo",
-    chatId: "@empregourgenteSPc"
-  },
-  // ! DEV TEST
-  // {
-  //   stateCode: "SP",
-  //   city: "São Paulo",
-  //   chatId: "@empregourgentetest"
-  // },
-]
+
+
+export const TELEGRAM_BOT_PREMIUM_POSTS_PER_MESSAGE = 5
+export const TELEGRAM_BOT_FREE_POSTS_PER_MESSAGE = 15
+export const TELEGRAM_BOT_MINIMUM_FREE_POSTS_PER_LIST = 1
+

@@ -4,7 +4,7 @@ import { EnvType } from '../../../../constants/types/env.types';
 import { IPostModel, Post } from '../../../../resources/Post/post.model';
 import { ConsoleColor, ConsoleHelper } from '../../../../utils/ConsoleHelper';
 import { GenericHelper } from '../../../../utils/GenericHelper';
-import { IWhatsAppGroup } from '../../types/whatsappbot.types';
+import { IChatChannel } from '../../types/whatsappbot.types';
 import { ChatBotFather } from '../ChatBotFather';
 import { TelegramChatBot } from '../TelegramBot/TelegramChatBot';
 import {
@@ -67,7 +67,7 @@ export class WhatsAppChatBot extends ChatBotFather {
     }
   }
 
-  private _advertiseTelegram = async (group: IWhatsAppGroup) => {
+  private _advertiseTelegram = async (group: IChatChannel) => {
 
     const messageVariations = [`👉 Participe de nosso grupo do Telegram! Priorizamos melhores e exclusivas vagas para lá.`, `👉 Quer ter acesso a ainda MAIS vagas? Participe de nosso grupo do Telegram!`, `👉 Por favor, participe do Telegram! Postamos melhores oportunidades por lá! Baixa ai, é rapidinho :)`]
 
@@ -78,66 +78,7 @@ export class WhatsAppChatBot extends ChatBotFather {
     await this._postLinkThumbnail(`${process.env.API_URL}/images/telegram.png`, group.chatId, `Grupo no Telegram para ${group.stateCode}`, `${message} Acesse: ${telegramLink}`,)
   }
 
-  private _fetchGroupPosts = async (group: IWhatsAppGroup, qty: number, premiumOnly: boolean) => {
-
-    let citiesQuery = {}
-    let sectorQuery = {}
-    let jobRolesQuery = {}
-
-    if (group.jobRoles) {
-
-      jobRolesQuery = {
-        jobRoles: { "$in": group.jobRoles },
-      }
-
-    }
-
-
-    // Filter by cities
-    if (group.cities) {
-      const citiesData = group.cities?.map((city) => {
-        return {
-          city
-        }
-      })
-
-      citiesQuery = {
-        $or: citiesData
-      }
-
-    }
-
-    // Filter by sectors
-    if (group.sectors) {
-      const sectorData = group.sectors?.map((sector) => {
-        return {
-          sector
-        }
-      })
-
-      sectorQuery = {
-        $or: sectorData
-      }
-    }
-
-    let posts = await Post.find({
-      active: true,
-      premiumOnly,
-      stateCode: group.stateCode,
-      $and: [
-        jobRolesQuery,
-        citiesQuery,
-        sectorQuery,
-      ],
-      isPostedOnWhatsApp: false
-    }).limit(qty).sort({ 'createdAt': 'descending' })
-
-    posts = _.shuffle(posts)
-
-    return posts;
-  }
-
-  private _thumbnailPost = async (posts: IPostModel[], group: IWhatsAppGroup, dontRepeatPosts: boolean) => {
+  private _thumbnailPost = async (posts: IPostModel[], group: IChatChannel, dontRepeatPosts: boolean) => {
 
     const limitedPosts = _.slice(posts, 0, 15) // thumbnail posts are limited to 15 only!
 
@@ -167,7 +108,7 @@ export class WhatsAppChatBot extends ChatBotFather {
 
   }
 
-  private _listPost = async (posts: IPostModel[], group: IWhatsAppGroup, dontRepeatPosts: boolean) => {
+  private _listPost = async (posts: IPostModel[], group: IChatChannel, dontRepeatPosts: boolean) => {
 
     const listContent = await this.generatePostList("WHATSAPP", group.stateCode, posts, group.isPartnerGroup, dontRepeatPosts)
 
@@ -189,20 +130,18 @@ export class WhatsAppChatBot extends ChatBotFather {
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: WhatsApp Bot => Looking for new jobs to ${group.name}...`)
 
-      const premiumPosts = await this._fetchGroupPosts(group, WHATSAPP_BOT_PREMIUM_POSTS_PER_MESSAGE, true)
-      const freePosts = await this._fetchGroupPosts(group, WHATSAPP_BOT_FREE_POSTS_PER_MESSAGE, false)
+      const premiumPosts = await this._fetchGroupPosts("WHATSAPP", group, WHATSAPP_BOT_PREMIUM_POSTS_PER_MESSAGE, true)
+      const freePosts = await this._fetchGroupPosts("WHATSAPP", group, WHATSAPP_BOT_FREE_POSTS_PER_MESSAGE, false)
+      const allPosts = _.shuffle([...freePosts, ...premiumPosts])
 
       if (freePosts.length >= WHATSAPP_BOT_MINIMUM_FREE_POSTS_PER_LIST) { // minimum post length to submit a message...
 
         // start asking people to add you to contact list!
         if (!group.isPartnerGroup) {
 
-
           const n = _.random(10);
 
-
-          if (n <= 2) { // 20% chance
-            console.log('asking to add on list');
+          if (n <= 2 && allPosts.length > 0) { // 20% chance
             const addMessages = [`📞 Ei pessoal! Por favor, me adicionem em sua lista de contatos para garantir que você recebam todas as vagas sem problemas!`, `📞 Ei gente, me adicionem em seu contato para que vocês recebam todas as vagas normalmente. Obrigado!`, `📞 Importante: me adicione em seus contatos para que vocês recebam todas as vagas sem erros.`]
 
             await GenericHelper.sleep(1000 * (6 + _.random(3)))
@@ -218,7 +157,6 @@ export class WhatsAppChatBot extends ChatBotFather {
 
             await this._advertiseTelegram(group)
           }
-
 
           if ((n >= 3 && n <= 7) && !group.isPartnerGroup && !group.isNicheGroup) { // 50% chance
 
@@ -241,7 +179,6 @@ export class WhatsAppChatBot extends ChatBotFather {
         // if next group is from another state, lets set a variable telling our bot to do not post this post again
         const dontRepeatPosts = group.isLeaf || (i === whatsAppGroups.length - 1) ? true : (group.stateCode !== whatsAppGroups[i + 1].stateCode)
 
-        const allPosts = _.shuffle([...freePosts, ...premiumPosts])
 
         // await WhatsAppBotHelper._listPost(allPosts, group, dontRepeatPosts);
 
@@ -260,10 +197,6 @@ export class WhatsAppChatBot extends ChatBotFather {
       // } else {
       //   await WhatsAppBotHelper._listPost(posts, group);
       // }
-
-
-
-      await GenericHelper.sleep(1000 * (6 + _.random(10)))
     }
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on WhatsApp Groups!')
 
