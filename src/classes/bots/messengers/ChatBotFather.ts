@@ -5,9 +5,9 @@ import { IPostModel, Post } from '../../../resources/Post/post.model';
 import { IPost } from '../../../resources/Post/post.types';
 
 
-export class MessengerBotHelper {
+export class ChatBotFather {
 
-  private static _getSectorEmoji = (sector: string) => {
+  private _getSectorEmoji = (sector: string) => {
 
     switch (sector) {
       case "Atendimento ao cliente":
@@ -105,8 +105,7 @@ export class MessengerBotHelper {
   }
 
 
-  public static getBase64Thumbnail = async (url: string) => {
-
+  public getBase64Thumbnail = async (url: string) => {
 
     console.log(url);
 
@@ -123,7 +122,7 @@ export class MessengerBotHelper {
 
   }
 
-  public static shortPostTitle = (post: IPost, maxLength: number): string => {
+  public shortPostTitle = (post: IPost, maxLength: number): string => {
 
     const { title, premiumOnly, sector } = post
 
@@ -132,7 +131,7 @@ export class MessengerBotHelper {
     if (premiumOnly && process.env.SUBSCRIPTION_SYSTEM === "on") {
       titleString += `🌟 *[P/ ASSINANTES]* `
     } else {
-      titleString += `${MessengerBotHelper._getSectorEmoji(sector)} `
+      titleString += `${this._getSectorEmoji(sector)} `
     }
 
     if (title.length >= maxLength) {
@@ -144,7 +143,7 @@ export class MessengerBotHelper {
     return titleString
   }
 
-  public static generatePostList = async (platform: "WHATSAPP" | "TELEGRAM", stateCode: string, posts: IPostModel[], isPartnerGroup: boolean = false, dontRepeatPosts: boolean) => {
+  public generatePostList = async (platform: "WHATSAPP" | "TELEGRAM", stateCode: string, posts: IPostModel[], isPartnerGroup: boolean = false, dontRepeatPosts: boolean) => {
 
 
     const inviteOrJoinGroupText = isPartnerGroup ? `👉 Mais vagas? Acesse nossos grupos: https://bit.ly/emprego-urgente-${stateCode.toLowerCase()}` : `✌ Convide amigos! https://bit.ly/emprego-urgente-${stateCode.toLowerCase()}`
@@ -159,7 +158,11 @@ export class MessengerBotHelper {
 
       for (const post of posts) {
 
-        listContent += `${MessengerBotHelper.shortPostTitle(post, 30)}: ${process.env.WEB_APP_URL}/posts/${post.slug}?ref=whatsapp\n\n`
+
+        const utmString = platform === "WHATSAPP" ? "utm_source=whatsapp&utm_medium=chat" : "utm_source=telegram&utm_medium=chat"
+
+
+        listContent += `${this.shortPostTitle(post, 30)}: ${process.env.WEB_APP_URL}/posts/${post.slug}?${utmString}\n\n`
 
         if (dontRepeatPosts) {
           await Post.updateOne({ _id: post._id }, dontRepeatPostsQuery)

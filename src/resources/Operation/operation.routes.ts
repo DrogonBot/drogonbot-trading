@@ -4,8 +4,8 @@ import { Router } from 'express';
 import { PuppeteerBot } from '../../classes/bots/classes/PuppeteerBot';
 import { RECURPOST_CREDENTIALS_SP, ZOHO_SOCIAL_ES_CREDENTIALS } from '../../classes/bots/data/loginCredentials';
 import { ScrappingTargetHelper } from '../../classes/bots/helpers/ScrappingTargetHelper';
-import { TelegramBotHelper } from '../../classes/bots/messengers/TelegramBot/TelegramBotHelper';
-import { WhatsAppBotHelper } from '../../classes/bots/messengers/WhatsAppBot/WhatsappBotHelper';
+import { TelegramChatBot } from '../../classes/bots/messengers/TelegramBot/TelegramChatBot';
+import { WhatsAppChatBot } from '../../classes/bots/messengers/WhatsAppBot/WhatsAppChatBot';
 import { RecurPostSocialSchedulerBot } from '../../classes/bots/schedulers/RecurPostSocialSchedulerBot';
 import { ZohoSocialSchedulerBot } from '../../classes/bots/schedulers/ZohoSocialSchedulerBot';
 import { PosterFacebook } from '../../classes/bots/social_media/PosterFacebook';
@@ -206,7 +206,9 @@ operationRouter.get('/scrap', [userAuthMiddleware, UserMiddleware.restrictUserTy
 
 operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
-  await TelegramBotHelper.postOnGroups()
+  const telegramChatBot = new TelegramChatBot()
+
+  await telegramChatBot.postOnGroups()
 
   return res.status(200).send({
     status: 'success'
@@ -217,8 +219,9 @@ operationRouter.get('/telegram-bot/', [userAuthMiddleware, UserMiddleware.restri
 
 operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restrictUserType(UserType.Admin)], async (req, res) => {
 
+  const whatsAppChatBot = new WhatsAppChatBot()
 
-  // const chatList = await WhatsAppBotHelper.request("GET", "/dialogs");
+  // const chatList = await whatsAppChatBot.request("GET", "/dialogs");
 
 
   // const { keyword } = req.query;
@@ -230,7 +233,7 @@ operationRouter.get('/whatsapp-bot/', [userAuthMiddleware, UserMiddleware.restri
   //   console.log(`${data.name} => ${data.id}`);
   // }
 
-  await WhatsAppBotHelper.postOnGroups()
+  await whatsAppChatBot.postOnGroups()
 
   return res.status(200).send({
     status: 'success'

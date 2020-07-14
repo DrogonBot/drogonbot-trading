@@ -4,20 +4,25 @@ import { EnvType } from '../../../../constants/types/env.types';
 import { IPostModel, Post } from '../../../../resources/Post/post.model';
 import { ConsoleColor, ConsoleHelper } from '../../../../utils/ConsoleHelper';
 import { GenericHelper } from '../../../../utils/GenericHelper';
-import { MessengerBotHelper } from '../../helpers/MessengerBotHelper';
 import { IWhatsAppGroup } from '../../types/whatsappbot.types';
+import { ChatBotFather } from '../ChatBotFather';
+import { TelegramChatBot } from '../TelegramBot/TelegramChatBot';
 import {
   defaultThumbnailBase64,
   WHATSAPP_BOT_FREE_POSTS_PER_MESSAGE,
   WHATSAPP_BOT_MINIMUM_FREE_POSTS_PER_LIST,
   WHATSAPP_BOT_PREMIUM_POSTS_PER_MESSAGE,
   whatsappAxios,
-} from './whatsappbot.constants';
-import { whatsAppGroups } from './whatsappGroups.constants';
+} from './whatsappchatbot.constant';
+import { whatsAppGroups } from './whatsappGroups.constant';
 
-export class WhatsAppBotHelper extends MessengerBotHelper {
+export class WhatsAppChatBot extends ChatBotFather {
 
-  public static request = async (method, endpoint: string, data?: Object | null) => {
+  constructor() {
+    super()
+  }
+
+  public request = async (method, endpoint: string, data?: Object | null) => {
 
     const response = await whatsappAxios.request({
       method,
@@ -28,42 +33,26 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
     return response;
   }
 
-  private static _advertiseTelegram = async (group: IWhatsAppGroup) => {
+  private _postLinkThumbnail = async (imagePath: string, chatId: string, messageTitle: string, messageBody: string) => {
     // fetch thumbnail image
     let imageBase64
     try {
-      imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(`${process.env.API_URL}/images/telegram.png`)
+      imageBase64 = await this.getBase64Thumbnail(imagePath)
     }
     catch (error) {
-      ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Failed to fetch thumbnail image for telegram ad. Check the error below!`)
+      ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Failed to fetch thumbnail image. Check the error below!`)
       console.error(error);
       // on error, set default thumbnail...
       imageBase64 = defaultThumbnailBase64
     }
 
-    let telegramLink = "";
-    switch (group.stateCode) {
-      case "ES":
-        telegramLink = "https://t.me/empregourgenteESc"
-        break;
-      case "RJ":
-        telegramLink = "https://t.me/empregourgenteRJc"
-      case "SP":
-        telegramLink = "https://t.me/empregourgenteSPc"
-      case "MG":
-        telegramLink = "https://t.me/empregourgenteMGc"
-      default:
-        telegramLink = "https://t.me/empregourgenteSPc"
-    }
-
-
 
     // submit post with generated thumbnail
     try {
-      const response = await WhatsAppBotHelper.request("POST", "/sendLink", {
-        chatId: group.chatId,
-        //  title: "Participe de nosso grupo do Telegram! Priorizamos melhores e exclusivas vagas para lá.",
-        body: `Participe de nosso grupo do Telegram! Priorizamos melhores e exclusivas vagas para lá. Acesse: ${telegramLink}`,
+      const response = await this.request("POST", "/sendLink", {
+        chatId,
+        title: messageTitle,
+        body: messageBody,
         previewBase64: `data:image/jpeg;base64,${imageBase64}`
       })
 
@@ -73,12 +62,23 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
       await GenericHelper.sleep(1000 * (6 + _.random(10)))
     }
     catch (error) {
-      ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Failed to publish telegram ad  Check the error below!`)
+      ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Failed to publish post  Check the error below!`)
       console.error(error);
     }
   }
 
-  private static _fetchGroupPosts = async (group: IWhatsAppGroup, qty: number, premiumOnly: boolean) => {
+  private _advertiseTelegram = async (group: IWhatsAppGroup) => {
+
+    const messageVariations = [`👉 Participe de nosso grupo do Telegram! Priorizamos melhores e exclusivas vagas para lá.`, `👉 Quer ter acesso a ainda MAIS vagas? Participe de nosso grupo do Telegram!`, `👉 Por favor, participe do Telegram! Postamos melhores oportunidades por lá! Baixa ai, é rapidinho :)`]
+
+    const telegramLink = TelegramChatBot.getGroupLink(group.stateCode);
+
+    const message = _.sample(messageVariations)
+
+    await this._postLinkThumbnail(`${process.env.API_URL}/images/telegram.png`, group.chatId, `Grupo no Telegram para ${group.stateCode}`, `${message} Acesse: ${telegramLink}`,)
+  }
+
+  private _fetchGroupPosts = async (group: IWhatsAppGroup, qty: number, premiumOnly: boolean) => {
 
     let citiesQuery = {}
     let sectorQuery = {}
@@ -137,7 +137,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
     return posts;
   }
 
-  private static _thumbnailPost = async (posts: IPostModel[], group: IWhatsAppGroup, dontRepeatPosts: boolean) => {
+  private _thumbnailPost = async (posts: IPostModel[], group: IWhatsAppGroup, dontRepeatPosts: boolean) => {
 
     const limitedPosts = _.slice(posts, 0, 15) // thumbnail posts are limited to 15 only!
 
@@ -151,46 +151,14 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
       if (process.env.ENV === EnvType.Production) {
 
-        const postTitle = WhatsAppBotHelper.shortPostTitle(post, 35)
+        const postTitle = this.shortPostTitle(post, 35)
 
-        // fetch thumbnail image
-        let imageBase64
-        try {
-          imageBase64 = await WhatsAppBotHelper.getBase64Thumbnail(`${process.env.WEB_APP_URL}/images/seo/${encodeURIComponent(post.sector)}.jpg`)
-        }
-        catch (error) {
-          ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Failed to fetch thumbnail image for post post ${post.slug}. Check the error below!`)
-          console.error(error);
-          // on error, set default thumbnail...
-          imageBase64 = defaultThumbnailBase64
-        }
-
-
-        // submit post with generated thumbnail
-        try {
-          const response = await WhatsAppBotHelper.request("POST", "/sendLink", {
-            chatId: group.chatId,
-            title: postTitle,
-            body: `${process.env.WEB_APP_URL}/posts/${post.slug}?ref=whatsapp`,
-            previewBase64: `data:image/jpeg;base64,${imageBase64}`
-          })
-
-          console.log(response.data);
-        }
-        catch (error) {
-          ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: Failed to publish post ${post.slug}. Check the error below!`)
-          console.error(error);
-        }
+        await this._postLinkThumbnail(`${process.env.WEB_APP_URL}/images/seo/${encodeURIComponent(post.sector)}.jpg`, group.chatId, postTitle, `${process.env.WEB_APP_URL}/posts/${post.slug}?utm_source=whatsapp&utm_medium=chat`)
 
 
         if (dontRepeatPosts) {
           await Post.updateOne({ _id: post._id }, { isPostedOnWhatsApp: true })
         }
-
-
-
-        // random delay between each posting interval
-        await GenericHelper.sleep(1000 * (6 + _.random(10)))
 
       } else {
         console.log(`You're running on development. Please turn on PRODUCTION mode!`);
@@ -199,14 +167,14 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
   }
 
-  private static _listPost = async (posts: IPostModel[], group: IWhatsAppGroup, dontRepeatPosts: boolean) => {
+  private _listPost = async (posts: IPostModel[], group: IWhatsAppGroup, dontRepeatPosts: boolean) => {
 
-    const listContent = await WhatsAppBotHelper.generatePostList("WHATSAPP", group.stateCode, posts, group.isPartnerGroup, dontRepeatPosts)
+    const listContent = await this.generatePostList("WHATSAPP", group.stateCode, posts, group.isPartnerGroup, dontRepeatPosts)
 
     console.log(listContent);
 
 
-    const response = await WhatsAppBotHelper.request("POST", "/sendMessage", {
+    const response = await this.request("POST", "/sendMessage", {
       chatId: group.chatId,
       body: listContent,
     })
@@ -214,15 +182,15 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
     console.log(response.data);
   }
 
-  public static postOnGroups = async () => {
+  public postOnGroups = async () => {
 
     // loop through each group. We'll use the index to check if we should or not repeat posts
     for (const [i, group] of whatsAppGroups.entries()) {
 
       ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: WhatsApp Bot => Looking for new jobs to ${group.name}...`)
 
-      const premiumPosts = await WhatsAppBotHelper._fetchGroupPosts(group, WHATSAPP_BOT_PREMIUM_POSTS_PER_MESSAGE, true)
-      const freePosts = await WhatsAppBotHelper._fetchGroupPosts(group, WHATSAPP_BOT_FREE_POSTS_PER_MESSAGE, false)
+      const premiumPosts = await this._fetchGroupPosts(group, WHATSAPP_BOT_PREMIUM_POSTS_PER_MESSAGE, true)
+      const freePosts = await this._fetchGroupPosts(group, WHATSAPP_BOT_FREE_POSTS_PER_MESSAGE, false)
 
       if (freePosts.length >= WHATSAPP_BOT_MINIMUM_FREE_POSTS_PER_LIST) { // minimum post length to submit a message...
 
@@ -239,7 +207,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
             await GenericHelper.sleep(1000 * (6 + _.random(3)))
 
-            await WhatsAppBotHelper.request("POST", "/sendMessage", {
+            await this.request("POST", "/sendMessage", {
               chatId: group.chatId,
               body: _.sample(addMessages),
             })
@@ -248,7 +216,7 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
           if (n >= 3 && n <= 10) { // 70% chance
             console.log('Telegram invitation');
 
-            await WhatsAppBotHelper._advertiseTelegram(group)
+            await this._advertiseTelegram(group)
           }
 
 
@@ -261,16 +229,11 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
 
             await GenericHelper.sleep(1000 * 6 + _.random(3))
 
-            await WhatsAppBotHelper.request("POST", "/sendMessage", {
+            await this.request("POST", "/sendMessage", {
               chatId: group.chatId,
               body: _.sample(randomMessages),
             })
-
-
           }
-
-
-
         }
 
         // if its a leaf group, dont repeat posts
@@ -283,9 +246,9 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
         // await WhatsAppBotHelper._listPost(allPosts, group, dontRepeatPosts);
 
         if (!group.isPartnerGroup) {
-          await WhatsAppBotHelper._thumbnailPost(allPosts, group, dontRepeatPosts);
+          await this._thumbnailPost(allPosts, group, dontRepeatPosts);
         } else {
-          await WhatsAppBotHelper._listPost(allPosts, group, dontRepeatPosts);
+          await this._listPost(allPosts, group, dontRepeatPosts);
         }
 
       } else {
@@ -303,10 +266,6 @@ export class WhatsAppBotHelper extends MessengerBotHelper {
       await GenericHelper.sleep(1000 * (6 + _.random(10)))
     }
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on WhatsApp Groups!')
-
-
-
-
 
   }
 

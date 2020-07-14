@@ -3,8 +3,8 @@ import moment from 'moment';
 import cron from 'node-cron';
 
 import { ScrappingTargetHelper } from '../classes/bots/helpers/ScrappingTargetHelper';
-import { TelegramBotHelper } from '../classes/bots/messengers/TelegramBot/TelegramBotHelper';
-import { WhatsAppBotHelper } from '../classes/bots/messengers/WhatsAppBot/WhatsappBotHelper';
+import { TelegramChatBot } from '../classes/bots/messengers/TelegramBot/TelegramChatBot';
+import { WhatsAppChatBot } from '../classes/bots/messengers/WhatsAppBot/WhatsAppChatBot';
 import { TargetPriority } from '../classes/bots/types/bots.types';
 import { JobsEmailManager } from '../emails/jobs.email';
 import { Post } from '../resources/Post/post.model';
@@ -19,8 +19,6 @@ Promise.config({
   cancellation: true
 });
 export class JobsCron {
-
-
 
   private static _executeCrawlers = async () => {
 
@@ -55,8 +53,6 @@ export class JobsCron {
     // Send one resume every 10 minutes only (*/10 * * * *)
 
     cron.schedule("*/10 * * * *", async () => {
-
-
 
       // find all posts with pending application status (email not submitted yet!)
       const jobPosts = await Post.find({
@@ -210,33 +206,38 @@ export class JobsCron {
   }
 
   public static whatsAppBotPoster = () => {
+
+    const whatsAppChatBot = new WhatsAppChatBot();
+
     // UTC 11 (8 am Brasilia)
     // UTC 15 (12pm Brasilia)
     // UTC 19 (4pm Brasilia)
     // UTC 22 (7pm Brasilia)
 
     cron.schedule("0 10 * * *", async () => {
-      await WhatsAppBotHelper.postOnGroups()
+      await whatsAppChatBot.postOnGroups()
     })
     cron.schedule("0 11 * * *", async () => {
-      await WhatsAppBotHelper.postOnGroups()
+      await whatsAppChatBot.postOnGroups()
     })
     cron.schedule("0 13 * * *", async () => {
-      await WhatsAppBotHelper.postOnGroups()
+      await whatsAppChatBot.postOnGroups()
     })
     cron.schedule("0 15 * * *", async () => {
-      await WhatsAppBotHelper.postOnGroups()
+      await whatsAppChatBot.postOnGroups()
     })
     cron.schedule("0 19 * * *", async () => {
-      await WhatsAppBotHelper.postOnGroups()
+      await whatsAppChatBot.postOnGroups()
     })
     cron.schedule("0 22 * * *", async () => {
-      await WhatsAppBotHelper.postOnGroups()
+      await whatsAppChatBot.postOnGroups()
     })
 
   }
 
   public static telegramBotPoster = () => {
+
+    const telegramChatBot = new TelegramChatBot()
 
     // UTC 11 (8 am Brasilia)
     // UTC 15 (12pm Brasilia)
@@ -244,29 +245,23 @@ export class JobsCron {
 
 
     cron.schedule("0 10 * * *", async () => {
-      await TelegramBotHelper.postOnGroups()
+      await telegramChatBot.postOnGroups()
     })
     cron.schedule("0 11 * * *", async () => {
-      await TelegramBotHelper.postOnGroups()
+      await telegramChatBot.postOnGroups()
     })
     cron.schedule("0 13 * * *", async () => {
-      await TelegramBotHelper.postOnGroups()
+      await telegramChatBot.postOnGroups()
     })
     cron.schedule("0 15 * * *", async () => {
-      await TelegramBotHelper.postOnGroups()
+      await telegramChatBot.postOnGroups()
     })
     cron.schedule("0 19 * * *", async () => {
-      await TelegramBotHelper.postOnGroups()
+      await telegramChatBot.postOnGroups()
     })
     cron.schedule("0 22 * * *", async () => {
-      await TelegramBotHelper.postOnGroups()
+      await telegramChatBot.postOnGroups()
     })
-
-
-
-
-
-
 
   }
 

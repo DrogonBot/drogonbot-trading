@@ -4,28 +4,38 @@ import TelegramBot from 'node-telegram-bot-api';
 import { Post } from '../../../../resources/Post/post.model';
 import { ConsoleColor, ConsoleHelper } from '../../../../utils/ConsoleHelper';
 import { GenericHelper } from '../../../../utils/GenericHelper';
-import { MessengerBotHelper } from '../../helpers/MessengerBotHelper';
-import { telegramChannels } from './telegrambot.constants';
+import { ChatBotFather } from '../ChatBotFather';
+import { telegramChannels } from './telegramchatbot.constant';
 
 
 
-export class TelegramBotHelper extends MessengerBotHelper {
+export class TelegramChatBot extends ChatBotFather {
 
-  public static bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "");
+  public bot: TelegramBot;
 
-  public static postOnGroups = async () => {
+  constructor() {
+    super();
+    this.bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN || "");
+  }
 
-    const bot = TelegramBotHelper.bot;
+  public static getGroupLink = (stateCode: string) => {
 
-    if (bot.isPolling()) {
-      await bot.stopPolling()
+    const chatId = (telegramChannels.find((channel) => channel.stateCode === stateCode)?.chatId)?.replace("@", "")
+    return `https://t.me/${chatId}`
+
+  }
+
+  public postOnGroups = async () => {
+
+    // This is to avoid bot instances overlapping, causing nasty errors on docker.
+    if (this.bot.isPolling()) {
+      await this.bot.stopPolling()
     }
 
     const sortedChannels = _.shuffle(telegramChannels)
 
     try {
       for (const channel of sortedChannels) {
-
 
         // fetch related posts
         const query: { stateCode: string, city?: string } = {
@@ -50,23 +60,20 @@ export class TelegramBotHelper extends MessengerBotHelper {
 
         // now start looping through posts...
 
-        await bot.startPolling();
+        await this.bot.startPolling();
 
+        const listContent = await this.generatePostList("TELEGRAM", channel.stateCode, posts, false, true)
 
-        const listContent = await MessengerBotHelper.generatePostList("TELEGRAM", channel.stateCode, posts, false, true)
-
-        const msg = await bot.sendMessage(channel.chatId, listContent)
+        const msg = await this.bot.sendMessage(channel.chatId, listContent)
         console.log(msg);
 
         await GenericHelper.sleep(3000);
 
 
-        await bot.stopPolling();
+        await this.bot.stopPolling();
       }
 
       ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, '🤖: Finished posting on Telegram Groups!')
-
-
 
     }
     catch (error) {
