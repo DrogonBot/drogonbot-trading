@@ -1,6 +1,6 @@
 import Promise from 'bluebird';
 import { Router } from 'express';
-import { ObjectsToCsv } from 'objects-to-csv';
+import ObjectsToCsv from 'objects-to-csv';
 
 import { publicDirectory } from '../..';
 import { PuppeteerBot } from '../../classes/bots/classes/PuppeteerBot';
