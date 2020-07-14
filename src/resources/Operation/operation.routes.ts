@@ -16,7 +16,6 @@ import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
 import { PostHelper } from '../../utils/PostHelper';
 import { ExternalLead } from '../ExternalLead/externallead.model';
-import { IExternalLead } from '../ExternalLead/externallead.types';
 import { Post } from '../Post/post.model';
 import { User } from '../User/user.model';
 import { UserType } from '../User/user.types';
@@ -159,9 +158,11 @@ operationRouter.get('/externalLeads', async (req, res) => {
 
   const externalLeads = await ExternalLead.find({})
 
-  let output: IExternalLead[] = [];
+  let output: string[] = [];
 
   for (const lead of externalLeads) {
+
+    console.log(lead.email);
 
     output = [
       ...output,
