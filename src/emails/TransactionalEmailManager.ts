@@ -2,7 +2,6 @@ import { readFileSync } from 'fs';
 import moment from 'moment-timezone';
 
 import { emailProviders, IEmailProvider } from '../constants/emailProviders.constant';
-import { Lead } from '../resources/Lead/lead.model';
 import { Log } from '../resources/Log/log.model';
 import { User } from '../resources/User/user.model';
 import { EncryptionHelper } from '../utils/EncryptionHelper';
@@ -49,9 +48,8 @@ export class TransactionalEmailManager {
           // Unsubscribed users: check if we should skip this user submission or not
 
           const user = await User.findOne({ email: to })
-          const lead = await Lead.findOne({ email: to })
 
-          if ((user?.unsubscribed === true) || (lead?.unsubscribed === true)) {
+          if ((user?.unsubscribed === true)) {
             console.log(`Skipping email submission to unsubscribed user`);
             return true
           }

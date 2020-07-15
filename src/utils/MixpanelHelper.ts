@@ -1,6 +1,6 @@
 import Mixpanel from 'mixpanel';
 
-import { EnvType } from '../constants/types/env.types';
+import { EnvType } from '../typescript/env.types';
 
 export enum MixpanelEvent {
   USER_LOGIN = "USER_LOGIN",

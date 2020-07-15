@@ -1,4 +1,4 @@
-import { globalStrings } from '../lang/global.lang';
+import { globalStrings } from '../constants/global.lang';
 import { TextHelper } from './TextHelper';
 
 

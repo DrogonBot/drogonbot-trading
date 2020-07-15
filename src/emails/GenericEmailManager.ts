@@ -1,4 +1,4 @@
-import { EnvType } from '../constants/types/env.types';
+import { EnvType } from '../typescript/env.types';
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
 

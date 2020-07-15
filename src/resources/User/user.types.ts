@@ -1,7 +1,6 @@
 import { Binary } from 'mongodb';
 import { Document } from 'mongoose';
 
-import { IReportItem } from './../../typescript/report.types';
 
 export interface ILoginData {
   email: string;
@@ -15,17 +14,12 @@ export enum AuthType {
 }
 
 export enum UserType {
-  JobSeeker = "JobSeeker",
-  Company = "Company",
-  RecruitmentCompany = "RecruitmentCompany",
+  Regular = "Regular",
   Staff = "Staff",
   Admin = "Admin",
-  SMSLead = "SMSLead"
+
 }
 
-export interface IUserNotification {
-  jobRoles: string[]
-}
 
 
 
@@ -35,7 +29,6 @@ export interface IUserDocument extends Document {
   givenName: string;
   familyName: string;
   cpf?: string;
-  genericPositionsOfInterest: string[]
   language: string;
   country: string;
   stateCode: string;
@@ -55,8 +48,5 @@ export interface IUserDocument extends Document {
   avatarUrl: string;
   createdAt: string;
   updatedAt: string;
-  lastNotification: any;
   unsubscribed: boolean;
-  postReportItems: IReportItem[],
-  isPremium: boolean
 }

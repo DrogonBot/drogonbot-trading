@@ -1,12 +1,14 @@
 import Mailchimp from 'mailchimp-api-v3';
 
-import { EnvType } from '../constants/types/env.types';
+import { EnvType } from '../typescript/env.types';
+
+
 
 export interface ILists {
   default: string | undefined;
 }
 
-export class MarketingEmailManager {
+export class MailchimpHelper {
   private _mailchimpApiKey: string | undefined;
   private lists: ILists;
   public mailchimp: any;

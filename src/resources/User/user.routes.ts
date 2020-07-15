@@ -8,7 +8,7 @@ import multer from 'multer';
 import randomstring from 'randomstring';
 import sharp from 'sharp';
 
-import { GenericEmailManager } from '../../emails/generic.email';
+import { GenericEmailManager } from '../../emails/GenericEmailManager';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { RequestMiddleware } from '../../middlewares/request.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
@@ -17,7 +17,6 @@ import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { RouterHelper } from '../../utils/RouterHelper';
 import { TextHelper } from '../../utils/TextHelper';
 import { TS } from '../../utils/TS';
-import { Lead } from '../Lead/lead.model';
 import { Log } from '../Log/log.model';
 import { User } from './user.model';
 import { AuthType, ILoginData, UserType } from './user.types';
@@ -68,38 +67,38 @@ userRouter.get("/policy", async (req, res) => {
   return res.status(200).send(data);
 });
 
-userRouter.get("/unsubscribe", async (req, res) => {
-  const { hashEmail, lang } = req.query;
+// userRouter.get("/unsubscribe", async (req, res) => {
+//   const { hashEmail, lang } = req.query;
 
-  const encryptionHelper = new EncryptionHelper();
-  const email = encryptionHelper.decrypt(hashEmail);
+//   const encryptionHelper = new EncryptionHelper();
+//   const email = encryptionHelper.decrypt(hashEmail);
 
-  console.log(`unsubscribing email ${email}`);
+//   console.log(`unsubscribing email ${email}`);
 
-  // try to find a lead or email with this data, and unsubscribe it
+//   // try to find a lead or email with this data, and unsubscribe it
 
-  const user = await User.findOne({ email });
+//   const user = await User.findOne({ email });
 
-  if (user) {
-    user.unsubscribed = true;
+//   if (user) {
+//     user.unsubscribed = true;
 
-    await user.save();
-  } else {
-    const lead = await Lead.findOne({ email });
+//     await user.save();
+//   } else {
+//     const lead = await Lead.findOne({ email });
 
-    if (lead) {
-      lead.unsubscribed = true;
-      await lead.save();
-    }
-  }
+//     if (lead) {
+//       lead.unsubscribed = true;
+//       await lead.save();
+//     }
+//   }
 
-  const data = readFileSync(
-    `./src/public/pages/unsubscribe_${lang}.html`,
-    "utf-8"
-  ).toString();
+//   const data = readFileSync(
+//     `./src/public/pages/unsubscribe_${lang}.html`,
+//     "utf-8"
+//   ).toString();
 
-  return res.status(200).send(data);
-});
+//   return res.status(200).send(data);
+// });
 
 // Authentication ========================================
 

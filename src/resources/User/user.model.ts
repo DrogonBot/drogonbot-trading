@@ -2,9 +2,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Model, model, Schema } from 'mongoose';
 
-import { AccountEmailManager } from '../../emails/account.email';
-import { MarketingEmailManager } from '../../emails/MarketingEmailManager';
+import { GenericEmailManager } from '../../emails/GenericEmailManager';
 import { GenericHelper } from '../../utils/GenericHelper';
+import { MailchimpHelper } from '../../utils/MailchimpHelper';
 import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { TextHelper } from '../../utils/TextHelper';
 import { TS } from '../../utils/TS';
@@ -39,10 +39,6 @@ export const userSchema: Schema = new Schema(
     },
     cpf: {
       type: String,
-    },
-    genericPositionsOfInterest: {
-      type: [String],
-      default: []
     },
     language: {
       type: String,
@@ -79,7 +75,7 @@ export const userSchema: Schema = new Schema(
     },
     type: {
       type: String,
-      default: UserType.JobSeeker
+      default: UserType.Regular
     },
     givenName: {
       type: String
@@ -107,14 +103,7 @@ export const userSchema: Schema = new Schema(
     phone: {
       type: String
     },
-    postReportItems: [
-      {
-        slug: String,
-        title: String,
-        jobRoles: [String],
-        premiumOnly: Boolean
-      }
-    ],
+
 
     tokens: [
       // this will allow multi device sign in (different devices with different tokens)
@@ -131,10 +120,7 @@ export const userSchema: Schema = new Schema(
     avatarUrl: {
       type: String
     },
-    lastNotification: {
-      data: Object,
-      visualized: Boolean
-    },
+
     unsubscribed: Boolean,
 
 
@@ -170,7 +156,7 @@ userSchema.methods.registerUser = async function (req?) {
 
   console.log(`User created: ${user.email}`);
 
-  const accountEmailManager = new AccountEmailManager();
+  const genericEmailManager = new GenericEmailManager();
 
 
   // Register on mixpanel
@@ -205,7 +191,7 @@ userSchema.methods.registerUser = async function (req?) {
 
   // Send transactional email
 
-  await accountEmailManager.sendEmail(
+  await genericEmailManager.sendEmail(
     user.email,
     TS.string('user', 'newAccountEmailSubject', {
       userName: firstName,
@@ -234,7 +220,7 @@ userSchema.methods.registerUser = async function (req?) {
 
   // register user on mailchimp
 
-  const marketingEmailManager = new MarketingEmailManager();
+  const marketingEmailManager = new MailchimpHelper();
 
   try {
     await marketingEmailManager.subscribe(user.email);

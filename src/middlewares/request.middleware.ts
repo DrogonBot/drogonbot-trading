@@ -1,7 +1,7 @@
-import requestIp from 'request-ip';
-
 import { RouterHelper } from '../utils/RouterHelper';
 import { TS } from '../utils/TS';
+
+
 
 export class RequestMiddleware {
 
@@ -28,11 +28,7 @@ export class RequestMiddleware {
     }
   }
 
-  public static getRequestIP = (req, res, next) => {
-    const clientIp = requestIp.getClientIp(req);
-    req.clientIp = clientIp;
-    next();
-  };
+
 
 
 
