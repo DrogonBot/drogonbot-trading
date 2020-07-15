@@ -4,7 +4,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import { ConsoleColor, ConsoleHelper } from '../../../../utils/ConsoleHelper';
 import { GenericHelper } from '../../../../utils/GenericHelper';
 import { ChatBotFather } from '../ChatBotFather';
-import { TELEGRAM_BOT_PREMIUM_POSTS_PER_MESSAGE } from './telegramchatbot.constant';
+import { TELEGRAM_BOT_FREE_POSTS_PER_MESSAGE, TELEGRAM_BOT_PREMIUM_POSTS_PER_MESSAGE } from './telegramchatbot.constant';
 import { telegramChannels } from './telegramGroups.constant';
 
 
@@ -38,7 +38,7 @@ export class TelegramChatBot extends ChatBotFather {
       for (const channel of sortedChannels) {
 
         const premiumPosts = await this._fetchGroupPosts("TELEGRAM", channel, TELEGRAM_BOT_PREMIUM_POSTS_PER_MESSAGE, true)
-        const freePosts = await this._fetchGroupPosts("TELEGRAM", channel, TELEGRAM_BOT_PREMIUM_POSTS_PER_MESSAGE, false)
+        const freePosts = await this._fetchGroupPosts("TELEGRAM", channel, TELEGRAM_BOT_FREE_POSTS_PER_MESSAGE, false)
         const allPosts = _.shuffle([...freePosts, ...premiumPosts])
 
         if (allPosts.length === 0) {
