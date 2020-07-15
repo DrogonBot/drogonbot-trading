@@ -41,6 +41,12 @@ export class TelegramChatBot extends ChatBotFather {
         const freePosts = await this._fetchGroupPosts("TELEGRAM", channel, TELEGRAM_BOT_PREMIUM_POSTS_PER_MESSAGE, false)
         const allPosts = _.shuffle([...freePosts, ...premiumPosts])
 
+        if (allPosts.length === 0) {
+          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Skipping post publishing because no new posts were found for channel: ${channel.stateCode}`)
+
+          continue;
+        }
+
         ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Publishing ${allPosts.length} posts on channel: ${channel.stateCode}`)
 
         // now start looping through posts...
