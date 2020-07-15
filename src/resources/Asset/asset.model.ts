@@ -25,23 +25,79 @@ const assetSchema = new mongoose.Schema({
     type: String,
     enum: Object.values(PriceInterval)
   },
-  priceData: [{
-    date: String,
-    open: Number,
-    high: Number,
-    low: Number,
-    close: Number,
-    volume: Number
-  }],
-  indicators: [{
-    name: String,
-    data: [
-      {
-        date: Date,
-        value: Number
-      }
-    ]
-  }]
+  pricesData: {
+    intraday: [{
+      date: String,
+      open: Number,
+      high: Number,
+      low: Number,
+      close: Number,
+      volume: Number
+    }],
+    daily: [{
+      date: String,
+      open: Number,
+      high: Number,
+      low: Number,
+      close: Number,
+      volume: Number
+    }],
+    weekly: [{
+      date: String,
+      open: Number,
+      high: Number,
+      low: Number,
+      close: Number,
+      volume: Number
+    }],
+    monthly: [{
+      date: String,
+      open: Number,
+      high: Number,
+      low: Number,
+      close: Number,
+      volume: Number
+    }],
+  },
+  indicatorsData: {
+    intraDay: [{
+      name: String,
+      data: [
+        {
+          date: Date,
+          value: Number
+        }
+      ]
+    }],
+    daily: [{
+      name: String,
+      data: [
+        {
+          date: Date,
+          value: Number
+        }
+      ]
+    }],
+    weekly: [{
+      name: String,
+      data: [
+        {
+          date: Date,
+          value: Number
+        }
+      ]
+    }],
+    monthly: [{
+      name: String,
+      data: [
+        {
+          date: Date,
+          value: Number
+        }
+      ]
+    }],
+  },
+
 })
 
 

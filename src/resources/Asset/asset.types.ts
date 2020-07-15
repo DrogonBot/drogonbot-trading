@@ -2,11 +2,22 @@ export interface IAsset {
   symbol: string,
   isETF: boolean,
   lastRefreshed: Date,
+  timeZone: string,
   market: Market,
   sector: Sector,
   priceInterval: PriceInterval,
-  priceData: IPriceItem[],
-  indicators: IIndicator[]
+  pricesData: {
+    intraDay?: IPriceItem[],
+    daily?: IPriceItem[],
+    weekly?: IPriceItem[],
+    monthly?: IPriceItem[]
+  },
+  indicatorsData: {
+    intraDay?: IIndicator[],
+    daily?: IIndicator[],
+    weekly?: IIndicator[],
+    monthly?: IIndicator[]
+  },
 }
 
 export interface IIndicator {
@@ -20,7 +31,7 @@ export interface IIndicatorItem {
 }
 
 export interface IPriceItem {
-  date: string,
+  date: Date,
   open: number,
   high: number,
   low: number,
@@ -55,4 +66,9 @@ export enum PriceInterval {
   Daily = "Daily",
   Weekly = "Weekly",
   Monthly = "Monthly"
+}
+
+export enum TimeSeriesUpdateType {
+  Full = "full",
+  Partial = "partial"
 }
