@@ -1,10 +1,11 @@
 import _ from 'lodash';
 
 import { Asset } from '../../resources/Asset/asset.model';
-import { DataInterval, DataUpdateType, IIndicator, IPriceItem } from '../../resources/Asset/asset.types';
+import { DataInterval, DataUpdateType, IndicatorSeriesType } from '../../resources/Asset/asset.types';
+import { AssetIndicator } from '../../resources/AssetIndicator/assetindicator.model';
+import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { TS } from '../../utils/TS';
-import { IIndicatorItem } from './../../resources/Asset/asset.types';
 import { dataApiAxios } from './tradingbot.constant';
 
 
@@ -78,38 +79,32 @@ export class TradingBot {
 
         timeSeries = (updateType === DataUpdateType.Latest ? _.slice(timeSeries, 0, 1) : timeSeries)
 
-        const priceItems: IPriceItem[] = [];
 
-        for (const apiPriceData of timeSeries) {
+        for (const priceData of timeSeries) {
 
-          // check if price is not already in our model
-          const isPriceDataSaved = asset.pricesData[interval.toLowerCase()].some((data) => new Date(data.date).toISOString() === new Date(apiPriceData.key).toISOString())
+          const date = new Date(priceData.key)
+          const priceValue = Object(priceData.value)
 
-          if (!isPriceDataSaved) {
-            ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Updating asset data (${symbol}) for date ${apiPriceData.key} (${interval})`)
 
-            const priceValue = Object(apiPriceData.value)
+          const isPriceSaved = await AssetPrice.exists({ symbol, interval, date })
 
-            const pricePayload: IPriceItem = {
-              date: new Date(apiPriceData.key),
+          if (!isPriceSaved) {
+            const newPrice = new AssetPrice({
+              symbol, interval,
+              date,
               open: priceValue["1. open"],
               high: priceValue["2. high"],
               low: priceValue["3. low"],
               close: priceValue["4. close"],
               volume: priceValue["5. volume"]
-            }
 
-            priceItems.push(pricePayload)
+            })
+            await newPrice.save()
 
-          } else {
-            ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🤖: Skipping asset data (${symbol}) for date ${apiPriceData.key} (${interval}), since its already saved!`)
+            ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Updating price data for ${symbol}  for date ${date}`)
           }
         }
 
-        asset.pricesData[interval.toLowerCase()] = [
-          ...priceItems, // new data to the top!
-          ...asset.pricesData[interval.toLowerCase()],
-        ]
         asset.lastRefreshed = new Date();
         asset.timeZone = dataObj["Meta Data"]["5. Time Zone"]
         await asset.save();
@@ -141,7 +136,7 @@ export class TradingBot {
     }
   }
 
-  public updateIndicator = async (symbol: string, indicatorName: string, interval: DataInterval, timePeriod: number, seriesType: "close" | "open" | "high" | "low", updateType: DataUpdateType) => {
+  public updateIndicator = async (symbol: string, indicatorName: string, interval: DataInterval, timePeriod: number, seriesType: IndicatorSeriesType, updateType: DataUpdateType) => {
 
     try {
       // find asset
@@ -158,56 +153,39 @@ export class TradingBot {
 
         let indicatorKV = Object.entries(response.data[`Technical Analysis: ${indicatorName}`]).map(([key, value]) => ({ key, value }))
 
-        // TODO: change 0,5 to full
-        indicatorKV = (updateType === DataUpdateType.Latest ? _.slice(indicatorKV, 0, 1) : _.slice(indicatorKV, 0, 5))
-
-        const indicator: IIndicator[] =
-          asset.indicatorsData[interval.toLowerCase()]
-
-
-        if (indicator.length === 0) {
-          indicator.unshift({
-            name: indicatorName,
-            data: []
-          })
-        }
-
-        const indicatorItems: IIndicatorItem[] = [];
-        const targetIndicator = indicator.find((item) => item.name === indicatorName);
-
+        indicatorKV = (updateType === DataUpdateType.Latest ? _.slice(indicatorKV, 0, 1) : indicatorKV)
 
         for (const kv of indicatorKV) {
+          const date = kv.key;
+          const value = Object(kv.value)[indicatorName]
 
-          ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Updating Indicator(${indicatorName}) => (${symbol}) for date ${kv.key} (${interval})`)
+          const doesIndicatorDataAlreadyExists = await AssetIndicator.exists({
+            symbol,
+            interval,
+            seriesType,
+            period: timePeriod,
+            name: indicatorName,
+            date
+          })
 
-          const indicatorDate = kv.key
-          const indicatorValue = Object(kv.value)[indicatorName]
+          if (!doesIndicatorDataAlreadyExists) {
 
-          console.log('adding');
-          console.log(indicatorDate);
-          console.log(indicatorValue);
-
-          const isIndicatorDataAlreadyAdded = targetIndicator?.data.some((item) => item.date.toISOString() === new Date(indicatorDate).toISOString())
-
-          if (!isIndicatorDataAlreadyAdded) {
-            indicatorItems.push({
-              date: new Date(indicatorDate),
-              value: indicatorValue
+            const newIndicatorData = new AssetIndicator({
+              symbol, interval,
+              seriesType,
+              period: timePeriod,
+              name: indicatorName, date, value
             })
-          } else {
-            ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🤖: Skipping asset data (${symbol}) for indicator ${indicatorName} (${interval}), since its already saved!`)
+            await newIndicatorData.save()
+
+            ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Updating indicator ${indicatorName}(${interval}) data for ${symbol}  for date ${date}`)
+
+
           }
 
-
         }
 
-        if (targetIndicator) {
-          targetIndicator.data = [
-            ...indicatorItems,
-            ...targetIndicator.data
-          ]
 
-        }
 
         await asset.save();
         return true;

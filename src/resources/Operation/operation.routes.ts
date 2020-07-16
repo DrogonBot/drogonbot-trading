@@ -3,7 +3,7 @@ import { Router } from 'express';
 
 import { TradingBot } from '../../bots/TradingBot/TradingBot';
 import { TS } from '../../utils/TS';
-import { DataInterval } from '../Asset/asset.types';
+import { DataInterval, IndicatorSeriesType } from '../Asset/asset.types';
 
 
 // Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310
@@ -44,7 +44,7 @@ operationRouter.get("/asset/update/:dataType/:updateType", async (req, res) => {
     case "indicator-data":
 
 
-      const indicatorResponse = await tradingBot.updateIndicator("RIT.TO", "EMA", DataInterval.Daily, 55, "close", updateType)
+      const indicatorResponse = await tradingBot.updateIndicator("RIT.TO", "EMA", DataInterval.Daily, 55, IndicatorSeriesType.Close, updateType)
 
       if (!indicatorResponse) {
         return res.status(200).send({
