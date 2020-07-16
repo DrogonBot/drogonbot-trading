@@ -2,6 +2,7 @@ import Promise from 'bluebird';
 import { Router } from 'express';
 
 import { TradingBot } from '../../bots/TradingBot/TradingBot';
+import { MovingAverageHelper } from '../../utils/Indicators/MovingAverageHelper';
 import { TS } from '../../utils/TS';
 import { DataInterval, IndicatorSeriesType } from '../Asset/asset.types';
 
@@ -41,25 +42,34 @@ operationRouter.get("/asset/update/:dataType/:updateType", async (req, res) => {
 
       break;
 
-    case "indicator-data":
-
-
-      const indicatorResponse = await tradingBot.updateIndicator("RIT.TO", "EMA", DataInterval.Daily, 55, IndicatorSeriesType.Close, updateType)
-
-      if (!indicatorResponse) {
-        return res.status(200).send({
-          status: "error",
-          message: TS.string("asset", "assetIndicatorsFetchError")
-        })
-      }
-
-      break;
   }
 
+  return res.status(200).send({
+    status: "success"
+  })
+
+})
+
+operationRouter.get("/asset/:symbol/:indicator", async (req, res) => {
 
 
+  const { indicator, symbol } = req.params;
+
+  try {
 
 
+    switch (indicator) {
+      case "EMA":
+        const indicatorData = await MovingAverageHelper.EMA(symbol, 55, IndicatorSeriesType.Close, DataInterval.Daily)
+
+        return res.status(200).send(indicatorData);
+
+    }
+  }
+  catch (error) {
+    console.error(error);
+
+  }
 
 
   return res.status(200).send({

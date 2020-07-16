@@ -1,8 +1,7 @@
 import _ from 'lodash';
 
 import { Asset } from '../../resources/Asset/asset.model';
-import { DataInterval, DataUpdateType, IndicatorSeriesType } from '../../resources/Asset/asset.types';
-import { AssetIndicator } from '../../resources/AssetIndicator/assetindicator.model';
+import { DataInterval, DataUpdateType } from '../../resources/Asset/asset.types';
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { TS } from '../../utils/TS';
@@ -121,83 +120,7 @@ export class TradingBot {
 
   }
 
-  // INDICATORS ========================================
 
-  private _getIndicatorSeries = async (symbol: string, indicatorName: string, interval: DataInterval, timePeriod: number, seriesType: "close" | "open" | "high" | "low") => {
-
-    try {
-      const response = await this.dataApiRequest("GET", `query?function=${indicatorName}&symbol=${symbol}&interval=${interval.toLowerCase()}&time_period=${timePeriod}&series_type=${seriesType}`)
-
-      return response;
-    }
-    catch (error) {
-      console.error(error);
-
-    }
-  }
-
-  public updateIndicator = async (symbol: string, indicatorName: string, interval: DataInterval, timePeriod: number, seriesType: IndicatorSeriesType, updateType: DataUpdateType) => {
-
-    try {
-      // find asset
-      const asset = await Asset.findOne({ symbol })
-
-      if (!asset) {
-        throw new Error(TS.string("asset", "assetNotFound"))
-      }
-
-      // request data
-      const response = await this._getIndicatorSeries(symbol, indicatorName, interval, timePeriod, seriesType);
-
-      if (response && asset) {
-
-        let indicatorKV = Object.entries(response.data[`Technical Analysis: ${indicatorName}`]).map(([key, value]) => ({ key, value }))
-
-        indicatorKV = (updateType === DataUpdateType.Latest ? _.slice(indicatorKV, 0, 1) : indicatorKV)
-
-        for (const kv of indicatorKV) {
-          const date = kv.key;
-          const value = Object(kv.value)[indicatorName]
-
-          const doesIndicatorDataAlreadyExists = await AssetIndicator.exists({
-            symbol,
-            interval,
-            seriesType,
-            period: timePeriod,
-            name: indicatorName,
-            date
-          })
-
-          if (!doesIndicatorDataAlreadyExists) {
-
-            const newIndicatorData = new AssetIndicator({
-              symbol, interval,
-              seriesType,
-              period: timePeriod,
-              name: indicatorName, date, value
-            })
-            await newIndicatorData.save()
-
-            ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Updating indicator ${indicatorName}(${interval}) data for ${symbol}  for date ${date}`)
-
-
-          }
-
-        }
-
-
-
-        await asset.save();
-        return true;
-
-      }
-    }
-    catch (error) {
-      console.error(error);
-
-    }
-    return false
-  }
 
 
 

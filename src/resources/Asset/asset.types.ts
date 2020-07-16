@@ -9,8 +9,7 @@ export interface IAsset {
 
 
 export interface IAssetIndicator {
-  symbol: string,
-  interval: string,
+  interval: DataInterval,
   seriesType: IndicatorSeriesType,
   period: number,
   name: string,

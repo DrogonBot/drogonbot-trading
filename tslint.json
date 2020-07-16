@@ -6,6 +6,8 @@
     ],
     "jsRules": {},
     "rules": {
+        "prefer-for-of": false,
+        "forin": false,
         "no-console": false,
         "no-trailing-whitespace": [
             true,
