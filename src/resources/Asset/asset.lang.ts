@@ -24,6 +24,14 @@ export const strings = {
   assetDeletionError: {
     eng: "Error while trying to delete your asset",
     ptBr: "Erro ao tentar deletar seu ativo"
+  },
+  assetTimeSeriesFetchError: {
+    eng: "Error while trying to fetch your prices data",
+    ptBr: "Erro ao tentar carregar dados de preço"
+  },
+  assetIndicatorsFetchError: {
+    eng: "Error while trying to fetch your indicators data",
+    ptBr: "Erro ao tentar carregar dados de indicadores"
   }
 
 

@@ -5,7 +5,7 @@ export interface IAsset {
   timeZone: string,
   market: Market,
   sector: Sector,
-  priceInterval: PriceInterval,
+  priceInterval: DataInterval,
   pricesData: {
     intraDay?: IPriceItem[],
     daily?: IPriceItem[],
@@ -61,14 +61,15 @@ export enum Sector {
   Utilities = "Utilities"
 }
 
-export enum PriceInterval {
+export enum DataInterval {
   Hourly = "Hourly",
   Daily = "Daily",
   Weekly = "Weekly",
   Monthly = "Monthly"
 }
 
-export enum TimeSeriesUpdateType {
+export enum DataUpdateType {
   Full = "full",
-  Partial = "partial"
+  Partial = "partial",
+  Latest = "latest"
 }

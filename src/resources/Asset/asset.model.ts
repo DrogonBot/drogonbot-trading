@@ -1,6 +1,6 @@
 import mongoose, { Document, Model, model } from 'mongoose';
 
-import { IAsset, Market, PriceInterval, Sector } from './asset.types';
+import { DataInterval, IAsset, Market, Sector } from './asset.types';
 
 
 
@@ -23,7 +23,7 @@ const assetSchema = new mongoose.Schema({
   },
   priceInterval: {
     type: String,
-    enum: Object.values(PriceInterval)
+    enum: Object.values(DataInterval)
   },
   pricesData: {
     intraday: [{
@@ -60,7 +60,7 @@ const assetSchema = new mongoose.Schema({
     }],
   },
   indicatorsData: {
-    intraDay: [{
+    intraday: [{
       name: String,
       data: [
         {

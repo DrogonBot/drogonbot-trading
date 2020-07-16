@@ -2,7 +2,8 @@ import Promise from 'bluebird';
 import { Router } from 'express';
 
 import { TradingBot } from '../../bots/TradingBot/TradingBot';
-import { PriceInterval, TimeSeriesUpdateType } from '../Asset/asset.types';
+import { TS } from '../../utils/TS';
+import { DataInterval } from '../Asset/asset.types';
 
 
 // Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310
@@ -18,19 +19,46 @@ const operationRouter = new Router();
 |  >>> TEST AND OPERATIONS ROUTES!
 *##############################################################*/
 
-operationRouter.get("/asset/time-series", async (req, res) => {
+operationRouter.get("/asset/update/:dataType/:updateType", async (req, res) => {
 
+
+  const { dataType, updateType } = req.params;
 
   const tradingBot = new TradingBot();
 
-  const response = await tradingBot.updateTimeSeries("RIT.TO", PriceInterval.Daily, TimeSeriesUpdateType.Partial)
+  switch (dataType) {
+    case "price-data":
 
-  if (!response) {
-    return res.status(200).send({
-      status: "error",
-      message: "Failed to fetch time series data"
-    })
+
+      const timeSeriesResponse = await tradingBot.updatePriceData("RIT.TO", DataInterval.Daily, updateType)
+
+      if (!timeSeriesResponse) {
+        return res.status(200).send({
+          status: "error",
+          message: TS.string("asset", "assetTimeSeriesFetchError")
+        })
+      }
+
+      break;
+
+    case "indicator-data":
+
+
+      const indicatorResponse = await tradingBot.updateIndicator("RIT.TO", "EMA", DataInterval.Daily, 55, "close", updateType)
+
+      if (!indicatorResponse) {
+        return res.status(200).send({
+          status: "error",
+          message: TS.string("asset", "assetIndicatorsFetchError")
+        })
+      }
+
+      break;
   }
+
+
+
+
 
 
 
