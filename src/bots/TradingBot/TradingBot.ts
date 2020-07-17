@@ -78,6 +78,7 @@ export class TradingBot {
 
         timeSeries = (updateType === DataUpdateType.Latest ? _.slice(timeSeries, 0, 1) : timeSeries)
 
+        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Updating price data for ${symbol}. Please wait...`)
 
         for (const priceData of timeSeries) {
 
@@ -100,9 +101,12 @@ export class TradingBot {
             })
             await newPrice.save()
 
-            ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Updating price data for ${symbol}  for date ${date}`)
+
           }
         }
+
+
+        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Price data updated for ${symbol}. Good luck!`)
 
         asset.lastRefreshed = new Date();
         asset.timeZone = dataObj["Meta Data"]["5. Time Zone"]

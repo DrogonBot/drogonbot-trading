@@ -58,6 +58,9 @@ assetRouter.get("/asset", async (req, res) => {
 
 });
 
+
+
+
 // update fields
 assetRouter.patch("/asset/:id", [RequestMiddleware.allowedRequestKeys(["market", "sector", "priceInterval",])], async (req, res) => {
 

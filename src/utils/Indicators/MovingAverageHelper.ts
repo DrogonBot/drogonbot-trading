@@ -11,7 +11,7 @@ export class MovingAverageHelper {
   public static EMA = async (symbol: string, period: number, seriesType: IndicatorSeriesType, interval: DataInterval) => {
 
     // should be ascendant, full data
-    const priceData = await AssetPrice.find({ symbol }).sort({ "date": "asc" }) // 3 years of data
+    const priceData = await AssetPrice.find({ symbol }).sort({ "date": "asc" })
 
 
     const firstData = _.slice(priceData, 0, period - 1)

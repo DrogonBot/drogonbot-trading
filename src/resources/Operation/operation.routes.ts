@@ -2,6 +2,7 @@ import Promise from 'bluebird';
 import { Router } from 'express';
 
 import { TradingBot } from '../../bots/TradingBot/TradingBot';
+import { DonchianChannelHelper } from '../../utils/Indicators/DonchianChannelHelper';
 import { MovingAverageHelper } from '../../utils/Indicators/MovingAverageHelper';
 import { TS } from '../../utils/TS';
 import { DataInterval, IndicatorSeriesType } from '../Asset/asset.types';
@@ -64,6 +65,10 @@ operationRouter.get("/asset/:symbol/:indicator", async (req, res) => {
 
         return res.status(200).send(indicatorData);
 
+      case "DonchianChannel":
+        const donchianData = await DonchianChannelHelper.calculate(symbol, 5, DataInterval.Daily)
+
+        return res.status(200).send(donchianData);
     }
   }
   catch (error) {
