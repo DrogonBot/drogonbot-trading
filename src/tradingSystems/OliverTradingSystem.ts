@@ -15,7 +15,6 @@ export class OliverTradingSystem {
     this._systemName = "Oliver Trading System"
     this._symbol = symbol;
     this._interval = interval;
-    this.init()
   }
 
 
@@ -56,9 +55,20 @@ export class OliverTradingSystem {
     return false
   }
 
-  public isPriceNearShorterMA = (closePrice: number, shorterMA: number, ATR: number) => {
+  public isPriceNearShorterMA = (tradingDirection: TradingDirection, closePrice: number, shorterMA: number, ATR: number) => {
 
-    return closePrice > shorterMA && closePrice < (shorterMA + ATR)
+    switch (tradingDirection) {
+      case TradingDirection.Long:
+        return closePrice > shorterMA && closePrice < (shorterMA + ATR)
+
+      case TradingDirection.Short:
+        return closePrice < shorterMA && closePrice > (shorterMA - ATR)
+
+    }
+
+
+
+
 
   }
 

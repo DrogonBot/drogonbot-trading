@@ -22,7 +22,7 @@ backTestRouter.get("/backtest/:symbol/:strategy", async (req, res) => {
 
         const oliverStrategy = new OliverTradingSystem("RIT.TO", DataInterval.Daily)
 
-
+        await oliverStrategy.init();
 
 
         break;

@@ -53,6 +53,42 @@ export class MovingAverageHelper {
     return output
   }
 
+  public static calculateSMA = async (symbol: string, interval, period: number, seriesType) => {
+
+    const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
+
+    let start = 0;
+    let end = period;
+
+    const output: IAssetIndicator[] = [];
+
+    while (priceData[end - 1] !== undefined) {
+
+      const dataSlice = _.slice(priceData, start, end)
+
+      const dataSliceSum = _.sumBy(dataSlice, (data) => data[seriesType])
+
+      const SMA = dataSliceSum / period
+
+      output.push({
+        name: "SMA",
+        interval,
+        seriesType,
+        period,
+        date: priceData[end - 1].date,
+        value: SMA
+      })
+
+      start++;
+      end++;
+    }
+
+
+
+    return output;
+
+  }
+
 
 
 

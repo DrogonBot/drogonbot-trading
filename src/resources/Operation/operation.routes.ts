@@ -61,6 +61,10 @@ operationRouter.get("/asset/:symbol/:indicator", async (req, res) => {
 
 
     switch (indicator) {
+      case "SMA":
+        const smaData = await MovingAverageHelper.calculateSMA(symbol, DataInterval.Daily, 20, IndicatorSeriesType.Close)
+
+        return res.status(200).send(smaData);
       case "EMA":
         const indicatorData = await MovingAverageHelper.calculateEMA(symbol, 55, IndicatorSeriesType.Close, DataInterval.Daily)
 
