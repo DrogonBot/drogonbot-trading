@@ -8,7 +8,7 @@ export class DonchianChannelHelper {
   public static calculate = async (symbol: string, period: number, interval, band: "high" | "low") => {
 
     // should be ascendant, full data
-    const priceData = await AssetPrice.find({ symbol }).sort({ "date": "asc" })
+    const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
 
     let output: IAssetIndicator[] = []
     let start = 0;

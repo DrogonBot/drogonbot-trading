@@ -2,6 +2,7 @@ import Promise from 'bluebird';
 import { Router } from 'express';
 
 import { TradingBot } from '../../bots/TradingBot/TradingBot';
+import { ATRHelper } from '../../utils/Indicators/ATRHelper';
 import { DonchianChannelHelper } from '../../utils/Indicators/DonchianChannelHelper';
 import { MovingAverageHelper } from '../../utils/Indicators/MovingAverageHelper';
 import { TS } from '../../utils/TS';
@@ -61,7 +62,7 @@ operationRouter.get("/asset/:symbol/:indicator", async (req, res) => {
 
     switch (indicator) {
       case "EMA":
-        const indicatorData = await MovingAverageHelper.EMA(symbol, 55, IndicatorSeriesType.Close, DataInterval.Daily)
+        const indicatorData = await MovingAverageHelper.calculateEMA(symbol, 55, IndicatorSeriesType.Close, DataInterval.Daily)
 
         return res.status(200).send(indicatorData);
 
@@ -69,6 +70,11 @@ operationRouter.get("/asset/:symbol/:indicator", async (req, res) => {
         const donchianData = await DonchianChannelHelper.calculate(symbol, 20, DataInterval.Daily, "high")
 
         return res.status(200).send(donchianData);
+
+      case "ATR":
+        const atrData = await ATRHelper.calculate(symbol, DataInterval.Daily, 14)
+
+        return res.status(200).send(atrData);
 
 
     }

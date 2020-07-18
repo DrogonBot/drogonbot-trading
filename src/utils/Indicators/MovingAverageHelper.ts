@@ -8,10 +8,10 @@ import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
 export class MovingAverageHelper {
 
 
-  public static EMA = async (symbol: string, period: number, seriesType: IndicatorSeriesType, interval: DataInterval) => {
+  public static calculateEMA = async (symbol: string, period: number, seriesType: IndicatorSeriesType, interval: DataInterval) => {
 
     // should be ascendant, full data
-    const priceData = await AssetPrice.find({ symbol }).sort({ "date": "asc" })
+    const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
 
 
     const firstData = _.slice(priceData, 0, period - 1)
