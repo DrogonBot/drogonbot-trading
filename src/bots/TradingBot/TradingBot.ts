@@ -106,7 +106,7 @@ export class TradingBot {
         }
 
 
-        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Price data updated for ${symbol}. Good luck!`)
+        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Price data updated for ${symbol}!`)
 
         asset.lastRefreshed = new Date();
         asset.timeZone = dataObj["Meta Data"]["5. Time Zone"]

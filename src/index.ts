@@ -1,4 +1,5 @@
 import bodyParser from 'body-parser';
+import { exec } from 'child_process';
 import cors from 'cors';
 import express from 'express';
 import formData from 'express-form-data';
@@ -138,15 +139,24 @@ server.listen(process.env.NODE_API_PORT, async () => {
 });
 
 
+app.on("error", err => {
+  // @ts-ignore
+  if (err.code === "EADDRINUSE") {
+    exec(`killall node`);
+  }
+});
+
+
+// Bugfix for proxy error crashes: https://github.com/webpack/webpack-dev-server/issues/1642#issuecomment-523908463
+process.on('uncaughtException', function (err) {
+  console.log('Uncaught node exception!');
+  console.log(err);
+});
+
+
 app.get('/', function (req, res) {
   res.send('Welcome to our server!')
 })
-
-
-/*#############################################################|
-|  >>> SOCKET.IO
-*##############################################################*/
-
 
 
 

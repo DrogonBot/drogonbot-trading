@@ -1,5 +1,5 @@
  
-FROM node:10-alpine
+FROM node:10.14
 
 # Where our app will live in the container
 WORKDIR /usr/src/app 

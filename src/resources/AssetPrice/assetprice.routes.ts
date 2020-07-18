@@ -10,11 +10,13 @@ const assetPrice = new express.Router();
 assetPrice.get("/price/:symbol/:interval", async (req, res) => {
 
   const { symbol, interval } = req.params;
-  const { limit } = req.query;
+  const { limit, orderDirection, orderBy } = req.query;
 
   try {
 
-    const price = await AssetPrice.find({ symbol, interval }).limit(parseInt(limit));
+    const price = await AssetPrice.find({ symbol, interval }).limit(parseInt(limit)).sort({
+      [orderBy]: orderDirection
+    });
 
     return res.status(200).send(price)
 

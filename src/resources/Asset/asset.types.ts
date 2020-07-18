@@ -9,15 +9,18 @@ export interface IAsset {
 
 
 export interface IAssetIndicator {
-  interval: DataInterval,
-  seriesType: IndicatorSeriesType,
-  period: number,
   name: string,
+  interval: DataInterval,
+  seriesType?: IndicatorSeriesType,
+  period: number,
   date: Date,
-  value: number
+  value: number,
+  band?: string
 }
 
 export interface IAssetPrice {
+  symbol: string,
+  interval: DataInterval,
   date: Date,
   open: number,
   high: number,

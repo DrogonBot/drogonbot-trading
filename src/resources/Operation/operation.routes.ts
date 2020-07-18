@@ -66,9 +66,11 @@ operationRouter.get("/asset/:symbol/:indicator", async (req, res) => {
         return res.status(200).send(indicatorData);
 
       case "DonchianChannel":
-        const donchianData = await DonchianChannelHelper.calculate(symbol, 5, DataInterval.Daily)
+        const donchianData = await DonchianChannelHelper.calculate(symbol, 20, DataInterval.Daily, "high")
 
         return res.status(200).send(donchianData);
+
+
     }
   }
   catch (error) {
