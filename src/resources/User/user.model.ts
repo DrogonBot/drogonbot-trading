@@ -120,13 +120,18 @@ export const userSchema: Schema = new Schema(
     avatarUrl: {
       type: String
     },
-
     unsubscribed: Boolean,
-
-
     isPremium: {
       type: Boolean,
       default: false
+    },
+    accountBalance: {
+      type: Number,
+      default: 50000
+    },
+    accountNotionalBalance: {
+      type: Number,
+      default: 50000
     }
 
   },

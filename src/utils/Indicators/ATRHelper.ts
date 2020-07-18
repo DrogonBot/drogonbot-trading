@@ -29,10 +29,7 @@ export class ATRHelper {
         value: max
       })
 
-
     }
-
-
 
     const TRSlice = _.slice(TR, 0, period)
     const TRRemainder = _.slice(TR, period, TR.length)

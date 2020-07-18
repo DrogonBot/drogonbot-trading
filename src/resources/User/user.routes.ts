@@ -461,6 +461,8 @@ userRouter.post(
     "country",
     "city",
     "genericPositionsOfInterest",
+    "accountBalance",
+    "accountNotionalBalance"
   ]),
   async (req, res) => {
     const {
