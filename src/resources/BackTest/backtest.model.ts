@@ -7,6 +7,8 @@ export interface IBackTestModel extends IBackTest, Document {
 }
 
 const backTestSchema = new mongoose.Schema({
+  initialCapital: Number,
+  finalCapital: Number,
   expectancy: Number, // most important factor!
   winPercentage: Number,
   lossPercentage: Number,

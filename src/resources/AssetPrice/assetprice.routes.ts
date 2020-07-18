@@ -4,10 +4,10 @@ import { AssetPrice } from '../AssetPrice/assetprice.model';
 
 
 // @ts-ignore
-const assetPrice = new express.Router();
+const assetPriceRouter = new express.Router();
 
 // get asset price data
-assetPrice.get("/price/:symbol/:interval", async (req, res) => {
+assetPriceRouter.get("/price/:symbol/:interval", async (req, res) => {
 
   const { symbol, interval } = req.params;
   const { limit, orderDirection, orderBy } = req.query;
@@ -35,4 +35,4 @@ assetPrice.get("/price/:symbol/:interval", async (req, res) => {
 
 
 
-export { assetPrice };
+export { assetPriceRouter };

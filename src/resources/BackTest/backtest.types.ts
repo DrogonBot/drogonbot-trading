@@ -2,6 +2,8 @@
 // More info: https://www.tradinggame.com.au/introduction-to-backtesting-metrics/
 
 export interface IBackTest {
+  initialCapital: number,
+  finalCapital: number,
   expectancy: number, // most important factor!
   winPercentage: number,
   lossPercentage: number,

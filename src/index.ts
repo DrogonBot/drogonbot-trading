@@ -11,7 +11,8 @@ import path from 'path';
 import { UsersCron } from './cron_jobs/user.cron';
 import { GlobalMiddleware } from './middlewares/global.middleware';
 import { assetRouter } from './resources/Asset/asset.routes';
-import { assetPrice } from './resources/AssetPrice/assetprice.routes';
+import { assetPriceRouter } from './resources/AssetPrice/assetprice.routes';
+import { backTestRouter } from './resources/BackTest/backtest.routes';
 import { operationRouter } from './resources/Operation/operation.routes';
 import { userRouter } from './resources/User/user.routes';
 import { EnvType } from './typescript/env.types';
@@ -115,7 +116,8 @@ app.use(express.static(publicDirectory, { dotfiles: 'allow' }))
 app.use(userRouter);
 app.use(operationRouter);
 app.use(assetRouter)
-app.use(assetPrice)
+app.use(assetPriceRouter)
+app.use(backTestRouter);
 
 server.listen(process.env.NODE_API_PORT, async () => {
 
