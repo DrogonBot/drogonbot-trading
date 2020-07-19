@@ -1,4 +1,3 @@
-import { TradeDirection } from '../../typescript/trading.types';
 
 
 export interface ITrade {
@@ -31,3 +30,12 @@ export enum TradeStatus {
   Active = "Active",
   Inactive = "Inactive"
 }
+
+
+export enum TradeDirection {
+  Short = "Short",
+  Long = "Long",
+  Lateral = "Lateral"
+}
+
+export type MinutesInterval = "1min" | "5min" | "15min" | "30min" | "60min"

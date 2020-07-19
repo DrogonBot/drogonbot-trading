@@ -3,9 +3,9 @@ import _ from 'lodash';
 import { Asset } from '../../resources/Asset/asset.model';
 import { DataInterval, DataUpdateType } from '../../resources/Asset/asset.types';
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
-import { MinutesInterval as MinutesInterval } from '../../typescript/trading.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { TS } from '../../utils/TS';
+import { MinutesInterval } from './../../resources/Trade/trade.types';
 import { dataApiAxios } from './tradingbot.constant';
 
 

@@ -1,7 +1,6 @@
 import mongoose, { Document, Model, model } from 'mongoose';
 
-import { TradeDirection } from './../../typescript/trading.types';
-import { ITrade, TradeStatus, TradeType } from './trade.types';
+import { ITrade, TradeDirection, TradeStatus, TradeType } from './trade.types';
 
 
 

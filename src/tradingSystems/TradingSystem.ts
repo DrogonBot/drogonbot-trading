@@ -4,8 +4,7 @@ import { DEFAULT_ATR_MULTIPLE, DEFAULT_BROKER_COMISSION, DEFAULT_MAX_RISK_PER_TR
 import { DataInterval, IAssetPrice } from '../resources/Asset/asset.types';
 import { BackTest, IBackTestModel } from '../resources/BackTest/backtest.model';
 import { Trade } from '../resources/Trade/trade.model';
-import { TradeStatus, TradeType } from '../resources/Trade/trade.types';
-import { TradeDirection } from '../typescript/trading.types';
+import { TradeDirection, TradeStatus, TradeType } from '../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { PositionSizingHelper } from '../utils/PositionSizingHelper';
 

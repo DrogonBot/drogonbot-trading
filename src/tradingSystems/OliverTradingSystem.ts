@@ -5,12 +5,11 @@ import { INDICATOR_DATE_FORMAT } from '../constants/indicator.constant';
 import { DataInterval, IAssetPrice, IndicatorSeriesType } from '../resources/Asset/asset.types';
 import { AssetPrice } from '../resources/AssetPrice/assetprice.model';
 import { BackTest } from '../resources/BackTest/backtest.model';
-import { TradeDirection } from '../typescript/trading.types';
+import { TradeDirection } from '../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { ATRHelper } from '../utils/Indicators/ATRHelper';
 import { MovingAverageHelper } from '../utils/Indicators/MovingAverageHelper';
 import { TradingSystem } from './TradingSystem';
-
 
 
 export class OliverTradingSystem extends TradingSystem {
