@@ -1,6 +1,7 @@
 import mongoose, { Document, Model, model } from 'mongoose';
 
-import { ITrade } from './trade.types';
+import { TradeDirection } from './../../typescript/trading.types';
+import { ITrade, TradeStatus, TradeType } from './trade.types';
 
 
 
@@ -10,7 +11,21 @@ export interface ITradeModel extends ITrade, Document {
 }
 
 const tradeSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    enum: Object.values(TradeType)
+  },
+  status: {
+    type: String,
+    enum: Object.values(TradeStatus),
+    default: TradeStatus.Active,
+  },
+  direction: {
+    type: String,
+    enum: Object.values(TradeDirection)
+  },
   systemId: String,
+  backTestId: String,
   symbol: String,
   riskR: Number,
   quantity: Number,
@@ -18,14 +33,12 @@ const tradeSchema = new mongoose.Schema({
   entryPrice: Number,
   entryDate: Date,
   exitPrice: Number,
-  exitDate: Number,
+  exitDate: Date,
   currentStop: Number,
   profitLoss: Number,
   daysDuration: Number,
-  comission: Number,
+  commission: Number,
   slippage: Number,
-
-
 })
 
 

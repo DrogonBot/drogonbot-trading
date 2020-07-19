@@ -1,6 +1,6 @@
 
 
-export enum TradingDirection {
+export enum TradeDirection {
   Short = "Short",
   Long = "Long",
   Lateral = "Lateral"

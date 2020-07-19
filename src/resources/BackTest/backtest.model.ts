@@ -29,21 +29,7 @@ const backTestSchema = new mongoose.Schema({
   medianProfitPerTrade: Number,
   largestSingleLosingTrade: Number,
   largestSingleWinningTrade: Number,
-  trades: [{
-    symbol: String,
-    riskR: Number,
-    quantity: Number,
-    allocatedCapital: Number,
-    entryPrice: Number,
-    entryDate: Date,
-    exitPrice: Number,
-    exitDate: Number,
-    currentStop: Number,
-    profitLoss: Number,
-    daysDuration: Number,
-    comission: Number,
-    slippage: Number,
-  }]
+  totalCommission: Number,
 
 })
 

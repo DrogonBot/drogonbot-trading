@@ -1,5 +1,3 @@
-import { ITrade } from '../Trade/trade.types';
-
 
 // More info: https://www.tradinggame.com.au/introduction-to-backtesting-metrics/
 
@@ -26,5 +24,5 @@ export interface IBackTest {
   medianProfitPerTrade: number,
   largestSingleLosingTrade: number,
   largestSingleWinningTrade: number,
-  trades: ITrade[]
+  totalCommission: number
 }
