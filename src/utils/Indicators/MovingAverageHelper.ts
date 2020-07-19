@@ -2,8 +2,9 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import { INDICATOR_DATE_FORMAT } from '../../constants/indicator.constant';
-import { DataInterval, IndicatorSeriesType } from '../../resources/Asset/asset.types';
+import { DataInterval } from '../../resources/Asset/asset.types';
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
+import { IndicatorSeriesType } from './types/indicator.types';
 
 
 export class MovingAverageHelper {

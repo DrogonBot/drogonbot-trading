@@ -16,6 +16,7 @@ export interface ITrade {
   exitPrice?: number,
   exitDate?: Date,
   currentStop: number
+  wasStopped: boolean
   profitLoss?: number,
   daysDuration?: number,
   slippage?: number

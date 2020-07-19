@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { OliverTradingSystem } from '../../tradingSystems/OliverTradingSystem';
+import { LeatherBackTurtle } from '../../tradingSystems/LeatherBackTurtle';
 
 // @ts-ignore
 const backTestRouter = new express.Router();
@@ -14,11 +14,12 @@ backTestRouter.get("/backtest/:symbol/:interval/:strategy", async (req, res) => 
 
     switch (strategy) {
 
-      case "oliverMA":
 
-        const oliverStrategy = new OliverTradingSystem(symbol, interval)
 
-        await oliverStrategy.init();
+      case "leatherbackTurtle":
+
+        const lt = new LeatherBackTurtle(symbol, interval)
+        await lt.init();
 
 
         break;

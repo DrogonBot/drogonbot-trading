@@ -36,7 +36,7 @@ export class DonchianChannelHelper {
         // band
         high: parseFloat(highValue.toFixed(2)),
         mid: parseFloat(midValue.toFixed(2)),
-        min: parseFloat(minValue.toFixed(2))
+        low: parseFloat(minValue.toFixed(2))
       }
 
       start++;

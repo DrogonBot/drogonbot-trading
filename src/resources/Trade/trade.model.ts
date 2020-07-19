@@ -34,6 +34,7 @@ const tradeSchema = new mongoose.Schema({
   exitPrice: Number,
   exitDate: Date,
   currentStop: Number,
+  wasStopped: Boolean,
   profitLoss: Number,
   daysDuration: Number,
   commission: Number,

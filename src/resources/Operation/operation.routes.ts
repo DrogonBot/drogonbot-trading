@@ -5,8 +5,9 @@ import { TradingBot } from '../../bots/TradingBot/TradingBot';
 import { ATRHelper } from '../../utils/Indicators/ATRHelper';
 import { DonchianChannelHelper } from '../../utils/Indicators/DonchianChannelHelper';
 import { MovingAverageHelper } from '../../utils/Indicators/MovingAverageHelper';
+import { IndicatorSeriesType } from '../../utils/Indicators/types/indicator.types';
 import { TS } from '../../utils/TS';
-import { IndicatorSeriesType } from '../Asset/asset.types';
+
 
 
 // Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310

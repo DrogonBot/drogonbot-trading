@@ -7,16 +7,6 @@ export interface IAsset {
   sector: Sector,
 }
 
-
-export interface IAssetIndicator {
-  name: string,
-  interval: DataInterval,
-  seriesType?: IndicatorSeriesType,
-  period: number,
-  value: number,
-  band?: string
-}
-
 export interface IAssetPrice {
   symbol: string,
   interval: DataInterval,
@@ -63,9 +53,3 @@ export enum DataUpdateType {
   Latest = "latest"
 }
 
-export enum IndicatorSeriesType {
-  Close = "close",
-  Open = "open",
-  High = "high",
-  Low = "low"
-}
