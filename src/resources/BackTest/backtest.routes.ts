@@ -1,26 +1,22 @@
 import express from 'express';
 
 import { OliverTradingSystem } from '../../tradingSystems/OliverTradingSystem';
-import { DataInterval } from '../Asset/asset.types';
 
 // @ts-ignore
 const backTestRouter = new express.Router();
 
 // get asset price data
-backTestRouter.get("/backtest/:symbol/:strategy", async (req, res) => {
+backTestRouter.get("/backtest/:symbol/:interval/:strategy", async (req, res) => {
 
-  const { symbol, strategy } = req.params;
-  const { interval } = req.query;
+  const { symbol, strategy, interval } = req.params;
 
   try {
-
-
 
     switch (strategy) {
 
       case "oliverMA":
 
-        const oliverStrategy = new OliverTradingSystem("RIT.TO", DataInterval.Daily)
+        const oliverStrategy = new OliverTradingSystem(symbol, interval)
 
         await oliverStrategy.init();
 
@@ -28,8 +24,6 @@ backTestRouter.get("/backtest/:symbol/:strategy", async (req, res) => {
         break;
 
     }
-
-
 
     return res.status(200).send({
       status: "success"

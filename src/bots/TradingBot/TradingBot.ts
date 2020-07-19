@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Asset } from '../../resources/Asset/asset.model';
 import { DataInterval, DataUpdateType } from '../../resources/Asset/asset.types';
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
+import { MinutesInterval as MinutesInterval } from '../../typescript/trading.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { TS } from '../../utils/TS';
 import { dataApiAxios } from './tradingbot.constant';
@@ -38,13 +39,19 @@ export class TradingBot {
 
   // PRICE DATA (TIME SERIES) ========================================
 
-  private _getPriceData = async (symbol: string, type: string, updateType: DataUpdateType) => {
+  private _getPriceData = async (symbol: string, type: string, updateType: DataUpdateType, minInterval?: MinutesInterval | null) => {
 
 
     const updateSizeString = updateType === DataUpdateType.Full ? `&outputsize=${updateType}` : ''
 
+    const timeSeriesString = minInterval ? `&interval=${minInterval}` : ``
+
+    const url = `query?function=${type}&symbol=${symbol}${updateSizeString}${timeSeriesString}`
+
+    console.log(url);
+
     try {
-      const response = await this.dataApiRequest("GET", `query?function=${type}&symbol=${symbol}${updateSizeString}`)
+      const response = await this.dataApiRequest("GET", url)
 
       return response;
 
@@ -55,7 +62,7 @@ export class TradingBot {
     }
   }
 
-  public updatePriceData = async (symbol: string, interval: DataInterval, updateType: DataUpdateType) => {
+  public updatePriceData = async (symbol: string, updateType: DataUpdateType, interval: DataInterval, minInterval?: MinutesInterval | null) => {
 
     try {
       // find asset
@@ -66,15 +73,15 @@ export class TradingBot {
       }
 
       // request data
-      const response = await this._getPriceData(symbol, `TIME_SERIES_${interval.toUpperCase()}`, updateType);
+      const response = await this._getPriceData(symbol, `TIME_SERIES_${interval.toUpperCase()}`, updateType, minInterval);
 
       if (response && asset) {
 
         const dataObj = response.data
 
+        const timeSeriesString = interval === DataInterval.IntraDay ? minInterval : interval
 
-
-        let timeSeries = Object.entries(dataObj[`Time Series (${interval})`]).map(([key, value]) => ({ key, value }))
+        let timeSeries = Object.entries(dataObj[`Time Series (${timeSeriesString})`]).map(([key, value]) => ({ key, value }))
 
         timeSeries = (updateType === DataUpdateType.Latest ? _.slice(timeSeries, 0, 1) : timeSeries)
 

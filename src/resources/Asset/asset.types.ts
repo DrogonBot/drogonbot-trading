@@ -51,7 +51,7 @@ export enum Sector {
 }
 
 export enum DataInterval {
-  Hourly = "Hourly",
+  IntraDay = "IntraDay",
   Daily = "Daily",
   Weekly = "Weekly",
   Monthly = "Monthly"
