@@ -1,6 +1,10 @@
-import { DataInterval, IAssetPrice } from '../resources/Asset/asset.types';
+import moment from 'moment';
+
+import { INDICATOR_DATE_FORMAT } from '../constants/indicator.constant';
+import { DataInterval, IAssetPrice, IndicatorSeriesType } from '../resources/Asset/asset.types';
 import { AssetPrice } from '../resources/AssetPrice/assetprice.model';
 import { TradingDirection } from '../typescript/trading.types';
+import { MovingAverageHelper } from '../utils/Indicators/MovingAverageHelper';
 
 
 
@@ -24,7 +28,42 @@ export class OliverTradingSystem {
 
     this._priceData = await AssetPrice.find({ symbol: this._symbol, interval: this._interval }).sort({ "date": "asc" })
 
-    console.log(this._priceData[0]);
+    const shorterSMAData = await MovingAverageHelper.calculateSMA(this._symbol, this._interval, 20, IndicatorSeriesType.Close)
+    const longerSMAData = await MovingAverageHelper.calculateSMA(this._symbol, this._interval, 200, IndicatorSeriesType.Close)
+
+    let i = 0;
+    while (this._priceData[i] !== undefined) {
+
+      const priceToday = this._priceData[i]
+      const dateToday = moment(this._priceData[i].date).format(INDICATOR_DATE_FORMAT)
+
+      const sSMA = shorterSMAData[dateToday]?.value
+      const lSMA = longerSMAData[dateToday]?.value
+
+      if (sSMA && lSMA) {
+        console.log(`Date: ${dateToday} - closing: ${priceToday.close} - SMA20: ${sSMA} - SMA200:${lSMA}`);
+
+
+        // entry signal (LONG)
+
+        if (this.pictureOfPower(sSMA, lSMA, priceToday.close) === "UP") {
+
+          // if (this.isPriceNearShorterMA("LONG", priceToday.close, sSMA,0.5)) { }
+
+
+        }
+
+
+
+
+      }
+
+
+
+
+      i++
+    }
+
 
 
   }
@@ -63,13 +102,7 @@ export class OliverTradingSystem {
 
       case TradingDirection.Short:
         return closePrice < shorterMA && closePrice > (shorterMA - ATR)
-
     }
-
-
-
-
-
   }
 
   public isRedBarIgnored = (prevPrice, currentPrice, ATR: number) => {

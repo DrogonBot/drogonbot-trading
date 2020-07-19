@@ -13,7 +13,6 @@ export interface IAssetIndicator {
   interval: DataInterval,
   seriesType?: IndicatorSeriesType,
   period: number,
-  date: Date,
   value: number,
   band?: string
 }

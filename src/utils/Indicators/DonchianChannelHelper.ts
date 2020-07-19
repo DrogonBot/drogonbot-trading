@@ -1,6 +1,7 @@
 import _ from 'lodash';
+import moment from 'moment';
 
-import { IAssetIndicator } from '../../resources/Asset/asset.types';
+import { INDICATOR_DATE_FORMAT } from '../../constants/indicator.constant';
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
 
 export class DonchianChannelHelper {
@@ -10,7 +11,7 @@ export class DonchianChannelHelper {
     // should be ascendant, full data
     const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
 
-    let output: IAssetIndicator[] = []
+    const output = {}
     let start = 0;
     let end = period;
 
@@ -22,18 +23,15 @@ export class DonchianChannelHelper {
       const direction = band === "high" ? "desc" : "asc"
 
       const maxMin = _.orderBy(dataInterval, [band], [direction])[0]
+      const date = moment(endPrice.date).format(INDICATOR_DATE_FORMAT)
+      output[date] = {
+        name: "Donchian Channel",
+        interval,
+        period,
+        value: maxMin[band],
+        band
+      }
 
-      output = [
-        ...output,
-        {
-          name: "Donchian Channel",
-          interval,
-          period,
-          date: endPrice.date,
-          value: maxMin[band],
-          band
-        }
-      ]
       start++;
       end++;
     }
