@@ -1,13 +1,36 @@
+import moment from 'moment';
+
 import { DEFAULT_ATR_MULTIPLE, DEFAULT_BROKER_COMISSION, DEFAULT_MAX_RISK_PER_TRADE } from '../constants/backtest.constant';
-import { IAssetPrice } from '../resources/Asset/asset.types';
+import { DataInterval, IAssetPrice } from '../resources/Asset/asset.types';
+import { BackTest, IBackTestModel } from '../resources/BackTest/backtest.model';
 import { Trade } from '../resources/Trade/trade.model';
-import { TradeType } from '../resources/Trade/trade.types';
+import { TradeStatus, TradeType } from '../resources/Trade/trade.types';
 import { TradeDirection } from '../typescript/trading.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { PositionSizingHelper } from '../utils/PositionSizingHelper';
 
 
 export class TradingSystem {
+  public priceData: IAssetPrice[]
+  public symbol: string | null;
+  public interval: DataInterval | null
+  public tradingDirection: TradeDirection | null;
+  public currentBackTest: IBackTestModel | null
+  public currentActiveTradeId: string | null;
+  public currentActiveTradeDirection: TradeDirection | null
+  public currentStop: null | number;
+
+  constructor() {
+    this.priceData = []
+    this.symbol = null
+    this.interval = null;
+    this.tradingDirection = null;
+    this.currentBackTest = null;
+    this.currentActiveTradeId = null;
+    this.currentActiveTradeDirection = null;
+    this.currentStop = null;
+  }
+
 
   public startTrade = async (symbol: string, price: IAssetPrice, ATR: number, initialCapital: number, tradeDirection: TradeDirection, backTestId: string) => {
 
@@ -40,6 +63,50 @@ export class TradingSystem {
     return newTrade;
 
 
+  }
+
+  public endTrade = async (price: IAssetPrice, currentBackTestId: string,) => {
+    const currentTrade = await Trade.findOne({ _id: this.currentActiveTradeId })
+
+    if (!currentTrade) {
+      console.log("Error: current trade not found");
+      return
+    }
+
+    ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `EXIT: Adding exit at ${price.date} - ${price.close}`)
+
+    // update current trade
+
+    if (!currentTrade) {
+      console.log("Error: current trade not found");
+      return
+    }
+
+    currentTrade.status = TradeStatus.Inactive;
+    currentTrade.exitDate = price.date;
+    currentTrade.exitPrice = price.close;
+    currentTrade.profitLoss = (currentTrade.exitPrice - currentTrade.entryPrice) * currentTrade.quantity
+
+    const a = moment(currentTrade.exitDate);
+    const b = moment(currentTrade.entryDate);
+    const diff = a.diff(b, 'days')   // =1
+
+    currentTrade.daysDuration = diff;
+    currentTrade.commission += DEFAULT_BROKER_COMISSION;
+    await currentTrade.save();
+
+    this.currentActiveTradeId = null;
+
+    // update backtest
+
+    const currentBackTest = await BackTest.findOne({ _id: currentBackTestId });
+
+    if (currentBackTest) {
+      currentBackTest.finalCapital += currentTrade.profitLoss
+      currentBackTest.totalTrades++
+      await currentBackTest.save()
+    }
+    return currentTrade;
   }
 
   public isPriceNearMA = (tradingDirection: TradeDirection, price: number, MA: number, ATR: number) => {

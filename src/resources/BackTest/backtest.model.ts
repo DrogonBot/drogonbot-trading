@@ -21,6 +21,7 @@ const backTestSchema = new mongoose.Schema({
   maxConsecutiveLosers: Number,
   totalDays: Number,
   totalTrades: Number,
+  avgTradesPerDay: Number,
   grossProfit: Number,
   grossLoss: Number,
   totalNetProfit: Number,

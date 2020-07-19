@@ -1,12 +1,10 @@
 import moment from 'moment';
 
-import { DEFAULT_BROKER_COMISSION, DEFAULT_INITIAL_CAPITAL } from '../constants/backtest.constant';
+import { DEFAULT_INITIAL_CAPITAL } from '../constants/backtest.constant';
 import { INDICATOR_DATE_FORMAT } from '../constants/indicator.constant';
 import { DataInterval, IAssetPrice, IndicatorSeriesType } from '../resources/Asset/asset.types';
 import { AssetPrice } from '../resources/AssetPrice/assetprice.model';
-import { BackTest, IBackTestModel } from '../resources/BackTest/backtest.model';
-import { Trade } from '../resources/Trade/trade.model';
-import { TradeStatus } from '../resources/Trade/trade.types';
+import { BackTest } from '../resources/BackTest/backtest.model';
 import { TradeDirection } from '../typescript/trading.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { ATRHelper } from '../utils/Indicators/ATRHelper';
@@ -17,26 +15,19 @@ import { TradingSystem } from './TradingSystem';
 
 export class OliverTradingSystem extends TradingSystem {
   private _systemName: string;
-  private _priceData: IAssetPrice[]
-  private _symbol: string;
-  private _interval: DataInterval
-  private _tradingDirection: TradeDirection | null;
-  private _currentBackTest: IBackTestModel | null
-  private _currentActiveTradeId: string | null;
-  private _currentActiveTradeDirection: TradeDirection | null
-  private _currentStop: null | number;
+
 
   constructor(symbol: string, interval: DataInterval) {
     super()
-    this._priceData = []
     this._systemName = "Oliver Trading System"
-    this._symbol = symbol;
-    this._interval = interval;
-    this._tradingDirection = null
-    this._currentBackTest = null
-    this._currentActiveTradeId = null;
-    this._currentActiveTradeDirection = null
-    this._currentStop = null;
+    this.priceData = []
+    this.symbol = symbol;
+    this.interval = interval;
+    this.tradingDirection = null
+    this.currentBackTest = null
+    this.currentActiveTradeId = null;
+    this.currentActiveTradeDirection = null
+    this.currentStop = null;
   }
 
 
@@ -45,9 +36,9 @@ export class OliverTradingSystem extends TradingSystem {
 
 
     try {
-      this._priceData = await AssetPrice.find({ symbol: this._symbol, interval: this._interval }).sort({ "date": "asc" })
+      this.priceData = await AssetPrice.find({ symbol: this.symbol, interval: this.interval }).sort({ "date": "asc" })
 
-      if (this._priceData.length === 0) {
+      if (this.priceData.length === 0) {
         throw new Error("Asset price not found")
       }
 
@@ -56,11 +47,11 @@ export class OliverTradingSystem extends TradingSystem {
       console.error(error);
     }
 
-    console.log(`🤖: Running system on ${this._priceData.length} assets`);
+    console.log(`🤖: Running system on ${this.priceData.length} assets`);
 
-    const shorterSMAData = await MovingAverageHelper.calculateSMA(this._symbol, this._interval, 20, IndicatorSeriesType.Close)
-    const longerSMAData = await MovingAverageHelper.calculateSMA(this._symbol, this._interval, 200, IndicatorSeriesType.Close)
-    const ATR = await ATRHelper.calculate(this._symbol, this._interval, 14)
+    const shorterSMAData = await MovingAverageHelper.calculateSMA(this.symbol!, this.interval!, 20, IndicatorSeriesType.Close)
+    const longerSMAData = await MovingAverageHelper.calculateSMA(this.symbol!, this.interval!, 200, IndicatorSeriesType.Close)
+    const ATR = await ATRHelper.calculate(this.symbol!, this.interval!, 14)
 
     // create backtest entry
     try {
@@ -71,7 +62,7 @@ export class OliverTradingSystem extends TradingSystem {
         totalTrades: 0,
       })
       await newBackTest.save()
-      this._currentBackTest = newBackTest;
+      this.currentBackTest = newBackTest;
     }
     catch (error) {
       console.error(error);
@@ -79,80 +70,45 @@ export class OliverTradingSystem extends TradingSystem {
 
 
     let i = 0;
-    while (this._priceData[i] !== undefined) {
-
+    while (this.priceData[i] !== undefined) {
 
       // Variables to be analyzed
-      const priceToday = this._priceData[i]
-      const dateToday = moment(this._priceData[i].date).format(INDICATOR_DATE_FORMAT)
+      const priceToday = this.priceData[i]
+      const dateToday = moment(this.priceData[i].date).format(INDICATOR_DATE_FORMAT)
       const sSMA = shorterSMAData[dateToday]?.value
       const lSMA = longerSMAData[dateToday]?.value
       const ATRToday = ATR[dateToday]?.value
 
       // Define trading direction (we'll use it to define order entries)
-      this._tradingDirection = this.pictureOfPower(sSMA, lSMA, priceToday.close)
+      this.tradingDirection = this.pictureOfPower(sSMA, lSMA, priceToday.close)
 
       if (sSMA && lSMA) {
-        console.log(`Date: ${dateToday} - closing: ${priceToday.close} - SMA20: ${sSMA} - SMA200:${lSMA} - TradingDirection: ${this._tradingDirection}`);
+        console.log(`Date: ${dateToday} - closing: ${priceToday.close} - SMA20: ${sSMA} - SMA200:${lSMA} - TradingDirection: ${this.tradingDirection}`);
 
-        if (!this._currentBackTest) {
+        if (!this.currentBackTest) {
           console.log("Error: Backtest entry not found");
           return false
         }
 
         // check for entry
 
-        if (this.isEntrySignal(this._tradingDirection, priceToday, sSMA, lSMA, ATRToday) && !this._currentActiveTradeId) {
+        if (this.isEntrySignal(this.tradingDirection, priceToday, sSMA, lSMA, ATRToday) && !this.currentActiveTradeId) {
 
-          const newTrade = await this.startTrade(this._symbol, priceToday, ATRToday, this._currentBackTest.initialCapital, this._tradingDirection, this._currentBackTest._id)
+          const newTrade = await this.startTrade(this.symbol!, priceToday, ATRToday, this.currentBackTest.initialCapital, this.tradingDirection, this.currentBackTest._id)
 
-          this._currentStop = newTrade.currentStop
-          this._currentActiveTradeId = newTrade._id;
-          this._currentActiveTradeDirection = newTrade.direction;
+          this.currentStop = newTrade.currentStop
+          this.currentActiveTradeId = newTrade._id;
+          this.currentActiveTradeDirection = newTrade.direction;
 
         } else {
 
           // check for exit, if there's a current active trade
 
-          if (this._currentActiveTradeId && this._currentActiveTradeDirection) {
+          if (this.currentActiveTradeId && this.currentActiveTradeDirection) {
 
-            if (this.isExitSignal(this._currentActiveTradeDirection, priceToday, this._currentStop, sSMA)) {
+            if (this.isExitSignal(this.currentActiveTradeDirection, priceToday, this.currentStop, sSMA)) {
 
-              const currentTrade = await Trade.findOne({ _id: this._currentActiveTradeId })
-
-              if (!currentTrade) {
-                console.log("Error: current trade not found");
-                return
-              }
-
-              ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `EXIT: Adding exit at ${priceToday.date} - ${priceToday.close}`)
-
-              // update current trade
-
-              if (!currentTrade) {
-                console.log("Error: current trade not found");
-                return
-              }
-
-              currentTrade.status = TradeStatus.Inactive;
-              currentTrade.exitDate = priceToday.date;
-              currentTrade.exitPrice = priceToday.close;
-              currentTrade.profitLoss = (currentTrade.exitPrice - currentTrade.entryPrice) * currentTrade.quantity
-              currentTrade.daysDuration = moment(currentTrade.exitDate).diff(moment(currentTrade.entryDate, "days").days())
-              currentTrade.commission += DEFAULT_BROKER_COMISSION;
-              await currentTrade.save();
-
-              this._currentActiveTradeId = null;
-
-              // update backtest
-
-              const currentBackTest = await BackTest.findOne({ _id: this._currentBackTest._id });
-
-              if (currentBackTest) {
-                currentBackTest.finalCapital += currentTrade.profitLoss
-                currentBackTest.totalTrades++
-                await currentBackTest.save()
-              }
+              const finishedTrade = await this.endTrade(priceToday, this.currentBackTest._id)
 
             }
           }
