@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import moment from 'moment';
 
 import {
@@ -12,6 +13,7 @@ import { BackTest, IBackTestModel } from '../resources/BackTest/backtest.model';
 import { Trade } from '../resources/Trade/trade.model';
 import { TradeDirection, TradeStatus, TradeType } from '../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
+import { NumberHelper } from '../utils/NumberHelper';
 import { PositionSizingHelper } from '../utils/PositionSizingHelper';
 
 
@@ -26,6 +28,7 @@ export class TradingSystem {
   public currentStop: number | null;
   public currentStart: number | null;
   public currentCapital: number;
+  public ATRStopMultiple: number;
   constructor() {
     this.priceData = []
     this.symbol = null
@@ -37,6 +40,7 @@ export class TradingSystem {
     this.currentStop = null;
     this.currentStart = null
     this.currentCapital = DEFAULT_INITIAL_CAPITAL
+    this.ATRStopMultiple = 2;
   }
 
   public startBackTesting = async () => {
@@ -47,12 +51,14 @@ export class TradingSystem {
       this.priceData = await AssetPrice.find({ symbol: this.symbol, interval: this.interval }).sort({ "date": "asc" })
 
       if (this.priceData.length === 0) {
-        throw new Error("Asset price not found")
+        console.log("Error: No price data found for asset!");
+        return false
       }
 
     }
     catch (error) {
       console.error(error);
+      return false
     }
 
     try {
@@ -61,16 +67,15 @@ export class TradingSystem {
         initialCapital: DEFAULT_INITIAL_CAPITAL,
         finalCapital: DEFAULT_INITIAL_CAPITAL,
         totalTrades: 0,
+        totalCommission: 0
       })
       await newBackTest.save()
       this.currentBackTest = newBackTest;
     }
     catch (error) {
       console.error(error);
+      return false
     }
-
-
-
   }
 
 
@@ -133,7 +138,7 @@ export class TradingSystem {
     currentTrade.currentStop = currentStop;
     currentTrade.status = TradeStatus.Inactive;
     currentTrade.exitDate = price.date;
-    currentTrade.exitPrice = price.close;
+    currentTrade.exitPrice = currentStop;
     currentTrade.wasStopped = currentTrade.exitPrice === currentStop
     currentTrade.profitLoss = (currentTrade.exitPrice - currentTrade.entryPrice) * currentTrade.quantity
 
@@ -155,8 +160,9 @@ export class TradingSystem {
     const currentBackTest = await BackTest.findOne({ _id: currentBackTestId });
 
     if (currentBackTest) {
-      currentBackTest.finalCapital += currentTrade.profitLoss
+      currentBackTest.finalCapital = this.currentCapital
       currentBackTest.totalTrades++
+      currentBackTest.totalCommission += currentTrade.commission
       await currentBackTest.save()
     }
     return currentTrade;
@@ -171,6 +177,68 @@ export class TradingSystem {
       case TradeDirection.Short:
         return price < MA && price > (MA - ATR)
     }
+  }
+
+  public calculateBackTestMetrics = async () => {
+
+    const winnerTrades = await Trade.find({
+      profitLoss: {
+        $gt: 0
+      }
+    })
+    const loserTrades = await Trade.find({
+      profitLoss: {
+        $lte: 0
+      }
+    })
+    const winnerTradesCount = winnerTrades.length
+    const loserTradesCount = loserTrades.length
+    const totalTradesCount = winnerTradesCount + loserTradesCount
+
+    const winnerTradesSum = _.sumBy(winnerTrades, 'profitLoss')
+    const loserTradesSum = _.sumBy(loserTrades, 'profitLoss')
+
+    try {
+      const backtest = await BackTest.findOne({
+        _id: this.currentBackTest?._id
+      })
+
+      if (!backtest) {
+        console.log('Failed to fetch backtest');
+        return
+      }
+
+      // calculate benchmark (Buy & Hold) performance
+      const firstPrice = this.priceData[0].close;
+      const lastPrice = this.priceData[this.priceData.length - 1].close
+      const firstDay = moment(this.priceData[0].date);
+      const lastDay = moment(this.priceData[this.priceData.length - 1].date)
+
+      backtest.grossProfit = winnerTradesSum
+      backtest.grossLoss = loserTradesSum;
+      backtest.totalNetProfit = winnerTradesSum - loserTradesSum
+      backtest.totalNetProfitPercentage = NumberHelper.to2Decimals((backtest.totalNetProfit / backtest.initialCapital) * 100)
+      backtest.totalTrades = winnerTradesCount + loserTradesCount
+      backtest.totalDays = lastDay.diff(firstDay, 'days')
+      backtest.avgTradesPerDay = backtest.totalTrades / backtest.totalDays
+      backtest.buyAndHoldROI = NumberHelper.to2Decimals(((lastPrice / firstPrice) - 1) * 100)
+      backtest.ROI = NumberHelper.to2Decimals((((backtest.finalCapital / backtest.initialCapital) - 1) * 100))
+      backtest.winnerTradesPercentage = NumberHelper.to2Decimals(((winnerTradesCount / totalTradesCount) * 100))
+      backtest.loserTradesPercentage = NumberHelper.to2Decimals(((loserTradesCount / totalTradesCount) * 100))
+      backtest.avgWinnerProfit = NumberHelper.to2Decimals(winnerTradesSum / winnerTradesCount)
+      backtest.avgLoserLoss = NumberHelper.to2Decimals(loserTradesSum / loserTradesCount)
+      backtest.expectancy = NumberHelper.to2Decimals(((backtest.winnerTradesPercentage / 100 * Math.abs(backtest.avgWinnerProfit)) - (backtest.loserTradesPercentage / 100 * Math.abs(backtest.avgLoserLoss))))
+      backtest.totalCommissionPercentageFinalCapital = NumberHelper.to2Decimals((backtest.totalCommission / backtest.finalCapital) * 100)
+
+      await backtest.save()
+
+    }
+    catch (error) {
+      console.error(error);
+
+    }
+
+
   }
 
 

@@ -38,7 +38,7 @@ const tradeSchema = new mongoose.Schema({
   profitLoss: Number,
   daysDuration: Number,
   commission: Number,
-  slippage: Number,
+  slippage: Number
 })
 
 
