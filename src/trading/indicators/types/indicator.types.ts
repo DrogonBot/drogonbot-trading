@@ -1,5 +1,7 @@
 import { DataInterval } from '../../../resources/Asset/asset.types';
 
+
+
 export enum IndicatorSeriesType {
   Close = "close",
   Open = "open",

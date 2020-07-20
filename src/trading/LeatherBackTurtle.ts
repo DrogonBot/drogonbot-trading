@@ -1,14 +1,15 @@
 import moment from 'moment';
 
-import { INDICATOR_DATE_FORMAT } from '../constants/indicator.constant';
 import { DataInterval, IAssetPrice } from '../resources/Asset/asset.types';
 import { TradeDirection } from '../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
-import { ATRHelper } from '../utils/Indicators/ATRHelper';
-import { DonchianChannelHelper } from '../utils/Indicators/DonchianChannelHelper';
-import { MovingAverageHelper } from '../utils/Indicators/MovingAverageHelper';
-import { IIndicatorDonchianChannel, IndicatorSeriesType } from './../utils/Indicators/types/indicator.types';
-import { TradingSystem } from './TradingSystem';
+import { TradingSystem } from './classes/TradingSystem';
+import { ATRHelper } from './indicators/ATRHelper';
+import { INDICATOR_DATE_FORMAT } from './indicators/constant/indicator.constant';
+import { DonchianChannelHelper } from './indicators/DonchianChannelHelper';
+import { MovingAverageHelper } from './indicators/MovingAverageHelper';
+import { IIndicatorDonchianChannel, IndicatorSeriesType } from './indicators/types/indicator.types';
+
 
 
 export class LeatherBackTurtle extends TradingSystem {

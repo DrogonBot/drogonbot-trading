@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { LeatherBackTurtle } from '../../tradingSystems/LeatherBackTurtle';
+import { LeatherBackTurtle } from '../../trading/LeatherBackTurtle';
 
 // @ts-ignore
 const backTestRouter = new express.Router();

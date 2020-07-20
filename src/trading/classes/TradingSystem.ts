@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import moment from 'moment';
 
+import { DataInterval, IAssetPrice } from '../../resources/Asset/asset.types';
+import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
 import {
   DEFAULT_ATR_MULTIPLE,
   DEFAULT_BROKER_COMISSION,
@@ -8,15 +10,14 @@ import {
   DEFAULT_LEVERAGE_INCREMENT_PER_PYRAMID_LAYER,
   DEFAULT_LEVERAGE_MULTIPLE,
   DEFAULT_MAX_RISK_PER_TRADE,
-} from '../constants/backtest.constant';
-import { DataInterval, IAssetPrice } from '../resources/Asset/asset.types';
-import { AssetPrice } from '../resources/AssetPrice/assetprice.model';
-import { BackTest, IBackTestModel } from '../resources/BackTest/backtest.model';
-import { Trade } from '../resources/Trade/trade.model';
-import { ITrade, TradeDirection, TradeStatus, TradeType } from '../resources/Trade/trade.types';
-import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
-import { NumberHelper } from '../utils/NumberHelper';
-import { PositionSizingHelper } from '../utils/PositionSizingHelper';
+} from '../../resources/BackTest/backtest.constant';
+import { BackTest, IBackTestModel } from '../../resources/BackTest/backtest.model';
+import { Trade } from '../../resources/Trade/trade.model';
+import { ITrade, TradeDirection, TradeStatus, TradeType } from '../../resources/Trade/trade.types';
+import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
+import { NumberHelper } from '../../utils/NumberHelper';
+import { PositionSizingHelper } from '../../utils/PositionSizingHelper';
+
 
 
 export class TradingSystem {

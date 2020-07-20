@@ -1,8 +1,9 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-import { INDICATOR_DATE_FORMAT } from '../../constants/indicator.constant';
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
+import { INDICATOR_DATE_FORMAT } from './constant/indicator.constant';
+
 
 export class DonchianChannelHelper {
 

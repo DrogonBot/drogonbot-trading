@@ -1,11 +1,11 @@
 import moment from 'moment';
 import yahooFinance from 'yahoo-finance';
 
-import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
-import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
+import { AssetPrice } from '../../../resources/AssetPrice/assetprice.model';
+import { ConsoleColor, ConsoleHelper } from '../../../utils/ConsoleHelper';
 
 
-export class TradingAssistant {
+export class YahooFinanceDataAssistant {
 
   // PRICE DATA  ========================================
 

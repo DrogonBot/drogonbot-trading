@@ -1,18 +1,12 @@
-import Promise from 'bluebird';
 import { Router } from 'express';
 
-import { TradingAssistant } from '../../bots/TradingBot/TradingAssistant';
-import { ATRHelper } from '../../utils/Indicators/ATRHelper';
-import { DonchianChannelHelper } from '../../utils/Indicators/DonchianChannelHelper';
-import { MovingAverageHelper } from '../../utils/Indicators/MovingAverageHelper';
-import { IndicatorSeriesType } from '../../utils/Indicators/types/indicator.types';
+import { YahooFinanceDataAssistant } from '../../trading/classes/data/YahooFinanceDataAssistant';
+import { ATRHelper } from '../../trading/indicators/ATRHelper';
+import { DonchianChannelHelper } from '../../trading/indicators/DonchianChannelHelper';
+import { MovingAverageHelper } from '../../trading/indicators/MovingAverageHelper';
+import { IndicatorSeriesType } from '../../trading/indicators/types/indicator.types';
 
 
-
-// Fix Telegram bot promise issue: https://github.com/benjick/meteor-telegram-bot/issues/37#issuecomment-389669310
-Promise.config({
-  cancellation: true
-});
 
 // @ts-ignore
 const operationRouter = new Router();
@@ -29,7 +23,7 @@ operationRouter.get("/asset/:symbol/update", async (req, res) => {
   const { period } = req.query;
 
 
-  const tradingBot = new TradingAssistant();
+  const tradingBot = new YahooFinanceDataAssistant();
 
   await tradingBot.updatePriceData(symbol, period)
 
