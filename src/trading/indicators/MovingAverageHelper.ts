@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-import { DataInterval } from '../../resources/Asset/asset.types';
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
+import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { INDICATOR_DATE_FORMAT } from './constant/indicator.constant';
 import { IndicatorSeriesType } from './types/indicator.types';
 
@@ -11,7 +11,7 @@ import { IndicatorSeriesType } from './types/indicator.types';
 export class MovingAverageHelper {
 
 
-  public static calculateEMA = async (symbol: string, period: number, seriesType: IndicatorSeriesType, interval: DataInterval) => {
+  public static calculateEMA = async (symbol: string, period: number, seriesType: IndicatorSeriesType, interval: TradingDataInterval) => {
 
     // should be ascendant, full data
     const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
@@ -65,7 +65,7 @@ export class MovingAverageHelper {
     return parsedOutput
   }
 
-  public static calculateSMA = async (symbol: string, interval: DataInterval, period: number, seriesType) => {
+  public static calculateSMA = async (symbol: string, interval: TradingDataInterval, period: number, seriesType) => {
 
     const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
 

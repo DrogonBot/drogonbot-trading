@@ -1,11 +1,11 @@
 import _ from 'lodash';
 
 import { Asset } from '../../../resources/Asset/asset.model';
-import { DataInterval, DataUpdateType } from '../../../resources/Asset/asset.types';
 import { AssetPrice } from '../../../resources/AssetPrice/assetprice.model';
+import { MinutesInterval } from '../../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../../utils/ConsoleHelper';
 import { TS } from '../../../utils/TS';
-import { dataApiAxios } from '../../constant/tradingdata.constant';
+import { dataApiAxios, TradingDataInterval, TradingDataUpdateType } from '../../constant/tradingdata.constant';
 
 
 
@@ -36,13 +36,12 @@ export class AlphaVantageDataAssistant {
 
   // PRICE DATA (TIME SERIES) ========================================
 
-  private _getPriceData = async (symbol: string, type: string, updateType: DataUpdateType) => {
+  private _getPriceData = async (symbol: string, functionType: string, updateType: TradingDataUpdateType, interval, minutesInterval?: MinutesInterval | null) => {
 
-    const updateSizeString = updateType === DataUpdateType.Full ? `&outputsize=${updateType}` : ''
+    const urlParams = `function=${functionType}&symbol=${symbol}${`&interval=${minutesInterval || interval}`}`
 
     try {
-      const response = await this.dataApiRequest("GET", `query?function=${type}&symbol=${symbol}${updateSizeString}`)
-
+      const response = await this.dataApiRequest("GET", `query?${urlParams}`)
       return response;
     }
     catch (error) {
@@ -50,7 +49,7 @@ export class AlphaVantageDataAssistant {
     }
   }
 
-  public updatePriceData = async (symbol: string, interval: DataInterval, updateType: DataUpdateType) => {
+  public updatePriceData = async (symbol: string, type: TradingDataUpdateType, interval: TradingDataInterval, minutesInterval?: MinutesInterval | null) => {
 
     try {
       // find asset
@@ -60,27 +59,31 @@ export class AlphaVantageDataAssistant {
         throw new Error(TS.string("asset", "assetNotFound"))
       }
 
+      const timeSeriesString = `TIME_SERIES_${interval.toUpperCase()}`
+
       // request data
-      const response = await this._getPriceData(symbol, `TIME_SERIES_${interval.toUpperCase()}`, updateType);
+      const response = await this._getPriceData(symbol, timeSeriesString, type, interval, minutesInterval);
 
       if (response && asset) {
 
         const dataObj = response.data
 
 
+        if (dataObj["Error Message"]) {
+          console.log(dataObj["Error Message"]);
+          throw new Error(dataObj["Error Message"])
+        }
 
-        let timeSeries = Object.entries(dataObj[`Time Series (${interval})`]).map(([key, value]) => ({ key, value }))
 
-        timeSeries = (updateType === DataUpdateType.Latest ? _.slice(timeSeries, 0, 1) : timeSeries)
+        let timeSeries = Object.entries(dataObj[`Time Series (${minutesInterval ? minutesInterval : interval})`]).map(([key, value]) => ({ key, value }))
 
-        ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `🤖: Updating price data for ${symbol}. Please wait...`)
+
+        timeSeries = (type === TradingDataUpdateType.Latest ? _.slice(timeSeries, 0, 1) : timeSeries)
 
         for (const priceData of timeSeries) {
 
           const date = new Date(priceData.key)
           const priceValue = Object(priceData.value)
-
-
           const isPriceSaved = await AssetPrice.exists({ symbol, interval, date })
 
           if (!isPriceSaved) {
@@ -92,16 +95,13 @@ export class AlphaVantageDataAssistant {
               low: priceValue["3. low"],
               close: priceValue["4. close"],
               volume: priceValue["5. volume"]
-
             })
             await newPrice.save()
-
-
           }
         }
 
 
-        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Price data updated for ${symbol}!`)
+        ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Done!`)
 
         asset.lastRefreshed = new Date();
         asset.timeZone = dataObj["Meta Data"]["5. Time Zone"]
@@ -111,7 +111,7 @@ export class AlphaVantageDataAssistant {
 
     }
     catch (error) {
-      console.log(error);
+      throw new Error(error)
     }
 
     return false

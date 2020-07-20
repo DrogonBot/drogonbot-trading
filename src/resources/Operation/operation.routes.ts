@@ -1,6 +1,5 @@
 import { Router } from 'express';
 
-import { YahooFinanceDataAssistant } from '../../trading/classes/data/YahooFinanceDataAssistant';
 import { ATRHelper } from '../../trading/indicators/ATRHelper';
 import { DonchianChannelHelper } from '../../trading/indicators/DonchianChannelHelper';
 import { MovingAverageHelper } from '../../trading/indicators/MovingAverageHelper';
@@ -16,33 +15,7 @@ const operationRouter = new Router();
 |  >>> TEST AND OPERATIONS ROUTES!
 *##############################################################*/
 
-operationRouter.get("/asset/:symbol/update", async (req, res) => {
 
-
-  const { symbol } = req.params;
-  const { period } = req.query;
-
-
-  const tradingBot = new YahooFinanceDataAssistant();
-
-  await tradingBot.updatePriceData(symbol, period)
-
-
-
-  // const timeSeriesResponse = await tradingBot.updatePriceData(symbol, updateType, interval, minInterval)
-
-  // if (!timeSeriesResponse) {
-  //   return res.status(200).send({
-  //     status: "error",
-  //     message: TS.string("asset", "assetTimeSeriesFetchError")
-  //   })
-  // }
-
-  return res.status(200).send({
-    status: "success"
-  })
-
-})
 
 operationRouter.get("/asset/:symbol/:indicator/:interval", async (req, res) => {
 

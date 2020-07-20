@@ -1,4 +1,4 @@
-import { DataInterval } from '../../../resources/Asset/asset.types';
+import { TradingDataInterval } from '../../constant/tradingdata.constant';
 
 
 
@@ -11,7 +11,7 @@ export enum IndicatorSeriesType {
 
 export interface IAssetIndicator {
   name: string,
-  interval: DataInterval,
+  interval: TradingDataInterval,
   seriesType?: IndicatorSeriesType,
   period: number,
   value: number,

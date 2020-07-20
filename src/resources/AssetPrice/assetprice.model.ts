@@ -1,6 +1,7 @@
 import mongoose, { Document, Model, model } from 'mongoose';
 
-import { DataInterval, IAssetPrice } from '../Asset/asset.types';
+import { TradingDataInterval } from '../../trading/constant/tradingdata.constant';
+import { IAssetPrice } from '../Asset/asset.types';
 
 
 
@@ -13,7 +14,7 @@ const assetPriceSchema = new mongoose.Schema({
   symbol: String,
   interval: {
     type: String,
-    enum: Object.values(DataInterval)
+    enum: Object.values(TradingDataInterval)
   },
   date: Date,
   open: Number,

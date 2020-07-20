@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-import { DataInterval } from '../../resources/Asset/asset.types';
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
+import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { INDICATOR_DATE_FORMAT } from './constant/indicator.constant';
 
 
 
 export class ATRHelper {
 
-  public static calculate = async (symbol: string, interval: DataInterval, period: number) => {
+  public static calculate = async (symbol: string, interval: TradingDataInterval, period: number) => {
 
     const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
 

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-import { DataInterval, IAssetPrice } from '../../resources/Asset/asset.types';
+import { IAssetPrice } from '../../resources/Asset/asset.types';
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
 import {
   DEFAULT_ATR_MULTIPLE,
@@ -17,13 +17,14 @@ import { ITrade, TradeDirection, TradeStatus, TradeType } from '../../resources/
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { NumberHelper } from '../../utils/NumberHelper';
 import { PositionSizingHelper } from '../../utils/PositionSizingHelper';
+import { TradingDataInterval } from '../constant/tradingdata.constant';
 
 
 
 export class TradingSystem {
   public priceData: IAssetPrice[]
   public symbol: string | null;
-  public interval: DataInterval | null
+  public interval: TradingDataInterval | null
   public marketDirection: TradeDirection | null;
   public currentBackTest: IBackTestModel | undefined | null
   public currentActiveTradeId: string | null;

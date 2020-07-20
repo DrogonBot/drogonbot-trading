@@ -1,3 +1,5 @@
+import { TradingDataInterval } from '../../trading/constant/tradingdata.constant';
+
 export interface IAsset {
   symbol: string,
   isETF: boolean,
@@ -9,7 +11,7 @@ export interface IAsset {
 
 export interface IAssetPrice {
   symbol: string,
-  interval: DataInterval,
+  interval: TradingDataInterval,
   date: Date,
   open: number,
   high: number,
@@ -40,16 +42,4 @@ export enum Sector {
   Utilities = "Utilities"
 }
 
-export enum DataInterval {
-  IntraDay = "IntraDay",
-  Daily = "Daily",
-  Weekly = "Weekly",
-  Monthly = "Monthly"
-}
-
-export enum DataUpdateType {
-  Full = "full",
-  Partial = "partial",
-  Latest = "latest"
-}
 

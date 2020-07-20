@@ -1,9 +1,10 @@
 import moment from 'moment';
 
-import { DataInterval, IAssetPrice } from '../resources/Asset/asset.types';
+import { IAssetPrice } from '../resources/Asset/asset.types';
 import { TradeDirection } from '../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { TradingSystem } from './classes/TradingSystem';
+import { TradingDataInterval } from './constant/tradingdata.constant';
 import { ATRHelper } from './indicators/ATRHelper';
 import { INDICATOR_DATE_FORMAT } from './indicators/constant/indicator.constant';
 import { DonchianChannelHelper } from './indicators/DonchianChannelHelper';
@@ -15,10 +16,10 @@ import { IIndicatorDonchianChannel, IndicatorSeriesType } from './indicators/typ
 export class LeatherBackTurtle extends TradingSystem {
   private _systemName: string;
   public symbol: string;
-  public interval: DataInterval;
+  public interval: TradingDataInterval;
 
 
-  constructor(symbol: string, interval: DataInterval) {
+  constructor(symbol: string, interval: TradingDataInterval) {
     super()
     this._systemName = "LeatherBack Turtle Trading"
     this.priceData = []
