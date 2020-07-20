@@ -11,7 +11,7 @@ import { DataInterval, IAssetPrice } from '../resources/Asset/asset.types';
 import { AssetPrice } from '../resources/AssetPrice/assetprice.model';
 import { BackTest, IBackTestModel } from '../resources/BackTest/backtest.model';
 import { Trade } from '../resources/Trade/trade.model';
-import { TradeDirection, TradeStatus, TradeType } from '../resources/Trade/trade.types';
+import { ITrade, TradeDirection, TradeStatus, TradeType } from '../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { NumberHelper } from '../utils/NumberHelper';
 import { PositionSizingHelper } from '../utils/PositionSizingHelper';
@@ -29,6 +29,10 @@ export class TradingSystem {
   public currentStart: number | null;
   public currentCapital: number;
   public ATRStopMultiple: number;
+  public pyramidNextBuyTarget: number;
+  public pyramidMaxLayers: number;
+  public pyramidCurrentLayer: number;
+
   constructor() {
     this.priceData = []
     this.symbol = null
@@ -40,7 +44,10 @@ export class TradingSystem {
     this.currentStop = null;
     this.currentStart = null
     this.currentCapital = DEFAULT_INITIAL_CAPITAL
-    this.ATRStopMultiple = 2;
+    this.ATRStopMultiple = 0;
+    this.pyramidNextBuyTarget = 0
+    this.pyramidCurrentLayer = 0;
+    this.pyramidMaxLayers = 0 //  max entries to trend
   }
 
   public startBackTesting = async () => {
@@ -78,11 +85,54 @@ export class TradingSystem {
     }
   }
 
+  // Pyramiding
+  public addPositionToTrade = async (priceNow: IAssetPrice, ATRNow: number) => {
+
+    try {
+      const currentTrade = await Trade.findOne({ _id: this.currentActiveTradeId })
+
+      if (!currentTrade) {
+        console.log("addToPosition: Error while trying to fetch current trade");
+        return
+      }
+
+      // calculate new positions
+      const { maxAllocation,
+        units,
+        initialStop } = PositionSizingHelper.ATRPositionSizing(this.currentCapital, DEFAULT_MAX_RISK_PER_TRADE, priceNow.close, ATRNow, DEFAULT_ATR_MULTIPLE)
+
+
+      currentTrade.quantity += units
+      currentTrade.allocatedCapital += maxAllocation
+      const avgPrice = currentTrade.allocatedCapital / currentTrade.quantity
+      currentTrade.entryPrice = avgPrice
+      currentTrade.currentStop = initialStop
+
+      this.pyramidCurrentLayer++;
+
+      console.log(`🔺: Adding ${units} units (${maxAllocation}) to position!`)
+
+      await currentTrade.save()
+
+      // update backtest
+      await this.updateBackTestAfterNewTrade(this.currentBackTest!._id, currentTrade)
+
+
+
+    }
+    catch (error) {
+      console.error(error);
+    }
+
+
+
+
+  }
 
   public startTrade = async (symbol: string, price: IAssetPrice, ATR: number, currentCapital: number, marketDirection: TradeDirection, backTestId: string) => {
 
     // calculate position sizing
-    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `ENTRY: Adding entry at ${price.date} - ${price.close}`)
+    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: BUY: Adding entry at ${price.date} - ${price.close}`)
 
     const { maxAllocation,
       units,
@@ -112,6 +162,9 @@ export class TradingSystem {
     this.currentActiveTradeDirection = newTrade.direction;
     this.currentStart = null;
 
+    this.pyramidNextBuyTarget = price.close + ATR
+    console.log(`Adding pyramidNextBuyTarget: ${this.pyramidNextBuyTarget}`);
+
     return newTrade;
 
 
@@ -125,7 +178,7 @@ export class TradingSystem {
       return
     }
 
-    ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `EXIT: Adding exit at ${price.date} - ${price.close}`)
+    ConsoleHelper.coloredLog(ConsoleColor.BgRed, ConsoleColor.FgWhite, `🤖: SELL: Adding exit at ${price.date} - ${price.close}`)
 
     // update current trade
 
@@ -154,9 +207,16 @@ export class TradingSystem {
     this.currentCapital += currentTrade.profitLoss
     this.currentStop = null;
     this.currentStart = null;
+    this.pyramidCurrentLayer = 0
 
     // update backtest
+    await this.updateBackTestAfterNewTrade(currentBackTestId, currentTrade)
 
+
+    return currentTrade;
+  }
+
+  public updateBackTestAfterNewTrade = async (currentBackTestId: string, currentTrade: ITrade) => {
     const currentBackTest = await BackTest.findOne({ _id: currentBackTestId });
 
     if (currentBackTest) {
@@ -165,7 +225,6 @@ export class TradingSystem {
       currentBackTest.totalCommission += currentTrade.commission
       await currentBackTest.save()
     }
-    return currentTrade;
   }
 
   public isPriceNearMA = (tradingDirection: TradeDirection, price: number, MA: number, ATR: number) => {
@@ -242,5 +301,59 @@ export class TradingSystem {
   }
 
 
+  public canStop = (priceNow: IAssetPrice) => {
+    if (this.currentStop && this.currentActiveTradeId) {
+      if (this.currentActiveTradeDirection === TradeDirection.Long) {
+        if (priceNow.low <= this.currentStop) {
+          return true
+        }
+      }
+      if (this.currentActiveTradeDirection === TradeDirection.Short) {
+        if (priceNow.high >= this.currentStop) {
+          return true
+        }
+      }
 
+    }
+    return false
+  }
+
+  public canAddToPosition = (priceNow: IAssetPrice) => {
+
+    if (this.currentActiveTradeDirection === TradeDirection.Long) {
+      if (this.currentActiveTradeId && priceNow.high >= this.pyramidNextBuyTarget) {
+        if (this.pyramidCurrentLayer < this.pyramidMaxLayers) {
+          return true
+        }
+
+      }
+    }
+
+    return false
+
+  }
+
+  public canStartTrade = (priceNow: IAssetPrice) => {
+
+    if (this.currentStart && !this.currentActiveTradeId && this.marketDirection !== TradeDirection.Lateral) {
+
+      if (this.marketDirection === TradeDirection.Long) {
+        if (priceNow.high >= this.currentStart) {
+          return true
+        }
+      }
+
+      // TODO: Support short trading
+      // if(this.marketDirection === TradeDirection.Short) {
+      //   if(priceNow.low <= this.currentStart) {
+      //     return true
+      //   }
+      // }
+
+
+
+    }
+
+
+  }
 }

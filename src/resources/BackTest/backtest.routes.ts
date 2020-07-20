@@ -19,7 +19,7 @@ backTestRouter.get("/backtest/:symbol/:interval/:strategy", async (req, res) => 
       case "leatherbackTurtle":
 
         const lt = new LeatherBackTurtle(symbol, interval)
-        await lt.init();
+        await lt.backTest();
 
 
         break;

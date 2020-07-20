@@ -27,10 +27,14 @@ export class LeatherBackTurtle extends TradingSystem {
     this.currentActiveTradeId = null;
     this.currentActiveTradeDirection = null
     this.currentStop = null;
+    this.ATRStopMultiple = 3
+    this.pyramidNextBuyTarget = 0
+    this.pyramidCurrentLayer = 0;
+    this.pyramidMaxLayers = 4 //  max entries to trend
   }
 
 
-  public init = async () => {
+  public backTest = async () => {
 
     ConsoleHelper.coloredLog(ConsoleColor.BgMagenta, ConsoleColor.FgWhite, `🤖 Initializing ${this._systemName}...`)
 
@@ -75,7 +79,6 @@ export class LeatherBackTurtle extends TradingSystem {
         continue
       }
 
-
       this.calculateMainMarketDirection(priceNow, donchianChannelNow)
 
       if (!this.currentBackTest || !this.marketDirection) {
@@ -84,16 +87,18 @@ export class LeatherBackTurtle extends TradingSystem {
 
 
       // EXITS ========================================
-      if (this.currentStop && this.currentActiveTradeId) {
-        if (priceNow.low <= this.currentStop) {
-          console.log(`STOP=${this.currentStop} / LOW=${priceNow.low}`);
-          console.log('ending trade');
-          await this.endTrade(priceNow, this.currentStop, this.currentActiveTradeId, this.currentBackTest._id)
-        }
+
+
+
+      if (this.canStop(priceNow)) {
+        console.log(`STOP=${this.currentStop} / LOW=${priceNow.low}`);
+        console.log('ending trade');
+        await this.endTrade(priceNow, this.currentStop!, this.currentActiveTradeId, this.currentBackTest._id)
+
       }
 
 
-      if (this.isExitSignal(donchianChannelNow, donchianChannelPrevious)) {
+      if (this.isSellSignal(donchianChannelNow, donchianChannelPrevious)) {
         if (this.currentActiveTradeDirection === TradeDirection.Long) {
           this.currentStop = priceNow.low - 0.01
           console.log('exit signal triggered');
@@ -112,30 +117,33 @@ export class LeatherBackTurtle extends TradingSystem {
           if (this.currentStop) {
             if (potentialStop > this.currentStop) {
               this.currentStop = potentialStop
+
+              console.log(`STOP set at ${this.currentStop}`);
             }
           } else {
             this.currentStop = priceNow.low - (ATRNow * this.ATRStopMultiple)
+
+            console.log(`STOP set at ${this.currentStop}`);
           }
 
-          console.log(`STOP set at ${this.currentStop}`);
         }
       }
-
-
-
-
 
       // ENTRIES ========================================
 
-      if (this.currentStart && !this.currentActiveTradeId && this.marketDirection !== TradeDirection.Lateral) {
-        if (priceNow.high >= this.currentStart) {
-          console.log('starting trade');
-          await this.startTrade(this.symbol, priceNow, ATRNow, this.currentCapital, this.marketDirection, this.currentBackTest._id)
-
-        }
+      if (this.canAddToPosition(priceNow)) {
+        await this.addPositionToTrade(priceNow, ATRNow)
       }
 
-      if (this.isEntrySignal(donchianChannelNow, donchianChannelPrevious, donchianChannel2periodsAgo)) {
+
+      if (this.canStartTrade(priceNow)) {
+        console.log('starting trade');
+        await this.startTrade(this.symbol, priceNow, ATRNow, this.currentCapital, this.marketDirection, this.currentBackTest._id)
+
+
+      }
+
+      if (this.isBuySignal(donchianChannelNow, donchianChannelPrevious, donchianChannel2periodsAgo)) {
         // set start
         this.currentStart = priceNow.high + 0.01
         console.log('entry signal triggered');
@@ -160,7 +168,7 @@ export class LeatherBackTurtle extends TradingSystem {
   }
 
 
-  public isExitSignal = (donchianChannelNow: IIndicatorDonchianChannel, donchianChannelPrevious: IIndicatorDonchianChannel) => {
+  public isSellSignal = (donchianChannelNow: IIndicatorDonchianChannel, donchianChannelPrevious: IIndicatorDonchianChannel) => {
 
     // here we will search for price breakouts (high today > high yesterday)
     // Long positions for now
@@ -173,7 +181,7 @@ export class LeatherBackTurtle extends TradingSystem {
     return false
   }
 
-  public isEntrySignal = (donchianChannelNow: IIndicatorDonchianChannel, donchianChannelPrevious: IIndicatorDonchianChannel, donchianChannel2periodsAgo: IIndicatorDonchianChannel) => {
+  public isBuySignal = (donchianChannelNow: IIndicatorDonchianChannel, donchianChannelPrevious: IIndicatorDonchianChannel, donchianChannel2periodsAgo: IIndicatorDonchianChannel) => {
 
     // here we will search for price breakouts (high today > high yesterday)
     // Long positions for now
