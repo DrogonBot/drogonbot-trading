@@ -1,12 +1,11 @@
 import Promise from 'bluebird';
 import { Router } from 'express';
 
-import { TradingBot } from '../../bots/TradingBot/TradingBot';
+import { TradingAssistant } from '../../bots/TradingBot/TradingAssistant';
 import { ATRHelper } from '../../utils/Indicators/ATRHelper';
 import { DonchianChannelHelper } from '../../utils/Indicators/DonchianChannelHelper';
 import { MovingAverageHelper } from '../../utils/Indicators/MovingAverageHelper';
 import { IndicatorSeriesType } from '../../utils/Indicators/types/indicator.types';
-import { TS } from '../../utils/TS';
 
 
 
@@ -23,21 +22,27 @@ const operationRouter = new Router();
 |  >>> TEST AND OPERATIONS ROUTES!
 *##############################################################*/
 
-operationRouter.get("/asset/:symbol/update/:updateType/:interval/:minInterval*?", async (req, res) => {
+operationRouter.get("/asset/:symbol/update", async (req, res) => {
 
 
-  const { updateType, symbol, interval, minInterval } = req.params;
+  const { symbol } = req.params;
+  const { period } = req.query;
 
-  const tradingBot = new TradingBot();
 
-  const timeSeriesResponse = await tradingBot.updatePriceData(symbol, updateType, interval, minInterval)
+  const tradingBot = new TradingAssistant();
 
-  if (!timeSeriesResponse) {
-    return res.status(200).send({
-      status: "error",
-      message: TS.string("asset", "assetTimeSeriesFetchError")
-    })
-  }
+  await tradingBot.updatePriceData(symbol, period)
+
+
+
+  // const timeSeriesResponse = await tradingBot.updatePriceData(symbol, updateType, interval, minInterval)
+
+  // if (!timeSeriesResponse) {
+  //   return res.status(200).send({
+  //     status: "error",
+  //     message: TS.string("asset", "assetTimeSeriesFetchError")
+  //   })
+  // }
 
   return res.status(200).send({
     status: "success"

@@ -71,10 +71,12 @@ export class TradingSystem {
     try {
       console.log('Creating new backtest...');
       const newBackTest = new BackTest({
+        assets: [this.symbol],
         initialCapital: DEFAULT_INITIAL_CAPITAL,
         finalCapital: DEFAULT_INITIAL_CAPITAL,
         totalTrades: 0,
-        totalCommission: 0
+        totalCommission: 0,
+        totalTradingDays: 0
       })
       await newBackTest.save()
       this.currentBackTest = newBackTest;
@@ -86,7 +88,7 @@ export class TradingSystem {
   }
 
   // Pyramiding
-  public addPositionToTrade = async (priceNow: IAssetPrice, ATRNow: number) => {
+  public addPyramidLayerToTrade = async (priceNow: IAssetPrice, ATRNow: number) => {
 
     try {
       const currentTrade = await Trade.findOne({ _id: this.currentActiveTradeId })
@@ -99,7 +101,7 @@ export class TradingSystem {
       // calculate new positions
       const { maxAllocation,
         units,
-        initialStop } = PositionSizingHelper.ATRPositionSizing(this.currentCapital, DEFAULT_MAX_RISK_PER_TRADE, priceNow.close, ATRNow, DEFAULT_ATR_MULTIPLE)
+        initialStop } = PositionSizingHelper.ATRPositionSizing(this.currentCapital - currentTrade.allocatedCapital, DEFAULT_MAX_RISK_PER_TRADE, priceNow.close, ATRNow, DEFAULT_ATR_MULTIPLE)
 
 
       currentTrade.quantity += units
@@ -107,6 +109,7 @@ export class TradingSystem {
       const avgPrice = currentTrade.allocatedCapital / currentTrade.quantity
       currentTrade.entryPrice = avgPrice
       currentTrade.currentStop = initialStop
+      currentTrade.commission++;
 
       this.pyramidCurrentLayer++;
 
@@ -116,17 +119,10 @@ export class TradingSystem {
 
       // update backtest
       await this.updateBackTestAfterNewTrade(this.currentBackTest!._id, currentTrade)
-
-
-
     }
     catch (error) {
       console.error(error);
     }
-
-
-
-
   }
 
   public startTrade = async (symbol: string, price: IAssetPrice, ATR: number, currentCapital: number, marketDirection: TradeDirection, backTestId: string) => {
@@ -154,6 +150,8 @@ export class TradingSystem {
       // exitDate: Number,
       currentStop: initialStop,
       commission: DEFAULT_BROKER_COMISSION,
+      daysDuration: 0
+
     })
     await newTrade.save()
 
@@ -222,6 +220,9 @@ export class TradingSystem {
     if (currentBackTest) {
       currentBackTest.finalCapital = this.currentCapital
       currentBackTest.totalTrades++
+      if (currentTrade.daysDuration > 0) {
+        currentBackTest.totalTradingDays += currentTrade.daysDuration
+      }
       currentBackTest.totalCommission += currentTrade.commission
       await currentBackTest.save()
     }
@@ -281,7 +282,9 @@ export class TradingSystem {
       backtest.totalDays = lastDay.diff(firstDay, 'days')
       backtest.avgTradesPerDay = backtest.totalTrades / backtest.totalDays
       backtest.buyAndHoldROI = NumberHelper.to2Decimals(((lastPrice / firstPrice) - 1) * 100)
+      backtest.buyAndHoldROIPerDay = (backtest.buyAndHoldROI / backtest.totalDays) * 100
       backtest.ROI = NumberHelper.to2Decimals((((backtest.finalCapital / backtest.initialCapital) - 1) * 100))
+      backtest.ROIPerDay = (backtest.ROI / backtest.totalTradingDays) * 100
       backtest.winnerTradesPercentage = NumberHelper.to2Decimals(((winnerTradesCount / totalTradesCount) * 100))
       backtest.loserTradesPercentage = NumberHelper.to2Decimals(((loserTradesCount / totalTradesCount) * 100))
       backtest.avgWinnerProfit = NumberHelper.to2Decimals(winnerTradesSum / winnerTradesCount)
@@ -318,7 +321,7 @@ export class TradingSystem {
     return false
   }
 
-  public canAddToPosition = (priceNow: IAssetPrice) => {
+  public canAddPyramidLayer = (priceNow: IAssetPrice) => {
 
     if (this.currentActiveTradeDirection === TradeDirection.Long) {
       if (this.currentActiveTradeId && priceNow.high >= this.pyramidNextBuyTarget) {

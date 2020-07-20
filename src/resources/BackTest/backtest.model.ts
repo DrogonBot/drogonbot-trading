@@ -7,10 +7,13 @@ export interface IBackTestModel extends IBackTest, Document {
 }
 
 const backTestSchema = new mongoose.Schema({
+  assets: [String],
   initialCapital: Number,
   finalCapital: Number,
   buyAndHoldROI: Number,
+  buyAndHoldROIPerDay: Number,
   ROI: Number,
+  ROIPerDay: Number,
   expectancy: Number, // most important factor!
   winnerTradesPercentage: Number,
   loserTradesPercentage: Number,
@@ -24,6 +27,11 @@ const backTestSchema = new mongoose.Schema({
   maxConsecutiveWinners: Number,
   maxConsecutiveLosers: Number,
   totalDays: Number,
+  totalTradingDays: {
+    type: Number,
+    default: 0
+  },
+
   totalTrades: Number,
   avgTradesPerDay: Number,
   grossProfit: Number,

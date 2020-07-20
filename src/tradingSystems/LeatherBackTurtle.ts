@@ -131,10 +131,9 @@ export class LeatherBackTurtle extends TradingSystem {
 
       // ENTRIES ========================================
 
-      if (this.canAddToPosition(priceNow)) {
-        await this.addPositionToTrade(priceNow, ATRNow)
+      if (this.canAddPyramidLayer(priceNow)) {
+        await this.addPyramidLayerToTrade(priceNow, ATRNow)
       }
-
 
       if (this.canStartTrade(priceNow)) {
         console.log('starting trade');
