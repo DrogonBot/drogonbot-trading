@@ -14,10 +14,10 @@ export interface ITrade {
   entryDate: Date,
   commission: number,
   exitPrice?: number,
-  exitDate?: Date,
+  exitDate: Date,
   currentStop: number
   wasStopped: boolean
-  profitLoss?: number,
+  profitLoss: number,
   daysDuration: number,
   slippage?: number
 }

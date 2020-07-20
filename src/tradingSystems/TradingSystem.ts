@@ -5,6 +5,8 @@ import {
   DEFAULT_ATR_MULTIPLE,
   DEFAULT_BROKER_COMISSION,
   DEFAULT_INITIAL_CAPITAL,
+  DEFAULT_LEVERAGE_INCREMENT_PER_PYRAMID_LAYER,
+  DEFAULT_LEVERAGE_MULTIPLE,
   DEFAULT_MAX_RISK_PER_TRADE,
 } from '../constants/backtest.constant';
 import { DataInterval, IAssetPrice } from '../resources/Asset/asset.types';
@@ -32,6 +34,8 @@ export class TradingSystem {
   public pyramidNextBuyTarget: number;
   public pyramidMaxLayers: number;
   public pyramidCurrentLayer: number;
+  public leveragedCapital: number;
+  public leverageMultiple: number;
 
   constructor() {
     this.priceData = []
@@ -44,6 +48,8 @@ export class TradingSystem {
     this.currentStop = null;
     this.currentStart = null
     this.currentCapital = DEFAULT_INITIAL_CAPITAL
+    this.leverageMultiple = DEFAULT_LEVERAGE_MULTIPLE
+    this.leveragedCapital = this.currentCapital * this.leverageMultiple
     this.ATRStopMultiple = 0;
     this.pyramidNextBuyTarget = 0
     this.pyramidCurrentLayer = 0;
@@ -98,10 +104,13 @@ export class TradingSystem {
         return
       }
 
+      this.leverageMultiple += DEFAULT_LEVERAGE_INCREMENT_PER_PYRAMID_LAYER;
+      this.leveragedCapital = this.currentCapital * this.leverageMultiple
+
       // calculate new positions
       const { maxAllocation,
         units,
-        initialStop } = PositionSizingHelper.ATRPositionSizing(this.currentCapital - currentTrade.allocatedCapital, DEFAULT_MAX_RISK_PER_TRADE, priceNow.close, ATRNow, DEFAULT_ATR_MULTIPLE)
+        initialStop } = PositionSizingHelper.ATRPositionSizing(this.leveragedCapital - currentTrade.allocatedCapital, DEFAULT_MAX_RISK_PER_TRADE, priceNow.close, ATRNow, DEFAULT_ATR_MULTIPLE)
 
 
       currentTrade.quantity += units
@@ -109,11 +118,11 @@ export class TradingSystem {
       const avgPrice = currentTrade.allocatedCapital / currentTrade.quantity
       currentTrade.entryPrice = avgPrice
       currentTrade.currentStop = initialStop
-      currentTrade.commission++;
+      currentTrade.commission += DEFAULT_BROKER_COMISSION;
 
       this.pyramidCurrentLayer++;
 
-      console.log(`🔺: Adding ${units} units (${maxAllocation}) to position!`)
+      console.log(`🔺: Adding ${units} units (${maxAllocation}) to position! Leverage increased to ${this.leverageMultiple}x. Total capital $${this.leveragedCapital} - Available capital: ${this.leveragedCapital - currentTrade.allocatedCapital}`)
 
       await currentTrade.save()
 
@@ -125,14 +134,14 @@ export class TradingSystem {
     }
   }
 
-  public startTrade = async (symbol: string, price: IAssetPrice, ATR: number, currentCapital: number, marketDirection: TradeDirection, backTestId: string) => {
+  public startTrade = async (symbol: string, price: IAssetPrice, ATR: number, marketDirection: TradeDirection, backTestId: string) => {
 
     // calculate position sizing
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: BUY: Adding entry at ${price.date} - ${price.close}`)
 
     const { maxAllocation,
       units,
-      initialStop } = PositionSizingHelper.ATRPositionSizing(currentCapital, DEFAULT_MAX_RISK_PER_TRADE, price.close, ATR, DEFAULT_ATR_MULTIPLE)
+      initialStop } = PositionSizingHelper.ATRPositionSizing(this.leveragedCapital, DEFAULT_MAX_RISK_PER_TRADE, price.close, ATR, DEFAULT_ATR_MULTIPLE)
 
 
     // Create new trade
@@ -193,10 +202,12 @@ export class TradingSystem {
     currentTrade.wasStopped = currentTrade.exitPrice === currentStop
     currentTrade.profitLoss = (currentTrade.exitPrice - currentTrade.entryPrice) * currentTrade.quantity
 
+    ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `${currentTrade.profitLoss > 0 ? `💰` : `😞`}: ProfitLoss: $${currentTrade.profitLoss} - You were using ${this.leverageMultiple}x leverage, on a total available capital of ${this.leveragedCapital}.`)
+
+
     const a = moment(currentTrade.exitDate);
     const b = moment(currentTrade.entryDate);
-    const diff = a.diff(b, 'days')   // =1
-
+    const diff = a.diff(b, 'days')
     currentTrade.daysDuration = diff;
     currentTrade.commission += DEFAULT_BROKER_COMISSION;
     await currentTrade.save();
@@ -206,6 +217,8 @@ export class TradingSystem {
     this.currentStop = null;
     this.currentStart = null;
     this.pyramidCurrentLayer = 0
+    this.leverageMultiple = 1 // back to zero leverage
+    this.leveragedCapital = this.currentCapital * this.leverageMultiple
 
     // update backtest
     await this.updateBackTestAfterNewTrade(currentBackTestId, currentTrade)
@@ -223,6 +236,15 @@ export class TradingSystem {
       if (currentTrade.daysDuration > 0) {
         currentBackTest.totalTradingDays += currentTrade.daysDuration
       }
+
+      currentBackTest.capitalHistory = [
+        ...currentBackTest.capitalHistory,
+        {
+          date: currentTrade.exitDate,
+          currentCapital: this.currentCapital
+        }
+      ]
+
       currentBackTest.totalCommission += currentTrade.commission
       await currentBackTest.save()
     }
@@ -274,6 +296,12 @@ export class TradingSystem {
       const firstDay = moment(this.priceData[0].date);
       const lastDay = moment(this.priceData[this.priceData.length - 1].date)
 
+      const highestCapitalPoint = _.maxBy(backtest.capitalHistory, 'currentCapital')?.currentCapital
+      const lowestCapitalPoint = _.minBy(backtest.capitalHistory, 'currentCapital')?.currentCapital
+      backtest.maxDrawdown = (highestCapitalPoint! - lowestCapitalPoint!)
+      backtest.maxDrawdownPercentage = NumberHelper.to2Decimals((backtest.maxDrawdown / highestCapitalPoint!) * 100)
+      backtest.largestSingleLosingTrade = _.minBy(loserTrades, 'profitLoss')!.profitLoss
+      backtest.largestSingleWinningTrade = _.maxBy(winnerTrades, 'profitLoss')!.profitLoss
       backtest.grossProfit = winnerTradesSum
       backtest.grossLoss = loserTradesSum;
       backtest.totalNetProfit = winnerTradesSum - loserTradesSum

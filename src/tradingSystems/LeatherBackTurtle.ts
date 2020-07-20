@@ -6,7 +6,8 @@ import { TradeDirection } from '../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
 import { ATRHelper } from '../utils/Indicators/ATRHelper';
 import { DonchianChannelHelper } from '../utils/Indicators/DonchianChannelHelper';
-import { IIndicatorDonchianChannel } from './../utils/Indicators/types/indicator.types';
+import { MovingAverageHelper } from '../utils/Indicators/MovingAverageHelper';
+import { IIndicatorDonchianChannel, IndicatorSeriesType } from './../utils/Indicators/types/indicator.types';
 import { TradingSystem } from './TradingSystem';
 
 
@@ -47,9 +48,10 @@ export class LeatherBackTurtle extends TradingSystem {
 
     // Calculate indicators
     console.log("🤖: Calculating indicators...");
-    const donchianChannel = await DonchianChannelHelper.calculate(this.symbol, 20, this.interval)
+    const donchianChannel20Periods = await DonchianChannelHelper.calculate(this.symbol, 20, this.interval)
+    const donchianChannel55Periods = await DonchianChannelHelper.calculate(this.symbol, 55, this.interval)
     const ATR = await ATRHelper.calculate(this.symbol!, this.interval!, 14)
-
+    const MME200 = await MovingAverageHelper.calculateEMA(this.symbol, 200, IndicatorSeriesType.Close, this.interval)
 
     console.log(`🤖: Running system on ${this.priceData.length} asset prices`);
 
@@ -69,17 +71,20 @@ export class LeatherBackTurtle extends TradingSystem {
       const previousDate = moment(pricePrevious.date).format(INDICATOR_DATE_FORMAT)
       const date2PeriodsAgo = moment(price2PeriodsAgo.date).format(INDICATOR_DATE_FORMAT)
 
+      const MME200Now = MME200[dateNow]?.value || null
+      const MME200Prev = MME200[previousDate]?.value || null
       const ATRNow = ATR[dateNow]?.value || null
-      const donchianChannelNow = priceNow ? donchianChannel[dateNow] : null
-      const donchianChannelPrevious = pricePrevious ? donchianChannel[previousDate] : null
-      const donchianChannel2periodsAgo = price2PeriodsAgo ? donchianChannel[date2PeriodsAgo] : null
+      const donchianChannelNow20periods = priceNow ? donchianChannel20Periods[dateNow] : null
 
-      if (!donchianChannelNow || !donchianChannelPrevious || !donchianChannel2periodsAgo || !ATRNow) {
+      const donchianChannelPrevious20periods = pricePrevious ? donchianChannel20Periods[previousDate] : null
+      const donchianChannel2periodsAgo20periods = price2PeriodsAgo ? donchianChannel20Periods[date2PeriodsAgo] : null
+
+      if (!donchianChannelNow20periods || !donchianChannelPrevious20periods || !donchianChannel2periodsAgo20periods || !ATRNow || !MME200Now || !MME200Prev) {
         // skip, because there's no way to analyse
         continue
       }
 
-      this.calculateMainMarketDirection(priceNow, donchianChannelNow)
+      this.calculateMainMarketDirection(priceNow, MME200Now, MME200Prev)
 
       if (!this.currentBackTest || !this.marketDirection) {
         continue;
@@ -98,14 +103,14 @@ export class LeatherBackTurtle extends TradingSystem {
       }
 
 
-      if (this.isSellSignal(donchianChannelNow, donchianChannelPrevious)) {
+      if (this.isSellSignal(donchianChannelNow20periods, donchianChannelPrevious20periods)) {
         if (this.currentActiveTradeDirection === TradeDirection.Long) {
           this.currentStop = priceNow.low - 0.01
           console.log('exit signal triggered');
         }
       }
 
-      if (this.isAdjustStopSignal(priceNow, donchianChannelNow) && this.currentActiveTradeId) {
+      if (this.isAdjustStopSignal(priceNow, donchianChannelNow20periods) && this.currentActiveTradeId) {
         if (this.currentActiveTradeDirection === TradeDirection.Long) {
 
           const potentialStop = priceNow.low - (ATRNow * this.ATRStopMultiple)
@@ -137,12 +142,12 @@ export class LeatherBackTurtle extends TradingSystem {
 
       if (this.canStartTrade(priceNow)) {
         console.log('starting trade');
-        await this.startTrade(this.symbol, priceNow, ATRNow, this.currentCapital, this.marketDirection, this.currentBackTest._id)
+        await this.startTrade(this.symbol, priceNow, ATRNow, this.marketDirection, this.currentBackTest._id)
 
 
       }
 
-      if (this.isBuySignal(donchianChannelNow, donchianChannelPrevious, donchianChannel2periodsAgo)) {
+      if (this.isBuySignal(donchianChannelNow20periods, donchianChannelPrevious20periods, donchianChannel2periodsAgo20periods)) {
         // set start
         this.currentStart = priceNow.high + 0.01
         console.log('entry signal triggered');
@@ -193,13 +198,13 @@ export class LeatherBackTurtle extends TradingSystem {
   }
 
 
-  public calculateMainMarketDirection = (priceNow: IAssetPrice, donchianChannelNow: IIndicatorDonchianChannel) => {
+  public calculateMainMarketDirection = (priceNow: IAssetPrice, MME200Now: number, MME200Prev: number) => {
 
-    if (priceNow.low > donchianChannelNow.mid!) {
+    if (priceNow.low > MME200Now && (MME200Now > MME200Prev)) {
       return this.marketDirection = TradeDirection.Long;
     }
 
-    if (priceNow.high < donchianChannelNow.mid!) {
+    if (priceNow.high < MME200Now && (MME200Now < MME200Prev)) {
       return this.marketDirection = TradeDirection.Short
     }
 

@@ -19,6 +19,8 @@ const backTestSchema = new mongoose.Schema({
   loserTradesPercentage: Number,
   avgWinnerProfit: Number,
   avgLoserLoss: Number,
+  largestSingleLosingTrade: Number,
+  largestSingleWinningTrade: Number,
   maxDrawdown: Number,
   maxDrawdownPercentage: Number,
   sharpRatio: Number,
@@ -26,12 +28,14 @@ const backTestSchema = new mongoose.Schema({
   outlierAdjustedProfitFactor: Number,
   maxConsecutiveWinners: Number,
   maxConsecutiveLosers: Number,
-  totalDays: Number,
+  totalDays: {
+    type: Number,
+    default: 0
+  },
   totalTradingDays: {
     type: Number,
     default: 0
   },
-
   totalTrades: Number,
   avgTradesPerDay: Number,
   grossProfit: Number,
@@ -40,11 +44,12 @@ const backTestSchema = new mongoose.Schema({
   totalNetProfitPercentage: Number,
   averageProfitPerTrade: Number,
   medianProfitPerTrade: Number,
-  largestSingleLosingTrade: Number,
-  largestSingleWinningTrade: Number,
   totalCommission: Number,
-  totalCommissionPercentageFinalCapital: Number
-
+  totalCommissionPercentageFinalCapital: Number,
+  capitalHistory: [{
+    date: Date,
+    currentCapital: Number,
+  }]
 })
 
 
