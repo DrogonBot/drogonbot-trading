@@ -43,3 +43,6 @@ export enum TradeDirection {
 }
 
 export type MinutesInterval = "1min" | "5min" | "15min" | "30min" | "60min"
+
+
+

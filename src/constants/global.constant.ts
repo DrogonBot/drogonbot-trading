@@ -1,0 +1,2 @@
+
+export const DEFAULT_FORMATTED_DATE = "YYYY-MM-DD"

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import * as mathjs from 'mathjs';
 import moment from 'moment';
 
 import { IAssetPrice } from '../../resources/Asset/asset.types';
@@ -15,9 +16,11 @@ import { BackTest, IBackTestModel } from '../../resources/BackTest/backtest.mode
 import { Trade } from '../../resources/Trade/trade.model';
 import { ITrade, TradeDirection, TradeStatus, TradeType } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
+import { DateTimeHelper } from '../../utils/DateTimeHelper';
 import { NumberHelper } from '../../utils/NumberHelper';
 import { PositionSizingHelper } from '../../utils/PositionSizingHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
+
 
 
 
@@ -38,6 +41,10 @@ export class TradingSystem {
   public pyramidCurrentLayer: number;
   public leveragedCapital: number;
   public leverageMultiple: number;
+  public trailingStops: number[];
+  public riskPerTradeR: number
+
+
 
   constructor() {
     this.priceData = []
@@ -56,6 +63,8 @@ export class TradingSystem {
     this.pyramidNextBuyTarget = 0
     this.pyramidCurrentLayer = 0;
     this.pyramidMaxLayers = 0 //  max entries to trend
+    this.trailingStops = []
+    this.riskPerTradeR = DEFAULT_MAX_RISK_PER_TRADE
   }
 
   private _fetchPriceData = async () => {
@@ -110,25 +119,33 @@ export class TradingSystem {
         return
       }
 
+      // increase leverage ?
       this.leverageMultiple += DEFAULT_LEVERAGE_INCREMENT_PER_PYRAMID_LAYER;
       this.leveragedCapital = this.currentCapital * this.leverageMultiple
 
       // calculate new positions
       const { maxAllocation,
         units,
-        initialStop } = PositionSizingHelper.ATRPositionSizing(this.leveragedCapital - currentTrade.allocatedCapital, DEFAULT_MAX_RISK_PER_TRADE, priceNow.close, ATRNow, DEFAULT_ATR_MULTIPLE)
+        initialStop } = PositionSizingHelper.ATRPositionSizing(this.leveragedCapital - currentTrade.allocatedCapital, this.riskPerTradeR, priceNow.close, ATRNow, DEFAULT_ATR_MULTIPLE)
 
+      const avgPrice = currentTrade.allocatedCapital / currentTrade.quantity
 
       currentTrade.quantity += units
       currentTrade.allocatedCapital += maxAllocation
-      const avgPrice = currentTrade.allocatedCapital / currentTrade.quantity
       currentTrade.avgEntryPrice = avgPrice
       currentTrade.stopPrice = initialStop
       currentTrade.commission += DEFAULT_BROKER_COMMISSION;
+      this.riskPerTradeR += 1
+
+      this.currentStop = initialStop;
+
+
 
       this.pyramidCurrentLayer++;
 
-      console.log(`🔺: Adding ${units} units (${maxAllocation}) to position! Leverage is ${this.leverageMultiple}x. Total capital $${this.leveragedCapital} - Available capital: ${this.leveragedCapital - currentTrade.allocatedCapital}`)
+      console.log(`🔺: Adding ${units} units ($${maxAllocation}) to position! Leverage is ${this.leverageMultiple}x. Total capital $${this.leveragedCapital} - Available capital: ${this.leveragedCapital - currentTrade.allocatedCapital}`)
+
+      console.log(`🛑 pyramid STOP set to ${NumberHelper.to2Decimals(this.currentStop)} on date: ${DateTimeHelper.formattedDate(priceNow.date)}`);
 
       await currentTrade.save()
 
@@ -172,6 +189,7 @@ export class TradingSystem {
     await newTrade.save()
 
     this.currentStop = newTrade.stopPrice
+    this.trailingStops = [this.currentStop]
     console.log(`🛑 initial STOP set at ${NumberHelper.to2Decimals(newTrade.stopPrice)}`);
     this.currentActiveTradeId = newTrade._id;
     this.currentActiveTradeDirection = newTrade.direction;
@@ -227,6 +245,7 @@ export class TradingSystem {
     this.pyramidCurrentLayer = 0
     this.leverageMultiple = 1 // back to zero leverage
     this.leveragedCapital = this.currentCapital * this.leverageMultiple
+    this.riskPerTradeR = DEFAULT_MAX_RISK_PER_TRADE
 
     // update backtest
     await this.updateBackTestAfterNewTrade(currentBackTestId, currentTrade)
@@ -266,6 +285,22 @@ export class TradingSystem {
 
       case TradeDirection.Short:
         return price < MA && price > (MA - ATR)
+    }
+  }
+
+  public setTrailingStop = (priceNow: IAssetPrice, ATRNow: number) => {
+    const potentialStop = priceNow.low - (ATRNow * this.ATRStopMultiple)
+
+    if (this.currentStop) {
+
+      const newTrailingStop = mathjs.median([...this.trailingStops, potentialStop])
+
+      if (this.currentStop < newTrailingStop) {
+
+        this.currentStop = newTrailingStop
+        console.log(`🛑 ATR trailing STOP set at ${NumberHelper.to2Decimals(this.currentStop!)} on date: ${DateTimeHelper.formattedDate(priceNow.date)}`);
+
+      }
     }
   }
 

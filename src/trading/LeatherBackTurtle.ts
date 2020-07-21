@@ -3,6 +3,7 @@ import moment from 'moment';
 import { IAssetPrice } from '../resources/Asset/asset.types';
 import { TradeDirection } from '../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
+import { DateTimeHelper } from '../utils/DateTimeHelper';
 import { NumberHelper } from '../utils/NumberHelper';
 import { TradingSystem } from './classes/TradingSystem';
 import { TradingDataInterval } from './constant/tradingdata.constant';
@@ -12,10 +13,13 @@ import { DonchianChannelHelper } from './indicators/DonchianChannelHelper';
 import { MovingAverageHelper } from './indicators/MovingAverageHelper';
 import { IIndicatorDonchianChannel, IndicatorSeriesType } from './indicators/types/indicator.types';
 
+
 export class LeatherBackTurtle extends TradingSystem {
   private _systemName: string;
   public symbol: string;
   public interval: TradingDataInterval;
+  public trailingStops: number[]
+
 
 
   constructor(symbol: string, interval: TradingDataInterval) {
@@ -23,6 +27,7 @@ export class LeatherBackTurtle extends TradingSystem {
     this._systemName = "LeatherBack Turtle Trading"
     this.priceData = []
     this.symbol = symbol;
+
     this.interval = interval;
     this.marketDirection = null
     this.currentBackTest = null
@@ -33,6 +38,7 @@ export class LeatherBackTurtle extends TradingSystem {
     this.pyramidNextBuyTarget = 0
     this.pyramidCurrentLayer = 0;
     this.pyramidMaxLayers = 4 //  max entries to trend
+    this.trailingStops = []
   }
 
 
@@ -107,7 +113,8 @@ export class LeatherBackTurtle extends TradingSystem {
       if (this.isSellSignal(donchianChannelNow20periods, donchianChannelPrevious20periods)) {
         if (this.currentActiveTradeDirection === TradeDirection.Long) {
           this.currentStop = priceNow.low - 0.01
-          console.log(`SELL signal PLACED on date: ${priceNow.date} - STOP=${this.currentStop}`);
+          console.log(`SELL signal PLACED on date: ${DateTimeHelper.formattedDate(priceNow.date)} - STOP=${this.currentStop}`);
+          console.log(`🛑 exit STOP set to ${NumberHelper.to2Decimals(this.currentStop)} on date: ${DateTimeHelper.formattedDate(priceNow.date)}`);
         }
       }
 
@@ -124,12 +131,12 @@ export class LeatherBackTurtle extends TradingSystem {
             if (potentialStop > this.currentStop) {
               this.currentStop = potentialStop
 
-              console.log(`🛑 STOP increased to ${NumberHelper.to2Decimals(this.currentStop)}`);
+              console.log(`🛑 STOP increased to ${NumberHelper.to2Decimals(this.currentStop)} on date: ${DateTimeHelper.formattedDate(priceNow.date)}`);
             }
           } else {
             this.currentStop = priceNow.low - (ATRNow * this.ATRStopMultiple)
 
-            console.log(`🛑 STOP set at ${NumberHelper.to2Decimals(this.currentStop)}`);
+            console.log(`🛑 STOP set at ${NumberHelper.to2Decimals(this.currentStop)} on date: ${DateTimeHelper.formattedDate(priceNow.date)}`);
           }
 
         }
