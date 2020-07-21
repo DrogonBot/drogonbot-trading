@@ -1,8 +1,8 @@
 
 
-export class NumberHelper {
+export class N {
 
-  public static to2Decimals = (n: number) => {
+  public static format = (n: number) => {
     return parseFloat((n).toFixed(2))
   }
 

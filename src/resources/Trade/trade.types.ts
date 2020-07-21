@@ -17,7 +17,6 @@ export interface ITrade {
   stopPrice: number,
   entryDate: Date,
   commission: number,
-
   exitDate: Date,
   wasStopped: boolean
   profitLoss: number,
@@ -44,5 +43,13 @@ export enum TradeDirection {
 
 export type MinutesInterval = "1min" | "5min" | "15min" | "30min" | "60min"
 
+export enum TradeActions {
+  BuyOrder = "BuyOrder",
+  SellOrder = "SellOrder",
+}
 
-
+export enum BackTestActions {
+  UpdateBackTestData = "UpdateBackTestData",
+  BuyOrder = "BuyOrder",
+  SellOrder = "SellOrder",
+}

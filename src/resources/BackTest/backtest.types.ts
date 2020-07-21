@@ -27,11 +27,11 @@ export interface IBackTest {
   largestSingleWinningTrade: number,
   maxDrawdown: number, // maximum drawdown is the largest peak-to-valley loss — in absolute Dollar terms — of the trading system’s historical profit.
   maxDrawdownPercentage: number,
-  sharpRatio: number,
-  profitFactor: number, // Profit factor is the system’s gross profit divided by gross loss. Look for systems that have a profit factor of 2.5, or higher.
-  outlierAdjustedProfitFactor: number,
-  maxConsecutiveWinners: number,
-  maxConsecutiveLosers: number,
+  // sharpRatio: number,
+  // profitFactor: number, // Profit factor is the system’s gross profit divided by gross loss. Look for systems that have a profit factor of 2.5, or higher.
+  // outlierAdjustedProfitFactor: number,
+  // maxConsecutiveWinners: number,
+  // maxConsecutiveLosers: number,
   totalDays: number, // at least 4 years of data
   totalTradingDays: number,
   totalTrades: number, // at least 20-25 trades

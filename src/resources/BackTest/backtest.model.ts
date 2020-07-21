@@ -25,11 +25,11 @@ const backTestSchema = new mongoose.Schema({
   largestSingleWinningTrade: Number,
   maxDrawdown: Number,
   maxDrawdownPercentage: Number,
-  sharpRatio: Number,
-  profitFactor: Number,
-  outlierAdjustedProfitFactor: Number,
-  maxConsecutiveWinners: Number,
-  maxConsecutiveLosers: Number,
+  // sharpRatio: Number,
+  // profitFactor: Number,
+  // outlierAdjustedProfitFactor: Number,
+  // maxConsecutiveWinners: Number,
+  // maxConsecutiveLosers: Number,
   totalDays: {
     type: Number,
     default: 0
