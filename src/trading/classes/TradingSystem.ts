@@ -5,7 +5,7 @@ import { IAssetPrice } from '../../resources/Asset/asset.types';
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
 import {
   DEFAULT_ATR_MULTIPLE,
-  DEFAULT_BROKER_COMISSION,
+  DEFAULT_BROKER_COMMISSION,
   DEFAULT_INITIAL_CAPITAL,
   DEFAULT_LEVERAGE_INCREMENT_PER_PYRAMID_LAYER,
   DEFAULT_LEVERAGE_MULTIPLE,
@@ -58,10 +58,7 @@ export class TradingSystem {
     this.pyramidMaxLayers = 0 //  max entries to trend
   }
 
-  public startBackTesting = async () => {
-
-    // load price data
-
+  private _fetchPriceData = async () => {
     try {
       this.priceData = await AssetPrice.find({ symbol: this.symbol, interval: this.interval }).sort({ "date": "asc" })
 
@@ -75,6 +72,13 @@ export class TradingSystem {
       console.error(error);
       return false
     }
+
+  }
+
+  public startBackTesting = async () => {
+
+    // load price data
+    this._fetchPriceData()
 
     try {
       console.log('Creating new backtest...');
@@ -118,13 +122,13 @@ export class TradingSystem {
       currentTrade.quantity += units
       currentTrade.allocatedCapital += maxAllocation
       const avgPrice = currentTrade.allocatedCapital / currentTrade.quantity
-      currentTrade.entryPrice = avgPrice
-      currentTrade.currentStop = initialStop
-      currentTrade.commission += DEFAULT_BROKER_COMISSION;
+      currentTrade.avgEntryPrice = avgPrice
+      currentTrade.stopPrice = initialStop
+      currentTrade.commission += DEFAULT_BROKER_COMMISSION;
 
       this.pyramidCurrentLayer++;
 
-      console.log(`🔺: Adding ${units} units (${maxAllocation}) to position! Leverage increased to ${this.leverageMultiple}x. Total capital $${this.leveragedCapital} - Available capital: ${this.leveragedCapital - currentTrade.allocatedCapital}`)
+      console.log(`🔺: Adding ${units} units (${maxAllocation}) to position! Leverage is ${this.leverageMultiple}x. Total capital $${this.leveragedCapital} - Available capital: ${this.leveragedCapital - currentTrade.allocatedCapital}`)
 
       await currentTrade.save()
 
@@ -136,14 +140,14 @@ export class TradingSystem {
     }
   }
 
-  public startTrade = async (symbol: string, price: IAssetPrice, ATR: number, marketDirection: TradeDirection, backTestId: string) => {
+  public startTrade = async (symbol: string, executionPrice: number, price: IAssetPrice, ATR: number, marketDirection: TradeDirection, backTestId: string) => {
 
     // calculate position sizing
-    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: BUY: Adding entry at ${price.date} - ${price.close}`)
+    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: BUY: Adding entry at ${price.date} - ${executionPrice}`)
 
     const { maxAllocation,
       units,
-      initialStop } = PositionSizingHelper.ATRPositionSizing(this.leveragedCapital, DEFAULT_MAX_RISK_PER_TRADE, price.close, ATR, DEFAULT_ATR_MULTIPLE)
+      initialStop } = PositionSizingHelper.ATRPositionSizing(this.leveragedCapital, DEFAULT_MAX_RISK_PER_TRADE, executionPrice, ATR, DEFAULT_ATR_MULTIPLE)
 
 
     // Create new trade
@@ -155,18 +159,20 @@ export class TradingSystem {
       riskR: DEFAULT_MAX_RISK_PER_TRADE,
       quantity: units,
       allocatedCapital: maxAllocation,
-      entryPrice: price.close,
+      startPrice: executionPrice,
+      entryPrice: executionPrice,
+      avgEntryPrice: executionPrice,
       entryDate: price.date,
       // exitPrice: Number,
       // exitDate: Number,
-      currentStop: initialStop,
-      commission: DEFAULT_BROKER_COMISSION,
+      stopPrice: initialStop,
+      commission: DEFAULT_BROKER_COMMISSION,
       daysDuration: 0
-
     })
     await newTrade.save()
 
-    this.currentStop = newTrade.currentStop
+    this.currentStop = newTrade.stopPrice
+    console.log(`🛑 initial STOP set at ${NumberHelper.to2Decimals(newTrade.stopPrice)}`);
     this.currentActiveTradeId = newTrade._id;
     this.currentActiveTradeDirection = newTrade.direction;
     this.currentStart = null;
@@ -179,7 +185,7 @@ export class TradingSystem {
 
   }
 
-  public endTrade = async (price: IAssetPrice, currentStop: number, currentActiveTradeId, currentBackTestId: string,) => {
+  public endTrade = async (executionPrice: number, price: IAssetPrice, currentStop: number, currentActiveTradeId, currentBackTestId: string,) => {
     const currentTrade = await Trade.findOne({ _id: currentActiveTradeId })
 
     if (!currentTrade) {
@@ -197,12 +203,12 @@ export class TradingSystem {
     }
 
 
-    currentTrade.currentStop = currentStop;
+    currentTrade.stopPrice = currentStop;
     currentTrade.status = TradeStatus.Inactive;
     currentTrade.exitDate = price.date;
-    currentTrade.exitPrice = currentStop;
+    currentTrade.exitPrice = executionPrice;
     currentTrade.wasStopped = currentTrade.exitPrice === currentStop
-    currentTrade.profitLoss = (currentTrade.exitPrice - currentTrade.entryPrice) * currentTrade.quantity
+    currentTrade.profitLoss = (currentTrade.exitPrice - currentTrade.avgEntryPrice) * currentTrade.quantity
 
     ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `${currentTrade.profitLoss > 0 ? `💰` : `😞`}: ProfitLoss: $${currentTrade.profitLoss} - You were using ${this.leverageMultiple}x leverage, on a total available capital of ${this.leveragedCapital}.`)
 
@@ -211,7 +217,7 @@ export class TradingSystem {
     const b = moment(currentTrade.entryDate);
     const diff = a.diff(b, 'days')
     currentTrade.daysDuration = diff;
-    currentTrade.commission += DEFAULT_BROKER_COMISSION;
+    currentTrade.commission += DEFAULT_BROKER_COMMISSION;
     await currentTrade.save();
 
     this.currentActiveTradeId = null;
@@ -314,7 +320,9 @@ export class TradingSystem {
       backtest.buyAndHoldROI = NumberHelper.to2Decimals(((lastPrice / firstPrice) - 1) * 100)
       backtest.buyAndHoldROIPerDay = (backtest.buyAndHoldROI / backtest.totalDays) * 100
       backtest.ROI = NumberHelper.to2Decimals((((backtest.finalCapital / backtest.initialCapital) - 1) * 100))
-      backtest.ROIPerDay = (backtest.ROI / backtest.totalTradingDays) * 100
+      backtest.buyAndHoldROIPerYear = backtest.buyAndHoldROI / (backtest.totalDays / 365)
+      backtest.ROIPerDay = (backtest.ROI / backtest.totalTradingDays) * 100;
+      backtest.ROIPerYear = backtest.ROI / (backtest.totalTradingDays / 365)
       backtest.winnerTradesPercentage = NumberHelper.to2Decimals(((winnerTradesCount / totalTradesCount) * 100))
       backtest.loserTradesPercentage = NumberHelper.to2Decimals(((loserTradesCount / totalTradesCount) * 100))
       backtest.avgWinnerProfit = NumberHelper.to2Decimals(winnerTradesSum / winnerTradesCount)

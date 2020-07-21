@@ -11,11 +11,14 @@ export interface ITrade {
   quantity: number,
   allocatedCapital: number,
   entryPrice: number,
+  avgEntryPrice: number,
+  exitPrice: number,
+  startPrice: number,
+  stopPrice: number,
   entryDate: Date,
   commission: number,
-  exitPrice?: number,
+
   exitDate: Date,
-  currentStop: number
   wasStopped: boolean
   profitLoss: number,
   daysDuration: number,

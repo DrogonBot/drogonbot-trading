@@ -13,8 +13,10 @@ export interface IBackTest {
   finalCapital: number,
   buyAndHoldROI: number,
   buyAndHoldROIPerDay: number,
+  buyAndHoldROIPerYear: number,
   ROI: number,
-  ROIPerDay: number
+  ROIPerDay: number,
+  ROIPerYear: number
   expectancy: number, // most important factor!
   winnerTradesPercentage: number,
   loserTradesPercentage: number,

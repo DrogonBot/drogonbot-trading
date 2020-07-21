@@ -11,8 +11,10 @@ const backTestSchema = new mongoose.Schema({
   initialCapital: Number,
   finalCapital: Number,
   buyAndHoldROI: Number,
+  buyAndHoldROIPerYear: Number,
   buyAndHoldROIPerDay: Number,
   ROI: Number,
+  ROIPerYear: Number,
   ROIPerDay: Number,
   expectancy: Number, // most important factor!
   winnerTradesPercentage: Number,
