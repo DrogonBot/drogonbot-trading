@@ -29,7 +29,7 @@ export class LeatherBackTurtle extends TradingSystem {
     this.ATRStopMultiple = 3
     this.currentBackTest = null
     this.backTestPriceData = []
-    this.backTestStop = null;
+    this.currentBackTestStop = null;
     this.backTestPyramidNextBuyTarget = 0
     this.backTestPyramidCurrentLayer = 0;
     this.pyramidMaxLayers = 4 //  max entries to trend
@@ -76,8 +76,6 @@ export class LeatherBackTurtle extends TradingSystem {
         donchianChannel20Periods
       }
 
-
-
       const nextSteps = await this.decideNextSteps(priceNow, pricePrevious, price2PeriodsAgo, indicators)
 
       if (!nextSteps) {
@@ -86,19 +84,19 @@ export class LeatherBackTurtle extends TradingSystem {
 
       switch (nextSteps) {
         case BackTestActions.UpdateBackTestData:
-          await backTest.updateBackTestAfterNewTrade(this.currentCapital, this.currentBackTest!._id, this.currentActiveTradeId!)
+          await backTest.updateBackTestAfterTrade(this.currentBackTestCapital, this.currentBackTest!._id, this.currentActiveTradeId!)
           break;
 
         case BackTestActions.BuyOrder:
           const ATRNow = ATR[D.indicatorDateFormat(priceNow.date)].value
-          const startedTrade = await backTest.startBackTestingTrade(this.currentCapital, this.symbol, this.currentStart!, priceNow, ATRNow, this.marketDirection!, this.currentBackTest!._id)
+          const startedTrade = await backTest.startBackTestingTrade(this.currentBackTestCapital, this.symbol, this.currentBackTestStart!, priceNow, ATRNow, this.marketDirection!, this.currentBackTest!._id)
 
-          this.backTestStop = startedTrade.stopPrice
-          this.trailingStops = [this.backTestStop]
+          this.currentBackTestStop = startedTrade.stopPrice
+          this.trailingStops = [this.currentBackTestStop]
           console.log(`🛑 initial STOP set at ${N.format(startedTrade.stopPrice)}`);
           this.currentActiveTradeId = startedTrade._id;
           this.currentActiveTradeDirection = startedTrade.direction;
-          this.currentStart = null;
+          this.currentBackTestStart = null;
           this.backTestPyramidNextBuyTarget = priceNow.close + ATRNow
           console.log(`Adding pyramidNextBuyTarget: ${this.backTestPyramidNextBuyTarget}`);
 
@@ -106,14 +104,14 @@ export class LeatherBackTurtle extends TradingSystem {
 
           break;
         case BackTestActions.SellOrder:
-          const currentTrade = await backTest.endBackTestingTrade(this.currentCapital, this.backTestStop!, priceNow, this.backTestStop!, this.currentActiveTradeId, this.currentBackTest!._id)
+          const currentTrade = await backTest.endBackTestingTrade(this.currentBackTestCapital, this.currentBackTestStop!, priceNow, this.currentBackTestStop!, this.currentActiveTradeId)
 
           if (!currentTrade) {
             console.log("Error while finishing trade and processing results...");
             return
           }
           // update backtest
-          await backTest.updateBackTestAfterNewTrade(this.currentCapital, this.currentBackTest._id, currentTrade._id)
+          await backTest.updateBackTestAfterTrade(this.currentBackTestCapital, this.currentBackTest._id, currentTrade._id)
           this.resetVariablesAfterTrading(currentTrade.profitLoss)
           break;
 
@@ -125,6 +123,7 @@ export class LeatherBackTurtle extends TradingSystem {
     await backTest.calculateBackTestMetrics(this.backTestPriceData, this.currentBackTest!._id)
   }
 
+  // !Most important system function. Here we define how the bot should "think"
   public decideNextSteps = async (priceNow: IAssetPrice, pricePrevious: IAssetPrice, price2PeriodsAgo: IAssetPrice, indicators) => {
 
 
@@ -158,17 +157,17 @@ export class LeatherBackTurtle extends TradingSystem {
     // EXITS ========================================
 
     if (this.canStop(priceNow)) {
-      console.log(`STOP=${N.format(this.backTestStop!)} / LOW=${N.format(priceNow.low)}`);
-      console.log(`SELL signal EXECUTED on date: ${priceNow.date} - PRICE=${N.format(this.backTestStop!)}`);
+      console.log(`STOP=${N.format(this.currentBackTestStop!)} / LOW=${N.format(priceNow.low)}`);
+      console.log(`SELL signal EXECUTED on date: ${priceNow.date} - PRICE=${N.format(this.currentBackTestStop!)}`);
       return BackTestActions.SellOrder
     }
 
 
     if (this.isSellSignal(donchianChannelNow20periods, donchianChannelPrevious20periods)) {
       if (this.currentActiveTradeDirection === TradeDirection.Long) {
-        this.backTestStop = priceNow.low - 0.01
-        console.log(`SELL signal PLACED on date: ${D.format(priceNow.date)} - STOP=${N.format(this.backTestStop!)}`);
-        console.log(`🛑 exit STOP set to ${N.format(this.backTestStop)} on date: ${D.format(priceNow.date)}`);
+        this.currentBackTestStop = priceNow.low - 0.01
+        console.log(`SELL signal PLACED on date: ${D.format(priceNow.date)} - STOP=${N.format(this.currentBackTestStop!)}`);
+        console.log(`🛑 exit STOP set to ${N.format(this.currentBackTestStop)} on date: ${D.format(priceNow.date)}`);
       }
     }
 
@@ -177,20 +176,20 @@ export class LeatherBackTurtle extends TradingSystem {
 
         const potentialStop = priceNow.low - (ATRNow * this.ATRStopMultiple)
 
-        if (this.backTestStop === potentialStop) {
+        if (this.currentBackTestStop === potentialStop) {
           return false // skip
         }
 
-        if (this.backTestStop) {
-          if (potentialStop > this.backTestStop) {
-            this.backTestStop = potentialStop
+        if (this.currentBackTestStop) {
+          if (potentialStop > this.currentBackTestStop) {
+            this.currentBackTestStop = potentialStop
 
-            console.log(`🛑 STOP increased to ${N.format(this.backTestStop)} on date: ${D.format(priceNow.date)}`);
+            console.log(`🛑 STOP increased to ${N.format(this.currentBackTestStop)} on date: ${D.format(priceNow.date)}`);
           }
         } else {
-          this.backTestStop = priceNow.low - (ATRNow * this.ATRStopMultiple)
+          this.currentBackTestStop = priceNow.low - (ATRNow * this.ATRStopMultiple)
 
-          console.log(`🛑 STOP set at ${N.format(this.backTestStop)} on date: ${D.format(priceNow.date)}`);
+          console.log(`🛑 STOP set at ${N.format(this.currentBackTestStop)} on date: ${D.format(priceNow.date)}`);
         }
 
       }
@@ -201,24 +200,18 @@ export class LeatherBackTurtle extends TradingSystem {
     if (this.canAddPyramidLayer(priceNow)) {
       await this.addPyramidLayerToTrade(this.currentActiveTradeId!, priceNow, ATRNow)
       return BackTestActions.UpdateBackTestData
-
     }
 
     if (this.canStartTrade(priceNow)) {
-      console.log(`BUY signal EXECUTED on date ${priceNow.date} - EXECUTED=${this.currentStart}`);
+      console.log(`BUY signal EXECUTED on date ${priceNow.date} - EXECUTED=${N.format(this.currentBackTestStart!)}`);
       return BackTestActions.BuyOrder
-
-
     }
 
     if (this.isBuySignal(donchianChannelNow20periods, donchianChannelPrevious20periods, donchianChannel2periodsAgo20periods)) {
       // set start
-      this.currentStart = priceNow.high + 0.01
-      console.log(`BUY signal PLACED on date: ${priceNow.date} - START=${this.currentStart}`);
+      this.currentBackTestStart = priceNow.high + 0.01
+      console.log(`BUY signal PLACED on date: ${priceNow.date} - START=${N.format(this.currentBackTestStart)}`);
     }
-
-
-
   }
 
   public isAdjustStopSignal = (priceNow: IAssetPrice, donchianChannelNow: IIndicatorDonchianChannel) => {

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import * as mathjs from 'mathjs';
 import moment from 'moment';
 
 import { IAssetPrice } from '../../resources/Asset/asset.types';
@@ -7,6 +8,7 @@ import {
   DEFAULT_BROKER_COMMISSION,
   DEFAULT_INITIAL_CAPITAL,
   DEFAULT_MAX_RISK_PER_TRADE,
+  RISK_FREE_RETURN,
 } from '../../resources/BackTest/backtest.constant';
 import { BackTest } from '../../resources/BackTest/backtest.model';
 import { Trade } from '../../resources/Trade/trade.model';
@@ -16,6 +18,7 @@ import { N } from '../../utils/NumberHelper';
 import { PositionSizingHelper } from '../../utils/PositionSizingHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { TradingSystem } from './TradingSystem';
+
 
 
 export class BackTestingSystem extends TradingSystem {
@@ -81,7 +84,7 @@ export class BackTestingSystem extends TradingSystem {
 
   }
 
-  public endBackTestingTrade = async (currentCapital: number, executionPrice: number, price: IAssetPrice, currentStop: number, currentActiveTradeId, currentBackTestId: string,) => {
+  public endBackTestingTrade = async (currentCapital: number, executionPrice: number, price: IAssetPrice, currentStop: number, currentActiveTradeId) => {
     const currentTrade = await Trade.findOne({ _id: currentActiveTradeId })
 
     if (!currentTrade) {
@@ -106,7 +109,7 @@ export class BackTestingSystem extends TradingSystem {
     currentTrade.wasStopped = currentTrade.exitPrice === currentStop
     currentTrade.profitLoss = (currentTrade.exitPrice - currentTrade.avgEntryPrice) * currentTrade.quantity
 
-    ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `${currentTrade.profitLoss > 0 ? `💰` : `😞`}: ProfitLoss: $${currentTrade.profitLoss} - Total available capital of ${currentCapital}.`)
+    ConsoleHelper.coloredLog(ConsoleColor.BgBlue, ConsoleColor.FgWhite, `${currentTrade.profitLoss > 0 ? `💰` : `😞`}: ProfitLoss: $${currentTrade.profitLoss} - Total available capital of $${currentCapital}.`)
 
 
     const a = moment(currentTrade.exitDate);
@@ -119,7 +122,7 @@ export class BackTestingSystem extends TradingSystem {
     return currentTrade;
   }
 
-  public updateBackTestAfterNewTrade = async (currentCapital: number, currentBackTestId: string, currentTradeId: string) => {
+  public updateBackTestAfterTrade = async (currentCapital: number, currentBackTestId: string, currentTradeId: string) => {
     const currentTrade = await Trade.findOne({ _id: currentTradeId })
     const currentBackTest = await BackTest.findOne({ _id: currentBackTestId });
 
@@ -130,13 +133,18 @@ export class BackTestingSystem extends TradingSystem {
         currentBackTest.totalTradingDays += currentTrade.daysDuration
       }
 
-      currentBackTest.capitalHistory = [
-        ...currentBackTest.capitalHistory,
-        {
-          date: currentTrade.exitDate,
-          currentCapital
-        }
-      ]
+      const latestCapital = currentBackTest.capitalHistory[currentBackTest.capitalHistory.length - 1]?.currentCapital || currentCapital
+
+      if (currentTrade.exitDate) {
+        currentBackTest.capitalHistory = [
+          ...currentBackTest.capitalHistory,
+          {
+            date: currentTrade.exitDate,
+            currentCapital,
+            variation: ((currentCapital / latestCapital) - 1) * 100
+          }
+        ]
+      }
 
       currentBackTest.totalCommission += currentTrade.commission
       await currentBackTest.save()
@@ -205,6 +213,13 @@ export class BackTestingSystem extends TradingSystem {
       backtest.avgLoserLoss = N.format(loserTradesSum / loserTradesCount)
       backtest.expectancy = N.format(((backtest.winnerTradesPercentage / 100 * Math.abs(backtest.avgWinnerProfit)) - (backtest.loserTradesPercentage / 100 * Math.abs(backtest.avgLoserLoss))))
       backtest.totalCommissionPercentageFinalCapital = N.format((backtest.totalCommission / backtest.finalCapital) * 100)
+
+
+      // sharpe ratio
+      const variationHistory = backtest.capitalHistory.map((data) => data.variation).filter((variation) => variation !== 0)
+      const stdDevROI = mathjs.std(variationHistory)
+      const ROIPerYearPercentual = (backtest.ROIPerYear / 100)
+      backtest.sharpeRatio = (ROIPerYearPercentual - RISK_FREE_RETURN) / (stdDevROI / 100)
 
       await backtest.save()
 

@@ -25,7 +25,7 @@ const backTestSchema = new mongoose.Schema({
   largestSingleWinningTrade: Number,
   maxDrawdown: Number,
   maxDrawdownPercentage: Number,
-  // sharpRatio: Number,
+  sharpeRatio: Number,
   // profitFactor: Number,
   // outlierAdjustedProfitFactor: Number,
   // maxConsecutiveWinners: Number,
@@ -51,6 +51,7 @@ const backTestSchema = new mongoose.Schema({
   capitalHistory: [{
     date: Date,
     currentCapital: Number,
+    variation: Number
   }]
 })
 
