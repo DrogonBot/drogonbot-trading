@@ -1,4 +1,4 @@
-# Emprego Urgente
+# Project Setup
 
 ## Table of Contents
 
@@ -57,9 +57,5 @@
      then select one (name). For example: docker-node-mongo. Then run:
 
      ```
-     docker exec -it docker-node-mongo /bin/bash
+     docker exec -it docker-node-mongo sh
      ```
-
-## Mongo Admin
-
-- Access http://localhost:3002 to manage your mongodb database. On production its on mongo-admin.empregourgente.com
