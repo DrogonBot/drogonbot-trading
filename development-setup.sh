@@ -9,7 +9,7 @@ printColor () {
 }
 
 # Other important constants
-PROJECT_FOLDER="/home/jonit/empregourgente-backend"
+PROJECT_FOLDER="/home/jonit/Personal_projects/drogobot"
 
 printColor "Setting up firewall to open docker related ports"
 sudo ufw allow OpenSSH
@@ -45,39 +45,39 @@ fi
 
 # Setup Admin panel
 
-if test -f "./admin/environment/Dockerfile.dev"; then
-  printColor "Preparing Admin Panel development Dockerfile"
-  sudo cp ./admin/environment/Dockerfile.dev ./admin/Dockerfile
-  else 
-    echo "You must have a ./admin/environment/Dockerfile.dev to proceed!"
-    exit
-fi
+# if test -f "./admin/environment/Dockerfile.dev"; then
+#   printColor "Preparing Admin Panel development Dockerfile"
+#   sudo cp ./admin/environment/Dockerfile.dev ./admin/Dockerfile
+#   else 
+#     echo "You must have a ./admin/environment/Dockerfile.dev to proceed!"
+#     exit
+# fi
 
-if test -f "./admin/environment/Env.constant.dev.ts"; then
-  printColor "Preparing Admin Panel environment files"
-  sudo cp ./admin/environment/Env.constant.dev.ts ./admin/src/constants/Env.constant.ts
-  else 
-    echo "You must have a ./admin/environment/Env.constant.dev.ts to proceed!"
-    exit
-fi
+# if test -f "./admin/environment/Env.constant.dev.ts"; then
+#   printColor "Preparing Admin Panel environment files"
+#   sudo cp ./admin/environment/Env.constant.dev.ts ./admin/src/constants/Env.constant.ts
+#   else 
+#     echo "You must have a ./admin/environment/Env.constant.dev.ts to proceed!"
+#     exit
+# fi
 
 # Setup Next.js
 
-if test -f "./web/environment/Dockerfile.dev"; then
-  printColor "Preparing Next.JS (front-end web) development Dockerfile"
-  sudo cp ./web/environment/Dockerfile.dev ./web/Dockerfile
-  else 
-    echo "You must have a ./web/environment/Dockerfile.dev to proceed!"
-    exit
-fi
+# if test -f "./web/environment/Dockerfile.dev"; then
+#   printColor "Preparing Next.JS (front-end web) development Dockerfile"
+#   sudo cp ./web/environment/Dockerfile.dev ./web/Dockerfile
+#   else 
+#     echo "You must have a ./web/environment/Dockerfile.dev to proceed!"
+#     exit
+# fi
 
-if test -f "./web/environment/Env.constant.dev.ts"; then
-  printColor "Preparing Next.JS (front-end web) environment files"
-  sudo cp ./web/environment/Env.constant.dev.ts ./web/src/constants/Env.constant.ts
-  else 
-    echo "You must have a ./web/environment/Env.constant.dev.ts to proceed!"
-    exit
-fi
+# if test -f "./web/environment/Env.constant.dev.ts"; then
+#   printColor "Preparing Next.JS (front-end web) environment files"
+#   sudo cp ./web/environment/Env.constant.dev.ts ./web/src/constants/Env.constant.ts
+#   else 
+#     echo "You must have a ./web/environment/Env.constant.dev.ts to proceed!"
+#     exit
+# fi
 
 
  
