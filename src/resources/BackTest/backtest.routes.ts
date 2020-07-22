@@ -1,14 +1,14 @@
 import express from 'express';
 
-import { LeatherBackTurtle } from '../../trading/LeatherBackTurtle';
+import { ThreeDragons } from '../../trading/strategies/ThreeDragons';
 
 // @ts-ignore
 const backTestRouter = new express.Router();
 
 // get asset price data
-backTestRouter.get("/backtest/:symbol/:interval/:strategy", async (req, res) => {
+backTestRouter.get("/backtest/:symbols/:interval/:strategy", async (req, res) => {
 
-  const { symbol, strategy, interval } = req.params;
+  const { symbols, strategy, interval } = req.params;
 
   try {
 
@@ -16,10 +16,14 @@ backTestRouter.get("/backtest/:symbol/:interval/:strategy", async (req, res) => 
 
 
 
-      case "leatherbackTurtle":
+      case "ThreeDragons":
 
-        const lt = new LeatherBackTurtle(symbol, interval)
-        await lt.backTest();
+        const assetsArray = symbols.split(",").map((symbol) => symbol)
+
+
+        const threeDragons = new ThreeDragons(assetsArray, interval)
+        await threeDragons.backTest()
+
 
 
         break;

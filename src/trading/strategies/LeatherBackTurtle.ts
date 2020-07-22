@@ -1,15 +1,10 @@
-import { IAssetPrice } from '../resources/Asset/asset.types';
-import { BackTestActions, TradeDirection } from '../resources/Trade/trade.types';
-import { ConsoleColor, ConsoleHelper } from '../utils/ConsoleHelper';
-import { D } from '../utils/DateTimeHelper';
-import { N } from '../utils/NumberHelper';
-import { BackTestingSystem } from './classes/BackTestingSystem';
-import { TradingSystem } from './classes/TradingSystem';
-import { TradingDataInterval } from './constant/tradingdata.constant';
-import { ATRHelper } from './indicators/ATRHelper';
-import { DonchianChannelHelper } from './indicators/DonchianChannelHelper';
-import { MovingAverageHelper } from './indicators/MovingAverageHelper';
-import { IIndicatorDonchianChannel, IndicatorSeriesType } from './indicators/types/indicator.types';
+import { IAssetPrice } from '../../resources/Asset/asset.types';
+import { BackTestActions, TradeDirection } from '../../resources/Trade/trade.types';
+import { D } from '../../utils/DateTimeHelper';
+import { N } from '../../utils/NumberHelper';
+import { TradingDataInterval } from '../constant/tradingdata.constant';
+import { IIndicatorDonchianChannel } from '../indicators/types/indicator.types';
+import { TradingSystem } from './TradingSystem';
 
 
 export class LeatherBackTurtle extends TradingSystem {
@@ -28,7 +23,7 @@ export class LeatherBackTurtle extends TradingSystem {
     this.currentActiveTradeDirection = null
     this.ATRStopMultiple = 3
     this.currentBackTest = null
-    this.backTestPriceData = []
+    // this.backTestPriceData = []
     this.currentBackTestStop = null;
     this.backTestPyramidNextBuyTarget = 0
     this.backTestPyramidCurrentLayer = 0;
@@ -37,91 +32,91 @@ export class LeatherBackTurtle extends TradingSystem {
   }
 
 
-  public backTest = async () => {
+  // public backTest = async () => {
 
-    ConsoleHelper.coloredLog(ConsoleColor.BgMagenta, ConsoleColor.FgWhite, `🤖 Initializing ${this._systemName}...`)
+  //   ConsoleHelper.coloredLog(ConsoleColor.BgMagenta, ConsoleColor.FgWhite, `🤖 Initializing ${this._systemName}...`)
 
-    const backTest = new BackTestingSystem()
+  //   const backTest = new BackTestingSystem()
 
-    // fetch latest asset data and create backtest entry
-    const startBackTest = await backTest.startBackTesting(this.symbol, this.interval)
-    this.backTestPriceData = startBackTest?.priceData!;
-    this.currentBackTest = startBackTest?.currentBackTest!
+  //   // fetch latest asset data and create backtest entry
+  //   const startBackTest = await backTest.startBackTesting(this.symbol, this.interval)
+  //   this.backTestPriceData = startBackTest?.priceData!;
+  //   this.currentBackTest = startBackTest?.currentBackTest!
 
-    if (!this.backTestPriceData || !this.currentBackTest) {
-      console.log("Error: failure to initialize BackTest");
-      return
-    }
-
-
-    // Calculate indicators
-    console.log("🤖: Calculating indicators...");
-
-    const donchianChannel20Periods = await DonchianChannelHelper.calculate(this.symbol, 20, this.interval)
-    const ATR = await ATRHelper.calculate(this.symbol, this.interval, 14)
-    const MME200 = await MovingAverageHelper.calculateEMA(this.symbol, 200, IndicatorSeriesType.Close, this.interval)
-
-    console.log(`🤖: Running system on ${this.backTestPriceData.length} asset prices`);
-
-    // loop through asset data and calculate entry or exit points
-    for (let i = 0; i < this.backTestPriceData.length; i++) {
-
-      const price2PeriodsAgo = this.backTestPriceData[i - 2] || null
-      const pricePrevious = this.backTestPriceData[i - 1] || null
-      const priceNow = this.backTestPriceData[i]
-
-      const indicators = {
-        MME200,
-        ATR,
-        donchianChannel20Periods
-      }
-
-      const nextSteps = await this.decideNextSteps(priceNow, pricePrevious, price2PeriodsAgo, indicators)
-
-      if (!nextSteps) {
-        continue
-      }
-
-      switch (nextSteps) {
-        case BackTestActions.UpdateBackTestData:
-          await backTest.updateBackTestAfterTrade(this.currentBackTestCapital, this.currentBackTest!._id, this.currentActiveTradeId!)
-          break;
-
-        case BackTestActions.BuyOrder:
-          const ATRNow = ATR[D.indicatorDateFormat(priceNow.date)].value
-          const startedTrade = await backTest.startBackTestingTrade(this.currentBackTestCapital, this.symbol, this.currentBackTestStart!, priceNow, ATRNow, this.marketDirection!, this.currentBackTest!._id)
-
-          this.currentBackTestStop = startedTrade.stopPrice
-          this.trailingStops = [this.currentBackTestStop]
-          console.log(`🛑 initial STOP set at ${N.format(startedTrade.stopPrice)}`);
-          this.currentActiveTradeId = startedTrade._id;
-          this.currentActiveTradeDirection = startedTrade.direction;
-          this.currentBackTestStart = null;
-          this.backTestPyramidNextBuyTarget = priceNow.close + ATRNow
-          console.log(`Adding pyramidNextBuyTarget: ${this.backTestPyramidNextBuyTarget}`);
+  //   if (!this.backTestPriceData || !this.currentBackTest) {
+  //     console.log("Error: failure to initialize BackTest");
+  //     return
+  //   }
 
 
+  //   // Calculate indicators
+  //   console.log("🤖: Calculating indicators...");
 
-          break;
-        case BackTestActions.SellOrder:
-          const currentTrade = await backTest.endBackTestingTrade(this.currentBackTestCapital, this.currentBackTestStop!, priceNow, this.currentBackTestStop!, this.currentActiveTradeId)
+  //   const donchianChannel20Periods = await DonchianChannelHelper.calculate(this.symbol, 20, this.interval)
+  //   const ATR = await ATRHelper.calculate(this.symbol, this.interval, 14)
+  //   const MME200 = await MovingAverageHelper.calculateEMA(this.symbol, 200, IndicatorSeriesType.Close, this.interval)
 
-          if (!currentTrade) {
-            console.log("Error while finishing trade and processing results...");
-            return
-          }
-          // update backtest
-          await backTest.updateBackTestAfterTrade(this.currentBackTestCapital, this.currentBackTest._id, currentTrade._id)
-          this.resetVariablesAfterTrading(currentTrade.profitLoss)
-          break;
+  //   console.log(`🤖: Running system on ${this.backTestPriceData.length} asset prices`);
 
-      }
-    }
+  //   // loop through asset data and calculate entry or exit points
+  //   for (let i = 0; i < this.backTestPriceData.length; i++) {
 
-    // !Backtest Results!
-    // calculate backtest results, to finish
-    await backTest.calculateBackTestMetrics(this.backTestPriceData, this.currentBackTest!._id)
-  }
+  //     const price2PeriodsAgo = this.backTestPriceData[i - 2] || null
+  //     const pricePrevious = this.backTestPriceData[i - 1] || null
+  //     const priceNow = this.backTestPriceData[i]
+
+  //     const indicators = {
+  //       MME200,
+  //       ATR,
+  //       donchianChannel20Periods
+  //     }
+
+  //     const nextSteps = await this.decideNextSteps(priceNow, pricePrevious, price2PeriodsAgo, indicators)
+
+  //     if (!nextSteps) {
+  //       continue
+  //     }
+
+  //     switch (nextSteps) {
+  //       case BackTestActions.UpdateBackTestData:
+  //         await backTest.updateBackTestAfterTrade(this.currentBackTestCapital, this.currentBackTest!._id, this.currentActiveTradeId!)
+  //         break;
+
+  //       case BackTestActions.BuyOrder:
+  //         const ATRNow = ATR[D.indicatorDateFormat(priceNow.date)].value
+  //         const startedTrade = await backTest.startBackTestingTrade(this.currentBackTestCapital, this.symbol, this.currentBackTestStart!, priceNow, ATRNow, this.marketDirection!, this.currentBackTest!._id)
+
+  //         this.currentBackTestStop = startedTrade.stopPrice
+  //         this.trailingStops = [this.currentBackTestStop]
+  //         console.log(`🛑 initial STOP set at ${N.format(startedTrade.stopPrice)}`);
+  //         this.currentActiveTradeId = startedTrade._id;
+  //         this.currentActiveTradeDirection = startedTrade.direction;
+  //         this.currentBackTestStart = null;
+  //         this.backTestPyramidNextBuyTarget = priceNow.close + ATRNow
+  //         console.log(`Adding pyramidNextBuyTarget: ${this.backTestPyramidNextBuyTarget}`);
+
+
+
+  //         break;
+  //       case BackTestActions.SellOrder:
+  //         const currentTrade = await backTest.endBackTestingTrade(this.currentBackTestCapital, this.currentBackTestStop!, priceNow, this.currentBackTestStop!, this.currentActiveTradeId)
+
+  //         if (!currentTrade) {
+  //           console.log("Error while finishing trade and processing results...");
+  //           return
+  //         }
+  //         // update backtest
+  //         await backTest.updateBackTestAfterTrade(this.currentBackTestCapital, this.currentBackTest._id, currentTrade._id)
+  //         this.resetVariablesAfterTrading(currentTrade.profitLoss)
+  //         break;
+
+  //     }
+  //   }
+
+  //   // !Backtest Results!
+  //   // calculate backtest results, to finish
+  //   await backTest.calculateBackTestMetrics(this.backTestPriceData, this.currentBackTest!._id)
+  // }
 
   // !Most important system function. Here we define how the bot should "think"
   public decideNextSteps = async (priceNow: IAssetPrice, pricePrevious: IAssetPrice, price2PeriodsAgo: IAssetPrice, indicators) => {

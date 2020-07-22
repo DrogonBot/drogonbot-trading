@@ -11,6 +11,7 @@ import {
   RISK_FREE_RETURN,
 } from '../../resources/BackTest/backtest.constant';
 import { BackTest } from '../../resources/BackTest/backtest.model';
+import { IBackTestSymbolData } from '../../resources/BackTest/backtest.types';
 import { Trade } from '../../resources/Trade/trade.model';
 import { TradeDirection, TradeStatus, TradeType } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
@@ -22,16 +23,48 @@ import { TradingSystem } from './TradingSystem';
 
 
 export class BackTestingSystem extends TradingSystem {
+  public backTestSymbolsData: IBackTestSymbolData
+  public symbolsMarketDirections: object | null
+  public currentBackTestId: string | null
 
-  public startBackTesting = async (symbol: string, interval: TradingDataInterval) => {
+
+  constructor() {
+    super();
+    this.symbolsMarketDirections = null
+    this.backTestSymbolsData = {}
+    this.currentBackTestId = null
+  }
+
+  public startBackTesting = async (symbols: string[], interval: TradingDataInterval) => {
+
 
     // load price data
-    const priceData = await this.fetchPriceData(symbol, interval)
+    // const priceData = await this.fetchPriceData(symbol, interval)
+
+    for (const symbol of symbols) {
+      console.log(`BackTest: Fetching data for ${symbol}. Please wait...`);
+      let quotes = await this.fetchPriceData(symbol, interval)
+
+
+      quotes = _.slice(quotes, 0, 1)
+
+      if (!quotes) {
+        throw new Error(`BackTest: failed to fetch data for ${symbol}. Please, make sure you have data for it, first!`)
+      }
+
+      this.backTestSymbolsData = {
+        [symbol]: {
+          indicators: {},
+          quotes,
+          marketDirection: null
+        }
+      }
+    }
 
     try {
       console.log('Creating new backtest...');
       const newBackTest = new BackTest({
-        assets: [symbol],
+        assets: symbols,
         initialCapital: DEFAULT_INITIAL_CAPITAL,
         finalCapital: DEFAULT_INITIAL_CAPITAL,
         totalTrades: 0,
@@ -40,7 +73,12 @@ export class BackTestingSystem extends TradingSystem {
       })
       await newBackTest.save()
 
-      return { priceData, currentBackTest: newBackTest };
+      this.currentBackTestId = newBackTest._id
+
+      if (!this.backTestSymbolsData || !this.currentBackTestId) {
+        throw new Error("BackTest: failed to initialize backtest!")
+      }
+
     }
     catch (error) {
       console.error(error);

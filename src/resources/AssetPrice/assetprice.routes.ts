@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { TradingDataAssistant } from '../../trading/classes/data/TradingDataAssistant';
+import { TradingDataAssistant } from '../../trading/strategies/data/TradingDataAssistant';
 import { TS } from '../../utils/TS';
 import { AssetPrice } from './assetprice.model';
 

@@ -1,7 +1,7 @@
 import * as mathjs from 'mathjs';
 
 import { IAssetPrice } from '../../resources/Asset/asset.types';
-import { AssetPrice, IAssetPriceModel } from '../../resources/AssetPrice/assetprice.model';
+import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
 import {
   DEFAULT_ATR_MULTIPLE,
   DEFAULT_BROKER_COMMISSION,
@@ -17,8 +17,8 @@ import { PositionSizingHelper } from '../../utils/PositionSizingHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
 
 export class TradingSystem {
-  public backTestPriceData: IAssetPriceModel[] | null
-  public symbol: string | null;
+
+
   public interval: TradingDataInterval | null
   public marketDirection: TradeDirection | null;
   public currentBackTest: IBackTestModel | undefined | null
@@ -36,8 +36,7 @@ export class TradingSystem {
   public backTestRiskPerTradeR: number
 
   constructor() {
-    this.backTestPriceData = []
-    this.symbol = null
+
     this.interval = null;
     this.marketDirection = null;
     this.currentBackTest = null;

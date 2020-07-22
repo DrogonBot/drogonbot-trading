@@ -67,6 +67,7 @@
     "src/**/*.ts",
     "src/*",
     "src/classes/payment/JunoPayment",
-    "src/classes/bots"
+    "src/classes/bots",
+    "src/trading/strategies/LeatherBackTurtle"
   ]
 }
