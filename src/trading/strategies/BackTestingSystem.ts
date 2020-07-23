@@ -54,8 +54,7 @@ export class BackTestingSystem extends TradingSystem {
         ...this.backTestSymbolsData,
         [symbol]: {
           indicators: {},
-          quotes,
-          marketDirection: null
+          quotes
         }
       }
     }

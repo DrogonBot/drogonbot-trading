@@ -1,3 +1,4 @@
+import { TradeDirection } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { ATRHelper } from '../indicators/ATRHelper';
@@ -24,13 +25,12 @@ export class ThreeDragons extends BackTestingSystem {
 
     await this.startBackTesting(this.symbols, this.interval)
 
-
     // calculate indicators
     await this.calculateIndicators()
 
+    console.log('🤖 Starting backtest!');
 
-    console.log('INDICATORS CALCULATED...');
-    console.log(this.backTestSymbolsData);
+
   }
 
   public calculateIndicators = async () => {
@@ -40,8 +40,8 @@ export class ThreeDragons extends BackTestingSystem {
       console.log(`🤖: Calculating indicators for ${symbol} (${this.interval})`);
 
       const ATR = await ATRHelper.calculate(symbol, this.interval, 14)
-      const MME200 = await MovingAverageHelper.calculateEMA(symbol, 200, IndicatorSeriesType.Close, this.interval)
-      const MME50 = await MovingAverageHelper.calculateEMA(symbol, 50, IndicatorSeriesType.Close, this.interval)
+      const SMA200 = await MovingAverageHelper.calculateSMA(symbol, this.interval, 200, IndicatorSeriesType.Close)
+      const SMA50 = await MovingAverageHelper.calculateSMA(symbol, this.interval, 50, IndicatorSeriesType.Close)
 
 
 
@@ -49,11 +49,23 @@ export class ThreeDragons extends BackTestingSystem {
         ...this.backTestSymbolsData[symbol],
         indicators: {
           ATR,
-          MME200,
-          MME50
+          SMA200,
+          SMA50
         }
       }
     }
+  }
+
+  public calculateCurrentMarketDirection = async (SMA200Now, SMA200Prev, SMA50Now) => {
+    if (SMA200Now > SMA200Prev && SMA50Now > SMA200Now) {
+      return TradeDirection.Long
+    }
+
+    if (SMA200Now < SMA200Prev && SMA200Now > SMA50Now) {
+      return TradeDirection.Short
+    }
+
+    return TradeDirection.Lateral
   }
 
 

@@ -1,5 +1,4 @@
 import { IAssetPrice } from '../Asset/asset.types';
-import { TradeDirection } from '../Trade/trade.types';
 
 
 // More info: https://www.tradinggame.com.au/introduction-to-backtesting-metrics/
@@ -52,7 +51,7 @@ export interface IBackTest {
 export interface IBackTestSymbolData {
   [x: string]: {
     quotes: IAssetPrice[] | null,
-    marketDirection: TradeDirection | null,
+
     indicators: object | null
   }
 }
