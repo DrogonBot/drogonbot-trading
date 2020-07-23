@@ -24,11 +24,12 @@ export class ThreeDragons extends BackTestingSystem {
 
     await this.startBackTesting(this.symbols, this.interval)
 
-    console.log(this.backTestSymbolsData);
 
     // calculate indicators
     await this.calculateIndicators()
 
+
+    console.log('INDICATORS CALCULATED...');
     console.log(this.backTestSymbolsData);
   }
 
@@ -42,15 +43,16 @@ export class ThreeDragons extends BackTestingSystem {
       const MME200 = await MovingAverageHelper.calculateEMA(symbol, 200, IndicatorSeriesType.Close, this.interval)
       const MME50 = await MovingAverageHelper.calculateEMA(symbol, 50, IndicatorSeriesType.Close, this.interval)
 
-      this.backTestSymbolsData[symbol].indicators = {
-        ATR,
-        MME200,
-        MME50
+
+
+      this.backTestSymbolsData[symbol] = {
+        ...this.backTestSymbolsData[symbol],
+        indicators: {
+          ATR,
+          MME200,
+          MME50
+        }
       }
-
-
-
-
     }
   }
 

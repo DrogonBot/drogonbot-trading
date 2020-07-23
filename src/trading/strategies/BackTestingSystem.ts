@@ -43,16 +43,15 @@ export class BackTestingSystem extends TradingSystem {
 
     for (const symbol of symbols) {
       console.log(`BackTest: Fetching data for ${symbol}. Please wait...`);
-      let quotes = await this.fetchPriceData(symbol, interval)
+      const quotes = await this.fetchPriceData(symbol, interval)
 
-
-      quotes = _.slice(quotes, 0, 1)
 
       if (!quotes) {
         throw new Error(`BackTest: failed to fetch data for ${symbol}. Please, make sure you have data for it, first!`)
       }
 
       this.backTestSymbolsData = {
+        ...this.backTestSymbolsData,
         [symbol]: {
           indicators: {},
           quotes,
@@ -60,6 +59,7 @@ export class BackTestingSystem extends TradingSystem {
         }
       }
     }
+
 
     try {
       console.log('Creating new backtest...');
