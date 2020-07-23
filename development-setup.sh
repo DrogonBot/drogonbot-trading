@@ -9,7 +9,7 @@ printColor () {
 }
 
 # Other important constants
-PROJECT_FOLDER="/home/jonit/Personal_projects/drogobot"
+PROJECT_FOLDER="/home/jonit/Personal_projects/drogonbot"
 
 printColor "Setting up firewall to open docker related ports"
 sudo ufw allow OpenSSH
