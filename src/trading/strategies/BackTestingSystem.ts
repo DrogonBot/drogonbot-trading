@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as mathjs from 'mathjs';
 import moment from 'moment';
 
+import { DEFAULT_FORMATTED_DATE } from '../../constants/global.constant';
 import { IAssetPrice } from '../../resources/Asset/asset.types';
 import {
   DEFAULT_ATR_MULTIPLE,
@@ -15,6 +16,7 @@ import { IBackTestSymbolData } from '../../resources/BackTest/backtest.types';
 import { Trade } from '../../resources/Trade/trade.model';
 import { TradeDirection, TradeStatus, TradeType } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
+import { D } from '../../utils/DateTimeHelper';
 import { N } from '../../utils/NumberHelper';
 import { PositionSizingHelper } from '../../utils/PositionSizingHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
@@ -26,6 +28,7 @@ export class BackTestingSystem extends TradingSystem {
   public backTestSymbolsData: IBackTestSymbolData
   public symbolsMarketDirections: object | null
   public currentBackTestId: string | null
+  public initialCapital: number;
 
 
   constructor() {
@@ -33,10 +36,10 @@ export class BackTestingSystem extends TradingSystem {
     this.symbolsMarketDirections = null
     this.backTestSymbolsData = {}
     this.currentBackTestId = null
+    this.initialCapital = DEFAULT_INITIAL_CAPITAL
   }
 
-  public startBackTesting = async (symbols: string[], interval: TradingDataInterval) => {
-
+  public startBackTesting = async (symbols: string[], interval: TradingDataInterval, initialCapital: number) => {
 
     // load price data
     // const priceData = await this.fetchPriceData(symbol, interval)
@@ -59,13 +62,16 @@ export class BackTestingSystem extends TradingSystem {
       }
     }
 
+    // prepare date (set all date "needles" to the same point)
+
+    this.backTestSymbolsData = this.prepareBackTestData(symbols)
 
     try {
       console.log('Creating new backtest...');
       const newBackTest = new BackTest({
         assets: symbols,
-        initialCapital: DEFAULT_INITIAL_CAPITAL,
-        finalCapital: DEFAULT_INITIAL_CAPITAL,
+        initialCapital,
+        finalCapital: initialCapital,
         totalTrades: 0,
         totalCommission: 0,
         totalTradingDays: 0
@@ -83,6 +89,58 @@ export class BackTestingSystem extends TradingSystem {
       console.error(error);
       return null
     }
+  }
+
+  public getDataFromPeriod = (date) => {
+    return D.indicatorDateFormat(date) || null
+  }
+
+  public prepareBackTestData = (symbols: string[]) => {
+
+    const newData = this.backTestSymbolsData
+
+    const startingDate = this.getStartingDate(symbols)
+
+    for (const symbol of symbols) {
+
+      const quotes = newData[symbol].quotes
+
+      if (!quotes) {
+        throw new Error(`Error while preparing backtest data. Quotes for symbol ${symbol} not found!`)
+      }
+
+      const startingDateIndex = quotes.findIndex((quote) => {
+        if (quote.date.toISOString() === startingDate.toISOString()) {
+          return true
+        }
+      })
+
+      if (startingDateIndex !== 0) {
+
+        const preparedQuotes = _.slice(quotes, startingDateIndex, quotes.length);
+
+        newData[symbol].quotes = preparedQuotes
+      }
+    }
+    return newData
+  }
+
+  public getStartingDate = (symbols: string[]) => {
+
+    const firstDates: Date[] = []
+
+    for (const symbol of symbols) {
+      const firstDate = this.backTestSymbolsData[symbol].quotes![0].date
+      firstDates.push(firstDate)
+    }
+
+    const maxDate = firstDates.reduce(function (a, b) { return a > b ? a : b; });
+
+    console.log(`🤖 Initializing backtest on ${moment(maxDate).format(DEFAULT_FORMATTED_DATE)}, since that's the point where all analyzed assets have data.`);
+
+    return maxDate
+
+
   }
 
   public startBackTestingTrade = async (currentCapital: number, symbol: string, executionPrice: number, price: IAssetPrice, ATR: number, marketDirection: TradeDirection, backTestId: string) => {

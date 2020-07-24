@@ -51,7 +51,6 @@ export interface IBackTest {
 export interface IBackTestSymbolData {
   [x: string]: {
     quotes: IAssetPrice[] | null,
-
-    indicators: object | null
+    indicators: any
   }
 }

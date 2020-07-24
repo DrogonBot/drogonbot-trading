@@ -58,6 +58,8 @@ export class TradingSystem {
     try {
       const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
 
+      console.log(`debug: first data for symbol ${symbol} is ${priceData[0].date}`);
+
       if (priceData.length === 0) {
         console.log(`Error: No price data found for ${symbol}!`);
         return null
