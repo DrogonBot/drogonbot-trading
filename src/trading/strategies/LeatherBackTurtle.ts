@@ -1,5 +1,6 @@
 import { IAssetPrice } from '../../resources/Asset/asset.types';
-import { BackTestActions, TradeDirection } from '../../resources/Trade/trade.types';
+import { BackTestActions } from '../../resources/BackTest/backtest.types';
+import { TradeDirection } from '../../resources/Trade/trade.types';
 import { D } from '../../utils/DateTimeHelper';
 import { N } from '../../utils/NumberHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
