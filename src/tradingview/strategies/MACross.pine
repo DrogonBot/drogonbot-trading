@@ -1,0 +1,18 @@
+//@version=4
+
+strategy("Moving Average Cross", overlay=true)
+
+sma50 = sma(close, 50)
+sma200 = sma(close, 200)
+prevSma200 = sma200[1]
+smFilter = (sma50 - sma200)/atr(14)
+canBuy = (sma200 > prevSma200) and smFilter >= 2
+buy = canBuy and low > (sma50 + 1*atr(14))
+sell = low < sma200
+
+bgcolor(buy ? color.green : na)
+bgcolor(sell ? color.red : na)
+
+strategy.entry("Long", strategy.long, 1000, when=buy)
+
+strategy.close("Long", when=sell)

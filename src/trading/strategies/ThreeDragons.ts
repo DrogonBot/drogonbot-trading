@@ -28,7 +28,7 @@ export class ThreeDragons extends BackTestingSystem {
     // calculate indicators
     await this.calculateIndicators()
 
-    console.log('🤖 Starting backtest!');
+    console.log('🤖 Running backtest!');
 
 
   }

@@ -1,0 +1,13 @@
+study(shorttitle="SMA - ST1", title="Simple Moving Average", overlay=true)
+
+
+// Plot MAs
+
+shortMAPeriod = input(50, title="ShortMA Period")
+shortMA = sma(close, shortMAPeriod)
+
+longMAPeriod = input(200, title="LongMA Period")
+longMA = sma(close, longMAPeriod)
+
+plot(shortMA, color=color.purple, linewidth=4)
+plot(longMA, color=color.red, linewidth=8)
