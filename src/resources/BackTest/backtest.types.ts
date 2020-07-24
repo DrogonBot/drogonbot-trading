@@ -54,3 +54,12 @@ export interface IBackTestSymbolData {
     indicators: any
   }
 }
+
+export enum BackTestActions {
+  UpdateBackTestData = "UpdateBackTestData",
+  BuyOrder = "BuyOrder",
+  SellOrder = "SellOrder",
+  Skip = "Skip",
+  Stop = "Stop"
+}
+

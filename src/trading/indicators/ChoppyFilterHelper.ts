@@ -2,9 +2,9 @@
 
 
 
-export class ChoppyFilterHelper {
+export class SidewaysMarketHelper {
 
-  public static isMarketChoppy = (shortMA: number, longMA: number, ATRNow: number) => {
+  public static isMarketSideways = (shortMA: number, longMA: number, ATRNow: number) => {
 
     const filter = (shortMA - longMA) / ATRNow
     if (filter < 2) {

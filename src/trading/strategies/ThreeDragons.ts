@@ -1,9 +1,14 @@
+import moment, { Moment } from 'moment';
+
 import { DEFAULT_INITIAL_CAPITAL } from '../../resources/BackTest/backtest.constant';
+import { BackTestActions } from '../../resources/BackTest/backtest.types';
 import { TradeDirection } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
+import { D } from '../../utils/DateTimeHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { ATRHelper } from '../indicators/ATRHelper';
-import { ChoppyFilterHelper } from '../indicators/ChoppyFilterHelper';
+import { SidewaysMarketHelper } from '../indicators/ChoppyFilterHelper';
+import { INDICATOR_DATE_FORMAT } from '../indicators/constant/indicator.constant';
 import { MovingAverageHelper } from '../indicators/MovingAverageHelper';
 import { IndicatorSeriesType } from '../indicators/types/indicator.types';
 import { BackTestingSystem } from './BackTestingSystem';
@@ -29,6 +34,7 @@ export class ThreeDragons extends BackTestingSystem {
 
     await this.startBackTesting(this.symbols, this.interval, this.initialCapital)
 
+
     // calculate indicators
     await this.calculateIndicators()
 
@@ -36,49 +42,83 @@ export class ThreeDragons extends BackTestingSystem {
 
     // Starting analytical loop
 
-    for (let i = 0; i < this.symbols.length; i++) {
-      const symbol = this.symbols[i]
-      const nextSteps = this.defineNextSteps(symbol, i)
-      if (!nextSteps) {
-        continue;
+    const startingTime = moment(new Date())
+    let stopBackTesting = false
+    let symbolsWithStoppedBackTest = 0
+    let currentPeriod = moment(this.getStartingDate(this.symbols))
+    const totalSymbols = Object.entries(this.backTestSymbolsData).map(([key, value]) => ({ key, value })).length
+
+    while (!stopBackTesting) {
+
+      if (symbolsWithStoppedBackTest === totalSymbols) {
+        stopBackTesting = true;
       }
+
+      for (const symbol of this.symbols) {
+
+        const nextSteps = await this.defineNextSteps(symbol, currentPeriod, this.interval)
+
+        switch (nextSteps) {
+          case BackTestActions.Skip:
+            continue;
+          case BackTestActions.Stop:
+            symbolsWithStoppedBackTest++;
+            break
+        }
+
+      }
+      const momentPeriod = D.convertIntervalToMomentInterval(this.interval)
+      currentPeriod = moment(currentPeriod).add(1, momentPeriod) // evaluate next available period
+
+
     }
+    const finishingTime = moment(new Date())
+
+    const elapsedTime = finishingTime.diff(startingTime, 'seconds')
+    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished after ${elapsedTime}!`)
+
   }
 
-  public defineNextSteps = async (symbol: string, i: number) => {
+  public defineNextSteps = async (symbol: string, currentPeriod: Moment, interval: TradingDataInterval) => {
 
     const quotes = this.backTestSymbolsData[symbol].quotes!
-    console.log(`Analyzing ${quotes.length} quotes for ${symbol}`);
+    const lastQuoteDate = D.indicatorDateFormat(quotes[quotes.length - 1].date)
+
     const indicators = this.backTestSymbolsData[symbol].indicators!
-    const prevIndex = i - 1;
-    const prevPeriod = prevIndex < 0 ? null : this.getDataFromPeriod(quotes[prevIndex]?.date)
-    const periodNow = this.getDataFromPeriod(quotes[i]?.date)
+    const momentPeriod = D.convertIntervalToMomentInterval(interval)
+
+
+    const periodNow = D.indicatorDateFormat(currentPeriod.toDate())
+    const prevPeriod = moment(periodNow).subtract(1, momentPeriod).format(INDICATOR_DATE_FORMAT) || null
 
     if (!prevPeriod || !periodNow) {
-      return false
+      return BackTestActions.Skip
     }
 
-
-
-
-    console.log(`prevPeriod=${prevPeriod}`);
-    console.log(`periodNow=${periodNow}`);
-    console.log(JSON.stringify(indicators["SMA50"][periodNow]));
-    console.log(JSON.stringify(indicators["SMA200"][periodNow]));
-    console.log(JSON.stringify(indicators["ATR"][periodNow]));
+    if (periodNow === lastQuoteDate) {
+      return BackTestActions.Stop
+    }
 
     const SMA50Now = indicators["SMA50"][periodNow]?.value || null
     const SMA200Now = indicators["SMA200"][periodNow]?.value || null
+    const SMA200Prev = indicators["SMA200"][prevPeriod]?.value || null
     const ATRNow = indicators["ATR"][periodNow]?.value || null
 
+    if (!SMA50Now || !SMA200Now || !SMA200Prev || !ATRNow) {
+      return BackTestActions.Skip
+    }
 
 
-    console.log(`Defining next steps for ${symbol} on date ${periodNow}`);
-    console.log(`Debugging:
-      SMA50Now=${SMA50Now}
-      SMA200Now=${SMA200Now}
-      ATRNow=${ATRNow}
-    `);
+    // console.log(`prevPeriod=${prevPeriod}`);
+    // console.log(`periodNow=${periodNow}`);
+
+    // console.log(`Defining next steps for ${symbol} on date ${periodNow}`);
+    // console.log(`Debugging:
+    //   SMA50Now=${SMA50Now}
+    //   SMA200Now=${SMA200Now}
+    //   SMA200Prev=${SMA200Prev}
+    //   ATRNow=${ATRNow}
+    // `);
 
 
 
@@ -106,7 +146,7 @@ export class ThreeDragons extends BackTestingSystem {
   }
 
   public calculateCurrentMarketDirection = async (SMA200Now, SMA200Prev, SMA50Now, ATRNow) => {
-    if ((SMA200Now > SMA200Prev) && (SMA50Now > SMA200Now) && !ChoppyFilterHelper.isMarketChoppy(SMA50Now, SMA200Now, ATRNow)) {
+    if ((SMA200Now > SMA200Prev) && (SMA50Now > SMA200Now) && !SidewaysMarketHelper.isMarketSideways(SMA50Now, SMA200Now, ATRNow)) {
       return TradeDirection.Long
     }
 

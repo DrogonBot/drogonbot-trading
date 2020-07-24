@@ -48,8 +48,3 @@ export enum TradeActions {
   SellOrder = "SellOrder",
 }
 
-export enum BackTestActions {
-  UpdateBackTestData = "UpdateBackTestData",
-  BuyOrder = "BuyOrder",
-  SellOrder = "SellOrder",
-}
