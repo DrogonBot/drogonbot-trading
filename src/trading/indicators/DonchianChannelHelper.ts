@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
-import { INDICATOR_DATE_FORMAT } from './constant/indicator.constant';
+import { DATE_KEY_FORMAT } from './constant/indicator.constant';
 
 
 export class DonchianChannelHelper {
@@ -28,7 +28,7 @@ export class DonchianChannelHelper {
       const minValue = _.orderBy(dataInterval, ["low"], ["asc"])[0].low
       const midValue = (highValue + minValue) / 2
 
-      const date = moment(endPrice.date).format(INDICATOR_DATE_FORMAT)
+      const date = moment(endPrice.date).format(DATE_KEY_FORMAT)
       output[date] = {
         name: "Donchian Channel",
         interval,

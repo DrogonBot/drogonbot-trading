@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
-import { INDICATOR_DATE_FORMAT } from './constant/indicator.constant';
+import { DATE_KEY_FORMAT } from './constant/indicator.constant';
 import { IndicatorSeriesType } from './types/indicator.types';
 
 
@@ -22,7 +22,7 @@ export class MovingAverageHelper {
     const firstSMA = firstDataSum / period
 
     const k = 2 / (period + 1)
-    const firstDate = moment(priceData[0].date).format(INDICATOR_DATE_FORMAT)
+    const firstDate = moment(priceData[0].date).format(DATE_KEY_FORMAT)
 
     const output = [
       {
@@ -48,7 +48,7 @@ export class MovingAverageHelper {
         seriesType,
         period,
         name: "EMA",
-        date: moment(priceData[i].date).format(INDICATOR_DATE_FORMAT),
+        date: moment(priceData[i].date).format(DATE_KEY_FORMAT),
         value: EMA
       })
     }
@@ -82,7 +82,7 @@ export class MovingAverageHelper {
 
       const SMA = dataSliceSum / period
 
-      const date = moment(priceData[end - 1].date).format(INDICATOR_DATE_FORMAT)
+      const date = moment(priceData[end - 1].date).format(DATE_KEY_FORMAT)
 
       output[date] = {
         name: "SMA",

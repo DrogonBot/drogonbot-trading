@@ -57,7 +57,8 @@ export class BackTestingSystem extends TradingSystem {
         ...this.backTestSymbolsData,
         [symbol]: {
           indicators: {},
-          quotes
+          quotes,
+          quotesDateKey: {}
         }
       }
     }
@@ -92,7 +93,7 @@ export class BackTestingSystem extends TradingSystem {
   }
 
   public getDataFromPeriod = (date) => {
-    return D.indicatorDateFormat(date) || null
+    return D.indicatorFormat(date) || null
   }
 
   public prepareBackTestData = (symbols: string[]) => {
@@ -115,15 +116,17 @@ export class BackTestingSystem extends TradingSystem {
         }
       })
 
-      if (startingDateIndex !== 0) {
 
-        const preparedQuotes = _.slice(quotes, startingDateIndex, quotes.length);
+      const preparedQuotes = _.slice(quotes, startingDateIndex, quotes.length);
 
-        newData[symbol].quotes = preparedQuotes
-      }
+      newData[symbol].quotes = preparedQuotes
+      newData[symbol].quotesDateKey = _.keyBy(preparedQuotes, (quote) => D.indicatorFormat(quote.date))
+
     }
     return newData
   }
+
+
 
   public getStartingDate = (symbols: string[]) => {
 

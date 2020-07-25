@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
-import { INDICATOR_DATE_FORMAT } from './constant/indicator.constant';
+import { DATE_KEY_FORMAT } from './constant/indicator.constant';
 
 
 
@@ -77,7 +77,7 @@ export class ATRHelper {
     const parsedOutput = {}
 
     for (let x = 0; x < ATR.length; x++) {
-      const date = moment(ATR[x].date).format(INDICATOR_DATE_FORMAT);
+      const date = moment(ATR[x].date).format(DATE_KEY_FORMAT);
       delete ATR[x].date;
       parsedOutput[date] = ATR[x]
     }

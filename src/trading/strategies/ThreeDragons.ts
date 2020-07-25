@@ -1,14 +1,13 @@
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
 import { DEFAULT_INITIAL_CAPITAL } from '../../resources/BackTest/backtest.constant';
-import { BackTestActions } from '../../resources/BackTest/backtest.types';
+import { BackTestActions, IQuote } from '../../resources/BackTest/backtest.types';
 import { TradeDirection } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { D } from '../../utils/DateTimeHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { ATRHelper } from '../indicators/ATRHelper';
 import { SidewaysMarketHelper } from '../indicators/ChoppyFilterHelper';
-import { INDICATOR_DATE_FORMAT } from '../indicators/constant/indicator.constant';
 import { MovingAverageHelper } from '../indicators/MovingAverageHelper';
 import { IndicatorSeriesType } from '../indicators/types/indicator.types';
 import { BackTestingSystem } from './BackTestingSystem';
@@ -34,7 +33,6 @@ export class ThreeDragons extends BackTestingSystem {
 
     await this.startBackTesting(this.symbols, this.interval, this.initialCapital)
 
-
     // calculate indicators
     await this.calculateIndicators()
 
@@ -42,83 +40,96 @@ export class ThreeDragons extends BackTestingSystem {
 
     // Starting analytical loop
 
-    const startingTime = moment(new Date())
-    let stopBackTesting = false
-    let symbolsWithStoppedBackTest = 0
-    let currentPeriod = moment(this.getStartingDate(this.symbols))
-    const totalSymbols = Object.entries(this.backTestSymbolsData).map(([key, value]) => ({ key, value })).length
+    const backtestStartingTime = moment(new Date()) // just to measure performance
+    const startingPeriod = (this.getStartingDate(this.symbols))
+    let periodNow = D.indicatorFormat(startingPeriod)
+
+    let stopBackTesting = false;
+    let finishedSymbols = 0
+    const totalSymbols = this.symbols.length
+
+
 
     while (!stopBackTesting) {
 
-      if (symbolsWithStoppedBackTest === totalSymbols) {
-        stopBackTesting = true;
+      if (finishedSymbols === totalSymbols) {
+        stopBackTesting = true
+        return
       }
 
       for (const symbol of this.symbols) {
 
-        const nextSteps = await this.defineNextSteps(symbol, currentPeriod, this.interval)
+        const dataEntries = this.backTestSymbolsData[symbol].quotes
+        const lastDataEntry = dataEntries[dataEntries.length - 1]
+        const isLastDataEntry = D.indicatorFormat(lastDataEntry.date) === periodNow
+        if (isLastDataEntry) {
+          ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgBlack, `🤖: Finished backtest for ${symbol} on ${periodNow}!`)
+          finishedSymbols++
+        }
+
+        const dateKeyQuotes = this.backTestSymbolsData[symbol].quotesDateKey
+        if (!dateKeyQuotes) {
+          throw new Error(`Failed to find DateKey data for ${symbol}`)
+        }
+
+
+        const prevPeriod = D.indicatorFormat(moment(periodNow).subtract(1, D.convertIntervalToMomentInterval(this.interval)).toDate())
+
+        const nextSteps = this.defineNextSteps(symbol, dateKeyQuotes, periodNow, prevPeriod)
 
         switch (nextSteps) {
           case BackTestActions.Skip:
+            // if data point calculation is invalid, just skip actions on this date for this symbol
             continue;
-          case BackTestActions.Stop:
-            symbolsWithStoppedBackTest++;
-            break
         }
 
+        // await GenericHelper.sleep(1000)
+
       }
-      const momentPeriod = D.convertIntervalToMomentInterval(this.interval)
-      currentPeriod = moment(currentPeriod).add(1, momentPeriod) // evaluate next available period
 
-
+      // increase one period
+      periodNow = D.indicatorFormat(moment(periodNow).add(1, D.convertIntervalToMomentInterval(this.interval)).toDate())
     }
-    const finishingTime = moment(new Date())
 
-    const elapsedTime = finishingTime.diff(startingTime, 'seconds')
+
+    const backtestFinishingTime = moment(new Date())
+
+    const elapsedTime = backtestFinishingTime.diff(backtestStartingTime, 'seconds')
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished after ${elapsedTime}!`)
 
   }
 
-  public defineNextSteps = async (symbol: string, currentPeriod: Moment, interval: TradingDataInterval) => {
-
-    const quotes = this.backTestSymbolsData[symbol].quotes!
-    const lastQuoteDate = D.indicatorDateFormat(quotes[quotes.length - 1].date)
+  public defineNextSteps = (symbol: string, dateKeyQuotes: IQuote, periodNow: string, prevPeriod: string | null) => {
 
     const indicators = this.backTestSymbolsData[symbol].indicators!
-    const momentPeriod = D.convertIntervalToMomentInterval(interval)
 
-
-    const periodNow = D.indicatorDateFormat(currentPeriod.toDate())
-    const prevPeriod = moment(periodNow).subtract(1, momentPeriod).format(INDICATOR_DATE_FORMAT) || null
+    if (!indicators) {
+      throw new Error(`BackTest: Failed to calculate indicators for ${symbol}`)
+    }
 
     if (!prevPeriod || !periodNow) {
       return BackTestActions.Skip
-    }
-
-    if (periodNow === lastQuoteDate) {
-      return BackTestActions.Stop
     }
 
     const SMA50Now = indicators["SMA50"][periodNow]?.value || null
     const SMA200Now = indicators["SMA200"][periodNow]?.value || null
     const SMA200Prev = indicators["SMA200"][prevPeriod]?.value || null
     const ATRNow = indicators["ATR"][periodNow]?.value || null
+    const quoteNow = dateKeyQuotes[periodNow] || null
 
-    if (!SMA50Now || !SMA200Now || !SMA200Prev || !ATRNow) {
+    if (!SMA50Now || !SMA200Now || !SMA200Prev || !ATRNow || !quoteNow) {
       return BackTestActions.Skip
     }
 
+    console.log(`Defining next steps for ${symbol} on date ${periodNow}`);
+    console.log(`Debugging:
+      periodNow=${periodNow} / prevPeriod=${prevPeriod}
+      high=${quoteNow?.high} / low=${quoteNow?.low} / close=${quoteNow?.close}
+      SMA50Now=${SMA50Now}
+      SMA200Now=${SMA200Now} / SMA200Prev=${SMA200Prev}
+      ATRNow=${ATRNow}
+    `);
 
-    // console.log(`prevPeriod=${prevPeriod}`);
-    // console.log(`periodNow=${periodNow}`);
-
-    // console.log(`Defining next steps for ${symbol} on date ${periodNow}`);
-    // console.log(`Debugging:
-    //   SMA50Now=${SMA50Now}
-    //   SMA200Now=${SMA200Now}
-    //   SMA200Prev=${SMA200Prev}
-    //   ATRNow=${ATRNow}
-    // `);
 
 
 

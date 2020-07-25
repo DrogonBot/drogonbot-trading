@@ -127,9 +127,9 @@ export class LeatherBackTurtle extends TradingSystem {
       return false;
     }
 
-    const dateNow = D.indicatorDateFormat(priceNow.date)
-    const previousDate = D.indicatorDateFormat(pricePrevious.date)
-    const date2PeriodsAgo = D.indicatorDateFormat(price2PeriodsAgo.date)
+    const dateNow = D.indicatorFormat(priceNow.date)
+    const previousDate = D.indicatorFormat(pricePrevious.date)
+    const date2PeriodsAgo = D.indicatorFormat(price2PeriodsAgo.date)
 
     const MME200Now = indicators.MME200[dateNow]?.value || null
     const MME200Prev = indicators.MME200[previousDate]?.value || null

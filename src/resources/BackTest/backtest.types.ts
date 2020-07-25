@@ -50,16 +50,23 @@ export interface IBackTest {
 
 export interface IBackTestSymbolData {
   [x: string]: {
-    quotes: IAssetPrice[] | null,
-    indicators: any
+    quotes: IAssetPrice[],
+    indicators: any,
+    quotesDateKey?: IQuote
   }
+}
+
+export interface IQuote {
+  [date: string]: IAssetPrice
 }
 
 export enum BackTestActions {
   UpdateBackTestData = "UpdateBackTestData",
   BuyOrder = "BuyOrder",
   SellOrder = "SellOrder",
-  Skip = "Skip",
-  Stop = "Stop"
+  Skip = "Skip"
 }
 
+export interface ISymbolPeriods {
+  [symbol: string]: string[]
+}
