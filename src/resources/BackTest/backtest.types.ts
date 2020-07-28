@@ -54,7 +54,7 @@ export interface IBackTestSymbolData {
   [x: string]: {
     quotes: IQuote[],
     indicators: any,
-    quotesDateKey?: Dictionary<IQuote>
+    quotesDictionary?: Dictionary<IQuote>
   }
 }
 
