@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { Asset } from '../../../resources/Asset/asset.model';
-import { AssetPrice } from '../../../resources/AssetPrice/assetprice.model';
+import { Quote } from '../../../resources/Quote/quote.model';
 import { MinutesInterval } from '../../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../../utils/ConsoleHelper';
 import { TS } from '../../../utils/TS';
@@ -49,11 +49,11 @@ export class AlphaVantageDataAssistant {
     }
   }
 
-  public updatePriceData = async (symbol: string, type: TradingDataUpdateType, interval: TradingDataInterval, minutesInterval?: MinutesInterval | null) => {
+  public updatePriceData = async (ticker: string, type: TradingDataUpdateType, interval: TradingDataInterval, minutesInterval?: MinutesInterval | null) => {
 
     try {
       // find asset
-      const asset = await Asset.findOne({ symbol })
+      const asset = await Asset.findOne({ ticker })
 
       if (!asset) {
         throw new Error(TS.string("asset", "assetNotFound"))
@@ -62,7 +62,7 @@ export class AlphaVantageDataAssistant {
       const timeSeriesString = `TIME_SERIES_${interval.toUpperCase()}`
 
       // request data
-      const response = await this._getPriceData(symbol, timeSeriesString, type, interval, minutesInterval);
+      const response = await this._getPriceData(ticker, timeSeriesString, type, interval, minutesInterval);
 
       if (response && asset) {
 
@@ -84,11 +84,12 @@ export class AlphaVantageDataAssistant {
 
           const date = new Date(priceData.key)
           const priceValue = Object(priceData.value)
-          const isPriceSaved = await AssetPrice.exists({ symbol, interval, date })
+          const isPriceSaved = await Quote.exists({ symbol: ticker, interval, date })
 
           if (!isPriceSaved) {
-            const newPrice = new AssetPrice({
-              symbol, interval,
+            const newPrice = new Quote({
+              ticker,
+              interval,
               date,
               open: priceValue["1. open"],
               high: priceValue["2. high"],

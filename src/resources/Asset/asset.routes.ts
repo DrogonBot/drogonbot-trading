@@ -7,7 +7,6 @@ import { Asset } from './asset.model';
 // @ts-ignore
 const assetRouter = new express.Router();
 
-// create your assetRouter
 
 assetRouter.post("/asset", async (req, res) => {
 

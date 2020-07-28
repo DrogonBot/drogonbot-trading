@@ -1,17 +1,16 @@
 import mongoose, { Document, Model, model } from 'mongoose';
 
 import { TradingDataInterval } from '../../trading/constant/tradingdata.constant';
-import { IAssetPrice } from '../Asset/asset.types';
+import { IQuote } from './quote.types';
 
 
 
-
-export interface IAssetPriceModel extends IAssetPrice, Document {
+export interface IQuoteModel extends IQuote, Document {
   // insert functions here if needed.
 }
 
-const assetPriceSchema = new mongoose.Schema({
-  symbol: String,
+const quoteSchema = new mongoose.Schema({
+  ticker: String,
   interval: {
     type: String,
     enum: Object.values(TradingDataInterval)
@@ -22,9 +21,8 @@ const assetPriceSchema = new mongoose.Schema({
   low: Number,
   close: Number,
   volume: Number
-
 })
 
 
 
-export const AssetPrice: Model<IAssetPriceModel> = model<IAssetPriceModel>('AssetPrice', assetPriceSchema)
+export const Quote: Model<IQuoteModel> = model<IQuoteModel>('Quote', quoteSchema)

@@ -15,10 +15,20 @@ export interface IAssetIndicator {
   seriesType?: IndicatorSeriesType,
   period: number,
   value: number,
+  date?: string
 }
 
 export interface IIndicatorDonchianChannel extends IAssetIndicator {
   high: number,
   mid: number,
   low: number,
+}
+
+export interface IATR {
+  name: string;
+  interval: TradingDataInterval;
+  period: number;
+  date?: Date;
+  value: number;
+
 }

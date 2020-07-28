@@ -1,20 +1,22 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
+import { Quote } from '../../resources/Quote/quote.model';
+import { NumberHelper } from '../../utils/NumberHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { DATE_KEY_FORMAT } from './constant/indicator.constant';
-import { IndicatorSeriesType } from './types/indicator.types';
+import { IAssetIndicator, IndicatorSeriesType } from './types/indicator.types';
+
 
 
 
 export class MovingAverageHelper {
 
 
-  public static calculateEMA = async (symbol: string, period: number, seriesType: IndicatorSeriesType, interval: TradingDataInterval) => {
+  public static calculateEMA = async (ticker: string, period: number, seriesType: IndicatorSeriesType, interval: TradingDataInterval) => {
 
     // should be ascendant, full data
-    const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
+    const priceData = await Quote.find({ ticker, interval }).sort({ "date": "asc" })
 
 
     const firstData = _.slice(priceData, 0, period - 1)
@@ -24,7 +26,7 @@ export class MovingAverageHelper {
     const k = 2 / (period + 1)
     const firstDate = moment(priceData[0].date).format(DATE_KEY_FORMAT)
 
-    const output = [
+    const output: IAssetIndicator[] = [
       {
         interval,
         seriesType,
@@ -49,7 +51,7 @@ export class MovingAverageHelper {
         period,
         name: "EMA",
         date: moment(priceData[i].date).format(DATE_KEY_FORMAT),
-        value: EMA
+        value: NumberHelper.format(EMA)
       })
     }
 
@@ -59,15 +61,15 @@ export class MovingAverageHelper {
     for (let i = 0; i < output.length; i++) {
       const date = output[i].date;
       delete output[i].date;
-      parsedOutput[date] = output[i]
+      parsedOutput[date!] = output[i]
     }
 
     return parsedOutput
   }
 
-  public static calculateSMA = async (symbol: string, interval: TradingDataInterval, period: number, seriesType) => {
+  public static calculateSMA = async (ticker: string, interval: TradingDataInterval, period: number, seriesType) => {
 
-    const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
+    const priceData = await Quote.find({ ticker, interval }).sort({ "date": "asc" })
 
     let start = 0;
     let end = period;
@@ -90,7 +92,7 @@ export class MovingAverageHelper {
         seriesType,
         period,
         date,
-        value: parseFloat(SMA.toFixed(2))
+        value: NumberHelper.format(SMA)
       }
 
       start++;

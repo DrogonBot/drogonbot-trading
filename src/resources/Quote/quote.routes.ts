@@ -2,21 +2,21 @@ import express from 'express';
 
 import { TradingDataAssistant } from '../../trading/strategies/data/TradingDataAssistant';
 import { TS } from '../../utils/TS';
-import { AssetPrice } from './assetprice.model';
+import { Quote } from './quote.model';
 
 
 // @ts-ignore
-const assetPriceRouter = new express.Router();
+const quoteRouter = new express.Router();
 
 // get asset price data
-assetPriceRouter.get("/price/:symbol/:interval", async (req, res) => {
+quoteRouter.get("/price/:symbol/:interval", async (req, res) => {
 
   const { symbol, interval } = req.params;
   const { limit, orderDirection, orderBy } = req.query;
 
   try {
 
-    const price = await AssetPrice.find({ symbol, interval }).limit(parseInt(limit)).sort({
+    const price = await Quote.find({ symbol, interval }).limit(parseInt(limit)).sort({
       [orderBy]: orderDirection
     });
 
@@ -32,10 +32,10 @@ assetPriceRouter.get("/price/:symbol/:interval", async (req, res) => {
 
 })
 
-assetPriceRouter.get("/price/:symbol", async (req, res) => {
+quoteRouter.get("/price/:ticker", async (req, res) => {
 
 
-  const { symbol } = req.params;
+  const { ticker } = req.params;
   const { interval, type, minutesInterval } = req.query;
 
 
@@ -43,7 +43,7 @@ assetPriceRouter.get("/price/:symbol", async (req, res) => {
 
   try {
 
-    await dataAssistant.updatePriceData(symbol, type, interval, minutesInterval)
+    await dataAssistant.updatePriceData(ticker, type, interval, minutesInterval)
 
     return res.status(200).send({
       status: "success"
@@ -80,4 +80,4 @@ assetPriceRouter.get("/price/:symbol", async (req, res) => {
 
 
 
-export { assetPriceRouter };
+export { quoteRouter };

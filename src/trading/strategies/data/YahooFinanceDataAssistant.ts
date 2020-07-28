@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import yahooFinance from 'yahoo-finance';
 
-import { AssetPrice } from '../../../resources/AssetPrice/assetprice.model';
+import { Quote } from '../../../resources/Quote/quote.model';
 import { ConsoleColor, ConsoleHelper } from '../../../utils/ConsoleHelper';
 import { intervalNamingShortcuts, TradingDataUpdateType } from '../../constant/tradingdata.constant';
 
@@ -20,12 +20,12 @@ export class YahooFinanceDataAssistant {
     }
   }
 
-  private _getPriceData = async (symbol: string, period: string, type: TradingDataUpdateType) => {
+  private _getPriceData = async (ticker: string, period: string, type: TradingDataUpdateType) => {
 
     return new Promise((resolve, reject) => {
       try {
         yahooFinance.historical({
-          symbol,
+          symbol: ticker,
           from: this._getYahooFromString(type),
           to: moment(new Date).format("YYYY-MM-DD"),
           period  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only)
@@ -44,9 +44,9 @@ export class YahooFinanceDataAssistant {
 
   // PRICE DATA  ========================================
 
-  public updatePriceData = async (symbol: string, period: string, updateType: TradingDataUpdateType) => {
+  public updatePriceData = async (ticker: string, period: string, updateType: TradingDataUpdateType) => {
 
-    const quotes: any = await this._getPriceData(symbol, period, updateType)
+    const quotes: any = await this._getPriceData(ticker, period, updateType)
 
     if (!quotes.length) {
       console.log(`🤖: I didn't find any new data regarding this asset! Please, double check!`);
@@ -59,8 +59,8 @@ export class YahooFinanceDataAssistant {
 
       // check if exists
 
-      const quoteExists = await AssetPrice.exists({
-        symbol,
+      const quoteExists = await Quote.exists({
+        ticker,
         interval: String(interval),
         date: quote.date,
         open: quote.open,
@@ -71,8 +71,8 @@ export class YahooFinanceDataAssistant {
       })
 
       if (!quoteExists && quote.open && quote.high && quote.low && quote.close && quote.volume) {
-        const newQuote = new AssetPrice({
-          symbol,
+        const newQuote = new Quote({
+          ticker,
           interval: String(interval),
           date: quote.date,
           open: quote.open,

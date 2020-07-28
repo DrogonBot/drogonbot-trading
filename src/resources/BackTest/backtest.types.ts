@@ -1,4 +1,6 @@
-import { IAssetPrice } from '../Asset/asset.types';
+import { Dictionary } from 'lodash';
+
+import { IQuote } from '../Quote/quote.types';
 
 
 // More info: https://www.tradinggame.com.au/introduction-to-backtesting-metrics/
@@ -50,14 +52,14 @@ export interface IBackTest {
 
 export interface IBackTestSymbolData {
   [x: string]: {
-    quotes: IAssetPrice[],
+    quotes: IQuote[],
     indicators: any,
-    quotesDateKey?: IQuote
+    quotesDateKey?: Dictionary<IQuote>
   }
 }
 
-export interface IQuote {
-  [date: string]: IAssetPrice
+export interface IDateKeyQuote {
+  [date: string]: IDateKeyQuote
 }
 
 export enum BackTestActions {

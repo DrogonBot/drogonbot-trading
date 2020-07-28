@@ -1,16 +1,17 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
+import { Quote } from '../../resources/Quote/quote.model';
+import { NumberHelper } from '../../utils/NumberHelper';
 import { DATE_KEY_FORMAT } from './constant/indicator.constant';
 
 
 export class DonchianChannelHelper {
 
-  public static calculate = async (symbol: string, period: number, interval) => {
+  public static calculate = async (ticker: string, period: number, interval) => {
 
     // should be ascendant, full data
-    const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
+    const priceData = await Quote.find({ ticker, interval }).sort({ "date": "asc" })
 
     const output = {}
     let start = 0;
@@ -35,9 +36,9 @@ export class DonchianChannelHelper {
         period,
         // value: maxMin[band],
         // band
-        high: parseFloat(highValue.toFixed(2)),
-        mid: parseFloat(midValue.toFixed(2)),
-        low: parseFloat(minValue.toFixed(2))
+        high: NumberHelper.format(highValue),
+        mid: NumberHelper.format(midValue),
+        low: NumberHelper.format(minValue)
       }
 
       start++;

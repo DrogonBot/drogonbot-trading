@@ -17,31 +17,31 @@ const operationRouter = new Router();
 
 
 
-operationRouter.get("/asset/:symbol/:indicator/:interval", async (req, res) => {
+operationRouter.get("/asset/:ticker/:indicator/:interval", async (req, res) => {
 
 
-  const { indicator, symbol, interval } = req.params;
+  const { indicator, ticker, interval } = req.params;
 
   try {
 
 
     switch (indicator) {
       case "SMA":
-        const smaData = await MovingAverageHelper.calculateSMA(symbol, interval, 50, IndicatorSeriesType.Close)
+        const smaData = await MovingAverageHelper.calculateSMA(ticker, interval, 50, IndicatorSeriesType.Close)
 
         return res.status(200).send(smaData);
       case "EMA":
-        const indicatorData = await MovingAverageHelper.calculateEMA(symbol, 55, IndicatorSeriesType.Close, interval)
+        const indicatorData = await MovingAverageHelper.calculateEMA(ticker, 55, IndicatorSeriesType.Close, interval)
 
         return res.status(200).send(indicatorData);
 
       case "DonchianChannel":
-        const donchianData = await DonchianChannelHelper.calculate(symbol, 20, interval)
+        const donchianData = await DonchianChannelHelper.calculate(ticker, 20, interval)
 
         return res.status(200).send(donchianData);
 
       case "ATR":
-        const atrData = await ATRHelper.calculate(symbol, interval, 14)
+        const atrData = await ATRHelper.calculate(ticker, interval, 14)
 
         return res.status(200).send(atrData);
 

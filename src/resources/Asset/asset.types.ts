@@ -1,23 +1,10 @@
-import { TradingDataInterval } from '../../trading/constant/tradingdata.constant';
-
 export interface IAsset {
-  symbol: string,
+  ticker: string,
   isETF: boolean,
   lastRefreshed: Date,
   timeZone: string,
   market: Market,
   sector: Sector,
-}
-
-export interface IAssetPrice {
-  symbol: string,
-  interval: TradingDataInterval,
-  date: Date,
-  open: number,
-  high: number,
-  low: number,
-  close: number,
-  volume: number
 }
 
 export enum Market {

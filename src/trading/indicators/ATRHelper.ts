@@ -1,17 +1,19 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-import { AssetPrice } from '../../resources/AssetPrice/assetprice.model';
+import { Quote } from '../../resources/Quote/quote.model';
+import { NumberHelper } from '../../utils/NumberHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { DATE_KEY_FORMAT } from './constant/indicator.constant';
+import { IATR } from './types/indicator.types';
 
 
 
 export class ATRHelper {
 
-  public static calculate = async (symbol: string, interval: TradingDataInterval, period: number) => {
+  public static calculate = async (ticker: string, interval: TradingDataInterval, period: number) => {
 
-    const priceData = await AssetPrice.find({ symbol, interval }).sort({ "date": "asc" })
+    const priceData = await Quote.find({ ticker, interval }).sort({ "date": "asc" })
 
     // Start by calculating TR
     const TR: Array<{ date: Date, value: number }> = [];
@@ -42,13 +44,13 @@ export class ATRHelper {
 
     // insert first ATR calculation
 
-    const ATR = [
+    const ATR: IATR[] = [
       {
         name: "ATR",
         interval,
         period,
         date: firstATRDate,
-        value: firstATR
+        value: NumberHelper.format(firstATR)
       }
     ]
 
@@ -65,7 +67,7 @@ export class ATRHelper {
         interval,
         period,
         date: TRRemainder[i].date,
-        value: ATRcalc
+        value: NumberHelper.format(ATRcalc)
       })
 
       i++;

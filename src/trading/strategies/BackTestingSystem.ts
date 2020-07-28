@@ -3,7 +3,6 @@ import * as mathjs from 'mathjs';
 import moment from 'moment';
 
 import { DEFAULT_FORMATTED_DATE } from '../../constants/global.constant';
-import { IAssetPrice } from '../../resources/Asset/asset.types';
 import {
   DEFAULT_ATR_MULTIPLE,
   DEFAULT_BROKER_COMMISSION,
@@ -13,11 +12,12 @@ import {
 } from '../../resources/BackTest/backtest.constant';
 import { BackTest } from '../../resources/BackTest/backtest.model';
 import { IBackTestSymbolData } from '../../resources/BackTest/backtest.types';
+import { IQuote } from '../../resources/Quote/quote.types';
 import { Trade } from '../../resources/Trade/trade.model';
 import { TradeDirection, TradeStatus, TradeType } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { D } from '../../utils/DateTimeHelper';
-import { N } from '../../utils/NumberHelper';
+import { NumberHelper } from '../../utils/NumberHelper';
 import { PositionSizingHelper } from '../../utils/PositionSizingHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { TradingSystem } from './TradingSystem';
@@ -92,11 +92,9 @@ export class BackTestingSystem extends TradingSystem {
     }
   }
 
-  public getDataFromPeriod = (date) => {
-    return D.indicatorFormat(date) || null
-  }
-
   public prepareBackTestData = (symbols: string[]) => {
+
+    // This function will slice the data and set all of the analyzed symbols into the same startingPoint
 
     const newData = this.backTestSymbolsData
 
@@ -130,6 +128,8 @@ export class BackTestingSystem extends TradingSystem {
 
   public getStartingDate = (symbols: string[]) => {
 
+    // Get a common starting date, where all assets have data to be analyzed
+
     const firstDates: Date[] = []
 
     for (const symbol of symbols) {
@@ -146,10 +146,10 @@ export class BackTestingSystem extends TradingSystem {
 
   }
 
-  public startBackTestingTrade = async (currentCapital: number, symbol: string, executionPrice: number, price: IAssetPrice, ATR: number, marketDirection: TradeDirection, backTestId: string) => {
+  public startBackTestingTrade = async (currentCapital: number, symbol: string, executionPrice: number, price: IQuote, ATR: number, marketDirection: TradeDirection, backTestId: string) => {
 
     // calculate position sizing
-    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: BUY: Adding entry at ${price.date} - ${N.format(executionPrice)}`)
+    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: BUY: Adding entry at ${price.date} - ${NumberHelper.format(executionPrice)}`)
 
     const { maxAllocation,
       units,
@@ -182,7 +182,7 @@ export class BackTestingSystem extends TradingSystem {
 
   }
 
-  public endBackTestingTrade = async (currentCapital: number, executionPrice: number, price: IAssetPrice, currentStop: number, currentActiveTradeId) => {
+  public endBackTestingTrade = async (currentCapital: number, executionPrice: number, price: IQuote, currentStop: number, currentActiveTradeId) => {
     const currentTrade = await Trade.findOne({ _id: currentActiveTradeId })
 
     if (!currentTrade) {
@@ -250,7 +250,7 @@ export class BackTestingSystem extends TradingSystem {
   }
 
 
-  public calculateBackTestMetrics = async (priceData: IAssetPrice[], currentBackTestId: string) => {
+  public calculateBackTestMetrics = async (priceData: IQuote[], currentBackTestId: string) => {
 
     const winnerTrades = await Trade.find({
       profitLoss: {
@@ -289,28 +289,28 @@ export class BackTestingSystem extends TradingSystem {
 
 
       backtest.maxDrawdown = (highestCapitalPoint! - lowestCapitalPoint!)
-      backtest.maxDrawdownPercentage = N.format((backtest.maxDrawdown / highestCapitalPoint!) * 100)
+      backtest.maxDrawdownPercentage = NumberHelper.format((backtest.maxDrawdown / highestCapitalPoint!) * 100)
       backtest.largestSingleLosingTrade = _.minBy(loserTrades, 'profitLoss')!.profitLoss
       backtest.largestSingleWinningTrade = _.maxBy(winnerTrades, 'profitLoss')!.profitLoss
       backtest.grossProfit = winnerTradesSum
       backtest.grossLoss = loserTradesSum;
       backtest.totalNetProfit = winnerTradesSum - loserTradesSum
-      backtest.totalNetProfitPercentage = N.format((backtest.totalNetProfit / backtest.initialCapital) * 100)
+      backtest.totalNetProfitPercentage = NumberHelper.format((backtest.totalNetProfit / backtest.initialCapital) * 100)
       backtest.totalTrades = winnerTradesCount + loserTradesCount
       backtest.totalDays = lastDay.diff(firstDay, 'days')
       backtest.avgTradesPerDay = backtest.totalTrades / backtest.totalDays
-      backtest.buyAndHoldROI = N.format(((lastPrice / firstPrice) - 1) * 100)
+      backtest.buyAndHoldROI = NumberHelper.format(((lastPrice / firstPrice) - 1) * 100)
       backtest.buyAndHoldROIPerDay = (backtest.buyAndHoldROI / backtest.totalDays) * 100
-      backtest.ROI = N.format((((backtest.finalCapital / backtest.initialCapital) - 1) * 100))
+      backtest.ROI = NumberHelper.format((((backtest.finalCapital / backtest.initialCapital) - 1) * 100))
       backtest.buyAndHoldROIPerYear = backtest.buyAndHoldROI / (backtest.totalDays / 365)
       backtest.ROIPerDay = (backtest.ROI / backtest.totalTradingDays) * 100;
       backtest.ROIPerYear = backtest.ROI / (backtest.totalTradingDays / 365)
-      backtest.winnerTradesPercentage = N.format(((winnerTradesCount / totalTradesCount) * 100))
-      backtest.loserTradesPercentage = N.format(((loserTradesCount / totalTradesCount) * 100))
-      backtest.avgWinnerProfit = N.format(winnerTradesSum / winnerTradesCount)
-      backtest.avgLoserLoss = N.format(loserTradesSum / loserTradesCount)
-      backtest.expectancy = N.format(((backtest.winnerTradesPercentage / 100 * Math.abs(backtest.avgWinnerProfit)) - (backtest.loserTradesPercentage / 100 * Math.abs(backtest.avgLoserLoss))))
-      backtest.totalCommissionPercentageFinalCapital = N.format((backtest.totalCommission / backtest.finalCapital) * 100)
+      backtest.winnerTradesPercentage = NumberHelper.format(((winnerTradesCount / totalTradesCount) * 100))
+      backtest.loserTradesPercentage = NumberHelper.format(((loserTradesCount / totalTradesCount) * 100))
+      backtest.avgWinnerProfit = NumberHelper.format(winnerTradesSum / winnerTradesCount)
+      backtest.avgLoserLoss = NumberHelper.format(loserTradesSum / loserTradesCount)
+      backtest.expectancy = NumberHelper.format(((backtest.winnerTradesPercentage / 100 * Math.abs(backtest.avgWinnerProfit)) - (backtest.loserTradesPercentage / 100 * Math.abs(backtest.avgLoserLoss))))
+      backtest.totalCommissionPercentageFinalCapital = NumberHelper.format((backtest.totalCommission / backtest.finalCapital) * 100)
 
 
       // sharpe ratio

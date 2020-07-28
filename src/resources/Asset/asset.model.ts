@@ -10,7 +10,7 @@ export interface IAssetModel extends IAsset, Document {
 
 const assetSchema = new mongoose.Schema({
   name: String,
-  symbol: { type: String, unique: true },
+  ticker: { type: String, unique: true },
   isETF: Boolean,
   lastRefreshed: Date,
   timeZone: String,

@@ -1,7 +1,9 @@
+import { Dictionary } from 'lodash';
 import moment from 'moment';
 
 import { DEFAULT_INITIAL_CAPITAL } from '../../resources/BackTest/backtest.constant';
-import { BackTestActions, IQuote } from '../../resources/BackTest/backtest.types';
+import { BackTestActions } from '../../resources/BackTest/backtest.types';
+import { IQuote } from '../../resources/Quote/quote.types';
 import { TradeDirection } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { D } from '../../utils/DateTimeHelper';
@@ -99,7 +101,7 @@ export class ThreeDragons extends BackTestingSystem {
 
   }
 
-  public defineNextSteps = (symbol: string, dateKeyQuotes: IQuote, periodNow: string, prevPeriod: string | null) => {
+  public defineNextSteps = (symbol: string, dateKeyQuotes: Dictionary<IQuote>, periodNow: string, prevPeriod: string | null) => {
 
     const indicators = this.backTestSymbolsData[symbol].indicators!
 
