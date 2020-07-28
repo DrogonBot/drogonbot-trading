@@ -54,14 +54,14 @@ export class TradingSystem {
     this.backTestRiskPerTradeR = DEFAULT_MAX_RISK_PER_TRADE
   }
 
-  public fetchPriceData = async (symbol: string, interval: TradingDataInterval) => {
+  public fetchPriceData = async (ticker: string, interval: TradingDataInterval) => {
     try {
-      const priceData = await Quote.find({ symbol, interval }).sort({ "date": "asc" })
+      const priceData = await Quote.find({ ticker, interval }).sort({ "date": "asc" })
 
-      console.log(`debug: first data for symbol ${symbol} is ${priceData[0].date}`);
+      console.log(`debug: first data for symbol ${ticker} is ${priceData[0].date}`);
 
       if (priceData.length === 0) {
-        console.log(`Error: No price data found for ${symbol}!`);
+        console.log(`Error: No price data found for ${ticker}!`);
         return null
       }
 

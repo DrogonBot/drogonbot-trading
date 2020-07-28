@@ -39,23 +39,23 @@ export class BackTestingSystem extends TradingSystem {
     this.initialCapital = DEFAULT_INITIAL_CAPITAL
   }
 
-  public startBackTesting = async (symbols: string[], interval: TradingDataInterval, initialCapital: number) => {
+  public startBackTesting = async (tickers: string[], interval: TradingDataInterval, initialCapital: number) => {
 
     // load price data
     // const priceData = await this.fetchPriceData(symbol, interval)
 
-    for (const symbol of symbols) {
-      console.log(`BackTest: Fetching data for ${symbol}. Please wait...`);
-      const quotes = await this.fetchPriceData(symbol, interval)
+    for (const ticker of tickers) {
+      console.log(`BackTest: Fetching data for ${ticker}. Please wait...`);
+      const quotes = await this.fetchPriceData(ticker, interval)
 
 
       if (!quotes) {
-        throw new Error(`BackTest: failed to fetch data for ${symbol}. Please, make sure you have data for it, first!`)
+        throw new Error(`BackTest: failed to fetch data for ${ticker}. Please, make sure you have data for it, first!`)
       }
 
       this.backTestSymbolsData = {
         ...this.backTestSymbolsData,
-        [symbol]: {
+        [ticker]: {
           indicators: {},
           quotes,
           quotesDateKey: {}
@@ -65,12 +65,12 @@ export class BackTestingSystem extends TradingSystem {
 
     // prepare date (set all date "needles" to the same point)
 
-    this.backTestSymbolsData = this.prepareBackTestData(symbols)
+    this.backTestSymbolsData = this.prepareBackTestData(tickers)
 
     try {
       console.log('Creating new backtest...');
       const newBackTest = new BackTest({
-        assets: symbols,
+        assets: tickers,
         initialCapital,
         finalCapital: initialCapital,
         totalTrades: 0,
@@ -92,20 +92,20 @@ export class BackTestingSystem extends TradingSystem {
     }
   }
 
-  public prepareBackTestData = (symbols: string[]) => {
+  public prepareBackTestData = (tickers: string[]) => {
 
     // This function will slice the data and set all of the analyzed symbols into the same startingPoint
 
     const newData = this.backTestSymbolsData
 
-    const startingDate = this.getStartingDate(symbols)
+    const startingDate = this.getStartingDate(tickers)
 
-    for (const symbol of symbols) {
+    for (const ticker of tickers) {
 
-      const quotes = newData[symbol].quotes
+      const quotes = newData[ticker].quotes
 
       if (!quotes) {
-        throw new Error(`Error while preparing backtest data. Quotes for symbol ${symbol} not found!`)
+        throw new Error(`Error while preparing backtest data. Quotes for symbol ${ticker} not found!`)
       }
 
       const startingDateIndex = quotes.findIndex((quote) => {
@@ -117,8 +117,8 @@ export class BackTestingSystem extends TradingSystem {
 
       const preparedQuotes = _.slice(quotes, startingDateIndex, quotes.length);
 
-      newData[symbol].quotes = preparedQuotes
-      newData[symbol].quotesDateKey = _.keyBy(preparedQuotes, (quote) => D.indicatorFormat(quote.date))
+      newData[ticker].quotes = preparedQuotes
+      newData[ticker].quotesDateKey = _.keyBy(preparedQuotes, (quote) => D.indicatorFormat(quote.date))
 
     }
     return newData
@@ -126,14 +126,14 @@ export class BackTestingSystem extends TradingSystem {
 
 
 
-  public getStartingDate = (symbols: string[]) => {
+  public getStartingDate = (tickers: string[]) => {
 
     // Get a common starting date, where all assets have data to be analyzed
 
     const firstDates: Date[] = []
 
-    for (const symbol of symbols) {
-      const firstDate = this.backTestSymbolsData[symbol].quotes![0].date
+    for (const ticker of tickers) {
+      const firstDate = this.backTestSymbolsData[ticker].quotes![0].date
       firstDates.push(firstDate)
     }
 
@@ -146,7 +146,7 @@ export class BackTestingSystem extends TradingSystem {
 
   }
 
-  public startBackTestingTrade = async (currentCapital: number, symbol: string, executionPrice: number, price: IQuote, ATR: number, marketDirection: TradeDirection, backTestId: string) => {
+  public startBackTestingTrade = async (currentCapital: number, ticker: string, executionPrice: number, price: IQuote, ATR: number, marketDirection: TradeDirection, backTestId: string) => {
 
     // calculate position sizing
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: BUY: Adding entry at ${price.date} - ${NumberHelper.format(executionPrice)}`)
@@ -161,7 +161,7 @@ export class BackTestingSystem extends TradingSystem {
       type: TradeType.BackTest,
       direction: marketDirection,
       backTestId,
-      symbol,
+      ticker,
       riskR: DEFAULT_MAX_RISK_PER_TRADE,
       quantity: units,
       allocatedCapital: maxAllocation,

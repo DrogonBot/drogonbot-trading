@@ -25,7 +25,7 @@ const tradeSchema = new mongoose.Schema({
   },
   systemId: String,
   backTestId: String,
-  symbol: String,
+  ticker: String,
   riskR: Number,
   quantity: Number,
   allocatedCapital: Number,

@@ -9,14 +9,14 @@ import { Quote } from './quote.model';
 const quoteRouter = new express.Router();
 
 // get asset price data
-quoteRouter.get("/price/:symbol/:interval", async (req, res) => {
+quoteRouter.get("/price/:ticker/:interval", async (req, res) => {
 
-  const { symbol, interval } = req.params;
+  const { ticker, interval } = req.params;
   const { limit, orderDirection, orderBy } = req.query;
 
   try {
 
-    const price = await Quote.find({ symbol, interval }).limit(parseInt(limit)).sort({
+    const price = await Quote.find({ ticker, interval }).limit(parseInt(limit)).sort({
       [orderBy]: orderDirection
     });
 
@@ -59,20 +59,6 @@ quoteRouter.get("/price/:ticker", async (req, res) => {
     })
 
   }
-
-
-
-  // const timeSeriesResponse = await tradingBot.updatePriceData(symbol, updateType, interval, minInterval)
-
-  // if (!timeSeriesResponse) {
-  //   return res.status(200).send({
-  //     status: "error",
-  //     message: TS.string("asset", "assetTimeSeriesFetchError")
-  //   })
-  // }
-
-
-
 })
 
 

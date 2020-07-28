@@ -69,6 +69,3 @@ export enum BackTestActions {
   Skip = "Skip"
 }
 
-export interface ISymbolPeriods {
-  [symbol: string]: string[]
-}

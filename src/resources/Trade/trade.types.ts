@@ -6,7 +6,7 @@ export interface ITrade {
   status: TradeStatus,
   systemId: string,
   backTestId: string,
-  symbol: string,
+  ticker: string,
   riskR: number,
   quantity: number,
   allocatedCapital: number,

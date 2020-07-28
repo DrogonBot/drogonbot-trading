@@ -16,14 +16,14 @@ import { BackTestingSystem } from './BackTestingSystem';
 
 export class ThreeDragons extends BackTestingSystem {
   private _systemName: string;
-  public symbols: string[];
+  public tickers: string[];
   public interval: TradingDataInterval;
 
 
-  constructor(symbols: string[], interval: TradingDataInterval, ATRStopMultiple: number = 3, initialCapital: number = DEFAULT_INITIAL_CAPITAL) {
+  constructor(tickers: string[], interval: TradingDataInterval, ATRStopMultiple: number = 3, initialCapital: number = DEFAULT_INITIAL_CAPITAL) {
     super()
     this._systemName = "Three Dragons"
-    this.symbols = symbols;
+    this.tickers = tickers;
     this.interval = interval;
     this.ATRStopMultiple = ATRStopMultiple
     this.initialCapital = initialCapital
@@ -31,9 +31,9 @@ export class ThreeDragons extends BackTestingSystem {
 
   public backTest = async () => {
     // initialize backtest (load assets data, etc)
-    ConsoleHelper.coloredLog(ConsoleColor.BgMagenta, ConsoleColor.FgWhite, `🤖 Initializing ${this._systemName} strategy backtest with the following symbols: ${this.symbols}`)
+    ConsoleHelper.coloredLog(ConsoleColor.BgMagenta, ConsoleColor.FgWhite, `🤖 Initializing ${this._systemName} strategy backtest with the following symbols: ${this.tickers}`)
 
-    await this.startBackTesting(this.symbols, this.interval, this.initialCapital)
+    await this.startBackTesting(this.tickers, this.interval, this.initialCapital)
 
     // calculate indicators
     await this.calculateIndicators()
@@ -43,12 +43,12 @@ export class ThreeDragons extends BackTestingSystem {
     // Starting analytical loop
 
     const backtestStartingTime = moment(new Date()) // just to measure performance
-    const startingPeriod = (this.getStartingDate(this.symbols))
+    const startingPeriod = (this.getStartingDate(this.tickers))
     let periodNow = D.indicatorFormat(startingPeriod)
 
     let stopBackTesting = false;
     let finishedSymbols = 0
-    const totalSymbols = this.symbols.length
+    const totalSymbols = this.tickers.length
 
 
 
@@ -59,7 +59,7 @@ export class ThreeDragons extends BackTestingSystem {
         return
       }
 
-      for (const symbol of this.symbols) {
+      for (const symbol of this.tickers) {
 
         const dataEntries = this.backTestSymbolsData[symbol].quotes
         const lastDataEntry = dataEntries[dataEntries.length - 1]
@@ -139,7 +139,7 @@ export class ThreeDragons extends BackTestingSystem {
 
   public calculateIndicators = async () => {
 
-    for (const symbol of this.symbols) {
+    for (const symbol of this.tickers) {
 
       console.log(`🤖: Calculating indicators for ${symbol} (${this.interval})`);
 

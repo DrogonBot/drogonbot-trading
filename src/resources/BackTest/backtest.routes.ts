@@ -6,9 +6,11 @@ import { ThreeDragons } from '../../trading/strategies/ThreeDragons';
 const backTestRouter = new express.Router();
 
 // get asset price data
-backTestRouter.get("/backtest/:symbols/:interval/:strategy", async (req, res) => {
+backTestRouter.get("/backtest/:interval/:strategy", async (req, res) => {
 
-  const { symbols, strategy, interval } = req.params;
+  const { strategy, interval } = req.params;
+
+  const { tickers } = req.query
 
   try {
 
@@ -18,13 +20,9 @@ backTestRouter.get("/backtest/:symbols/:interval/:strategy", async (req, res) =>
 
       case "ThreeDragons":
 
-        const assetsArray = symbols.split(",").map((symbol) => symbol)
-
-
-        const threeDragons = new ThreeDragons(assetsArray, interval)
+        const tickersArray = tickers.split(",").map((ticker) => ticker)
+        const threeDragons = new ThreeDragons(tickersArray, interval)
         await threeDragons.backTest()
-
-
 
         break;
 
