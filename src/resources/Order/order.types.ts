@@ -10,8 +10,9 @@ export interface IOrder {
 export enum OrderTypes {
   Market = "Market", // execute right now, at market price
   Limit = "Limit", // wanna buy, but set a limit of how much I'd like to pay for it
-  StopLoss = "StopLoss", // buy stop loss = start order / sell stop loss = regular stop
-  StopLimit = "StopLimit"
+  Start = "Start", // Buy stoplos and Start are the same thing, but lets use "start" if favour of better clarity
+  StopLoss = "StopLoss",
+  // StopLimit = "StopLimit"
 }
 
 export enum OrderStatus {

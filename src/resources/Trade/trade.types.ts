@@ -1,5 +1,7 @@
 import { ObjectId } from 'mongodb';
 
+import { IOrderModel } from '../Order/order.model';
+
 
 export interface ITrade {
   backTest: ObjectId,
@@ -21,7 +23,8 @@ export interface ITrade {
   wasStopped: boolean
   profitLoss: number,
   daysDuration: number,
-  slippage?: number
+  slippage?: number,
+  orders: IOrderModel[]
 }
 
 export enum TradeType {

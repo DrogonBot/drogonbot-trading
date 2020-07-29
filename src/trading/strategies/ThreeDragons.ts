@@ -2,9 +2,11 @@ import { Dictionary } from 'lodash';
 
 import { DEFAULT_MAX_RISK_PER_TRADE } from '../../resources/BackTest/backtest.constant';
 import { BackTestActions } from '../../resources/BackTest/backtest.types';
+import { OrderTypes } from '../../resources/Order/order.types';
 import { IQuote } from '../../resources/Quote/quote.types';
 import { TradeDirection } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
+import { DateHelper } from '../../utils/DateTimeHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { ATRHelper } from '../indicators/ATRHelper';
 import { SidewaysMarketHelper } from '../indicators/ChoppyFilterHelper';
@@ -67,17 +69,19 @@ export class ThreeDragons extends BackTestingSystem {
       return BackTestActions.Skip
     }
 
-    if (this.canBuy(quoteNow, SMA200Now, SMA200Prev, SMA50Now, ATRNow)) {
+    if (this.canExecuteBuyOrder(ticker, quoteNow)) {
+      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🏁: Adding BUY order to ${ticker} on ${DateHelper.format(quoteNow.date)}!`);
+      this.isBackTestRunning = false; // stop backtest just for debugging
+    }
 
 
-      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Adding buying order to trade!`);
 
+    if (this.canSetStartOrder(quoteNow, SMA200Now, SMA200Prev, SMA50Now, ATRNow)) {
+
+      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🏁: Adding START order to ${ticker} on ${DateHelper.format(quoteNow.date)}!`);
 
       // check if there's already an active trade with this current asset for this current backtest. If so, fetch it. If not, create a new one
-      await this.placeBackTestOrder(ticker, this.maxRiskPerTrade, quoteNow, ATRNow)
-
-      this.isBackTestRunning = false; // stop backtest just for debugging
-
+      await this.placeBackTestOrder(ticker, OrderTypes.Start, quoteNow.high + 0.01, quoteNow.date, this.maxRiskPerTrade, ATRNow)
 
 
     }
@@ -92,7 +96,7 @@ export class ThreeDragons extends BackTestingSystem {
     `);
   }
 
-  public canBuy = (quoteNow: IQuote, SMA200Now: number, SMA200Prev: number, SMA50Now: number, ATRNow: number) => {
+  public canSetStartOrder = (quoteNow: IQuote, SMA200Now: number, SMA200Prev: number, SMA50Now: number, ATRNow: number) => {
 
     const marketDirection = this.calculateCurrentMarketDirection(SMA200Now, SMA200Prev, SMA50Now, ATRNow)
 
@@ -101,6 +105,23 @@ export class ThreeDragons extends BackTestingSystem {
         return true
       }
     }
+  }
+
+  public canExecuteBuyOrder = (ticker: string, quoteNow: IQuote) => {
+
+    const currentStart = this.backTestTradeDetails[ticker].startPrice
+
+    if (currentStart) {
+      if (quoteNow.high >= currentStart && quoteNow.low <= currentStart) {
+        return true
+      }
+    }
+
+
+    return false;
+
+
+
   }
 
   public calculateIndicators = async () => {

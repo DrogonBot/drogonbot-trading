@@ -7,7 +7,7 @@ import { DATE_KEY_FORMAT } from '../trading/indicators/constant/indicator.consta
 
 
 
-export class D {
+export class DateHelper {
 
   public static convertNodeTSToDate = (nodeTimestamp: Date, format: string) => {
     return moment(nodeTimestamp).format(format)

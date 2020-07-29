@@ -11,12 +11,14 @@ import {
   RISK_FREE_RETURN,
 } from '../../resources/BackTest/backtest.constant';
 import { BackTest } from '../../resources/BackTest/backtest.model';
-import { BackTestActions, IBackTestSymbolData } from '../../resources/BackTest/backtest.types';
+import { BackTestActions, IBackTestSymbolData, IBackTestTradesDetails } from '../../resources/BackTest/backtest.types';
+import { Order } from '../../resources/Order/order.model';
+import { OrderStatus, OrderTypes } from '../../resources/Order/order.types';
 import { IQuote } from '../../resources/Quote/quote.types';
-import { Trade } from '../../resources/Trade/trade.model';
+import { ITradeModel, Trade } from '../../resources/Trade/trade.model';
 import { TradeDirection, TradeStatus, TradeType } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
-import { D } from '../../utils/DateTimeHelper';
+import { DateHelper } from '../../utils/DateTimeHelper';
 import { NumberHelper } from '../../utils/NumberHelper';
 import { PositionSizingHelper } from '../../utils/PositionSizingHelper';
 import { TradingDataInterval } from '../constant/tradingdata.constant';
@@ -29,6 +31,7 @@ export class BackTestingSystem extends TradingSystem {
   public symbolsMarketDirections: object | null
   public currentBackTestId: string | null
   public isBackTestRunning: boolean
+  public backTestTradeDetails: IBackTestTradesDetails
 
 
   constructor() {
@@ -37,6 +40,7 @@ export class BackTestingSystem extends TradingSystem {
     this.backTestSymbolsData = {}
     this.currentBackTestId = null
     this.isBackTestRunning = false;
+    this.backTestTradeDetails = {}
   }
 
   // ! MAIN BACKTESTING FUNCTIONS
@@ -133,7 +137,7 @@ export class BackTestingSystem extends TradingSystem {
 
     const backtestStartingTime = moment(new Date()) // just to measure performance
     const startingPeriod = (this.getStartingDate(tickers))
-    let periodNow = D.indicatorFormat(startingPeriod)
+    let periodNow = DateHelper.indicatorFormat(startingPeriod)
 
     let finishedSymbols = 0
     const totalSymbols = tickers.length
@@ -149,7 +153,7 @@ export class BackTestingSystem extends TradingSystem {
 
         const dataEntries = this.backTestSymbolsData[ticker].quotes
         const lastDataEntry = dataEntries[dataEntries.length - 1]
-        const isLastDataEntry = D.indicatorFormat(lastDataEntry.date) === periodNow
+        const isLastDataEntry = DateHelper.indicatorFormat(lastDataEntry.date) === periodNow
         if (isLastDataEntry) {
           ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgBlack, `🤖: Finished backtest for ${ticker} on ${periodNow}!`)
           finishedSymbols++
@@ -160,7 +164,7 @@ export class BackTestingSystem extends TradingSystem {
           throw new Error(`Failed to find DateKey data for ${ticker}`)
         }
 
-        const prevPeriod = D.indicatorFormat(moment(periodNow).subtract(1, D.convertIntervalToMomentInterval(interval)).toDate())
+        const prevPeriod = DateHelper.indicatorFormat(moment(periodNow).subtract(1, DateHelper.convertIntervalToMomentInterval(interval)).toDate())
 
         const nextSteps = await defineNextSteps(ticker, quotesDictionary, periodNow, prevPeriod)
 
@@ -176,7 +180,7 @@ export class BackTestingSystem extends TradingSystem {
       }
 
       // increase one period
-      periodNow = D.indicatorFormat(moment(periodNow).add(1, D.convertIntervalToMomentInterval(interval)).toDate())
+      periodNow = DateHelper.indicatorFormat(moment(periodNow).add(1, DateHelper.convertIntervalToMomentInterval(interval)).toDate())
     }
 
 
@@ -230,9 +234,48 @@ export class BackTestingSystem extends TradingSystem {
 
   // ! OTHER BACKTESTING FUNCTIONS
 
-  public placeBackTestOrder = async (ticker: string, maxRiskPerTrade: number, quoteNow: IQuote, ATRNow: number) => {
+  private _createNewOrder = async (ticker: string, orderType: OrderTypes, trade: ITradeModel, orderPrice: number) => {
+    const newOrder = new Order({
+      trade: trade._id,
+      type: orderType,
+      price: orderPrice,
+      status: OrderStatus.Pending
+    })
+    trade.orders.push(newOrder)
+    await newOrder.save()
+    await trade.save()
 
-    console.log(`🤖: Placing backtest order...`);
+    // if its a start or stop order, we should save it in a dictionary, to avoid frequent fetches in our database
+
+    switch (orderType) {
+      case OrderTypes.Start:
+        this.backTestTradeDetails = {
+          ...this.backTestTradeDetails,
+          [ticker]: {
+            ...this.backTestTradeDetails[ticker],
+            startPrice: orderPrice
+          }
+        }
+
+        break;
+      case OrderTypes.StopLoss:
+        this.backTestTradeDetails = {
+          ...this.backTestTradeDetails,
+          [ticker]: {
+            ...this.backTestTradeDetails[ticker],
+            stopPrice: orderPrice
+          }
+        }
+        break;
+
+    }
+
+
+  }
+
+  public placeBackTestOrder = async (ticker: string, orderType: OrderTypes, orderPrice: number, orderDate: Date, maxRiskPerTrade: number, ATRNow: number) => {
+
+
 
     try {
       const currentBackTest = await BackTest.findOne({ _id: this.currentBackTestId })
@@ -241,11 +284,13 @@ export class BackTestingSystem extends TradingSystem {
         throw new Error("Failed to find BackTest while trying to buy asset")
       }
 
-      const isActiveTrade = currentBackTest.trades.find((trade) => trade.status === TradeStatus.Active)
+      const activeTrade = currentBackTest.trades.find((trade) => (trade.status === TradeStatus.Active) && trade.ticker === ticker)
 
-      if (isActiveTrade) {
+      if (activeTrade) {
         console.log("Active trade found, creating new order");
         // if there's already an active trade, lets just create an order for a start
+
+        await this._createNewOrder(ticker, orderType, activeTrade, orderPrice)
 
 
       } else {
@@ -253,25 +298,15 @@ export class BackTestingSystem extends TradingSystem {
 
         console.log("No active trade found. Creating new one");
 
-        const { maxAllocation, qty, initialStop } = PositionSizingHelper.ATRPositionSizing(currentBackTest.currentCapital, maxRiskPerTrade, quoteNow.close, ATRNow)
-
-
-        console.log(`maxAllocation: ${maxAllocation} / qty=${qty} / initialStop=${initialStop}`);
-
         const newTrade = new Trade({
           ticker,
           backTest: currentBackTest._id,
           type: TradeType.BackTest,
           status: TradeStatus.Active,
           direction: TradeDirection.Long,
-          riskR: DEFAULT_MAX_RISK_PER_TRADE,
-          quantity: qty,
-          allocatedCapital: maxAllocation,
-          entryDate: quoteNow.date,
-          stopPrice: initialStop
         })
-        await newTrade.save()
 
+        await this._createNewOrder(ticker, orderType, newTrade, orderPrice)
 
         currentBackTest.trades.push(newTrade)
         await currentBackTest.save()
@@ -316,7 +351,7 @@ export class BackTestingSystem extends TradingSystem {
       const preparedQuotes = _.slice(quotes, startingDateIndex, quotes.length);
 
       newData[ticker].quotes = preparedQuotes
-      newData[ticker].quotesDictionary = _.keyBy(preparedQuotes, (quote) => D.indicatorFormat(quote.date))
+      newData[ticker].quotesDictionary = _.keyBy(preparedQuotes, (quote) => DateHelper.indicatorFormat(quote.date))
 
     }
     return newData
