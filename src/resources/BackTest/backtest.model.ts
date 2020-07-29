@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
 import { IBackTest } from './backtest.types';
@@ -8,8 +9,12 @@ export interface IBackTestModel extends IBackTest, Document {
 
 const backTestSchema = new mongoose.Schema({
   assets: [String],
+  trades: [{
+    type: ObjectId,
+    ref: "Trade"
+  }],
   initialCapital: Number,
-  finalCapital: Number,
+  currentCapital: Number,
   buyAndHoldROI: Number,
   buyAndHoldROIPerYear: Number,
   buyAndHoldROIPerDay: Number,

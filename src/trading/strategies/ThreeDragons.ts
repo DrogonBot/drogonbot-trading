@@ -1,5 +1,6 @@
 import { Dictionary } from 'lodash';
 
+import { DEFAULT_MAX_RISK_PER_TRADE } from '../../resources/BackTest/backtest.constant';
 import { BackTestActions } from '../../resources/BackTest/backtest.types';
 import { IQuote } from '../../resources/Quote/quote.types';
 import { TradeDirection } from '../../resources/Trade/trade.types';
@@ -15,6 +16,7 @@ export class ThreeDragons extends BackTestingSystem {
   private _systemName: string;
   public tickers: string[];
   public interval: TradingDataInterval;
+  public maxRiskPerTrade: number = DEFAULT_MAX_RISK_PER_TRADE;
 
 
   constructor(tickers: string[], interval: TradingDataInterval, ATRStopMultiple: number = 3) {
@@ -23,7 +25,6 @@ export class ThreeDragons extends BackTestingSystem {
     this.tickers = tickers;
     this.interval = interval;
     this.ATRStopMultiple = ATRStopMultiple
-
   }
 
   public backTest = async () => {
@@ -41,11 +42,12 @@ export class ThreeDragons extends BackTestingSystem {
 
     await this.runBackTesting(this.tickers, this.interval, this.defineNextSteps)
 
+
   }
 
-  public defineNextSteps = (ticker: string, quotesDictionary: Dictionary<IQuote>, periodNow: string, prevPeriod: string | null) => {
+  public defineNextSteps = async (ticker: string, quotesDictionary: Dictionary<IQuote>, periodNow: string, prevPeriod: string | null) => {
 
-    const indicators = this.backTestSymbolsData[ticker].indicators!
+    const indicators = this.backTestSymbolsData[ticker].indicators
 
     if (!indicators) {
       throw new Error(`BackTest: Failed to calculate indicators for ${ticker}`)
@@ -55,14 +57,29 @@ export class ThreeDragons extends BackTestingSystem {
       return BackTestActions.Skip
     }
 
-    const SMA50Now = indicators["SMA50"][periodNow]?.value || null
-    const SMA200Now = indicators["SMA200"][periodNow]?.value || null
-    const SMA200Prev = indicators["SMA200"][prevPeriod]?.value || null
-    const ATRNow = indicators["ATR"][periodNow]?.value || null
+    const SMA50Now: number = indicators["SMA50"][periodNow]?.value || null
+    const SMA200Now: number = indicators["SMA200"][periodNow]?.value || null
+    const SMA200Prev: number = indicators["SMA200"][prevPeriod]?.value || null
+    const ATRNow: number = indicators["ATR"][periodNow]?.value || null
     const quoteNow = quotesDictionary[periodNow] || null
 
     if (!SMA50Now || !SMA200Now || !SMA200Prev || !ATRNow || !quoteNow) {
       return BackTestActions.Skip
+    }
+
+    if (this.canBuy(quoteNow, SMA200Now, SMA200Prev, SMA50Now, ATRNow)) {
+
+
+      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Adding buying order to trade!`);
+
+
+      // check if there's already an active trade with this current asset for this current backtest. If so, fetch it. If not, create a new one
+      await this.placeBackTestOrder(ticker, this.maxRiskPerTrade, quoteNow, ATRNow)
+
+      this.isBackTestRunning = false; // stop backtest just for debugging
+
+
+
     }
 
     console.log(`Defining next steps for ${ticker} on date ${periodNow}`);
@@ -73,10 +90,17 @@ export class ThreeDragons extends BackTestingSystem {
       SMA200Now=${SMA200Now} / SMA200Prev=${SMA200Prev}
       ATRNow=${ATRNow}
     `);
+  }
 
+  public canBuy = (quoteNow: IQuote, SMA200Now: number, SMA200Prev: number, SMA50Now: number, ATRNow: number) => {
 
+    const marketDirection = this.calculateCurrentMarketDirection(SMA200Now, SMA200Prev, SMA50Now, ATRNow)
 
-
+    if (marketDirection === TradeDirection.Long) {
+      if (quoteNow.low <= (SMA50Now + ATRNow)) {
+        return true
+      }
+    }
   }
 
   public calculateIndicators = async () => {
@@ -100,7 +124,7 @@ export class ThreeDragons extends BackTestingSystem {
     }
   }
 
-  public calculateCurrentMarketDirection = async (SMA200Now, SMA200Prev, SMA50Now, ATRNow) => {
+  public calculateCurrentMarketDirection = (SMA200Now, SMA200Prev, SMA50Now, ATRNow) => {
     if ((SMA200Now > SMA200Prev) && (SMA50Now > SMA200Now) && !SidewaysMarketHelper.isMarketSideways(SMA50Now, SMA200Now, ATRNow)) {
       return TradeDirection.Long
     }

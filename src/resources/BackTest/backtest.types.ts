@@ -1,6 +1,7 @@
 import { Dictionary } from 'lodash';
 
 import { IQuote } from '../Quote/quote.types';
+import { ITrade } from '../Trade/trade.types';
 
 
 // More info: https://www.tradinggame.com.au/introduction-to-backtesting-metrics/
@@ -14,8 +15,9 @@ export interface ICapitalHistory {
 
 export interface IBackTest {
   assets: string[],
+  trades: ITrade[],
   initialCapital: number,
-  finalCapital: number,
+  currentCapital: number,
   buyAndHoldROI: number,
   buyAndHoldROIPerDay: number,
   buyAndHoldROIPerYear: number,

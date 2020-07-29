@@ -1,4 +1,5 @@
 import { IPositionSizingResult } from '../typescript/positionsizing.types';
+import { NumberHelper } from './NumberHelper';
 
 
 
@@ -12,16 +13,16 @@ export class PositionSizingHelper {
 
     const capitalRiskPerTrade = totalCapital * (maxPercentageRiskPerTrade / 100)
 
-    const units = capitalRiskPerTrade / (ATR * ATRMultiple)
+    const qty = capitalRiskPerTrade / (ATR * ATRMultiple)
 
-    const maxAllocation = units * closePrice
+    const maxAllocation = qty * closePrice
 
     const initialStop = closePrice - (ATR * ATRMultiple)
 
     return {
-      maxAllocation: parseFloat(maxAllocation.toFixed(2)),
-      units: parseFloat(units.toFixed(2)),
-      initialStop: parseFloat(initialStop.toFixed(2)),
+      maxAllocation: NumberHelper.format(maxAllocation),
+      qty: NumberHelper.format(qty),
+      initialStop: NumberHelper.format(initialStop),
     }
   }
 

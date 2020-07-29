@@ -28,6 +28,7 @@ export class BackTestingSystem extends TradingSystem {
   public backTestSymbolsData: IBackTestSymbolData
   public symbolsMarketDirections: object | null
   public currentBackTestId: string | null
+  public isBackTestRunning: boolean
 
 
   constructor() {
@@ -35,6 +36,7 @@ export class BackTestingSystem extends TradingSystem {
     this.symbolsMarketDirections = null
     this.backTestSymbolsData = {}
     this.currentBackTestId = null
+    this.isBackTestRunning = false;
   }
 
   // ! MAIN BACKTESTING FUNCTIONS
@@ -45,7 +47,7 @@ export class BackTestingSystem extends TradingSystem {
     ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: BUY: Adding entry at ${price.date} - ${NumberHelper.format(executionPrice)}`)
 
     const { maxAllocation,
-      units,
+      qty: units,
       initialStop } = PositionSizingHelper.ATRPositionSizing(currentCapital, DEFAULT_MAX_RISK_PER_TRADE, executionPrice, ATR, DEFAULT_ATR_MULTIPLE)
 
 
@@ -77,6 +79,8 @@ export class BackTestingSystem extends TradingSystem {
 
   public startBackTesting = async (tickers: string[], interval: TradingDataInterval, initialCapital: number = DEFAULT_INITIAL_CAPITAL) => {
 
+    this.isBackTestRunning = true;
+
     for (const ticker of tickers) {
       console.log(`BackTest: Fetching data for ${ticker}. Please wait...`);
       const quotes = await this.fetchPriceData(ticker, interval)
@@ -105,7 +109,7 @@ export class BackTestingSystem extends TradingSystem {
       const newBackTest = new BackTest({
         assets: tickers,
         initialCapital,
-        finalCapital: initialCapital,
+        currentCapital: initialCapital,
         totalTrades: 0,
         totalCommission: 0,
         totalTradingDays: 0
@@ -131,14 +135,13 @@ export class BackTestingSystem extends TradingSystem {
     const startingPeriod = (this.getStartingDate(tickers))
     let periodNow = D.indicatorFormat(startingPeriod)
 
-    let stopBackTesting = false;
     let finishedSymbols = 0
     const totalSymbols = tickers.length
 
-    while (!stopBackTesting) {
+    while (this.isBackTestRunning) {
 
       if (finishedSymbols === totalSymbols) {
-        stopBackTesting = true
+        this.isBackTestRunning = false
         return
       }
 
@@ -159,13 +162,14 @@ export class BackTestingSystem extends TradingSystem {
 
         const prevPeriod = D.indicatorFormat(moment(periodNow).subtract(1, D.convertIntervalToMomentInterval(interval)).toDate())
 
-        const nextSteps = defineNextSteps(ticker, quotesDictionary, periodNow, prevPeriod)
+        const nextSteps = await defineNextSteps(ticker, quotesDictionary, periodNow, prevPeriod)
 
-        switch (nextSteps) {
-          case BackTestActions.Skip:
-            // if data point calculation is invalid, just skip actions on this date for this symbol
-            continue;
+
+        if (nextSteps === BackTestActions.Skip) {
+          continue;
         }
+
+
 
         // await GenericHelper.sleep(1000)
 
@@ -179,11 +183,14 @@ export class BackTestingSystem extends TradingSystem {
     const backtestFinishingTime = moment(new Date())
 
     const elapsedTime = backtestFinishingTime.diff(backtestStartingTime, 'seconds')
-    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished after ${elapsedTime}!`)
+    ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🤖: Finished after ${elapsedTime} seconds!`)
 
   }
 
   public endBackTesting = async (currentCapital: number, executionPrice: number, price: IQuote, currentStop: number, currentActiveTradeId) => {
+
+    this.isBackTestRunning = false;
+
     const currentTrade = await Trade.findOne({ _id: currentActiveTradeId })
 
     if (!currentTrade) {
@@ -221,8 +228,67 @@ export class BackTestingSystem extends TradingSystem {
     return currentTrade;
   }
 
-
   // ! OTHER BACKTESTING FUNCTIONS
+
+  public placeBackTestOrder = async (ticker: string, maxRiskPerTrade: number, quoteNow: IQuote, ATRNow: number) => {
+
+    console.log(`🤖: Placing backtest order...`);
+
+    try {
+      const currentBackTest = await BackTest.findOne({ _id: this.currentBackTestId })
+
+      if (!currentBackTest) {
+        throw new Error("Failed to find BackTest while trying to buy asset")
+      }
+
+      const isActiveTrade = currentBackTest.trades.find((trade) => trade.status === TradeStatus.Active)
+
+      if (isActiveTrade) {
+        console.log("Active trade found, creating new order");
+        // if there's already an active trade, lets just create an order for a start
+
+
+      } else {
+        // if there's no active trade, create new one
+
+        console.log("No active trade found. Creating new one");
+
+        const { maxAllocation, qty, initialStop } = PositionSizingHelper.ATRPositionSizing(currentBackTest.currentCapital, maxRiskPerTrade, quoteNow.close, ATRNow)
+
+
+        console.log(`maxAllocation: ${maxAllocation} / qty=${qty} / initialStop=${initialStop}`);
+
+        const newTrade = new Trade({
+          ticker,
+          backTest: currentBackTest._id,
+          type: TradeType.BackTest,
+          status: TradeStatus.Active,
+          direction: TradeDirection.Long,
+          riskR: DEFAULT_MAX_RISK_PER_TRADE,
+          quantity: qty,
+          allocatedCapital: maxAllocation,
+          entryDate: quoteNow.date,
+          stopPrice: initialStop
+        })
+        await newTrade.save()
+
+
+        currentBackTest.trades.push(newTrade)
+        await currentBackTest.save()
+
+        return true
+
+
+      }
+
+    }
+    catch (error) {
+      console.error(error);
+      return false
+    }
+
+
+  }
 
   public prepareBackTestData = (tickers: string[]) => {
 
@@ -256,8 +322,6 @@ export class BackTestingSystem extends TradingSystem {
     return newData
   }
 
-
-
   public getStartingDate = (tickers: string[]) => {
 
     // Get a common starting date, where all assets have data to be analyzed
@@ -278,16 +342,12 @@ export class BackTestingSystem extends TradingSystem {
 
   }
 
-
-
-
-
   public updateBackTestAfterTrade = async (currentCapital: number, currentBackTestId: string, currentTradeId: string) => {
     const currentTrade = await Trade.findOne({ _id: currentTradeId })
     const currentBackTest = await BackTest.findOne({ _id: currentBackTestId });
 
     if (currentBackTest && currentTrade) {
-      currentBackTest.finalCapital = currentCapital
+      currentBackTest.currentCapital = currentCapital
       currentBackTest.totalTrades++
       if (currentTrade.daysDuration > 0) {
         currentBackTest.totalTradingDays += currentTrade.daysDuration
@@ -310,7 +370,6 @@ export class BackTestingSystem extends TradingSystem {
       await currentBackTest.save()
     }
   }
-
 
   public calculateBackTestMetrics = async (priceData: IQuote[], currentBackTestId: string) => {
 
@@ -363,7 +422,7 @@ export class BackTestingSystem extends TradingSystem {
       backtest.avgTradesPerDay = backtest.totalTrades / backtest.totalDays
       backtest.buyAndHoldROI = NumberHelper.format(((lastPrice / firstPrice) - 1) * 100)
       backtest.buyAndHoldROIPerDay = (backtest.buyAndHoldROI / backtest.totalDays) * 100
-      backtest.ROI = NumberHelper.format((((backtest.finalCapital / backtest.initialCapital) - 1) * 100))
+      backtest.ROI = NumberHelper.format((((backtest.currentCapital / backtest.initialCapital) - 1) * 100))
       backtest.buyAndHoldROIPerYear = backtest.buyAndHoldROI / (backtest.totalDays / 365)
       backtest.ROIPerDay = (backtest.ROI / backtest.totalTradingDays) * 100;
       backtest.ROIPerYear = backtest.ROI / (backtest.totalTradingDays / 365)
@@ -372,7 +431,7 @@ export class BackTestingSystem extends TradingSystem {
       backtest.avgWinnerProfit = NumberHelper.format(winnerTradesSum / winnerTradesCount)
       backtest.avgLoserLoss = NumberHelper.format(loserTradesSum / loserTradesCount)
       backtest.expectancy = NumberHelper.format(((backtest.winnerTradesPercentage / 100 * Math.abs(backtest.avgWinnerProfit)) - (backtest.loserTradesPercentage / 100 * Math.abs(backtest.avgLoserLoss))))
-      backtest.totalCommissionPercentageFinalCapital = NumberHelper.format((backtest.totalCommission / backtest.finalCapital) * 100)
+      backtest.totalCommissionPercentageFinalCapital = NumberHelper.format((backtest.totalCommission / backtest.currentCapital) * 100)
 
 
       // sharpe ratio
@@ -391,6 +450,5 @@ export class BackTestingSystem extends TradingSystem {
 
 
   }
-
 
 }

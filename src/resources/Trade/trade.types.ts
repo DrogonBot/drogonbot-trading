@@ -1,11 +1,11 @@
+import { ObjectId } from 'mongodb';
 
 
 export interface ITrade {
+  backTest: ObjectId,
   type: TradeType,
   direction: TradeDirection,
   status: TradeStatus,
-  systemId: string,
-  backTestId: string,
   ticker: string,
   riskR: number,
   quantity: number,

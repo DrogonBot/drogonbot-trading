@@ -3,6 +3,6 @@
 
 export interface IPositionSizingResult {
   maxAllocation: number,
-  units: number,
+  qty: number,
   initialStop: number,
 }

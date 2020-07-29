@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
 
 import { ITrade, TradeDirection, TradeStatus, TradeType } from './trade.types';
@@ -10,6 +11,11 @@ export interface ITradeModel extends ITrade, Document {
 }
 
 const tradeSchema = new mongoose.Schema({
+  ticker: String,
+  backTest: {
+    type: ObjectId,
+    ref: "BackTest"
+  },
   type: {
     type: String,
     enum: Object.values(TradeType)
@@ -23,9 +29,6 @@ const tradeSchema = new mongoose.Schema({
     type: String,
     enum: Object.values(TradeDirection)
   },
-  systemId: String,
-  backTestId: String,
-  ticker: String,
   riskR: Number,
   quantity: Number,
   allocatedCapital: Number,
@@ -40,7 +43,11 @@ const tradeSchema = new mongoose.Schema({
   profitLoss: Number,
   daysDuration: Number,
   commission: Number,
-  slippage: Number
+  slippage: Number,
+  orders: [{
+    type: ObjectId,
+    ref: "Order"
+  }]
 })
 
 
