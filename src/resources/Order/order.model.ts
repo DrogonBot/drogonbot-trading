@@ -36,8 +36,6 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: Object.values(OrderStatus)
   }
-}, {
-  timestamps: true
 })
 
 export const Order: Model<IOrderModel> = model<IOrderModel>('Order', orderSchema)

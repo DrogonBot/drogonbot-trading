@@ -2,7 +2,7 @@ import { Dictionary } from 'lodash';
 
 import { DEFAULT_MAX_RISK_PER_TRADE } from '../../resources/BackTest/backtest.constant';
 import { BackTestActions } from '../../resources/BackTest/backtest.types';
-import { OrderExecutionType, OrderStatus, OrderType } from '../../resources/Order/order.types';
+import { OrderExecutionType, OrderType } from '../../resources/Order/order.types';
 import { IQuote } from '../../resources/Quote/quote.types';
 import { TradeDirection } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
@@ -79,13 +79,14 @@ export class ThreeDragons extends BackTestingSystem {
       this.isBackTestRunning = false; // stop backtest just for debugging
     }
 
-
-
     if (this.canSetStartOrder(ticker, quoteNow, SMA200Now, SMA200Prev, SMA50Now, ATRNow)) {
-      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🏁: Adding START order to ${ticker} on ${DateHelper.format(quoteNow.date)}!`);
+
+      const orderPrice = quoteNow.high + 0.01
+
+      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🏁: Adding START order to ${ticker} on ${DateHelper.format(quoteNow.date)} at ${orderPrice}!`);
 
       // check if there's already an active trade with this current asset for this current backtest. If so, fetch it. If not, create a new one
-      await this.placeBackTestOrder(ticker, OrderType.Buy, OrderExecutionType.Start, quoteNow.high + 0.01, quoteNow.date, this.maxRiskPerTrade, ATRNow)
+      await this.placeBackTestOrder(ticker, OrderType.Buy, OrderExecutionType.Start, orderPrice, quoteNow.date, this.maxRiskPerTrade, ATRNow)
     }
 
     console.log(`Defining next steps for ${ticker} on date ${periodNow}`);
@@ -126,10 +127,6 @@ export class ThreeDragons extends BackTestingSystem {
 
     if (currentStart && !isTradeInProgress) {
       if (quoteNow.high >= currentStart && quoteNow.low <= currentStart) {
-
-        // update order status to filled
-        await this.changeOrderStatus(ticker, OrderType.Buy, OrderExecutionType.Start, OrderStatus.Filled)
-
         return true
       }
     }

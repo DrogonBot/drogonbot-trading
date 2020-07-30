@@ -4,6 +4,7 @@ export interface IOrder {
   ticker: string,
   trade: ObjectId,
   date: Date,
+  type: OrderType,
   executionType: OrderExecutionType,
   price: number,
   status: OrderStatus,
