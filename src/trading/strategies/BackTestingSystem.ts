@@ -10,7 +10,11 @@ import {
   RISK_FREE_RETURN,
 } from '../../resources/BackTest/backtest.constant';
 import { BackTest, IBackTestModel } from '../../resources/BackTest/backtest.model';
-import { BackTestActions, IBackTestSymbolData, IBackTestTradesDetails } from '../../resources/BackTest/backtest.types';
+import {
+  BackTestActions,
+  IBackTestTickerDictionary,
+  IBackTestTradeDictionary,
+} from '../../resources/BackTest/backtest.types';
 import { Order } from '../../resources/Order/order.model';
 import { OrderExecutionType, OrderStatus, OrderType } from '../../resources/Order/order.types';
 import { IQuote } from '../../resources/Quote/quote.types';
@@ -27,27 +31,25 @@ import { TradingSystem } from './TradingSystem';
 
 export class BackTestingSystem extends TradingSystem {
 
-  public backTestSymbolsData: IBackTestSymbolData
-  public symbolsMarketDirections: object | null
+  public backTestTickerDictionary: IBackTestTickerDictionary
   public currentBackTestId: string | null
   public isBackTestRunning: boolean
-  public backTestTradeDetails: IBackTestTradesDetails
+  public backTestTradeDictionary: IBackTestTradeDictionary
 
 
   constructor() {
     super();
-    this.symbolsMarketDirections = null
-    this.backTestSymbolsData = {}
+    this.backTestTickerDictionary = {}
     this.currentBackTestId = null
     this.isBackTestRunning = false;
-    this.backTestTradeDetails = {}
+    this.backTestTradeDictionary = {}
   }
 
   // ! MAIN BACKTESTING FUNCTIONS
 
   public startBackTesting = async (tickers: string[], interval: TradingDataInterval, initialCapital: number = DEFAULT_INITIAL_CAPITAL) => {
 
-    this.isBackTestRunning = true;
+    this.isBackTestRunning = true; // this will be used to stop the backtest later on
 
     for (const ticker of tickers) {
       console.log(`BackTest: Fetching data for ${ticker}. Please wait...`);
@@ -58,19 +60,19 @@ export class BackTestingSystem extends TradingSystem {
         throw new Error(`BackTest: failed to fetch data for ${ticker}. Please, make sure you have data for it, first!`)
       }
 
-      this.backTestSymbolsData = {
-        ...this.backTestSymbolsData,
+      this.backTestTickerDictionary = {
+        ...this.backTestTickerDictionary,
         [ticker]: {
           indicators: {},
-          quotes,
-          quotesDictionary: {}
+          quotes, // we use "quotes" to calculate indicators
+          quotesDictionary: {} // and our "quotesDictionary" to loop through data based on dates, more efficiently
         }
       }
     }
 
-    // prepare date (set all date "needles" to the same point)
+    // prepare date (set all date ticker "needles" to the same point in time)
 
-    this.backTestSymbolsData = this.prepareBackTestData(tickers)
+    this.backTestTickerDictionary = this.prepareBackTestData(tickers)
 
     try {
       console.log('Creating new backtest...');
@@ -86,7 +88,7 @@ export class BackTestingSystem extends TradingSystem {
 
       this.currentBackTestId = newBackTest._id
 
-      if (!this.backTestSymbolsData || !this.currentBackTestId) {
+      if (!this.backTestTickerDictionary || !this.currentBackTestId) {
         throw new Error("BackTest: failed to initialize backtest!")
       }
 
@@ -103,29 +105,29 @@ export class BackTestingSystem extends TradingSystem {
     const startingPeriod = (this.getStartingDate(tickers))
     let periodNow = DateHelper.indicatorFormat(startingPeriod)
 
-    let finishedSymbols = 0
-    const totalSymbols = tickers.length
+    let finishedTickers = 0
+    const totalTickers = tickers.length
 
     while (this.isBackTestRunning) {
 
-      if (finishedSymbols === totalSymbols) {
+      if (finishedTickers === totalTickers) {
         this.isBackTestRunning = false
         return
       }
 
       for (const ticker of tickers) {
 
-        const dataEntries = this.backTestSymbolsData[ticker].quotes
-        const lastDataEntry = dataEntries[dataEntries.length - 1]
-        const isLastDataEntry = DateHelper.indicatorFormat(lastDataEntry.date) === periodNow
-        if (isLastDataEntry) {
+        const quotes = this.backTestTickerDictionary[ticker].quotes
+        const lastQuote = quotes[quotes.length - 1]
+        const isLastQuoteDate = DateHelper.indicatorFormat(lastQuote.date) === periodNow
+        if (isLastQuoteDate) {
           ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgBlack, `🤖: Finished backtest for ${ticker} on ${periodNow}!`)
-          finishedSymbols++
+          finishedTickers++
         }
 
-        const quotesDictionary = this.backTestSymbolsData[ticker].quotesDictionary
+        const quotesDictionary = this.backTestTickerDictionary[ticker].quotesDictionary
         if (!quotesDictionary) {
-          throw new Error(`Failed to find DateKey data for ${ticker}`)
+          throw new Error(`Failed to find quotesDictionary data for ${ticker}`)
         }
 
         const prevPeriod = DateHelper.indicatorFormat(moment(periodNow).subtract(1, DateHelper.convertIntervalToMomentInterval(interval)).toDate())
@@ -136,8 +138,6 @@ export class BackTestingSystem extends TradingSystem {
         if (nextSteps === BackTestActions.Skip) {
           continue;
         }
-
-
 
         // await GenericHelper.sleep(1000)
 
@@ -225,10 +225,10 @@ export class BackTestingSystem extends TradingSystem {
 
     // This dictionary is used to store some useful trade details on class memory. It aims to avoid fetching it on database all the time, consuming our machine resources
 
-    this.backTestTradeDetails = {
-      ...this.backTestTradeDetails,
+    this.backTestTradeDictionary = {
+      ...this.backTestTradeDictionary,
       [ticker]: {
-        ...this.backTestTradeDetails[ticker],
+        ...this.backTestTradeDictionary[ticker],
         ...payload
       }
     }
@@ -398,7 +398,7 @@ export class BackTestingSystem extends TradingSystem {
 
     // This function will slice the data and set all of the analyzed symbols into the same startingPoint
 
-    const newData = this.backTestSymbolsData
+    const newData = this.backTestTickerDictionary
 
     const startingDate = this.getStartingDate(tickers)
 
@@ -433,7 +433,7 @@ export class BackTestingSystem extends TradingSystem {
     const firstDates: Date[] = []
 
     for (const ticker of tickers) {
-      const firstDate = this.backTestSymbolsData[ticker].quotes![0].date
+      const firstDate = this.backTestTickerDictionary[ticker].quotes![0].date
       firstDates.push(firstDate)
     }
 

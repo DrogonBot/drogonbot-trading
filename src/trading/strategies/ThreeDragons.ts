@@ -49,7 +49,7 @@ export class ThreeDragons extends BackTestingSystem {
 
   public defineNextSteps = async (ticker: string, quotesDictionary: Dictionary<IQuote>, periodNow: string, prevPeriod: string | null) => {
 
-    const indicators = this.backTestSymbolsData[ticker].indicators
+    const indicators = this.backTestTickerDictionary[ticker].indicators
 
     if (!indicators) {
       throw new Error(`BackTest: Failed to calculate indicators for ${ticker}`)
@@ -71,7 +71,7 @@ export class ThreeDragons extends BackTestingSystem {
 
     if (await this.canExecuteBuyOrder(ticker, quoteNow)) {
       ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `💰: Adding BUY order to ${ticker} on ${DateHelper.format(quoteNow.date)}!`);
-      const currentStart = this.backTestTradeDetails[ticker]?.startPrice!
+      const currentStart = this.backTestTradeDictionary[ticker]?.startPrice!
       await this.placeBackTestOrder(ticker, OrderType.Buy, OrderExecutionType.Market, currentStart, quoteNow.date, this.maxRiskPerTrade, ATRNow)
 
 
@@ -103,7 +103,7 @@ export class ThreeDragons extends BackTestingSystem {
 
     // first, we should check if there's no buy or
 
-    const isTradeInProgress = this.backTestTradeDetails[ticker]?.isTradeInProgress || null
+    const isTradeInProgress = this.backTestTradeDictionary[ticker]?.isTradeInProgress || null
 
     if (isTradeInProgress) {
       return false
@@ -122,8 +122,8 @@ export class ThreeDragons extends BackTestingSystem {
 
   public canExecuteBuyOrder = async (ticker: string, quoteNow: IQuote) => {
 
-    const currentStart = this.backTestTradeDetails[ticker]?.startPrice || null
-    const isTradeInProgress = this.backTestTradeDetails[ticker]?.isTradeInProgress || null
+    const currentStart = this.backTestTradeDictionary[ticker]?.startPrice || null
+    const isTradeInProgress = this.backTestTradeDictionary[ticker]?.isTradeInProgress || null
 
     if (currentStart && !isTradeInProgress) {
       if (quoteNow.high >= currentStart && quoteNow.low <= currentStart) {
@@ -143,8 +143,8 @@ export class ThreeDragons extends BackTestingSystem {
       const SMA200 = await MovingAverageHelper.calculateSMA(ticker, this.interval, 200, IndicatorSeriesType.Close)
       const SMA50 = await MovingAverageHelper.calculateSMA(ticker, this.interval, 50, IndicatorSeriesType.Close)
 
-      this.backTestSymbolsData[ticker] = {
-        ...this.backTestSymbolsData[ticker],
+      this.backTestTickerDictionary[ticker] = {
+        ...this.backTestTickerDictionary[ticker],
         indicators: {
           ATR,
           SMA200,

@@ -53,7 +53,7 @@ export interface IBackTest {
   capitalHistory: ICapitalHistory[]
 }
 
-export interface IBackTestSymbolData {
+export interface IBackTestTickerDictionary {
   [x: string]: {
     quotes: IQuote[],
     indicators: any,
@@ -61,8 +61,14 @@ export interface IBackTestSymbolData {
   }
 }
 
-export interface IDateKeyQuote {
-  [date: string]: IDateKeyQuote
+export interface IBackTestTradeDictionary {
+  [ticker: string]: {
+    tradeId: string,
+    isTradeInProgress: boolean,
+    startPrice?: number,
+    stopPrice?: number,
+    status?: TradeStatus
+  }
 }
 
 export enum BackTestActions {
@@ -72,12 +78,4 @@ export enum BackTestActions {
   Skip = "Skip"
 }
 
-export interface IBackTestTradesDetails {
-  [ticker: string]: {
-    tradeId: string,
-    isTradeInProgress: boolean,
-    startPrice?: number,
-    stopPrice?: number,
-    status?: TradeStatus
-  }
-}
+
