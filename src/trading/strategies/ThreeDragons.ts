@@ -70,8 +70,9 @@ export class ThreeDragons extends BackTestingSystem {
     }
 
     if (await this.canExecuteBuyOrder(ticker, quoteNow)) {
-      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `💰: Adding BUY order to ${ticker} on ${DateHelper.format(quoteNow.date)}!`);
+
       const currentStart = this.backTestTradeDictionary[ticker]?.startPrice!
+
       await this.placeBackTestOrder(ticker, OrderType.Buy, OrderExecutionType.Market, currentStart, quoteNow.date, this.maxRiskPerTrade, ATRNow)
 
 

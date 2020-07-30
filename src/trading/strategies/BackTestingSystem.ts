@@ -234,7 +234,7 @@ export class BackTestingSystem extends TradingSystem {
     }
   }
 
-  private _createBackTestOrder = async (ticker: string, currentBackTest: IBackTestModel, orderType: OrderType, orderExecutionType: OrderExecutionType, trade: ITradeModel, orderPrice: number, orderDate: Date, maxRiskPerTrade: number, ATRNow: number) => {
+  private _createBackTestOrder = async (ticker: string, currentBackTest: IBackTestModel, orderType: OrderType, orderExecutionType: OrderExecutionType, trade: ITradeModel, orderPrice: number, orderDate: Date, maxRiskPerTrade?: number, ATRNow?: number) => {
     const newOrder = new Order({
       ticker,
       trade: trade._id,
@@ -257,15 +257,17 @@ export class BackTestingSystem extends TradingSystem {
           // calculate position sizing based on ATR
           const { maxAllocation,
             qty,
-            initialStop } = PositionSizingHelper.ATRPositionSizing(currentBackTest.currentCapital, maxRiskPerTrade, orderPrice, ATRNow, DEFAULT_ATR_MULTIPLE)
+            initialStop } = PositionSizingHelper.ATRPositionSizing(currentBackTest.currentCapital, maxRiskPerTrade, orderPrice, ATRNow!, DEFAULT_ATR_MULTIPLE)
 
-          // TODO: Set initial stop!
+
 
           // check if we actually have enough capital to afford this order
 
           if (maxAllocation <= currentBackTest.currentCapital) {
 
             // if we can afford it, execute buy
+
+            ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `💰: Adding BUY order to ${ticker} on ${DateHelper.format(orderDate)}!`);
 
             newOrder.allocatedCapital = maxAllocation
             newOrder.quantity = qty;
@@ -293,7 +295,10 @@ export class BackTestingSystem extends TradingSystem {
               await latestOrder.save();
             }
 
+            ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🛑: Adding STOP order to ${ticker} on ${DateHelper.format(orderDate)}, price ${initialStop}!`);
 
+            // set stop order
+            await this._createBackTestOrder(ticker, currentBackTest, OrderType.Sell, OrderExecutionType.StopLoss, trade, initialStop, orderDate)
           } else {
             // show error
             console.log("Skipping buy order. We don't have enough money to execute this!");
