@@ -10,10 +10,10 @@ import {
   DEFAULT_MAX_RISK_PER_TRADE,
   RISK_FREE_RETURN,
 } from '../../resources/BackTest/backtest.constant';
-import { BackTest } from '../../resources/BackTest/backtest.model';
+import { BackTest, IBackTestModel } from '../../resources/BackTest/backtest.model';
 import { BackTestActions, IBackTestSymbolData, IBackTestTradesDetails } from '../../resources/BackTest/backtest.types';
 import { Order } from '../../resources/Order/order.model';
-import { OrderStatus, OrderTypes } from '../../resources/Order/order.types';
+import { OrderExecutionType, OrderStatus, OrderType } from '../../resources/Order/order.types';
 import { IQuote } from '../../resources/Quote/quote.types';
 import { ITradeModel, Trade } from '../../resources/Trade/trade.model';
 import { TradeDirection, TradeStatus, TradeType } from '../../resources/Trade/trade.types';
@@ -234,51 +234,126 @@ export class BackTestingSystem extends TradingSystem {
 
   // ! OTHER BACKTESTING FUNCTIONS
 
-  private _createNewOrder = async (ticker: string, orderType: OrderTypes, trade: ITradeModel, orderPrice: number) => {
-    const newOrder = new Order({
-      trade: trade._id,
-      type: orderType,
-      price: orderPrice,
-      status: OrderStatus.Pending
+  private _removeOrders = async (trade: ITradeModel, orderExecutionType: OrderExecutionType) => {
+
+    trade.orders = trade.orders.filter(async (order) => {
+      if (order.executionType !== orderExecutionType) {
+        await order.remove();
+        return false
+      }
+      return order
     })
-    trade.orders.push(newOrder)
-    await newOrder.save()
-    await trade.save()
+  }
 
-    // if its a start or stop order, we should save it in a dictionary, to avoid frequent fetches in our database
+  public changeOrderStatus = async (ticker: string, orderType: OrderType, orderExecutionType: OrderExecutionType, newStatus: OrderStatus) => {
+    try {
+      const order = await Order.findOne({ ticker, type: orderType, executionType: orderExecutionType })
 
-    switch (orderType) {
-      case OrderTypes.Start:
-        this.backTestTradeDetails = {
-          ...this.backTestTradeDetails,
-          [ticker]: {
-            ...this.backTestTradeDetails[ticker],
-            startPrice: orderPrice
-          }
-        }
+      if (!order) {
+        throw new Error("Error while trying to change order status: Order not found!")
+      }
+      order.status = newStatus;
+      await order.save();
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
 
-        break;
-      case OrderTypes.StopLoss:
-        this.backTestTradeDetails = {
-          ...this.backTestTradeDetails,
-          [ticker]: {
-            ...this.backTestTradeDetails[ticker],
-            stopPrice: orderPrice
-          }
-        }
-        break;
+  private _updateBackTestTradeDetailsDictionary = (ticker: string, payload: object) => {
+
+    // This dictionary is used to store some useful trade details on class memory. It aims to avoid fetching it on database all the time, consuming our machine resources
+
+    this.backTestTradeDetails = {
+      ...this.backTestTradeDetails,
+      [ticker]: {
+        ...this.backTestTradeDetails[ticker],
+        ...payload
+      }
+    }
+  }
+
+  private _createNewOrder = async (ticker: string, currentBackTest: IBackTestModel, orderType: OrderType, orderExecutionType: OrderExecutionType, trade: ITradeModel, orderPrice: number, orderDate: Date, maxRiskPerTrade: number, ATRNow: number) => {
+    const newOrder = new Order({
+      ticker,
+      trade: trade._id,
+      date: orderDate,
+      type: orderType,
+      executionType: orderExecutionType,
+      price: orderPrice,
+      status: orderExecutionType !== OrderExecutionType.Market ? OrderStatus.Pending : OrderStatus.Filled
+    })
+
+
+    if (orderExecutionType === OrderExecutionType.Market) {
+
+      switch (orderType) {
+        case OrderType.Buy:
+
+          // calculate position sizing and set buy order
+          const { maxAllocation,
+            qty,
+            initialStop } = PositionSizingHelper.ATRPositionSizing(currentBackTest.currentCapital, maxRiskPerTrade, orderPrice, ATRNow, DEFAULT_ATR_MULTIPLE)
+
+          newOrder.allocatedCapital = maxAllocation
+          newOrder.quantity = qty;
+          await newOrder.save();
+
+          this._updateBackTestTradeDetailsDictionary(ticker, {
+            isTradeInProgress: true
+          })
+
+          break;
+      }
 
     }
 
 
+
+    // if its a start or stop order, we should save it in a dictionary, to avoid frequent fetches in our database
+
+    switch (orderExecutionType) {
+
+      case OrderExecutionType.Start:
+
+        // remove other start orders
+        await this._removeOrders(trade, OrderExecutionType.Start)
+
+        trade.orders.push(newOrder)
+
+
+        this._updateBackTestTradeDetailsDictionary(ticker, {
+          tradeId: trade._id,
+          startPrice: orderPrice
+        })
+
+
+
+        break;
+      case OrderExecutionType.StopLoss:
+
+        // remove other stop orders
+        await this._removeOrders(trade, OrderExecutionType.StopLoss)
+        trade.orders.push(newOrder)
+
+        this._updateBackTestTradeDetailsDictionary(ticker, {
+          tradeId: trade._id,
+          stopPrice: orderPrice
+        })
+        break;
+
+    }
+
+    await newOrder.save()
+    await trade.save()
+
+
   }
 
-  public placeBackTestOrder = async (ticker: string, orderType: OrderTypes, orderPrice: number, orderDate: Date, maxRiskPerTrade: number, ATRNow: number) => {
-
-
+  public placeBackTestOrder = async (ticker: string, orderType: OrderType, orderExecutionType: OrderExecutionType, orderPrice: number, orderDate: Date, maxRiskPerTrade: number, ATRNow: number) => {
 
     try {
-      const currentBackTest = await BackTest.findOne({ _id: this.currentBackTestId })
+      const currentBackTest = await BackTest.findOne({ _id: this.currentBackTestId }).populate('trades')
 
       if (!currentBackTest) {
         throw new Error("Failed to find BackTest while trying to buy asset")
@@ -286,11 +361,12 @@ export class BackTestingSystem extends TradingSystem {
 
       const activeTrade = currentBackTest.trades.find((trade) => (trade.status === TradeStatus.Active) && trade.ticker === ticker)
 
+
       if (activeTrade) {
         console.log("Active trade found, creating new order");
         // if there's already an active trade, lets just create an order for a start
 
-        await this._createNewOrder(ticker, orderType, activeTrade, orderPrice)
+        await this._createNewOrder(ticker, currentBackTest, orderType, orderExecutionType, activeTrade, orderPrice, orderDate, maxRiskPerTrade, ATRNow)
 
 
       } else {
@@ -306,7 +382,7 @@ export class BackTestingSystem extends TradingSystem {
           direction: TradeDirection.Long,
         })
 
-        await this._createNewOrder(ticker, orderType, newTrade, orderPrice)
+        await this._createNewOrder(ticker, currentBackTest, orderType, orderExecutionType, newTrade, orderPrice, orderDate, maxRiskPerTrade, ATRNow)
 
         currentBackTest.trades.push(newTrade)
         await currentBackTest.save()

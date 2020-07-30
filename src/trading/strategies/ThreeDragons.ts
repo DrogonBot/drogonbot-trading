@@ -2,7 +2,7 @@ import { Dictionary } from 'lodash';
 
 import { DEFAULT_MAX_RISK_PER_TRADE } from '../../resources/BackTest/backtest.constant';
 import { BackTestActions } from '../../resources/BackTest/backtest.types';
-import { OrderTypes } from '../../resources/Order/order.types';
+import { OrderExecutionType, OrderStatus, OrderType } from '../../resources/Order/order.types';
 import { IQuote } from '../../resources/Quote/quote.types';
 import { TradeDirection } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
@@ -69,21 +69,23 @@ export class ThreeDragons extends BackTestingSystem {
       return BackTestActions.Skip
     }
 
-    if (this.canExecuteBuyOrder(ticker, quoteNow)) {
-      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🏁: Adding BUY order to ${ticker} on ${DateHelper.format(quoteNow.date)}!`);
+    if (await this.canExecuteBuyOrder(ticker, quoteNow)) {
+      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `💰: Adding BUY order to ${ticker} on ${DateHelper.format(quoteNow.date)}!`);
+      const currentStart = this.backTestTradeDetails[ticker]?.startPrice!
+      await this.placeBackTestOrder(ticker, OrderType.Buy, OrderExecutionType.Market, currentStart, quoteNow.date, this.maxRiskPerTrade, ATRNow)
+
+
+      // ! DEBUG ONLY
       this.isBackTestRunning = false; // stop backtest just for debugging
     }
 
 
 
-    if (this.canSetStartOrder(quoteNow, SMA200Now, SMA200Prev, SMA50Now, ATRNow)) {
-
+    if (this.canSetStartOrder(ticker, quoteNow, SMA200Now, SMA200Prev, SMA50Now, ATRNow)) {
       ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🏁: Adding START order to ${ticker} on ${DateHelper.format(quoteNow.date)}!`);
 
       // check if there's already an active trade with this current asset for this current backtest. If so, fetch it. If not, create a new one
-      await this.placeBackTestOrder(ticker, OrderTypes.Start, quoteNow.high + 0.01, quoteNow.date, this.maxRiskPerTrade, ATRNow)
-
-
+      await this.placeBackTestOrder(ticker, OrderType.Buy, OrderExecutionType.Start, quoteNow.high + 0.01, quoteNow.date, this.maxRiskPerTrade, ATRNow)
     }
 
     console.log(`Defining next steps for ${ticker} on date ${periodNow}`);
@@ -96,9 +98,19 @@ export class ThreeDragons extends BackTestingSystem {
     `);
   }
 
-  public canSetStartOrder = (quoteNow: IQuote, SMA200Now: number, SMA200Prev: number, SMA50Now: number, ATRNow: number) => {
+  public canSetStartOrder = (ticker: string, quoteNow: IQuote, SMA200Now: number, SMA200Prev: number, SMA50Now: number, ATRNow: number) => {
+
+    // first, we should check if there's no buy or
+
+    const isTradeInProgress = this.backTestTradeDetails[ticker]?.isTradeInProgress || null
+
+    if (isTradeInProgress) {
+      return false
+    }
+
 
     const marketDirection = this.calculateCurrentMarketDirection(SMA200Now, SMA200Prev, SMA50Now, ATRNow)
+
 
     if (marketDirection === TradeDirection.Long) {
       if (quoteNow.low <= (SMA50Now + ATRNow)) {
@@ -107,21 +119,21 @@ export class ThreeDragons extends BackTestingSystem {
     }
   }
 
-  public canExecuteBuyOrder = (ticker: string, quoteNow: IQuote) => {
+  public canExecuteBuyOrder = async (ticker: string, quoteNow: IQuote) => {
 
-    const currentStart = this.backTestTradeDetails[ticker].startPrice
+    const currentStart = this.backTestTradeDetails[ticker]?.startPrice || null
+    const isTradeInProgress = this.backTestTradeDetails[ticker]?.isTradeInProgress || null
 
-    if (currentStart) {
+    if (currentStart && !isTradeInProgress) {
       if (quoteNow.high >= currentStart && quoteNow.low <= currentStart) {
+
+        // update order status to filled
+        await this.changeOrderStatus(ticker, OrderType.Buy, OrderExecutionType.Start, OrderStatus.Filled)
+
         return true
       }
     }
-
-
     return false;
-
-
-
   }
 
   public calculateIndicators = async () => {

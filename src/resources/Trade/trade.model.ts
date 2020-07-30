@@ -29,9 +29,7 @@ const tradeSchema = new mongoose.Schema({
     type: String,
     enum: Object.values(TradeDirection)
   },
-  riskR: Number,
-  quantity: Number,
-  allocatedCapital: Number,
+
   entryPrice: Number,
   avgEntryPrice: Number,
   entryDate: Date,

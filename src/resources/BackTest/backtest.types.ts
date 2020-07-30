@@ -75,6 +75,7 @@ export enum BackTestActions {
 export interface IBackTestTradesDetails {
   [ticker: string]: {
     tradeId: string,
+    isTradeInProgress: boolean,
     startPrice?: number,
     stopPrice?: number,
     status?: TradeStatus

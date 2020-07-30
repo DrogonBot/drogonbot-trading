@@ -13,6 +13,10 @@ export class TradingSystem {
     try {
       const priceData = await Quote.find({ ticker, interval }).sort({ "date": "asc" })
 
+      if (!priceData.length) {
+        throw new Error(`Failed to fetch data for ${ticker}. Make sure you have available quotes in our database.`)
+      }
+
       console.log(`debug: first data for symbol ${ticker} is ${priceData[0].date}`);
 
       if (priceData.length === 0) {
