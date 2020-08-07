@@ -34,6 +34,11 @@ operationRouter.get("/asset/:ticker/:indicator/:interval", async (req, res) => {
         const indicatorData = await MovingAverageHelper.calculateEMA(ticker, 55, IndicatorSeriesType.Close, interval)
 
         return res.status(200).send(indicatorData);
+      
+      case "MACD":
+        const macdData = await MovingAverageHelper.calculateMACD(ticker, interval);
+
+        return res.status(200).send(macdData);
 
       case "DonchianChannel":
         const donchianData = await DonchianChannelHelper.calculate(ticker, 20, interval)

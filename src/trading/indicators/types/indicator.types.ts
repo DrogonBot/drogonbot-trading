@@ -13,9 +13,9 @@ export interface IAssetIndicator {
   name: string,
   interval: TradingDataInterval,
   seriesType?: IndicatorSeriesType,
-  period: number,
+  period?: number,
   value: number,
-  date?: string
+  date: string
 }
 
 export interface IIndicatorDonchianChannel extends IAssetIndicator {

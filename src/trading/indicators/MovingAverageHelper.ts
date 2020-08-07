@@ -99,9 +99,89 @@ export class MovingAverageHelper {
       end++;
     }
 
-
-
     return output;
+
+  }
+
+  public static calculateMACD = async ( ticker:string, interval: TradingDataInterval ) => {
+    
+    
+    const priceData = await Quote.find({ ticker, interval }).sort({ "date": "asc" });
+    
+    const SHORT_EMA_PERIOD:number = 12;
+    const LONG_EMA_PERIOD:number = 26;
+    
+    const shortEMA = await MovingAverageHelper.calculateEMA( ticker, SHORT_EMA_PERIOD, IndicatorSeriesType.Close, interval );
+    const longEMA = await  MovingAverageHelper.calculateEMA( ticker, LONG_EMA_PERIOD, IndicatorSeriesType.Close, interval );
+    
+    const MACD_PERIOD = 9;
+    
+    const MACD_INDICATOR_SERIES_TYPE:IndicatorSeriesType = IndicatorSeriesType.Close;
+    const output:IAssetIndicator[] = [];
+
+    
+
+    const firstMACDValueSum = priceData
+      .slice(0, MACD_PERIOD - 1)
+      .map(
+        price => {
+          let currentQuoteDate = moment(price.date).format(DATE_KEY_FORMAT);
+          return shortEMA[currentQuoteDate].value - longEMA[currentQuoteDate].value;
+      }).reduce((total, current) => total + current, 0);
+
+    let firstMACDValue = firstMACDValueSum / MACD_PERIOD;
+      
+    let firstQuoteDate = moment(priceData[0].date).format(DATE_KEY_FORMAT)
+    
+    let firstMACD:IAssetIndicator = {
+      interval,
+      seriesType: MACD_INDICATOR_SERIES_TYPE,
+      name: "MACD",
+      value: firstMACDValue,
+      date: firstQuoteDate
+    } 
+    
+    output.push(firstMACD);
+
+    
+
+    const k = 2 / (MACD_PERIOD + 1);
+                                  
+    for(let currentPriceDataIndex = 0; currentPriceDataIndex < priceData.length ; currentPriceDataIndex++){
+
+      let currentPriceData = priceData[currentPriceDataIndex];
+
+      const date = moment(currentPriceData.date).format(DATE_KEY_FORMAT);
+      
+      let currentShortEma:IAssetIndicator = shortEMA[date];
+      let currentLongEma:IAssetIndicator = longEMA[date];
+      let currentShortLongDiff:number = currentShortEma.value - currentLongEma.value;
+  
+      const previousMACD = output[ output.length - 1];
+      let currentOutputValue:number = ( currentShortLongDiff * k ) + ( previousMACD.value * ( 1 - k ) );
+     
+      let currentOutput:IAssetIndicator = {
+        interval,
+        seriesType: MACD_INDICATOR_SERIES_TYPE,
+        name: "MACD",
+        value: currentOutputValue,
+        date: date
+      };
+
+      output.push(currentOutput);
+    }
+
+
+    // parse it to support date as key
+    const parsedOutput = {}
+
+    for (let i = 0; i < output.length; i++) {
+      const date = output[i].date;
+      delete output[i].date;
+      parsedOutput[date!] = output[i]
+    }
+
+    return parsedOutput;
 
   }
 
