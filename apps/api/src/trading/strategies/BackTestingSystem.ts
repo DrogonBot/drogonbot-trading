@@ -295,6 +295,14 @@ export class BackTestingSystem extends TradingSystem {
               await latestOrder.save();
             }
 
+            // set some trade metrics
+            trade.entryPrice = orderPrice;
+            trade.startPrice = orderPrice;
+            trade.stopPrice = initialStop;
+            trade.entryDate = orderDate;
+
+
+
             ConsoleHelper.coloredLog(ConsoleColor.BgYellow, ConsoleColor.FgWhite, `🛑: Adding STOP order to ${ticker} on ${DateHelper.format(orderDate)}, price ${initialStop}!`);
 
             // set stop order

@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser';
 import { exec } from 'child_process';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
 import formData from 'express-form-data';
 import http from 'http';
@@ -18,6 +19,8 @@ import { userRouter } from './resources/User/user.routes';
 import { EnvType } from './typescript/env.types';
 import { ConsoleColor, ConsoleHelper } from './utils/ConsoleHelper';
 import { MixpanelHelper } from './utils/MixpanelHelper';
+
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") })
 
 /*#############################################################|
 |  >>> EXPRESS - INITIALIZATION

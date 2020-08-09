@@ -16,8 +16,6 @@ backTestRouter.get("/backtest/:interval/:strategy", async (req, res) => {
 
     switch (strategy) {
 
-
-
       case "ThreeDragons":
 
         const tickersArray = tickers.split(",").map((ticker) => ticker)
