@@ -1,3 +1,4 @@
+import { AuthType, ILoginData, UserType } from '@drogonbot/types/src/resources/User/user.types';
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 import { Router } from 'express';
@@ -19,7 +20,6 @@ import { TextHelper } from '../../utils/TextHelper';
 import { TS } from '../../utils/TS';
 import { Log } from '../Log/log.model';
 import { User } from './user.model';
-import { AuthType, ILoginData, UserType } from './user.types';
 
 // @ts-ignore
 const userRouter = new Router();

@@ -1,4 +1,4 @@
-import { TradingDataInterval } from '../../trading/constant/tradingdata.constant';
+import { TradingDataInterval } from '@drogonbot/constants';
 
 export interface IQuote {
   ticker: string,

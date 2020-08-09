@@ -1,3 +1,4 @@
+import { emailProviders, IEmailProvider } from '@drogonbot/constants';
 import { readFileSync } from 'fs';
 import moment from 'moment-timezone';
 
@@ -6,7 +7,6 @@ import { User } from '../resources/User/user.model';
 import { EncryptionHelper } from '../utils/EncryptionHelper';
 import { TextHelper } from '../utils/TextHelper';
 import { TS } from '../utils/TS';
-import { emailProviders, IEmailProvider } from './emailProviders.constant';
 
 export enum EmailType {
   Html = "Html",

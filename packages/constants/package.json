@@ -1,5 +1,5 @@
 {
-  "name": "@drogonbot/types",
+  "name": "@drogonbot/constants",
   "version": "1.0.0",
   "main": "dist/index",
   "typings": "dist/index",
@@ -15,6 +15,8 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@drogonbot/constants": "^1.0.0"
+    "@sendgrid/mail": "^6.4.0",
+    "node-mailjet": "^3.3.1",
+    "sib-api-v3-sdk": "^7.2.2"
   }
 }

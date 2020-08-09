@@ -1,5 +1,12 @@
 {
   "workbench.colorTheme": "Shades of Purple",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.minimap.size": "fit"
+  "editor.minimap.size": "fit",
+  "search.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/tmp": true,
+    "**/dist": true
+  }
 }

@@ -1,8 +1,5 @@
+import { DATE_KEY_FORMAT, DEFAULT_FORMATTED_DATE, TradingDataInterval } from '@drogonbot/constants';
 import moment = require('moment');
-
-import { DEFAULT_FORMATTED_DATE } from '../constants/global.constant';
-import { TradingDataInterval } from '../trading/constant/tradingdata.constant';
-import { DATE_KEY_FORMAT } from '../trading/indicators/constant/indicator.constant';
 
 
 

@@ -1,6 +1,5 @@
+import { IAsset, Market, Sector } from '@drogonbot/types/src/resources/Asset/asset.types';
 import mongoose, { Document, Model, model } from 'mongoose';
-
-import { IAsset, Market, Sector } from './asset.types';
 
 
 

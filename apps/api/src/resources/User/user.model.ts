@@ -1,3 +1,4 @@
+import { AuthType, IUserDocument, UserType } from '@drogonbot/types/src/resources/User/user.types';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Model, model, Schema } from 'mongoose';
@@ -8,7 +9,6 @@ import { MailchimpHelper } from '../../utils/MailchimpHelper';
 import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
 import { TextHelper } from '../../utils/TextHelper';
 import { TS } from '../../utils/TS';
-import { AuthType, IUserDocument, UserType } from './user.types';
 
 /*#############################################################|
 |  >>> MODEL FUNCTIONS (static, methods)

@@ -1,4 +1,4 @@
-import { TradingDataInterval } from '../../constant/tradingdata.constant';
+import { TradingDataInterval } from '@drogonbot/constants';
 
 
 

@@ -1,17 +1,19 @@
+import { DEFAULT_MAX_RISK_PER_TRADE, TradingDataInterval } from '@drogonbot/constants';
+import {
+  BackTestActions,
+  IndicatorSeriesType,
+  IQuote,
+  OrderExecutionType,
+  OrderType,
+  TradeDirection,
+} from '@drogonbot/types';
 import { Dictionary } from 'lodash';
 
-import { DEFAULT_MAX_RISK_PER_TRADE } from '../../resources/BackTest/backtest.constant';
-import { BackTestActions } from '../../resources/BackTest/backtest.types';
-import { OrderExecutionType, OrderType } from '../../resources/Order/order.types';
-import { IQuote } from '../../resources/Quote/quote.types';
-import { TradeDirection } from '../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { DateHelper } from '../../utils/DateTimeHelper';
-import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { ATRHelper } from '../indicators/ATRHelper';
 import { SidewaysMarketHelper } from '../indicators/ChoppyFilterHelper';
 import { MovingAverageHelper } from '../indicators/MovingAverageHelper';
-import { IndicatorSeriesType } from '../indicators/types/indicator.types';
 import { BackTestingSystem } from './BackTestingSystem';
 
 export class ThreeDragons extends BackTestingSystem {

@@ -1,9 +1,7 @@
 import { Dictionary } from 'lodash';
 
 import { IQuote } from '../Quote/quote.types';
-import { ITradeModel } from '../Trade/trade.model';
-import { TradeStatus } from '../Trade/trade.types';
-
+import { ITradeModel, TradeStatus } from '../Trade/trade.types';
 
 // More info: https://www.tradinggame.com.au/introduction-to-backtesting-metrics/
 

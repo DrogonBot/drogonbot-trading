@@ -1,7 +1,6 @@
+import { TradingDataInterval } from '@drogonbot/constants';
+import { IQuote } from '@drogonbot/types';
 import mongoose, { Document, Model, model } from 'mongoose';
-
-import { TradingDataInterval } from '../../trading/constant/tradingdata.constant';
-import { IQuote } from './quote.types';
 
 
 

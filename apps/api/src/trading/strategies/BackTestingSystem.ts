@@ -1,33 +1,36 @@
-import _ from 'lodash';
-import * as mathjs from 'mathjs';
-import moment from 'moment';
-
-import { DEFAULT_FORMATTED_DATE } from '../../constants/global.constant';
 import {
   DEFAULT_ATR_MULTIPLE,
   DEFAULT_BROKER_COMMISSION,
+  DEFAULT_FORMATTED_DATE,
   DEFAULT_INITIAL_CAPITAL,
   RISK_FREE_RETURN,
-} from '../../resources/BackTest/backtest.constant';
-import { BackTest, IBackTestModel } from '../../resources/BackTest/backtest.model';
+  TradingDataInterval,
+} from '@drogonbot/constants';
 import {
   BackTestActions,
   IBackTestTickerDictionary,
   IBackTestTradeDictionary,
-} from '../../resources/BackTest/backtest.types';
+  IQuote,
+  ITradeModel,
+  OrderExecutionType,
+  OrderStatus,
+  OrderType,
+  TradeDirection,
+  TradeStatus,
+  TradeType,
+} from '@drogonbot/types';
+import _ from 'lodash';
+import * as mathjs from 'mathjs';
+import moment from 'moment';
+
+import { BackTest, IBackTestModel } from '../../resources/BackTest/backtest.model';
 import { Order } from '../../resources/Order/order.model';
-import { OrderExecutionType, OrderStatus, OrderType } from '../../resources/Order/order.types';
-import { IQuote } from '../../resources/Quote/quote.types';
-import { ITradeModel, Trade } from '../../resources/Trade/trade.model';
-import { TradeDirection, TradeStatus, TradeType } from '../../resources/Trade/trade.types';
+import { Trade } from '../../resources/Trade/trade.model';
 import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
 import { DateHelper } from '../../utils/DateTimeHelper';
 import { NumberHelper } from '../../utils/NumberHelper';
 import { PositionSizingHelper } from '../../utils/PositionSizingHelper';
-import { TradingDataInterval } from '../constant/tradingdata.constant';
 import { TradingSystem } from './TradingSystem';
-
-
 
 export class BackTestingSystem extends TradingSystem {
 

@@ -1,7 +1,6 @@
+import { IOrder, OrderExecutionType, OrderStatus, OrderType } from '@drogonbot/types/src/resources/Order/order.types';
 import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
-
-import { IOrder, OrderExecutionType, OrderStatus, OrderType } from './order.types';
 
 
 

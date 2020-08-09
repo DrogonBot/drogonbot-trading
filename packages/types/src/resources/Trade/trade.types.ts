@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
+import { Document } from 'mongoose';
 
-import { IOrderModel } from '../Order/order.model';
-
+import { IOrder } from '../Order/order.types';
 
 export interface ITrade {
   backTest: ObjectId,
@@ -24,7 +24,11 @@ export interface ITrade {
   profitLoss: number,
   daysDuration: number,
   slippage?: number,
-  orders: IOrderModel[]
+  orders: IOrder[]
+}
+
+export interface ITradeModel extends ITrade, Document {
+  // insert functions here if needed.
 }
 
 export enum TradeType {

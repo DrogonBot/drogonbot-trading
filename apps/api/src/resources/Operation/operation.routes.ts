@@ -1,9 +1,9 @@
+import { IndicatorSeriesType } from '@drogonbot/types/src/trading/indicator.types';
 import { Router } from 'express';
 
 import { ATRHelper } from '../../trading/indicators/ATRHelper';
 import { DonchianChannelHelper } from '../../trading/indicators/DonchianChannelHelper';
 import { MovingAverageHelper } from '../../trading/indicators/MovingAverageHelper';
-import { IndicatorSeriesType } from '../../trading/indicators/types/indicator.types';
 
 
 

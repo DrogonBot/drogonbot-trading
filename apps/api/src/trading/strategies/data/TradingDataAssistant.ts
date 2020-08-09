@@ -1,6 +1,7 @@
-import { MinutesInterval } from '../../../resources/Trade/trade.types';
+import { intervalNamingShortcuts, TradingDataInterval, TradingDataUpdateType } from '@drogonbot/constants';
+import { MinutesInterval } from '@drogonbot/types';
+
 import { ConsoleColor, ConsoleHelper } from '../../../utils/ConsoleHelper';
-import { intervalNamingShortcuts, TradingDataInterval, TradingDataUpdateType } from '../../constant/tradingdata.constant';
 import { AlphaVantageDataAssistant } from './AlphaVantageDataAssistant';
 import { YahooFinanceDataAssistant } from './YahooFinanceDataAssistant';
 

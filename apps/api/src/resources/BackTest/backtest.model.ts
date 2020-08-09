@@ -1,7 +1,6 @@
+import { IBackTest } from '@drogonbot/types';
 import { ObjectId } from 'mongodb';
 import mongoose, { Document, Model, model } from 'mongoose';
-
-import { IBackTest } from './backtest.types';
 
 export interface IBackTestModel extends IBackTest, Document {
   // insert functions here if needed.

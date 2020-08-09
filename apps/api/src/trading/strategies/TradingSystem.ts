@@ -1,6 +1,6 @@
-import { DEFAULT_ATR_MULTIPLE } from '../../resources/BackTest/backtest.constant';
+import { DEFAULT_ATR_MULTIPLE, TradingDataInterval } from '@drogonbot/constants';
+
 import { Quote } from '../../resources/Quote/quote.model';
-import { TradingDataInterval } from '../constant/tradingdata.constant';
 
 export class TradingSystem {
   public ATRStopMultiple: number;

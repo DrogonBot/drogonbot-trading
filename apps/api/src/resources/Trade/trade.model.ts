@@ -1,14 +1,6 @@
+import { ITradeModel, TradeDirection, TradeStatus, TradeType } from '@drogonbot/types';
 import { ObjectId } from 'mongodb';
-import mongoose, { Document, Model, model } from 'mongoose';
-
-import { ITrade, TradeDirection, TradeStatus, TradeType } from './trade.types';
-
-
-
-
-export interface ITradeModel extends ITrade, Document {
-  // insert functions here if needed.
-}
+import mongoose, { Model, model } from 'mongoose';
 
 const tradeSchema = new mongoose.Schema({
   ticker: String,
@@ -47,7 +39,5 @@ const tradeSchema = new mongoose.Schema({
     ref: "Order"
   }]
 })
-
-
 
 export const Trade: Model<ITradeModel> = model<ITradeModel>('Trade', tradeSchema)

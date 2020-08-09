@@ -1,11 +1,11 @@
+import { dataApiAxios, TradingDataInterval, TradingDataUpdateType } from '@drogonbot/constants';
+import { MinutesInterval } from '@drogonbot/types';
 import _ from 'lodash';
 
 import { Asset } from '../../../resources/Asset/asset.model';
 import { Quote } from '../../../resources/Quote/quote.model';
-import { MinutesInterval } from '../../../resources/Trade/trade.types';
 import { ConsoleColor, ConsoleHelper } from '../../../utils/ConsoleHelper';
 import { TS } from '../../../utils/TS';
-import { dataApiAxios, TradingDataInterval, TradingDataUpdateType } from '../../constant/tradingdata.constant';
 
 
 

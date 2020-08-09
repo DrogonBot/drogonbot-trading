@@ -1,17 +1,12 @@
+import { DATE_KEY_FORMAT, TradingDataInterval } from '@drogonbot/constants';
+import { IAssetIndicator, IndicatorSeriesType } from '@drogonbot/types';
 import _ from 'lodash';
 import moment from 'moment';
 
 import { Quote } from '../../resources/Quote/quote.model';
 import { NumberHelper } from '../../utils/NumberHelper';
-import { TradingDataInterval } from '../constant/tradingdata.constant';
-import { DATE_KEY_FORMAT } from './constant/indicator.constant';
-import { IAssetIndicator, IndicatorSeriesType } from './types/indicator.types';
-
-
-
 
 export class MovingAverageHelper {
-
 
   public static calculateEMA = async (ticker: string, period: number, seriesType: IndicatorSeriesType, interval: TradingDataInterval) => {
 
