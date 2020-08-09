@@ -1,3 +1,4 @@
+import { EnvType } from '@drogonbot/types';
 import bodyParser from 'body-parser';
 import { exec } from 'child_process';
 import cors from 'cors';
@@ -16,7 +17,6 @@ import { backTestRouter } from './resources/BackTest/backtest.routes';
 import { operationRouter } from './resources/Operation/operation.routes';
 import { quoteRouter } from './resources/Quote/quote.routes';
 import { userRouter } from './resources/User/user.routes';
-import { EnvType } from './typescript/env.types';
 import { ConsoleColor, ConsoleHelper } from './utils/ConsoleHelper';
 import { MixpanelHelper } from './utils/MixpanelHelper';
 

@@ -1,4 +1,5 @@
-import { EnvType } from '../typescript/env.types';
+import { EnvType } from '@drogonbot/types';
+
 import { EmailType, TransactionalEmailManager } from './TransactionalEmailManager';
 
 

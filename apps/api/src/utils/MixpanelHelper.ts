@@ -1,6 +1,5 @@
+import { EnvType } from '@drogonbot/types';
 import Mixpanel from 'mixpanel';
-
-import { EnvType } from '../typescript/env.types';
 
 export enum MixpanelEvent {
   USER_LOGIN = "USER_LOGIN",

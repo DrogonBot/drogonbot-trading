@@ -1,4 +1,5 @@
-import { IPositionSizingResult } from '../typescript/positionsizing.types';
+import { IPositionSizingResult } from '@drogonbot/types';
+
 import { NumberHelper } from './NumberHelper';
 
 

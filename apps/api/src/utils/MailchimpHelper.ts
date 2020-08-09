@@ -1,6 +1,5 @@
+import { EnvType } from '@drogonbot/types';
 import Mailchimp from 'mailchimp-api-v3';
-
-import { EnvType } from '../typescript/env.types';
 
 
 

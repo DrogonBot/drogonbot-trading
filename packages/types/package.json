@@ -1,0 +1,17 @@
+{
+  "name": "@drogonbot/types",
+  "version": "1.0.0",
+  "main": "dist/index",
+  "typings": "dist/index",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  }
+}
