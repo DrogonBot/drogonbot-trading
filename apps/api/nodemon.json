@@ -1,7 +1,7 @@
 {
   "watch": [
-    "../../apps/**/src/*.ts",
-    "../../packages/**/src/*.ts"
+    "../../apps/**/src/**/*.ts",
+    "../../packages/**/src/**/*.ts"
   ],
   "ext": "ts",
   "execMap": {
