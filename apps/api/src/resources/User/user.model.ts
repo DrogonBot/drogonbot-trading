@@ -1,4 +1,4 @@
-import { AuthType, IUserDocument, UserType } from '@drogonbot/types/src/resources/User/user.types';
+import { AuthType, IUserDocument, UserType } from '@drogonbot/types';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Model, model, Schema } from 'mongoose';

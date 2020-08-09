@@ -4,6 +4,12 @@
         "tslint:latest",
         "tslint-config-prettier"
     ],
+    "linterOptions": {
+        "exclude": [
+            "apps/**/dist/**",
+            "packages/**/dist/**"
+        ]
+    },
     "jsRules": {},
     "rules": {
         "no-string-literal": false,

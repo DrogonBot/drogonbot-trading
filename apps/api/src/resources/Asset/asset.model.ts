@@ -1,7 +1,5 @@
-import { IAsset, Market, Sector } from '@drogonbot/types/src/resources/Asset/asset.types';
+import { IAsset, Market, Sector } from '@drogonbot/types';
 import mongoose, { Document, Model, model } from 'mongoose';
-
-
 
 export interface IAssetModel extends IAsset, Document {
   // insert functions here if needed.

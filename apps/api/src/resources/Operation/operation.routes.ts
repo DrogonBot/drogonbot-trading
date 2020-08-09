@@ -1,4 +1,4 @@
-import { IndicatorSeriesType } from '@drogonbot/types/src/trading/indicator.types';
+import { IndicatorSeriesType } from '@drogonbot/types';
 import { Router } from 'express';
 
 import { ATRHelper } from '../../trading/indicators/ATRHelper';

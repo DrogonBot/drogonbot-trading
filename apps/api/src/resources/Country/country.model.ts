@@ -1,4 +1,4 @@
-import { ICountry } from '@drogonbot/types/src/resources/Country/country.types';
+import { ICountry } from '@drogonbot/types';
 import mongoose, { Document, Model, model } from 'mongoose';
 
 

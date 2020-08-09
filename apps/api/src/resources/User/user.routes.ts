@@ -1,4 +1,4 @@
-import { AuthType, ILoginData, UserType } from '@drogonbot/types/src/resources/User/user.types';
+import { AuthType, ILoginData, UserType } from '@drogonbot/types';
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 import { Router } from 'express';
