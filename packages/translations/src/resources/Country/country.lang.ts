@@ -1,6 +1,6 @@
 
 
-export const strings = {
+const strings = {
   countryGetError: {
     eng: 'Error while trying to fetch the countries list.',
     ptBr: "Erro ao tentar carregar a lista de países."
@@ -10,3 +10,4 @@ export const strings = {
     ptBr: "Lista de países não encontrada."
   }
 }
+export default strings

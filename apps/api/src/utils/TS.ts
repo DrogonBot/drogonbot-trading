@@ -1,4 +1,6 @@
-import { globalStrings } from '../constants/global.lang';
+import { globalStrings } from '@drogonbot/translations';
+
+import { rootDirectory } from '..';
 import { TextHelper } from './TextHelper';
 
 
@@ -30,15 +32,15 @@ export class TS {
 
     // load language strings for a specific model
 
-    const {
-      strings
-    } = require(`../resources/${TextHelper.capitalizeFirstLetter(
+
+    const strings = require(`${rootDirectory}/packages/translations/src/resources/${TextHelper.capitalizeFirstLetter(
       model
     )}/${model}.lang.ts`);
 
+
     // add our global generic strings
     const languageStrings = {
-      ...strings,
+      ...strings.default,
       ...globalStrings
     };
 

@@ -1,6 +1,6 @@
 
 
-export const strings = {
+const strings = {
   userLogoutError: {
     eng: "Error while trying to log out.",
     ptBr: 'Erro ao tentar sair.'
@@ -216,3 +216,5 @@ export const strings = {
     ptBr: "Novo clique computado com sucesso"
   }
 };
+
+export default strings

@@ -1,6 +1,4 @@
-
-
-export const strings = {
+const strings = {
   assetNotFound: {
     eng: "Asset not found",
     ptBr: "Ativo não encontrado"
@@ -37,3 +35,5 @@ export const strings = {
 
 
 }
+
+export default strings

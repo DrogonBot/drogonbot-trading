@@ -37,6 +37,8 @@ mongoose.connect(`mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.
 const app = express();
 const server = http.createServer(app); // socket.io requirement
 
+export const rootDirectory = path.resolve(__dirname, '../../../')
+
 export const publicDirectory = path.join(__dirname, './public')
 export const backupsDirectory = path.join(__dirname, '../backups')
 export const scriptsPath = path.join(__dirname, '../scripts')
