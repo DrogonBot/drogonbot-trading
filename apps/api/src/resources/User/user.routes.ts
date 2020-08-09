@@ -550,7 +550,7 @@ userRouter.post(
         token,
       });
     } catch (error) {
-      res.status(400).send({
+      res.status(500).send({
         status: "error",
         message: TS.string("user", "userCreationError"),
         details: error.message,
