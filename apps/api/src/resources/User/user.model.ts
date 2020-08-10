@@ -7,8 +7,6 @@ import { model, Schema } from 'mongoose';
 import { GenericEmailManager } from '../../emails/GenericEmailManager';
 import { TS } from '../../libs/TS';
 
-
-
 export const userSchema: Schema = new Schema(
   {
     name: {
