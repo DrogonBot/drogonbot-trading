@@ -1,3 +1,0 @@
-type,jobRoles,_id,name,email,stateCode,country,phone,createdAt,updatedAt,__v,postReportItems
-JobSeeker,"[""Caixa"",""Estagiário""]","""5ee56406baf136002b1e115f""",Teste lead da silva,sarinhabl@gmail.com,ES,Brazil,2732258220,1592091654973,1592287016628,28,"[{""jobRoles"":[""Estagiário""],""_id"":""5ee85f283c5ae3028e4ac6f0"",""slug"":""estagiario-em-vila-velha-es-bfnpy"",""title"":""Estagiário em Vila Velha / ES""}]"
-JobSeeker,"[""Caixa""]","""5ee5643bbaf136002b1e1163""",Teste lead da silva,jfurtado141@gmail.com,ES,Brazil,2732258220,1592091707592,1592091707592,0,[]
