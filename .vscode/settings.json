@@ -22,5 +22,8 @@
     "**/node_modules/**": true,
     "**/.hg/store/**": true,
     "**/dist": true
-  }
+  },
+  "exportall.config.folderListener": [
+    "/packages/helpers/src"
+  ]
 }

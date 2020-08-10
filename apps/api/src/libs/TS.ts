@@ -1,7 +1,8 @@
+import { TextHelper } from '@drogonbot/helpers';
 import { globalStrings } from '@drogonbot/translations';
 
 import { rootDirectory } from '..';
-import { TextHelper } from './TextHelper';
+
 
 
 export class TS {

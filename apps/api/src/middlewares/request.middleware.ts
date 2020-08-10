@@ -1,6 +1,6 @@
-import { RouterHelper } from '../utils/RouterHelper';
-import { TS } from '../utils/TS';
+import { RouterHelper } from '@drogonbot/helpers';
 
+import { TS } from '../libs/TS';
 
 
 export class RequestMiddleware {

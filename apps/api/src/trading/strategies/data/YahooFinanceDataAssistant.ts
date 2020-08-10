@@ -1,10 +1,10 @@
 import { intervalNamingShortcuts, TradingDataUpdateType } from '@drogonbot/constants';
+import { ConsoleColor, ConsoleHelper } from '@drogonbot/helpers';
 import _ from 'lodash';
 import moment from 'moment';
 import yahooFinance from 'yahoo-finance';
 
 import { Quote } from '../../../resources/Quote/quote.model';
-import { ConsoleColor, ConsoleHelper } from '../../../utils/ConsoleHelper';
 
 
 export class YahooFinanceDataAssistant {

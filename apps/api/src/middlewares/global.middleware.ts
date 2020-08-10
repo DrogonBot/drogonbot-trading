@@ -1,4 +1,6 @@
-import { TS } from '../utils/TS';
+import { TS } from '../libs/TS';
+
+
 
 export class GlobalMiddleware {
   public static checkMethods = (req, res, next) => {

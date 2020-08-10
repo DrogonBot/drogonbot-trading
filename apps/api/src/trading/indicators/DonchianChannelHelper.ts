@@ -1,9 +1,9 @@
 import { DATE_KEY_FORMAT } from '@drogonbot/constants';
+import { NumberHelper } from '@drogonbot/helpers';
 import _ from 'lodash';
 import moment from 'moment';
 
 import { Quote } from '../../resources/Quote/quote.model';
-import { NumberHelper } from '../../utils/NumberHelper';
 
 
 export class DonchianChannelHelper {

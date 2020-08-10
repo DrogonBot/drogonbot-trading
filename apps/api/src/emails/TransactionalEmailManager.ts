@@ -1,12 +1,12 @@
 import { emailProviders, IEmailProvider } from '@drogonbot/constants';
+import { EncryptionHelper, TextHelper } from '@drogonbot/helpers';
 import { readFileSync } from 'fs';
 import moment from 'moment-timezone';
 
+import { TS } from '../libs/TS';
 import { Log } from '../resources/Log/log.model';
 import { User } from '../resources/User/user.model';
-import { EncryptionHelper } from '../utils/EncryptionHelper';
-import { TextHelper } from '../utils/TextHelper';
-import { TS } from '../utils/TS';
+
 
 export enum EmailType {
   Html = "Html",

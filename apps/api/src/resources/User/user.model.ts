@@ -1,14 +1,12 @@
+import { GenericHelper, MailchimpHelper, MixpanelEvent, MixpanelHelper, TextHelper } from '@drogonbot/helpers';
 import { AuthType, IUserDocument, UserType } from '@drogonbot/types';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Model, model, Schema } from 'mongoose';
 
 import { GenericEmailManager } from '../../emails/GenericEmailManager';
-import { GenericHelper } from '../../utils/GenericHelper';
-import { MailchimpHelper } from '../../utils/MailchimpHelper';
-import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
-import { TextHelper } from '../../utils/TextHelper';
-import { TS } from '../../utils/TS';
+import { TS } from '../../libs/TS';
+
 
 /*#############################################################|
 |  >>> MODEL FUNCTIONS (static, methods)

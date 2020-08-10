@@ -6,6 +6,7 @@ import {
   RISK_FREE_RETURN,
   TradingDataInterval,
 } from '@drogonbot/constants';
+import { ConsoleColor, ConsoleHelper, DateHelper, NumberHelper, PositionSizingHelper } from '@drogonbot/helpers';
 import {
   BackTestActions,
   IBackTestTickerDictionary,
@@ -26,10 +27,6 @@ import moment from 'moment';
 import { BackTest, IBackTestModel } from '../../resources/BackTest/backtest.model';
 import { Order } from '../../resources/Order/order.model';
 import { Trade } from '../../resources/Trade/trade.model';
-import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
-import { DateHelper } from '../../utils/DateTimeHelper';
-import { NumberHelper } from '../../utils/NumberHelper';
-import { PositionSizingHelper } from '../../utils/PositionSizingHelper';
 import { TradingSystem } from './TradingSystem';
 
 export class BackTestingSystem extends TradingSystem {

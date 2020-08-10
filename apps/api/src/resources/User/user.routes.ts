@@ -1,3 +1,4 @@
+import { EncryptionHelper, MixpanelEvent, MixpanelHelper, RouterHelper, TextHelper } from '@drogonbot/helpers';
 import { AuthType, ILoginData, UserType } from '@drogonbot/types';
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
@@ -10,14 +11,10 @@ import randomstring from 'randomstring';
 import sharp from 'sharp';
 
 import { GenericEmailManager } from '../../emails/GenericEmailManager';
+import { TS } from '../../libs/TS';
 import { userAuthMiddleware } from '../../middlewares/auth.middleware';
 import { RequestMiddleware } from '../../middlewares/request.middleware';
 import { UserMiddleware } from '../../middlewares/user.middleware';
-import { EncryptionHelper } from '../../utils/EncryptionHelper';
-import { MixpanelEvent, MixpanelHelper } from '../../utils/MixpanelHelper';
-import { RouterHelper } from '../../utils/RouterHelper';
-import { TextHelper } from '../../utils/TextHelper';
-import { TS } from '../../utils/TS';
 import { Log } from '../Log/log.model';
 import { User } from './user.model';
 

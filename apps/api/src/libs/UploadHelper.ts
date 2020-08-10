@@ -1,10 +1,10 @@
+import { TextHelper } from '@drogonbot/helpers';
 import fs from 'fs';
 import randomstring from 'randomstring';
 import sharp from 'sharp';
 import { isArray } from 'util';
 
 import { publicDirectory } from '..';
-import { TextHelper } from './TextHelper';
 
 interface IResizeObj {
   width: number | null,

@@ -1,4 +1,5 @@
 import { DEFAULT_MAX_RISK_PER_TRADE, TradingDataInterval } from '@drogonbot/constants';
+import { ConsoleColor, ConsoleHelper, DateHelper } from '@drogonbot/helpers';
 import {
   BackTestActions,
   IndicatorSeriesType,
@@ -9,8 +10,6 @@ import {
 } from '@drogonbot/types';
 import { Dictionary } from 'lodash';
 
-import { ConsoleColor, ConsoleHelper } from '../../utils/ConsoleHelper';
-import { DateHelper } from '../../utils/DateTimeHelper';
 import { ATRHelper } from '../indicators/ATRHelper';
 import { SidewaysMarketHelper } from '../indicators/ChoppyFilterHelper';
 import { MovingAverageHelper } from '../indicators/MovingAverageHelper';

@@ -1,7 +1,7 @@
 import express from 'express';
 
+import { TS } from '../../libs/TS';
 import { TradingDataAssistant } from '../../trading/strategies/data/TradingDataAssistant';
-import { TS } from '../../utils/TS';
 import { Quote } from './quote.model';
 
 

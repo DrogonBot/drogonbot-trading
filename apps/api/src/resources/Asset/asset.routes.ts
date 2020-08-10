@@ -1,7 +1,7 @@
 import express from 'express';
 
+import { TS } from '../../libs/TS';
 import { RequestMiddleware } from '../../middlewares/request.middleware';
-import { TS } from '../../utils/TS';
 import { Asset } from './asset.model';
 
 // @ts-ignore
