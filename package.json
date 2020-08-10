@@ -13,7 +13,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "sudo lerna run build --since --stream && yarn run lint"
+      "pre-push": "npx lerna run build --since --stream && yarn run lint"
     }
   },
   "keywords": [],
