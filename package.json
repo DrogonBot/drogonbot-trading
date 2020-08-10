@@ -13,7 +13,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "lerna run build --since HEAD --stream && yarn run lint"
+      "pre-push": "lerna run build --since --stream && yarn run lint"
     }
   },
   "keywords": [],
