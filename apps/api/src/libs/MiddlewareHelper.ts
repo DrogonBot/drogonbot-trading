@@ -1,7 +1,7 @@
+import { IUser } from '@drogonbot/types';
 import jwt from 'jsonwebtoken';
 
-import { IUser, User } from '../resources/User/user.model';
-
+import { User } from '../resources/User/user.model';
 
 export class MiddlewareHelper {
 

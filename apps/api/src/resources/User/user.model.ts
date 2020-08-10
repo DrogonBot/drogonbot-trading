@@ -1,5 +1,5 @@
 import { GenericHelper, MailchimpHelper, MixpanelEvent, MixpanelHelper, TextHelper } from '@drogonbot/helpers';
-import { AuthType, IUserModel, UserType } from '@drogonbot/types';
+import { AuthType, IUser, IUserModel, UserType } from '@drogonbot/types';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { model, Schema } from 'mongoose';
