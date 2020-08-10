@@ -1,12 +1,6 @@
 import { TradingDataInterval } from '@drogonbot/constants';
-import { IQuote } from '@drogonbot/types';
-import mongoose, { Document, Model, model } from 'mongoose';
-
-
-
-export interface IQuoteModel extends IQuote, Document {
-  // insert functions here if needed.
-}
+import { IQuoteModel } from '@drogonbot/types';
+import mongoose, { Model, model } from 'mongoose';
 
 const quoteSchema = new mongoose.Schema({
   ticker: String,
@@ -21,7 +15,5 @@ const quoteSchema = new mongoose.Schema({
   close: Number,
   volume: Number
 })
-
-
 
 export const Quote: Model<IQuoteModel> = model<IQuoteModel>('Quote', quoteSchema)

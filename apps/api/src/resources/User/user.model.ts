@@ -1,33 +1,13 @@
 import { GenericHelper, MailchimpHelper, MixpanelEvent, MixpanelHelper, TextHelper } from '@drogonbot/helpers';
-import { AuthType, IUserDocument, UserType } from '@drogonbot/types';
+import { AuthType, IUserModel, UserType } from '@drogonbot/types';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { Model, model, Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 import { GenericEmailManager } from '../../emails/GenericEmailManager';
 import { TS } from '../../libs/TS';
 
 
-/*#############################################################|
-|  >>> MODEL FUNCTIONS (static, methods)
-*##############################################################*/
-
-
-// methods
-export interface IUser extends IUserDocument {
-  hashPassword: (string) => string;
-  generateAuthToken: () => string;
-  getFirstName: () => string
-  toJSON: () => Object;
-  registerUser: (req?: any) => { token: string };
-}
-
-// static methods
-export interface IUserModel extends Model<IUser> {
-  findByCredentials: (email: string, password: string) => any;
-}
-
-// Statics ========================================
 
 export const userSchema: Schema = new Schema(
   {

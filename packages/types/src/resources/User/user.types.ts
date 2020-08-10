@@ -1,26 +1,5 @@
 import { Binary } from 'mongodb';
-import { Document } from 'mongoose';
-
-
-export interface ILoginData {
-  email: string;
-  password: string;
-}
-
-export enum AuthType {
-  EmailPassword = "EmailPassword",
-  GoogleOAuth = "GoogleOAuth",
-  FacebookOAuth = "FacebookOAuth"
-}
-
-export enum UserType {
-  Regular = "Regular",
-  Staff = "Staff",
-  Admin = "Admin",
-
-}
-
-
+import { Document, Model } from 'mongoose';
 
 
 export interface IUserDocument extends Document {
@@ -50,3 +29,38 @@ export interface IUserDocument extends Document {
   updatedAt: string;
   unsubscribed: boolean;
 }
+
+export interface IUser extends IUserDocument {
+  hashPassword: (string) => string;
+  generateAuthToken: () => string;
+  getFirstName: () => string
+  toJSON: () => Object;
+  registerUser: (req?: any) => { token: string };
+}
+
+// static methods
+export interface IUserModel extends Model<IUser> {
+  findByCredentials: (email: string, password: string) => any;
+}
+
+
+export interface ILoginData {
+  email: string;
+  password: string;
+}
+
+export enum AuthType {
+  EmailPassword = "EmailPassword",
+  GoogleOAuth = "GoogleOAuth",
+  FacebookOAuth = "FacebookOAuth"
+}
+
+export enum UserType {
+  Regular = "Regular",
+  Staff = "Staff",
+  Admin = "Admin",
+
+}
+
+
+

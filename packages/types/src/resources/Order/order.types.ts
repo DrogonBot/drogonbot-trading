@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { Document } from 'mongoose';
 
 export interface IOrder {
   ticker: string,
@@ -11,6 +12,10 @@ export interface IOrder {
   riskR: number,
   allocatedCapital: number,
   quantity: number,
+}
+
+export interface IOrderModel extends IOrder, Document {
+  // insert functions here if needed.
 }
 
 export enum OrderType {

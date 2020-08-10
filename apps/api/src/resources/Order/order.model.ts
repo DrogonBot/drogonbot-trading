@@ -1,12 +1,6 @@
-import { IOrder, OrderExecutionType, OrderStatus, OrderType } from '@drogonbot/types';
+import { IOrderModel, OrderExecutionType, OrderStatus, OrderType } from '@drogonbot/types';
 import { ObjectId } from 'mongodb';
-import mongoose, { Document, Model, model } from 'mongoose';
-
-
-
-export interface IOrderModel extends IOrder, Document {
-  // insert functions here if needed.
-}
+import mongoose, { Model, model } from 'mongoose';
 
 const orderSchema = new mongoose.Schema({
   ticker: {
