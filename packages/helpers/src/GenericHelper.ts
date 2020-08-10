@@ -14,6 +14,7 @@ export class GenericHelper {
     return html.replace(/(<([^>]+)>)/ig, "");
   }
 
+  // Add a delay before some action... Useful for bots emulating human behavior
   public static sleep = async (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
