@@ -7,7 +7,9 @@ services:
   drogonbot-api:
     container_name: drogonbot-api
     restart: always
-    build: .
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
     ports:
       - "$NODE_API_PORT:$NODE_API_PORT"
     volumes:

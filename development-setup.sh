@@ -11,16 +11,6 @@ printColor () {
 # Other important constants
 PROJECT_FOLDER="/home/jonit/Personal_projects/drogonbot"
 
-printColor "Setting up firewall to open docker related ports"
-sudo ufw allow OpenSSH
-sudo ufw allow 3000
-sudo ufw allow 3001
-sudo ufw allow 1234
-sudo ufw allow 27017
-sudo ufw allow 443
-sudo ufw allow 80
-
-
 # Setup docker-compose production file
 if test -f "./environment/docker-compose.dev.yml"; then
   printColor "Preparing docker-compose development file..."
@@ -42,61 +32,7 @@ if test -f "./environment/dev.env"; then
     exit
   
 fi
-
-# Setup Admin panel
-
-# if test -f "./admin/environment/Dockerfile.dev"; then
-#   printColor "Preparing Admin Panel development Dockerfile"
-#   sudo cp ./admin/environment/Dockerfile.dev ./admin/Dockerfile
-#   else 
-#     echo "You must have a ./admin/environment/Dockerfile.dev to proceed!"
-#     exit
-# fi
-
-# if test -f "./admin/environment/Env.constant.dev.ts"; then
-#   printColor "Preparing Admin Panel environment files"
-#   sudo cp ./admin/environment/Env.constant.dev.ts ./admin/src/constants/Env.constant.ts
-#   else 
-#     echo "You must have a ./admin/environment/Env.constant.dev.ts to proceed!"
-#     exit
-# fi
-
-# Setup Next.js
-
-# if test -f "./web/environment/Dockerfile.dev"; then
-#   printColor "Preparing Next.JS (front-end web) development Dockerfile"
-#   sudo cp ./web/environment/Dockerfile.dev ./web/Dockerfile
-#   else 
-#     echo "You must have a ./web/environment/Dockerfile.dev to proceed!"
-#     exit
-# fi
-
-# if test -f "./web/environment/Env.constant.dev.ts"; then
-#   printColor "Preparing Next.JS (front-end web) environment files"
-#   sudo cp ./web/environment/Env.constant.dev.ts ./web/src/constants/Env.constant.ts
-#   else 
-#     echo "You must have a ./web/environment/Env.constant.dev.ts to proceed!"
-#     exit
-# fi
-
-
  
-printColor "Creating swap file (needed so our docker containers can run smoothly)"
-printColor "Reference: https://linuxize.com/post/create-a-linux-swap-file/"
-
-sudo fallocate -l 1G /swapfile
-sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-
-sudo bash -c 'echo /swapfile swap swap defaults 0 0 >> /etc/fstab'
-
-printColor "Showing swap  - Obs.: The commands above will fail if you already swapped your memory"
-sudo swapon --show
-printColor "Setting swappiness to 80"
-sudo sysctl vm.swappiness=80
-
 printColor "Adding current user to docker group (It will avoid having to type sudo on docker-compose)"
 sudo usermod -aG docker $USER
 
@@ -115,14 +51,6 @@ yarn -v
 # install our apps dependencies to avoid potential errors
 sudo yarn install
 
-printColor "Building admin app..."
-
-cd admin
-sudo yarn install
-sudo npm run build # build react production ready files
-cd ..
-
-
 printColor "CONFIGURING NGINX PROXY-NETWORKS"
 printColor "Reference: https://blog.ssdnodes.com/blog/host-multiple-ssl-websites-docker-nginx/"
 
@@ -132,8 +60,7 @@ docker network create nginx-proxy
 docker-compose up -d
 cd ..
 
-
-printColor "nginx-proxy configured! This saved probably some years of your precious life."
+printColor "nginx-proxy configured! This probably saved some years of your precious life."
 printColor "*** *** REMEMBER TO CONFIGURE YOUR SUBDOMAINS DNS IN YOUR VPS PROVIDER! Check the tutorial above for more info *** ***"
 
 # start containers
