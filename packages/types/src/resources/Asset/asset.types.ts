@@ -1,3 +1,5 @@
+import { Document } from 'mongoose';
+
 export interface IAsset {
   ticker: string,
   isETF: boolean,
@@ -5,6 +7,10 @@ export interface IAsset {
   timeZone: string,
   market: Market,
   sector: Sector,
+}
+
+export interface IAssetModel extends IAsset, Document {
+  // insert functions here if needed.
 }
 
 export enum Market {

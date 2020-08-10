@@ -1,4 +1,5 @@
 import { Dictionary } from 'lodash';
+import { Document } from 'mongoose';
 
 import { IQuote } from '../Quote/quote.types';
 import { ITradeModel, TradeStatus } from '../Trade/trade.types';
@@ -50,6 +51,11 @@ export interface IBackTest {
   totalCommissionPercentageFinalCapital: number,
   capitalHistory: ICapitalHistory[]
 }
+
+export interface IBackTestModel extends IBackTest, Document {
+  // insert functions here if needed.
+}
+
 
 export interface IBackTestTickerDictionary {
   [x: string]: {

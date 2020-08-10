@@ -1,11 +1,9 @@
-import { ICountry } from '@drogonbot/types';
-import mongoose, { Document, Model, model } from 'mongoose';
+import { ICountryModel } from '@drogonbot/types';
+import mongoose, { Model, model } from 'mongoose';
 
 
 
-export interface ICountryModel extends ICountry, Document {
-  // insert functions here if needed.
-}
+
 
 const countrySchema = new mongoose.Schema({
   name: { type: String, required: true },

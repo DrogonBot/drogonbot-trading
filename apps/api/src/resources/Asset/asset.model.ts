@@ -1,9 +1,5 @@
-import { IAsset, Market, Sector } from '@drogonbot/types';
-import mongoose, { Document, Model, model } from 'mongoose';
-
-export interface IAssetModel extends IAsset, Document {
-  // insert functions here if needed.
-}
+import { IAssetModel, Market, Sector } from '@drogonbot/types';
+import mongoose, { Model, model } from 'mongoose';
 
 const assetSchema = new mongoose.Schema({
   name: String,

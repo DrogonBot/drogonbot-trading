@@ -9,6 +9,7 @@ import {
 import { ConsoleColor, ConsoleHelper, DateHelper, NumberHelper, PositionSizingHelper } from '@drogonbot/helpers';
 import {
   BackTestActions,
+  IBackTestModel,
   IBackTestTickerDictionary,
   IBackTestTradeDictionary,
   IQuote,
@@ -24,7 +25,7 @@ import _ from 'lodash';
 import * as mathjs from 'mathjs';
 import moment from 'moment';
 
-import { BackTest, IBackTestModel } from '../../resources/BackTest/backtest.model';
+import { BackTest } from '../../resources/BackTest/backtest.model';
 import { Order } from '../../resources/Order/order.model';
 import { Trade } from '../../resources/Trade/trade.model';
 import { TradingSystem } from './TradingSystem';

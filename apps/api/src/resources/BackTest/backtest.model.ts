@@ -1,10 +1,6 @@
-import { IBackTest } from '@drogonbot/types';
+import { IBackTestModel } from '@drogonbot/types';
 import { ObjectId } from 'mongodb';
-import mongoose, { Document, Model, model } from 'mongoose';
-
-export interface IBackTestModel extends IBackTest, Document {
-  // insert functions here if needed.
-}
+import mongoose, { Model, model } from 'mongoose';
 
 const backTestSchema = new mongoose.Schema({
   assets: [String],
