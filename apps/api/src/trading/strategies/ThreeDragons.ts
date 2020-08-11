@@ -1,5 +1,5 @@
 import { DEFAULT_MAX_RISK_PER_TRADE, TradingDataInterval } from '@drogonbot/constants';
-import { ConsoleColor, ConsoleHelper, DateHelper } from '@drogonbot/helpers';
+import { ConsoleColor, ConsoleHelper } from '@drogonbot/helpers';
 import {
   BackTestActions,
   IndicatorSeriesType,
@@ -19,8 +19,7 @@ export class ThreeDragons extends BackTestingSystem {
   private _systemName: string;
   public tickers: string[];
   public interval: TradingDataInterval;
-  public maxRiskPerTrade: number = DEFAULT_MAX_RISK_PER_TRADE;
-
+  public maxRiskPerTrade: number
 
   constructor(tickers: string[], interval: TradingDataInterval, ATRStopMultiple: number = 3) {
     super()
@@ -28,6 +27,7 @@ export class ThreeDragons extends BackTestingSystem {
     this.tickers = tickers;
     this.interval = interval;
     this.ATRStopMultiple = ATRStopMultiple
+    this.maxRiskPerTrade = DEFAULT_MAX_RISK_PER_TRADE;
   }
 
   public backTest = async () => {
@@ -37,18 +37,16 @@ export class ThreeDragons extends BackTestingSystem {
     await this.startBackTesting(this.tickers, this.interval)
 
     // calculate indicators
-    await this.calculateIndicators()
+    await this._calculateIndicators()
 
     console.log('🤖 Running backtest!');
 
     // Starting analytical loop
 
-    await this.runBackTesting(this.tickers, this.interval, this.defineNextSteps)
-
-
+    await this.runBackTesting(this.tickers, this.interval, this._defineNextSteps)
   }
 
-  public defineNextSteps = async (ticker: string, quotesDictionary: Dictionary<IQuote>, periodNow: string, prevPeriod: string | null) => {
+  private _defineNextSteps = async (ticker: string, quotesDictionary: Dictionary<IQuote>, periodNow: string, prevPeriod: string | null) => {
 
     const indicators = this.backTestTickerDictionary[ticker].indicators
 
@@ -70,25 +68,48 @@ export class ThreeDragons extends BackTestingSystem {
       return BackTestActions.Skip
     }
 
-    if (await this.canExecuteBuyOrder(ticker, quoteNow)) {
 
-      const currentStart = this.backTestTradeDictionary[ticker]?.startPrice!
+    // STOP / SELL ========================================
 
-      await this.placeBackTestOrder(ticker, OrderType.Buy, OrderExecutionType.Market, currentStart, quoteNow.date, this.maxRiskPerTrade, ATRNow)
+    if (await this._canExecuteSellOrder(ticker, quoteNow)) {
 
+      const stopPrice = this.backTestTradeDictionary[ticker]?.stopPrice!
+
+      await this.placeBackTestOrder(ticker, OrderType.Sell, OrderExecutionType.Market, stopPrice, quoteNow.date)
 
       // ! DEBUG ONLY
       this.isBackTestRunning = false; // stop backtest just for debugging
     }
 
-    if (this.canSetStartOrder(ticker, quoteNow, SMA200Now, SMA200Prev, SMA50Now, ATRNow)) {
+
+    if (await this._canSetStopOrder(ticker, quoteNow, SMA200Now, SMA200Prev, SMA50Now, ATRNow)) {
+
+      const stopPrice = quoteNow.low - 0.01
+
+      await this.placeBackTestOrder(ticker, OrderType.Sell, OrderExecutionType.StopLoss, stopPrice, quoteNow.date)
+
+    }
+
+    // START / BUY ========================================
+
+    if (await this._canExecuteBuyOrder(ticker, quoteNow)) {
+
+      const startPrice = this.backTestTradeDictionary[ticker]?.startPrice!
+
+      await this.placeBackTestOrder(ticker, OrderType.Buy, OrderExecutionType.Market, startPrice, quoteNow.date, ATRNow)
+
+
+    }
+
+
+
+    if (this._canSetStartOrder(ticker, quoteNow, SMA200Now, SMA200Prev, SMA50Now, ATRNow)) {
 
       const orderPrice = quoteNow.high + 0.01
 
-      ConsoleHelper.coloredLog(ConsoleColor.BgGreen, ConsoleColor.FgWhite, `🏁: Adding START order to ${ticker} on ${DateHelper.format(quoteNow.date)} at ${orderPrice}!`);
 
-      // check if there's already an active trade with this current asset for this current backtest. If so, fetch it. If not, create a new one
-      await this.placeBackTestOrder(ticker, OrderType.Buy, OrderExecutionType.Start, orderPrice, quoteNow.date, this.maxRiskPerTrade, ATRNow)
+
+      await this.placeBackTestOrder(ticker, OrderType.Buy, OrderExecutionType.Start, orderPrice, quoteNow.date, ATRNow)
     }
 
     console.log(`Defining next steps for ${ticker} on date ${periodNow}`);
@@ -101,7 +122,22 @@ export class ThreeDragons extends BackTestingSystem {
     `);
   }
 
-  public canSetStartOrder = (ticker: string, quoteNow: IQuote, SMA200Now: number, SMA200Prev: number, SMA50Now: number, ATRNow: number) => {
+  private _canSetStopOrder = async (ticker: string, quoteNow: IQuote, SMA200Now: number, SMA200Prev: number, SMA50Now: number, ATRNow: number) => {
+
+    const marketDirection = this._calculateMarketDirection(SMA200Now, SMA200Prev, SMA50Now, ATRNow)
+
+    if (marketDirection === TradeDirection.Long) {
+      if (quoteNow.low <= SMA200Now) {
+
+        return true
+
+
+      }
+    }
+
+  }
+
+  private _canSetStartOrder = (ticker: string, quoteNow: IQuote, SMA200Now: number, SMA200Prev: number, SMA50Now: number, ATRNow: number) => {
 
     // first, we should check if there's no buy or
 
@@ -112,7 +148,7 @@ export class ThreeDragons extends BackTestingSystem {
     }
 
 
-    const marketDirection = this.calculateCurrentMarketDirection(SMA200Now, SMA200Prev, SMA50Now, ATRNow)
+    const marketDirection = this._calculateMarketDirection(SMA200Now, SMA200Prev, SMA50Now, ATRNow)
 
 
     if (marketDirection === TradeDirection.Long) {
@@ -122,20 +158,33 @@ export class ThreeDragons extends BackTestingSystem {
     }
   }
 
-  public canExecuteBuyOrder = async (ticker: string, quoteNow: IQuote) => {
+  private _canExecuteSellOrder = async (ticker: string, quoteNow: IQuote) => {
 
-    const currentStart = this.backTestTradeDictionary[ticker]?.startPrice || null
+    const currentStopPrice = this.backTestTradeDictionary[ticker]?.stopPrice || null
     const isTradeInProgress = this.backTestTradeDictionary[ticker]?.isTradeInProgress || null
 
-    if (currentStart && !isTradeInProgress) {
-      if (quoteNow.high >= currentStart && quoteNow.low <= currentStart) {
+    if (currentStopPrice && isTradeInProgress) {
+      if (quoteNow.low <= currentStopPrice) {
+        return true
+      }
+    }
+  }
+
+
+  private _canExecuteBuyOrder = async (ticker: string, quoteNow: IQuote) => {
+
+    const currentStartPrice = this.backTestTradeDictionary[ticker]?.startPrice || null
+    const isTradeInProgress = this.backTestTradeDictionary[ticker]?.isTradeInProgress || null
+
+    if (currentStartPrice && !isTradeInProgress) {
+      if (quoteNow.high >= currentStartPrice && quoteNow.low <= currentStartPrice) {
         return true
       }
     }
     return false;
   }
 
-  public calculateIndicators = async () => {
+  private _calculateIndicators = async () => {
 
     for (const ticker of this.tickers) {
 
@@ -156,7 +205,7 @@ export class ThreeDragons extends BackTestingSystem {
     }
   }
 
-  public calculateCurrentMarketDirection = (SMA200Now, SMA200Prev, SMA50Now, ATRNow) => {
+  private _calculateMarketDirection = (SMA200Now, SMA200Prev, SMA50Now, ATRNow) => {
     if ((SMA200Now > SMA200Prev) && (SMA50Now > SMA200Now) && !SidewaysMarketHelper.isMarketSideways(SMA50Now, SMA200Now, ATRNow)) {
       return TradeDirection.Long
     }
@@ -167,8 +216,6 @@ export class ThreeDragons extends BackTestingSystem {
 
     return TradeDirection.Lateral
   }
-
-
 
 
 }
